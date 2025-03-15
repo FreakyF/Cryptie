@@ -1,4 +1,4 @@
-@Cryptie.Server.API_HostAddress = http://localhost:5160
+@Cryptie.Server.API_HostAddress = http://localhost:5222
 
 GET {{Cryptie.Server.API_HostAddress}}/weatherforecast/
 Accept: application/json
