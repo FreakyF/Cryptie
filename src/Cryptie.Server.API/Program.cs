@@ -1,3 +1,5 @@
+using Scalar.AspNetCore;
+
 namespace Cryptie.Server.API;
 
 public class Program
@@ -18,6 +20,7 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            app.MapScalarApiReference();
         }
 
         app.UseHttpsRedirection();
