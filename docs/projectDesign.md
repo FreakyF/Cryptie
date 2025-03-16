@@ -7,6 +7,7 @@
 * Registration
 * Login
 * Logout
+* Account Deletion
 * Two-factor authentication
 
 ### 2. Social and Group management
