@@ -105,8 +105,7 @@ public class AuthenticationService(
             Id = Guid.Empty,
             Email = registerRequest.Email,
             Login = registerRequest.Login,
-            Name = registerRequest.Name,
-            Surname = registerRequest.Surname,
+            DisplayName = registerRequest.DisplayName,
             Password = password.Entity,
             Totp = totp.Entity
         });
