@@ -28,6 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cryptie.Client.Application\Cryptie.Client.Application.csproj" />
+        <ProjectReference Include="..\Cryptie.Client.Application\Cryptie.Client.Application.csproj"/>
     </ItemGroup>
 </Project>

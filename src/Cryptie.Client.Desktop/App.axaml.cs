@@ -1,13 +1,13 @@
+using System.Linq;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
 using Cryptie.Client.Desktop.ViewModels;
 using Cryptie.Client.Desktop.Views;
 
 namespace Cryptie.Client.Desktop;
 
-public partial class App : Avalonia.Application
+public class App : Avalonia.Application
 {
     public override void Initialize()
     {
@@ -23,7 +23,7 @@ public partial class App : Avalonia.Application
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel()
             };
         }
 
@@ -37,9 +37,6 @@ public partial class App : Avalonia.Application
             BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
         // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
-        {
-            BindingPlugins.DataValidators.Remove(plugin);
-        }
+        foreach (var plugin in dataValidationPluginsToRemove) BindingPlugins.DataValidators.Remove(plugin);
     }
 }
