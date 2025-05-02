@@ -18,7 +18,7 @@ public static class Program
 
         var builder = WebApplication.CreateBuilder(args);
 
-        const string secureCorsPolicy = "SecureCorsPolicy";
+        const string secureCorsPolicy = "SecureCorsPolicy"; //TODO do usunięcia
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(secureCorsPolicy, policy =>
