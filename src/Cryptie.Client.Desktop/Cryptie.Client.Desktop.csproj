@@ -10,13 +10,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.2.5"/>
         <PackageReference Include="Avalonia.Desktop" Version="11.2.5"/>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.5" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.5"/>
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.5"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -29,5 +29,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Cryptie.Client.Application\Cryptie.Client.Application.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
     </ItemGroup>
 </Project>

@@ -1,0 +1,60 @@
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Desktop.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Cryptie.Client.Desktop.Views.RegisterView"
+             x:DataType="viewModels:RegisterViewModel">
+    <Grid>
+        <Border Theme="{StaticResource CardBorder}"
+                Classes="Shadow Hover"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="360">
+            <StackPanel Spacing="16">
+                <TextBlock Theme="{StaticResource TitleTextBlock}"
+                           Classes="H1"
+                           HorizontalAlignment="Center">
+                    Cryptie
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center">
+                    Create Account
+                </TextBlock>
+                <TextBox Watermark="Username"
+                         Text="{Binding Username, Mode=TwoWay}" />
+                <TextBox Watermark="Display Name"
+                         Text="{Binding DisplayName, Mode=TwoWay}" />
+                <TextBox Watermark="Email"
+                         Text="{Binding Email, Mode=TwoWay}" />
+                <TextBox Classes="RevealPasswordButton"
+                         Watermark="Password"
+                         PasswordChar="*"
+                         Text="{Binding Password, Mode=TwoWay}" />
+
+                <!--TODO: Add Error Message-->
+                <TextBlock Classes="Danger"
+                           HorizontalAlignment="Center">
+                    Error Message
+                </TextBlock>
+
+                <Button Theme="{StaticResource SolidButton}"
+                        Content="Register"
+                        Command="{Binding RegisterCommand}">
+                </Button>
+
+                <StackPanel Spacing="0">
+                    <TextBlock HorizontalAlignment="Center">
+                        Already have an account?
+                    </TextBlock>
+                    <Button Theme="{StaticResource BorderlessButton}"
+                            Classes="Secondary"
+                            Content="Log in"
+                            Command="{Binding GoToLoginCommand}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -3,9 +3,17 @@
              x:Class="Cryptie.Client.Desktop.App"
              xmlns:local="using:Cryptie.Client.Desktop"
              RequestedThemeVariant="Default"
-             xmlns:semi="https://irihi.tech/semi">
+             xmlns:semi="https://irihi.tech/semi"
+             xmlns:views="clr-namespace:Cryptie.Client.Desktop.Views"
+             xmlns:vm="clr-namespace:Cryptie.Client.Desktop.ViewModels">
     <Application.DataTemplates>
         <local:ViewLocator />
+        <DataTemplate DataType="vm:RegisterViewModel">
+            <views:RegisterView />
+        </DataTemplate>
+        <DataTemplate DataType="vm:LoginViewModel">
+            <views:LoginView />
+        </DataTemplate>
     </Application.DataTemplates>
 
     <Application.Styles>
