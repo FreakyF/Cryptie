@@ -10,4 +10,10 @@
         <ProjectReference Include="..\Cryptie.Client.Domain\Cryptie.Client.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Semi.Avalonia" Version="11.2.1.7" />
+      <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.2.1.7" />
+      <PackageReference Include="Semi.Avalonia.TreeDataGrid" Version="11.0.10.3" />
+    </ItemGroup>
+
 </Project>

@@ -2,14 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Cryptie.Client.Desktop.App"
              xmlns:local="using:Cryptie.Client.Desktop"
-             RequestedThemeVariant="Default">
-    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
+             RequestedThemeVariant="Default"
+             xmlns:semi="https://irihi.tech/semi">
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme />
+        <semi:SemiTheme Locale="en-US" />
+        <semi:DataGridSemiTheme />
+        <semi:TreeDataGridSemiTheme />
     </Application.Styles>
 </Application>
