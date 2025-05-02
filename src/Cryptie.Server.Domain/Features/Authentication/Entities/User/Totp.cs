@@ -1,4 +1,4 @@
-namespace Cryptie.Server.Domain.Features.Authentication.Entities;
+namespace Cryptie.Server.Domain.Features.Authentication.Entities.User;
 
 public class Totp
 {

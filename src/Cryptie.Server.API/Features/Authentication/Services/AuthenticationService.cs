@@ -1,11 +1,11 @@
 using Cryptie.Server.Domain.Features.Authentication.DTOs;
-using Cryptie.Server.Domain.Features.Authentication.Entities;
+using Cryptie.Server.Domain.Features.Authentication.Entities.User;
 using Cryptie.Server.Domain.Features.Authentication.Services;
 using Cryptie.Server.Infrastructure.Persistence.DatabaseContext;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OtpNet;
-using Totp = Cryptie.Server.Domain.Features.Authentication.Entities.Totp;
+using Totp = Cryptie.Server.Domain.Features.Authentication.Entities.User.Totp;
 
 namespace Cryptie.Server.API.Features.Authentication.Services;
 

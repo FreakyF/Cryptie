@@ -1,4 +1,4 @@
-namespace Cryptie.Server.Domain.Features.Authentication.Entities;
+namespace Cryptie.Server.Domain.Features.Authentication.Entities.Honeypot;
 
 public class UserAccountHoneypotLock
 {
