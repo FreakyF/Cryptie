@@ -21,7 +21,7 @@
                     Cryptie
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Center">
-                    Create Account
+                    Create account
                 </TextBlock>
                 <TextBox Watermark="Username"
                          Text="{Binding Username, Mode=TwoWay}" />
