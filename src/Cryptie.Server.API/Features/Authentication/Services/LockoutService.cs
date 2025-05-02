@@ -1,4 +1,6 @@
-using Cryptie.Server.Domain.Features.Authentication.Entities;
+using Cryptie.Server.Domain.Features.Authentication.Entities.Honeypot;
+using Cryptie.Server.Domain.Features.Authentication.Entities.LoginPolicy;
+using Cryptie.Server.Domain.Features.Authentication.Entities.User;
 using Cryptie.Server.Domain.Features.Authentication.Services;
 using Cryptie.Server.Infrastructure.Persistence.DatabaseContext;
 

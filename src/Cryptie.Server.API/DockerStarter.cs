@@ -14,7 +14,7 @@ public class DockerStarter
             All = true
         });
 
-        var existingContainer = containers.FirstOrDefault(c => c.Names.Any(n => n.TrimStart('/') == "panel-db"));
+        var existingContainer = containers.FirstOrDefault(c => c.Names.Any(n => n.TrimStart('/') == "cryptie-db"));
 
         if (existingContainer != null)
         {
@@ -27,7 +27,7 @@ public class DockerStarter
         await client.Containers.CreateContainerAsync(new CreateContainerParameters
         {
             Image = "postgres",
-            Name = "panel-db",
+            Name = "cryptie-db",
             Env = new List<string> { "POSTGRES_PASSWORD=admin" },
             HostConfig = new HostConfig
             {
@@ -38,6 +38,6 @@ public class DockerStarter
             }
         });
 
-        await client.Containers.StartContainerAsync("panel-db", new ContainerStartParameters());
+        await client.Containers.StartContainerAsync("cryptie-db", new ContainerStartParameters());
     }
 }

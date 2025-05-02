@@ -1,10 +1,20 @@
-using Cryptie.Server.Domain.Features.Authentication.Entities;
+using Cryptie.Server.Domain.Features.Authentication.Entities.Chat;
+using Cryptie.Server.Domain.Features.Authentication.Entities.Group;
+using Cryptie.Server.Domain.Features.Authentication.Entities.Honeypot;
+using Cryptie.Server.Domain.Features.Authentication.Entities.LoginPolicy;
+using Cryptie.Server.Domain.Features.Authentication.Entities.SessionTokens;
+using Cryptie.Server.Domain.Features.Authentication.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cryptie.Server.Infrastructure.Persistence.DatabaseContext;
 
 public class AppDbContext(DbContextOptions dbContextOptions) : DbContext(dbContextOptions), IAppDbContext
 {
+    public DbSet<Chat> Chats { get; set; }
+    public DbSet<ChatMessages> ChatMessages { get; set; }
+    public DbSet<Group> Groups { get; set; }
+    public DbSet<GroupMessage> GroupMessages { get; set; }
+    public DbSet<UserGroupPublicKey> UserGroupPublicKeys { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Password> Passwords { get; set; }
     public DbSet<Totp> Totps { get; set; }
@@ -17,6 +27,6 @@ public class AppDbContext(DbContextOptions dbContextOptions) : DbContext(dbConte
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=55123;Database=panel;Username=postgres;Password=admin");
+        optionsBuilder.UseNpgsql("Host=localhost;Port=55123;Database=cryptie;Username=postgres;Password=admin");
     }
 }
