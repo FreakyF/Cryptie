@@ -11,4 +11,10 @@ public class AuthenticationService(HttpClient httpClient) : IAuthenticationServi
         var response = await httpClient.PostAsJsonAsync("auth/register", registerRequest);
         response.EnsureSuccessStatusCode();
     }
+
+    public async Task LoginAsync(LoginRequest registerRequest)
+    {
+        var response = await httpClient.PostAsJsonAsync("auth/login", registerRequest);
+        response.EnsureSuccessStatusCode();
+    }
 }

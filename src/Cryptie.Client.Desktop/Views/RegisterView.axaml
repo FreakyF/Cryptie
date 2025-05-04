@@ -24,7 +24,7 @@
                     Create account
                 </TextBlock>
                 <TextBox Watermark="Username"
-                         Text="{Binding Model.Login, Mode=TwoWay}" />
+                         Text="{Binding Model.Username, Mode=TwoWay}" />
                 <TextBox Watermark="Display Name"
                          Text="{Binding Model.DisplayName, Mode=TwoWay}" />
                 <TextBox Watermark="Email"

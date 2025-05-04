@@ -21,7 +21,7 @@ public class RegisterViewModel : ViewModelBase
         _authentication = authentication;
         _shell = shell;
         var canRegister = this.WhenAnyValue(
-            x => x.Model.Login,
+            x => x.Model.Username,
             x => x.Model.DisplayName,
             x => x.Model.Email,
             x => x.Model.Password,
@@ -46,7 +46,7 @@ public class RegisterViewModel : ViewModelBase
 
         var dto = new RegisterRequest
         {
-            Login = Model.Login,
+            Login = Model.Username,
             DisplayName = Model.DisplayName,
             Email = Model.Email,
             Password = Model.Password
