@@ -24,15 +24,15 @@
                     Create account
                 </TextBlock>
                 <TextBox Watermark="Username"
-                         Text="{Binding Username, Mode=TwoWay}" />
+                         Text="{Binding Model.Login, Mode=TwoWay}" />
                 <TextBox Watermark="Display Name"
-                         Text="{Binding DisplayName, Mode=TwoWay}" />
+                         Text="{Binding Model.DisplayName, Mode=TwoWay}" />
                 <TextBox Watermark="Email"
-                         Text="{Binding Email, Mode=TwoWay}" />
+                         Text="{Binding Model.Email, Mode=TwoWay}" />
                 <TextBox Classes="RevealPasswordButton"
                          Watermark="Password"
                          PasswordChar="*"
-                         Text="{Binding Password, Mode=TwoWay}" />
+                         Text="{Binding Model.Password, Mode=TwoWay}" />
 
                 <!--TODO: Add Error Message-->
                 <TextBlock Classes="Danger"
