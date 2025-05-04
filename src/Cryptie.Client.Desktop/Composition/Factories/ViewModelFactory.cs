@@ -2,7 +2,7 @@
 using Cryptie.Client.Desktop.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Cryptie.Client.Desktop;
+namespace Cryptie.Client.Desktop.Composition.Factories;
 
 public class ViewModelFactory(IServiceProvider serviceProvider) : IViewModelFactory
 {

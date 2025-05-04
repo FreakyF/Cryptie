@@ -1,6 +1,6 @@
 ﻿using Cryptie.Client.Desktop.ViewModels;
 
-namespace Cryptie.Client.Desktop;
+namespace Cryptie.Client.Desktop.Composition.Factories;
 
 public interface IViewModelFactory
 {

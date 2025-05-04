@@ -3,12 +3,13 @@ using System.Linq;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Cryptie.Client.Desktop.Composition.Extensions;
 using Cryptie.Client.Desktop.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Cryptie.Client.Desktop;
+namespace Cryptie.Client.Desktop.Composition.Startup;
 
 public class App : Avalonia.Application
 {

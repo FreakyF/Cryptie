@@ -1,4 +1,4 @@
-namespace Cryptie.Client.Desktop;
+namespace Cryptie.Client.Application;
 
 public class RegisterRequest
 {

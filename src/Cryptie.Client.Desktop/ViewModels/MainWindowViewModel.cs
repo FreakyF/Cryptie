@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Cryptie.Client.Desktop.Composition.Factories;
+using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
 

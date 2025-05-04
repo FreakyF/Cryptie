@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reactive;
 using System.Threading.Tasks;
+using Cryptie.Client.Application;
+using Cryptie.Client.Application.Features.Authentication.Services;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
@@ -39,11 +41,11 @@ public class RegisterViewModel : ViewModelBase
     
     public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
     public ReactiveCommand<Unit, Unit> GoToLoginCommand { get; }
-    private readonly IAuthApiService _authApi;
+    private readonly IAuthenticationService _authentication;
 
-    public RegisterViewModel(IAuthApiService authApi, MainWindowViewModel shell)
+    public RegisterViewModel(IAuthenticationService authentication, MainWindowViewModel shell)
     {
-        _authApi = authApi;
+        _authentication = authentication;
         _shell = shell;
         var canRegister = this.WhenAnyValue(
             x => x.Username,
@@ -83,7 +85,7 @@ public class RegisterViewModel : ViewModelBase
 
         try
         {
-            await _authApi.RegisterAsync(dto);
+            await _authentication.RegisterAsync(dto);
             // po udanej rejestracji przejdź do logowania
             _shell.ShowLogin();
         }
