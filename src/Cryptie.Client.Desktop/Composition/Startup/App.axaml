@@ -1,13 +1,13 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Cryptie.Client.Desktop.App"
-             xmlns:local="using:Cryptie.Client.Desktop"
+             x:Class="Cryptie.Client.Desktop.Composition.Startup.App"
              RequestedThemeVariant="Default"
              xmlns:semi="https://irihi.tech/semi"
              xmlns:views="clr-namespace:Cryptie.Client.Desktop.Views"
-             xmlns:vm="clr-namespace:Cryptie.Client.Desktop.ViewModels">
+             xmlns:vm="clr-namespace:Cryptie.Client.Desktop.ViewModels"
+             xmlns:locators="clr-namespace:Cryptie.Client.Desktop.Composition.Locators">
     <Application.DataTemplates>
-        <local:ViewLocator />
+        <locators:ViewLocator />
         <DataTemplate DataType="vm:RegisterViewModel">
             <views:RegisterView />
         </DataTemplate>

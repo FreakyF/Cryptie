@@ -1,11 +1,15 @@
+using System;
 using System.Linq;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Cryptie.Client.Desktop.Composition.Extensions;
 using Cryptie.Client.Desktop.Views;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace Cryptie.Client.Desktop;
+namespace Cryptie.Client.Desktop.Composition.Startup;
 
 public class App : Avalonia.Application
 {
@@ -16,10 +20,20 @@ public class App : Avalonia.Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        var services = new ServiceCollection();
-        services.AddCommonServices();
-        var serviceProvider = services.BuildServiceProvider();
-        var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+        var host = Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration(cfg =>
+            {
+                cfg.SetBasePath(AppContext.BaseDirectory)
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddEnvironmentVariables();
+            })
+            .ConfigureServices((ctx, services) =>
+            {
+                services.AddCommonServices(ctx.Configuration);
+            })
+            .Build();
+        
+        var mainWindow = host.Services.GetRequiredService<MainWindow>();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
