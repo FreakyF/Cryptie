@@ -10,7 +10,4 @@ public class ViewModelFactory(IServiceProvider serviceProvider) : IViewModelFact
     {
         return ActivatorUtilities.CreateInstance<T>(serviceProvider, parent);
     }
-
-    public T Create<T>() where T : ViewModelBase
-        => serviceProvider.GetRequiredService<T>();
 }
