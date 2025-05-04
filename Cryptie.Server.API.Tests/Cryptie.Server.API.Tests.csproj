@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
+        <PackageReference Include="xunit" Version="2.5.3"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Authentication\Services\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\src\Cryptie.Client.Desktop\Cryptie.Client.Desktop.csproj" />
+      <ProjectReference Include="..\src\Cryptie.Client.Domain\Cryptie.Client.Domain.csproj" />
+      <ProjectReference Include="..\src\Cryptie.Client.Infrastructure\Cryptie.Client.Infrastructure.csproj" />
+      <ProjectReference Include="..\src\Cryptie.Server.API\Cryptie.Server.API.csproj" />
+      <ProjectReference Include="..\src\Cryptie.Server.Domain\Cryptie.Server.Domain.csproj" />
+      <ProjectReference Include="..\src\Cryptie.Server.Infrastructure\Cryptie.Server.Infrastructure.csproj" />
+    </ItemGroup>
+
+</Project>
