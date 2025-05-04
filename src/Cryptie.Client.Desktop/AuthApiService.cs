@@ -6,10 +6,9 @@ namespace Cryptie.Client.Desktop;
 
 public class AuthApiService(HttpClient httpClient) : IAuthApiService
 {
-    private readonly HttpClient _httpClient = httpClient;
     public async Task RegisterAsync(RegisterRequest registerRequest)
     {
-        var response = await _httpClient.PostAsJsonAsync("auth/register", registerRequest);
+        var response = await httpClient.PostAsJsonAsync("auth/register", registerRequest);
         response.EnsureSuccessStatusCode();
     }
 }
