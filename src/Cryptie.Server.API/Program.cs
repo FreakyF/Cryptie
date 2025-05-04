@@ -68,6 +68,10 @@ public static class Program
 
         var app = builder.Build();
 
+        app.UseWebSockets(new WebSocketOptions
+        {
+            KeepAliveInterval = TimeSpan.FromSeconds(120)
+        });
 
         var databaseUpdater = new DatabaseUpdater(app.Services);
         await databaseUpdater.PerformDatabaseUpdate();
@@ -84,7 +88,7 @@ public static class Program
         app.UseRateLimiter();
 
         app.UseHsts();
-
+        
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
