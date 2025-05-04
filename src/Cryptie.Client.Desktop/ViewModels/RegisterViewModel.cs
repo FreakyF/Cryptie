@@ -4,23 +4,22 @@ using System.Threading.Tasks;
 using Cryptie.Client.Application;
 using Cryptie.Client.Application.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Models;
-using Cryptie.Client.Desktop.Services;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
 public class RegisterViewModel : ViewModelBase
 {
-    private readonly INavigationService _navigationService;
+    private readonly MainWindowViewModel _shell;
     private readonly IAuthenticationService _authentication;
     private RegisterModel Model { get; } = new();
     public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
     public ReactiveCommand<Unit, Unit> GoToLoginCommand { get; }
 
-    public RegisterViewModel(IAuthenticationService authentication, INavigationService navigationService)
+    public RegisterViewModel(IAuthenticationService authentication, MainWindowViewModel shell)
     {
         _authentication = authentication;
-        _navigationService = navigationService;
+        _shell = shell;
         var canRegister = this.WhenAnyValue(
             x => x.Model.Login,
             x => x.Model.DisplayName,
@@ -38,7 +37,7 @@ public class RegisterViewModel : ViewModelBase
             canExecute: canRegister
         );
 
-        GoToLoginCommand = ReactiveCommand.Create(() => { _navigationService.NavigateToLogin(); });
+        GoToLoginCommand = ReactiveCommand.Create(() => { _shell.ShowLogin(); });
     }
 
     private async Task RegisterAsync()
@@ -57,7 +56,7 @@ public class RegisterViewModel : ViewModelBase
         {
             await _authentication.RegisterAsync(dto);
 
-            _navigationService.NavigateToLogin();
+            _shell.ShowLogin();
         }
         catch (Exception ex)
         {

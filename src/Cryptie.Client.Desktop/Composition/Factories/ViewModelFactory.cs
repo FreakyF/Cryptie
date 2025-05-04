@@ -6,6 +6,11 @@ namespace Cryptie.Client.Desktop.Composition.Factories;
 
 public class ViewModelFactory(IServiceProvider serviceProvider) : IViewModelFactory
 {
+    public T Create<T>(MainWindowViewModel parent) where T : ViewModelBase
+    {
+        return ActivatorUtilities.CreateInstance<T>(serviceProvider, parent);
+    }
+
     public T Create<T>() where T : ViewModelBase
         => serviceProvider.GetRequiredService<T>();
 }

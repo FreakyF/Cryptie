@@ -1,7 +1,6 @@
 ﻿using System;
 using Cryptie.Client.Application.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Composition.Factories;
-using Cryptie.Client.Desktop.Services;
 using Cryptie.Client.Desktop.ViewModels;
 using Cryptie.Client.Desktop.Views;
 using Cryptie.Client.Infrastructure.Configuration;
@@ -28,7 +27,6 @@ public static class ServiceCollectionExtensions
             });
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
-        services.AddSingleton<INavigationService, NavigationService>();
         
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();

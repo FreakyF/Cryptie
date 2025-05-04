@@ -20,6 +20,6 @@ public class MainWindowViewModel : ViewModelBase
         ShowLogin();
     }
 
-    public void ShowLogin() => CurrentViewModel = _viewModelFactory.Create<LoginViewModel>();
-    public void ShowRegister() => CurrentViewModel = _viewModelFactory.Create<RegisterViewModel>();
+    public void ShowLogin() => CurrentViewModel = _viewModelFactory.Create<LoginViewModel>(this);
+    public void ShowRegister() => CurrentViewModel = _viewModelFactory.Create<RegisterViewModel>(this);
 }
