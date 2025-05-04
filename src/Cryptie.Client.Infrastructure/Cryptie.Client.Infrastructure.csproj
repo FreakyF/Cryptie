@@ -10,4 +10,8 @@
         <ProjectReference Include="..\Cryptie.Client.Domain\Cryptie.Client.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.4" />
+    </ItemGroup>
+
 </Project>

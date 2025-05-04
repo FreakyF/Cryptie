@@ -4,22 +4,21 @@ namespace Cryptie.Client.Desktop.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private ViewModelBase _currentViewModel;
-    private readonly IAuthApiService _authApi;
+    private readonly IViewModelFactory _viewModelFactory;
+    private ViewModelBase _currentViewModel = null!;
 
     public ViewModelBase CurrentViewModel
     {
         get => _currentViewModel;
-        set => this.RaiseAndSetIfChanged(ref _currentViewModel, value);
+        private set => this.RaiseAndSetIfChanged(ref _currentViewModel, value);
     }
 
-    public MainWindowViewModel(IAuthApiService authApi)
+    public MainWindowViewModel(IViewModelFactory viewModelFactory)
     {
-        _authApi = authApi;
-        _currentViewModel = new LoginViewModel(this);
+        _viewModelFactory = viewModelFactory;
+        ShowLogin();
     }
 
-    public void ShowRegister() => CurrentViewModel = new RegisterViewModel(_authApi, this);
-
-    public void ShowLogin() => CurrentViewModel = new LoginViewModel(this);
+    public void ShowLogin() => CurrentViewModel = _viewModelFactory.Create<LoginViewModel>(this);
+    public void ShowRegister() => CurrentViewModel = _viewModelFactory.Create<RegisterViewModel>(this);
 }
