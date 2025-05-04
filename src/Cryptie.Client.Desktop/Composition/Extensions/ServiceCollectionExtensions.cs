@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
     public static void AddCommonServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<ClientOptions>(
-            configuration.GetSection("Backend")
+            configuration.GetSection("Client")
         );
 
         services.AddHttpClient<IAuthenticationService, AuthenticationService>()
