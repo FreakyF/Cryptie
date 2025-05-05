@@ -11,5 +11,5 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Cryptie">
 
-    <reactiveUi:RoutedViewHost x:Name="RoutedViewHost" Router="{Binding Router}" />
+    <reactiveUi:RoutedViewHost x:Name="RoutedViewHost" Router="{Binding Router}" PageTransition="{x:Null}"/>
 </Window>
