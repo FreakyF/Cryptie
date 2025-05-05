@@ -3,4 +3,5 @@
 public interface IAuthenticationService
 {
     Task RegisterAsync(RegisterRequest registerRequest);
+    Task LoginAsync(LoginRequest registerRequest);
 }

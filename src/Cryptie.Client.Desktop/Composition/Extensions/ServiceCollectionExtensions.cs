@@ -1,7 +1,7 @@
 ﻿using System;
 using Cryptie.Client.Application.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Composition.Factories;
-using Cryptie.Client.Desktop.Services;
+using Cryptie.Client.Desktop.Composition.Locators;
 using Cryptie.Client.Desktop.ViewModels;
 using Cryptie.Client.Desktop.Views;
 using Cryptie.Client.Infrastructure.Configuration;
@@ -9,6 +9,8 @@ using Cryptie.Client.Infrastructure.Features.Authentication.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using ReactiveUI;
+using Splat;
 
 namespace Cryptie.Client.Desktop.Composition.Extensions;
 
@@ -27,12 +29,12 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(options.BaseUri);
             });
 
+        Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
+
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
-        services.AddSingleton<INavigationService, NavigationService>();
-        
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
-        
+
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();
     }

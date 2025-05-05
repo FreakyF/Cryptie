@@ -3,6 +3,7 @@
         xmlns:vm="using:Cryptie.Client.Desktop.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:reactiveUi="http://reactiveui.net"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Cryptie.Client.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -10,5 +11,5 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Cryptie">
 
-    <ContentControl Content="{Binding CurrentViewModel}" />
+    <reactiveUi:RoutedViewHost x:Name="RoutedViewHost" Router="{Binding Router}" PageTransition="{x:Null}" />
 </Window>

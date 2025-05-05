@@ -1,8 +1,9 @@
 ﻿using Cryptie.Client.Desktop.ViewModels;
+using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.Composition.Factories;
 
 public interface IViewModelFactory
 {
-    public T Create<T>() where T : ViewModelBase;
+    T Create<T>(IScreen host) where T : ViewModelBase;
 }

@@ -4,25 +4,21 @@ using System.Threading.Tasks;
 using Cryptie.Client.Application;
 using Cryptie.Client.Application.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Models;
-using Cryptie.Client.Desktop.Services;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
-public class RegisterViewModel : ViewModelBase
+public class RegisterViewModel : ViewModelBase, IRoutableViewModel
 {
-    private readonly INavigationService _navigationService;
     private readonly IAuthenticationService _authentication;
-    private RegisterModel Model { get; } = new();
-    public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
-    public ReactiveCommand<Unit, Unit> GoToLoginCommand { get; }
+    private readonly MainWindowViewModel _shell;
 
-    public RegisterViewModel(IAuthenticationService authentication, INavigationService navigationService)
+    public RegisterViewModel(IAuthenticationService authentication, MainWindowViewModel shell)
     {
         _authentication = authentication;
-        _navigationService = navigationService;
+        _shell = shell;
         var canRegister = this.WhenAnyValue(
-            x => x.Model.Login,
+            x => x.Model.Username,
             x => x.Model.DisplayName,
             x => x.Model.Email,
             x => x.Model.Password,
@@ -34,12 +30,19 @@ public class RegisterViewModel : ViewModelBase
         );
 
         RegisterCommand = ReactiveCommand.CreateFromTask(
-            execute: RegisterAsync,
-            canExecute: canRegister
+            RegisterAsync,
+            canRegister
         );
 
-        GoToLoginCommand = ReactiveCommand.Create(() => { _navigationService.NavigateToLogin(); });
+        GoToLoginCommand = ReactiveCommand.Create(() => { _shell.ShowLogin(); });
     }
+
+    internal RegisterModel Model { get; } = new();
+    public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
+    public ReactiveCommand<Unit, Unit> GoToLoginCommand { get; }
+
+    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
+    public IScreen HostScreen { get; }
 
     private async Task RegisterAsync()
     {
@@ -47,7 +50,7 @@ public class RegisterViewModel : ViewModelBase
 
         var dto = new RegisterRequest
         {
-            Login = Model.Login,
+            Login = Model.Username,
             DisplayName = Model.DisplayName,
             Email = Model.Email,
             Password = Model.Password
@@ -57,7 +60,7 @@ public class RegisterViewModel : ViewModelBase
         {
             await _authentication.RegisterAsync(dto);
 
-            _navigationService.NavigateToLogin();
+            _shell.ShowLogin();
         }
         catch (Exception ex)
         {

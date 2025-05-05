@@ -1,33 +1,65 @@
-﻿using System.Reactive;
+﻿using System;
+using System.Reactive;
+using System.Threading.Tasks;
+using Cryptie.Client.Application;
+using Cryptie.Client.Application.Features.Authentication.Services;
+using Cryptie.Client.Desktop.Models;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
-public class LoginViewModel : ViewModelBase
+public class LoginViewModel : ViewModelBase, IRoutableViewModel
 {
+    private readonly IAuthenticationService _authentication;
     private readonly MainWindowViewModel _shell;
-    private string _username;
-    private string _password;
-              
-    public string Username
+
+    public LoginViewModel(IAuthenticationService authentication, MainWindowViewModel shell)
     {
-        get => _username;
-        set => this.RaiseAndSetIfChanged(ref _username, value);
+        _authentication = authentication;
+        _shell = shell;
+
+        var canRegister = this.WhenAnyValue(
+            x => x.Model.Username,
+            x => x.Model.Password,
+            (u, d) =>
+                !string.IsNullOrWhiteSpace(u) &&
+                !string.IsNullOrWhiteSpace(d)
+        );
+
+        LoginCommand = ReactiveCommand.CreateFromTask(
+            LoginAsync,
+            canRegister
+        );
+        GoToRegisterCommand = ReactiveCommand.Create(() => { _shell.ShowRegister(); });
     }
 
-    public string Password
-    {
-        get => _password;
-        set => this.RaiseAndSetIfChanged(ref _password, value);
-    }
-
+    internal LoginModel Model { get; } = new();
     public ReactiveCommand<Unit, Unit> LoginCommand { get; }
     public ReactiveCommand<Unit, Unit> GoToRegisterCommand { get; }
 
-    public LoginViewModel(MainWindowViewModel shell)
+    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
+    public IScreen HostScreen { get; }
+
+    private async Task LoginAsync()
     {
-        _shell = shell;
-        LoginCommand = ReactiveCommand.Create(() => { });
-        GoToRegisterCommand = ReactiveCommand.Create(() => { _shell.ShowRegister(); });
+        // ErrorMessage = string.Empty;
+
+        var dto = new LoginRequest
+        {
+            Login = Model.Username,
+            Password = Model.Password
+        };
+
+        try
+        {
+            await _authentication.LoginAsync(dto);
+
+            _shell.ShowRegister();
+        }
+        catch (Exception ex)
+        {
+            // Wyświetl błąd w UI
+            // ErrorMessage = ex.Message;
+        }
     }
 }
