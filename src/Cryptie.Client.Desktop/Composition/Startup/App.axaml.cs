@@ -24,15 +24,12 @@ public class App : Avalonia.Application
             .ConfigureAppConfiguration(cfg =>
             {
                 cfg.SetBasePath(AppContext.BaseDirectory)
-                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile("appsettings.json", false, true)
                     .AddEnvironmentVariables();
             })
-            .ConfigureServices((ctx, services) =>
-            {
-                services.AddCommonServices(ctx.Configuration);
-            })
+            .ConfigureServices((ctx, services) => { services.AddCommonServices(ctx.Configuration); })
             .Build();
-        
+
         var mainWindow = host.Services.GetRequiredService<MainWindow>();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

@@ -38,8 +38,7 @@
 
                 <Button Theme="{StaticResource SolidButton}"
                         Content="Login"
-                        Command="{Binding LoginCommand}">
-                </Button>
+                        Command="{Binding LoginCommand}" />
 
                 <StackPanel Spacing="0">
                     <TextBlock HorizontalAlignment="Center">

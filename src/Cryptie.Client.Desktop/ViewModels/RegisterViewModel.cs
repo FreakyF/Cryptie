@@ -8,13 +8,10 @@ using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
-public class RegisterViewModel : ViewModelBase
+public class RegisterViewModel : ViewModelBase, IRoutableViewModel
 {
-    private readonly MainWindowViewModel _shell;
     private readonly IAuthenticationService _authentication;
-    private RegisterModel Model { get; } = new();
-    public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
-    public ReactiveCommand<Unit, Unit> GoToLoginCommand { get; }
+    private readonly MainWindowViewModel _shell;
 
     public RegisterViewModel(IAuthenticationService authentication, MainWindowViewModel shell)
     {
@@ -33,12 +30,19 @@ public class RegisterViewModel : ViewModelBase
         );
 
         RegisterCommand = ReactiveCommand.CreateFromTask(
-            execute: RegisterAsync,
-            canExecute: canRegister
+            RegisterAsync,
+            canRegister
         );
 
         GoToLoginCommand = ReactiveCommand.Create(() => { _shell.ShowLogin(); });
     }
+
+    private RegisterModel Model { get; } = new();
+    public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
+    public ReactiveCommand<Unit, Unit> GoToLoginCommand { get; }
+
+    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
+    public IScreen HostScreen { get; }
 
     private async Task RegisterAsync()
     {

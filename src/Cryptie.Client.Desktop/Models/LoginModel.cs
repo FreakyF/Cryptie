@@ -4,6 +4,7 @@ namespace Cryptie.Client.Desktop.Models;
 
 public class LoginModel : ReactiveObject
 {
+    private string _password = string.Empty;
     private string _username = string.Empty;
 
     public string Username
@@ -11,8 +12,6 @@ public class LoginModel : ReactiveObject
         get => _username;
         set => this.RaiseAndSetIfChanged(ref _username, value);
     }
-
-    private string _password = string.Empty;
 
     public string Password
     {

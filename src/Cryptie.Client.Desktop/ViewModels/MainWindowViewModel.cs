@@ -3,16 +3,9 @@ using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainWindowViewModel : ReactiveObject, IScreen
 {
     private readonly IViewModelFactory _viewModelFactory;
-    private ViewModelBase _currentViewModel = null!;
-
-    public ViewModelBase CurrentViewModel
-    {
-        get => _currentViewModel;
-        private set => this.RaiseAndSetIfChanged(ref _currentViewModel, value);
-    }
 
     public MainWindowViewModel(IViewModelFactory viewModelFactory)
     {
@@ -20,6 +13,17 @@ public class MainWindowViewModel : ViewModelBase
         ShowLogin();
     }
 
-    public void ShowLogin() => CurrentViewModel = _viewModelFactory.Create<LoginViewModel>(this);
-    public void ShowRegister() => CurrentViewModel = _viewModelFactory.Create<RegisterViewModel>(this);
+    public RoutingState Router { get; } = new();
+
+    public void ShowLogin()
+    {
+        Router.Navigate.Execute(
+            _viewModelFactory.Create<LoginViewModel>(this));
+    }
+
+    public void ShowRegister()
+    {
+        Router.Navigate.Execute(
+            _viewModelFactory.Create<RegisterViewModel>(this));
+    }
 }

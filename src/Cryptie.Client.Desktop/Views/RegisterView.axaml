@@ -42,8 +42,7 @@
 
                 <Button Theme="{StaticResource SolidButton}"
                         Content="Register"
-                        Command="{Binding RegisterCommand}">
-                </Button>
+                        Command="{Binding RegisterCommand}" />
 
                 <StackPanel Spacing="0">
                     <TextBlock HorizontalAlignment="Center">

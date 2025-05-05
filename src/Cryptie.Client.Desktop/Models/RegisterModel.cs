@@ -4,6 +4,11 @@ namespace Cryptie.Client.Desktop.Models;
 
 public class RegisterModel : ReactiveObject
 {
+    private string _displayName = string.Empty;
+
+    private string _email = string.Empty;
+
+    private string _password = string.Empty;
     private string _username = string.Empty;
 
     public string Username
@@ -12,23 +17,17 @@ public class RegisterModel : ReactiveObject
         set => this.RaiseAndSetIfChanged(ref _username, value);
     }
 
-    private string _displayName = string.Empty;
-
     public string DisplayName
     {
         get => _displayName;
         set => this.RaiseAndSetIfChanged(ref _displayName, value);
     }
 
-    private string _email = string.Empty;
-
     public string Email
     {
         get => _email;
         set => this.RaiseAndSetIfChanged(ref _email, value);
     }
-
-    private string _password = string.Empty;
 
     public string Password
     {
