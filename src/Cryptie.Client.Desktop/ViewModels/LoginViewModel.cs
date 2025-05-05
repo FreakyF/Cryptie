@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Reactive;
 using System.Threading.Tasks;
-using Cryptie.Client.Application.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Models;
+using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using ReactiveUI;
 

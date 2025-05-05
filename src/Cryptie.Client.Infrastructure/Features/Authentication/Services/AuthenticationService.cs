@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Json;
-using Cryptie.Client.Application.Features.Authentication.Services;
+using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 
 namespace Cryptie.Client.Infrastructure.Features.Authentication.Services;

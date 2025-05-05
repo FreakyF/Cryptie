@@ -17,7 +17,6 @@
         <PackageReference Include="Avalonia" Version="11.2.5"/>
         <PackageReference Include="Avalonia.Desktop" Version="11.2.5"/>
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.2.5"/>
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.5"/>
         <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.5"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Include="Avalonia.Diagnostics" Version="11.2.5">
@@ -43,14 +42,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Client.Application\Cryptie.Client.Application.csproj"/>
-        <ProjectReference Include="..\Cryptie.Client.Infrastructure\Cryptie.Client.Infrastructure.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <Compile Update="Composition\Bootstrapping\App.axaml.cs">
             <DependentUpon>App.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Cryptie.Client.Infrastructure\Cryptie.Client.Infrastructure.csproj"/>
     </ItemGroup>
 </Project>

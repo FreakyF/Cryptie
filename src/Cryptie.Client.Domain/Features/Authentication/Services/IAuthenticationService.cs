@@ -1,6 +1,6 @@
 ﻿using Cryptie.Common.Features.Authentication.DTOs;
 
-namespace Cryptie.Client.Application.Features.Authentication.Services;
+namespace Cryptie.Client.Domain.Features.Authentication.Services;
 
 public interface IAuthenticationService
 {

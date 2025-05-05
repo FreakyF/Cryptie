@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Cryptie.Client.Desktop.Composition.Startup;
 
-public class App : Avalonia.Application
+public class App : Application
 {
     public override void Initialize()
     {

@@ -6,9 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Client.Domain\Cryptie.Client.Domain.csproj"/>
-        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj"/>
-    </ItemGroup>
-
 </Project>
