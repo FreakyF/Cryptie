@@ -38,11 +38,10 @@
                          PasswordChar="*"
                          Text="{Binding Model.Password, Mode=TwoWay}" />
 
-                <!--TODO: Add Error Message-->
                 <TextBlock x:Name="ErrorMessageTextBlock"
                            Classes="Danger"
-                           HorizontalAlignment="Center">
-                    Error Message
+                           HorizontalAlignment="Center"
+                    Text="{Binding ErrorMessage, Mode=TwoWay}">
                 </TextBlock>
 
                 <Button x:Name="RegisterButton"
