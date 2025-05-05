@@ -1,6 +1,6 @@
 using System.Net.WebSockets;
 using System.Text.Json;
-using Cryptie.Server.Domain.Features.Authentication.DTOs.MessagesController;
+using Cryptie.Common.Features.Messages.DTOs;
 using Cryptie.Server.Domain.Features.Messages;
 
 namespace Cryptie.Server.API.Features.Messages.Services;
@@ -20,12 +20,13 @@ public class MessagesService(IDatabaseService databaseService)
         } while (!result.EndOfMessage);
 
         ms.Seek(0, SeekOrigin.Begin);
-        
+
         try
         {
-            var authenticationRequestDto = await JsonSerializer.DeserializeAsync<AuthenticationRequestDTO>(ms, cancellationToken: cancellationToken);
+            var authenticationRequestDto =
+                await JsonSerializer.DeserializeAsync<AuthenticationRequestDTO>(ms,
+                    cancellationToken: cancellationToken);
             var user = databaseService.FindUserByToken(authenticationRequestDto.Token);
-            
         }
         catch
         {

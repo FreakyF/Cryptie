@@ -15,7 +15,10 @@ public class DelayService : IDelayService
         var result = func();
 
         var delay = TargetMilliseconds - (int)stopwatch.ElapsedMilliseconds;
-        if (delay > 0) await Task.Delay(delay);
+        if (delay > 0)
+        {
+            await Task.Delay(delay);
+        }
 
         return result;
     }

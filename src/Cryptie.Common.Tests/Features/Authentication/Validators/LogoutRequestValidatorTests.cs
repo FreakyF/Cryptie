@@ -1,7 +1,6 @@
-﻿using Cryptie.Server.API.Features.Authentication.Validators;
-using Cryptie.Server.Domain.Features.Authentication.DTOs;
+﻿using Cryptie.Common.Features.Authentication.DTOs;
+using Cryptie.Server.API.Features.Authentication.Validators;
 using FluentValidation.TestHelper;
-using Microsoft.AspNetCore.Identity;
 
 namespace Cryptie.Server.API.Tests.Features.Authentication.Validators;
 
@@ -18,7 +17,7 @@ public class LogoutRequestValidatorTests
     public void InvalidToken()
     {
         //Arrange
-        var model = new LogoutRequest { Token = Guid.Empty };
+        var model = new LogoutRequestDto { Token = Guid.Empty };
         //Act
         var result = _validator.TestValidate(model);
         //Assret
@@ -29,11 +28,10 @@ public class LogoutRequestValidatorTests
     public void ValidToken()
     {
         //Arrange
-        var model = new LogoutRequest { Token = Guid.NewGuid() };
+        var model = new LogoutRequestDto { Token = Guid.NewGuid() };
         //Act
         var result = _validator.TestValidate(model);
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Token);
     }
-
 }

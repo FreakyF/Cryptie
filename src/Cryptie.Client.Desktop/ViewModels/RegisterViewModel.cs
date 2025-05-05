@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Reactive;
 using System.Threading.Tasks;
-using Cryptie.Client.Application;
 using Cryptie.Client.Application.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Models;
+using Cryptie.Common.Features.Authentication.DTOs;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
@@ -48,7 +48,7 @@ public class RegisterViewModel : ViewModelBase, IRoutableViewModel
     {
         // ErrorMessage = string.Empty;
 
-        var dto = new RegisterRequest
+        var dto = new RegisterRequestDto
         {
             Login = Model.Username,
             DisplayName = Model.DisplayName,

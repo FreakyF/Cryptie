@@ -1,9 +1,8 @@
-﻿using Cryptie.Server.API.Features.Authentication.Validators;
-using Cryptie.Server.Domain.Features.Authentication.DTOs;
+﻿using Cryptie.Common.Features.Authentication.DTOs;
+using Cryptie.Server.API.Features.Authentication.Validators;
 using FluentValidation.TestHelper;
 
 namespace Cryptie.Server.API.Tests.Features.Authentication.Validators;
-
 
 public class LoginRequestValidatorTests
 {
@@ -21,11 +20,10 @@ public class LoginRequestValidatorTests
     [InlineData("user*&()", "Username contains invalid characters")]
     [InlineData("abcd", "Username must be at least 5 characters long")]
     [InlineData("abcdefghijklmnopqrstuvwxyz", "Username cannot exceed 20 characters")]
-    
     public void InvalidLoginRequest(string username, string ExpectedError)
     {
         //Arrange
-        var model = new LoginRequest { Login = username,Password = "password!123" };
+        var model = new LoginRequestDto { Login = username, Password = "password!123" };
         //Act
         var result = _validator.TestValidate(model);
         // Assert
@@ -39,13 +37,14 @@ public class LoginRequestValidatorTests
     public void ValidLoginRequest(string username, string password)
     {
         //Arrange
-        var model = new LoginRequest { Login = username, Password = password };
+        var model = new LoginRequestDto { Login = username, Password = password };
         //Act
         var result = _validator.TestValidate(model);
         //Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Login);
         result.ShouldNotHaveValidationErrorFor(x => x.Password);
     }
+
     [Theory]
     [InlineData("    ", "Password cannot be empty")]
     [InlineData(null, "Password cannot be empty")]
@@ -60,7 +59,7 @@ public class LoginRequestValidatorTests
     public void InvalidPasswordRequest(string password, string ExpectedError)
     {
         //Arrange
-        var model = new LoginRequest { Login = "User123", Password = password };
+        var model = new LoginRequestDto { Login = "User123", Password = password };
         //Act
         var result = _validator.TestValidate(model);
         //Assert

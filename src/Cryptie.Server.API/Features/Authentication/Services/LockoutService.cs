@@ -15,14 +15,30 @@ public class LockoutService(AppDbContext appDbContext) : ILockoutService
 
         if (user != null)
         {
-            if (IsUserAccountHasLock(user, referenceLockTimestamp)) return true;
-            if (IsUserAccountHasTooManyAttempts(user, referenceAttemptTimestamp)) return false;
+            if (IsUserAccountHasLock(user, referenceLockTimestamp))
+            {
+                return true;
+            }
+
+            if (IsUserAccountHasTooManyAttempts(user, referenceAttemptTimestamp))
+            {
+                return false;
+            }
+
             LockUserAccount(user);
             return true;
         }
 
-        if (IsUserAccountHasLock(honeypotLogin, referenceLockTimestamp)) return true;
-        if (IsUserAccountHasTooManyAttempts(honeypotLogin, referenceAttemptTimestamp)) return false;
+        if (IsUserAccountHasLock(honeypotLogin, referenceLockTimestamp))
+        {
+            return true;
+        }
+
+        if (IsUserAccountHasTooManyAttempts(honeypotLogin, referenceAttemptTimestamp))
+        {
+            return false;
+        }
+
         LockUserAccount(honeypotLogin);
         return true;
     }

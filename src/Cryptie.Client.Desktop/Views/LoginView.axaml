@@ -35,8 +35,7 @@
                 <TextBlock x:Name="ErrorMessageTextBlock"
                            Classes="Danger"
                            HorizontalAlignment="Center"
-                           Text="{Binding ErrorMessage, Mode=TwoWay}">
-                </TextBlock>
+                           Text="{Binding ErrorMessage, Mode=TwoWay}" />
 
                 <Button x:Name="LoginButton"
                         Theme="{StaticResource SolidButton}"

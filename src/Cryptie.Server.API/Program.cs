@@ -1,7 +1,7 @@
 using System.Threading.RateLimiting;
+using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Server.API.Features.Authentication.Services;
 using Cryptie.Server.API.Features.Authentication.Validators;
-using Cryptie.Server.Domain.Features.Authentication.DTOs;
 using Cryptie.Server.Domain.Features.Authentication.Services;
 using Cryptie.Server.Infrastructure.Persistence.DatabaseContext;
 using FluentValidation;
@@ -57,10 +57,10 @@ public static class Program
         builder.Services.AddScoped<IDatabaseService, DatabaseService>();
         builder.Services.AddScoped<IDelayService, DelayService>();
 
-        builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
-        builder.Services.AddScoped<IValidator<LogoutRequest>, LogoutRequestValidator>();
-        builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
-        builder.Services.AddScoped<IValidator<TotpRequest>, TotpRequestValidator>();
+        builder.Services.AddScoped<IValidator<LoginRequestDto>, LoginRequestValidator>();
+        builder.Services.AddScoped<IValidator<LogoutRequestDto>, LogoutRequestValidator>();
+        builder.Services.AddScoped<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
+        builder.Services.AddScoped<IValidator<TotpRequestDto>, TotpRequestValidator>();
 
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -88,7 +88,7 @@ public static class Program
         app.UseRateLimiter();
 
         app.UseHsts();
-        
+
         app.UseHttpsRedirection();
 
         app.UseAuthorization();

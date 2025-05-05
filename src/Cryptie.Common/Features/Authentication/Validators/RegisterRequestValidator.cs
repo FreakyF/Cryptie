@@ -1,9 +1,9 @@
-﻿using Cryptie.Server.Domain.Features.Authentication.DTOs;
+﻿using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
 
 namespace Cryptie.Server.API.Features.Authentication.Validators;
 
-public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
+public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
 {
     public RegisterRequestValidator()
     {

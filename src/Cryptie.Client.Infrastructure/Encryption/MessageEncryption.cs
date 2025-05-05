@@ -1,5 +1,5 @@
-using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Pkcs;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Cryptie.Client.Infrastructure.Encryption;
@@ -12,7 +12,7 @@ public static class MessageEncryption
         var contentInfo = new ContentInfo(messageBytes);
         var envelopedCms = new EnvelopedCms(contentInfo);
         var recipient = new CmsRecipient(SubjectIdentifierType.IssuerAndSerialNumber, publicKey);
-        
+
         envelopedCms.Encrypt(recipient);
 
         return Convert.ToBase64String(envelopedCms.Encode());
@@ -22,7 +22,7 @@ public static class MessageEncryption
     {
         var messageBytes = Convert.FromBase64String(message);
         var envelopedCms = new EnvelopedCms();
-        
+
         envelopedCms.Decode(messageBytes);
         envelopedCms.Decrypt(new X509Certificate2Collection(privateKey));
 

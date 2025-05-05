@@ -1,6 +1,6 @@
-namespace Cryptie.Server.Domain.Features.Authentication.DTOs;
+namespace Cryptie.Common.Features.Authentication.DTOs;
 
-public class TotpRequest
+public class TotpRequestDto
 {
     public required Guid TotpToken { get; set; }
     public required string Secret { get; set; }

@@ -1,6 +1,6 @@
-namespace Cryptie.Client.Application;
+namespace Cryptie.Common.Features.Authentication.DTOs;
 
-public class RegisterRequest
+public class RegisterRequestDto
 {
     public required string Login { get; set; }
     public required string Password { get; set; }

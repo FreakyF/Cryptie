@@ -1,4 +1,4 @@
-using Cryptie.Server.Domain.Features.Authentication.DTOs;
+using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Server.Domain.Features.Authentication.Entities.User;
 using Cryptie.Server.Domain.Features.Authentication.Services;
 using Cryptie.Server.Infrastructure.Persistence.DatabaseContext;
@@ -15,13 +15,16 @@ public class AuthenticationService(
     IDatabaseService databaseService)
     : ControllerBase, IAuthenticationService
 {
-    public IActionResult LoginHandler(LoginRequest loginRequest)
+    public IActionResult LoginHandler(LoginRequestDto loginRequest)
     {
         var user = appDbContext.Users
             .Include(user => user.Password)
             .SingleOrDefault(u => u.Login == loginRequest.Login);
 
-        if (lockoutService.IsUserLockedOut(user, loginRequest.Login)) return NotFound();
+        if (lockoutService.IsUserLockedOut(user, loginRequest.Login))
+        {
+            return NotFound();
+        }
 
         if (user != null && !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password.Secret))
         {
@@ -37,10 +40,10 @@ public class AuthenticationService(
 
         var totpToken = databaseService.CreateTotpToken(user);
 
-        return Ok(new LoginResponse { TotpToken = totpToken });
+        return Ok(new LoginResponseDto { TotpToken = totpToken });
     }
 
-    public IActionResult TotpHandler(TotpRequest totpRequest)
+    public IActionResult TotpHandler(TotpRequestDto totpRequest)
     {
         var now = DateTime.UtcNow;
 
@@ -50,7 +53,10 @@ public class AuthenticationService(
             .SingleOrDefault(t => t.Id == totpRequest.TotpToken
             );
 
-        if (totpToken == null) return BadRequest();
+        if (totpToken == null)
+        {
+            return BadRequest();
+        }
 
         if (totpToken.Until < now)
         {
@@ -61,22 +67,28 @@ public class AuthenticationService(
         var totp = new OtpNet.Totp(totpToken.User.Totp.Secret);
         var isValid = totp.VerifyTotp(totpRequest.Secret, out _);
 
-        if (!isValid) return BadRequest();
+        if (!isValid)
+        {
+            return BadRequest();
+        }
 
         var token = databaseService.GenerateUserToken(totpToken.User);
         appDbContext.TotpTokens.Remove(totpToken);
 
-        return Ok(new TotpResponse
+        return Ok(new TotpResponseDto
         {
             Token = token
         });
     }
 
-    public IActionResult LogoutHandler(LogoutRequest logoutRequest)
+    public IActionResult LogoutHandler(LogoutRequestDto logoutRequest)
     {
         var userToken = appDbContext.UserTokens.SingleOrDefault(t => t.Id == logoutRequest.Token);
 
-        if (userToken == null) return BadRequest();
+        if (userToken == null)
+        {
+            return BadRequest();
+        }
 
         appDbContext.UserTokens.Remove(userToken);
         appDbContext.SaveChangesAsync();
@@ -84,7 +96,7 @@ public class AuthenticationService(
         return Ok();
     }
 
-    public IActionResult RegisterHandler(RegisterRequest registerRequest)
+    public IActionResult RegisterHandler(RegisterRequestDto registerRequest)
     {
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerRequest.Password);
 
@@ -114,7 +126,7 @@ public class AuthenticationService(
 
         appDbContext.SaveChanges();
 
-        return Ok(new RegisterResponse
+        return Ok(new RegisterResponseDto
         {
             Secret =
                 $"otpauth://totp/Panel:{user.Entity.Login}?secret={Base32Encoding.ToString(totp.Entity.Secret)}&issuer=Panel",

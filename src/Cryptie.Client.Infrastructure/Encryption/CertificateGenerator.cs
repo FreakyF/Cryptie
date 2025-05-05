@@ -1,7 +1,7 @@
-namespace Cryptie.Client.Infrastructure.Encryption;
-
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+
+namespace Cryptie.Client.Infrastructure.Encryption;
 
 public class CertificateGenerator
 {

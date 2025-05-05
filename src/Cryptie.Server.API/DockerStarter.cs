@@ -19,7 +19,9 @@ public class DockerStarter
         if (existingContainer != null)
         {
             if (!existingContainer.State.Equals("running", StringComparison.OrdinalIgnoreCase))
+            {
                 await client.Containers.StartContainerAsync(existingContainer.ID, new ContainerStartParameters());
+            }
 
             return;
         }

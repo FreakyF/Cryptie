@@ -1,15 +1,15 @@
-using Cryptie.Server.Domain.Features.Authentication.DTOs;
+using Cryptie.Common.Features.Authentication.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cryptie.Server.Domain.Features.Authentication.Services;
 
 public interface IAuthenticationService
 {
-    IActionResult LoginHandler(LoginRequest loginRequest);
+    IActionResult LoginHandler(LoginRequestDto loginRequest);
 
-    IActionResult TotpHandler(TotpRequest totpRequest);
+    IActionResult TotpHandler(TotpRequestDto totpRequest);
 
-    IActionResult LogoutHandler(LogoutRequest logoutRequest);
+    IActionResult LogoutHandler(LogoutRequestDto logoutRequest);
 
-    IActionResult RegisterHandler(RegisterRequest registerRequest);
+    IActionResult RegisterHandler(RegisterRequestDto registerRequest);
 }

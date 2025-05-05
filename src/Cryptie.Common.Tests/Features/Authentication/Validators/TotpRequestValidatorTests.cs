@@ -1,5 +1,5 @@
-﻿using Cryptie.Server.API.Features.Authentication.Validators;
-using Cryptie.Server.Domain.Features.Authentication.DTOs;
+﻿using Cryptie.Common.Features.Authentication.DTOs;
+using Cryptie.Server.API.Features.Authentication.Validators;
 using FluentValidation.TestHelper;
 
 namespace Cryptie.Server.API.Tests.Features.Authentication.Validators;
@@ -17,7 +17,7 @@ public class TotpRequestValidatorTests
     public void InvalidTotpRequest()
     {
         //Arrange
-        var model = new TotpRequest { TotpToken = Guid.Empty, Secret = "123456" };
+        var model = new TotpRequestDto { TotpToken = Guid.Empty, Secret = "123456" };
         //Act
         var result = _validator.TestValidate(model);
         //Assert
@@ -33,7 +33,7 @@ public class TotpRequestValidatorTests
     public void InvalidSecret(string secret, string expectedError)
     {
         //Arrange
-        var model = new TotpRequest { TotpToken = Guid.NewGuid(), Secret = secret };
+        var model = new TotpRequestDto { TotpToken = Guid.NewGuid(), Secret = secret };
         //Act
         var result = _validator.TestValidate(model);
         //Assert
@@ -44,7 +44,7 @@ public class TotpRequestValidatorTests
     public void ValidTotpRequest()
     {
         //Arrange
-        var model = new TotpRequest { TotpToken = Guid.NewGuid(), Secret = "123456" };
+        var model = new TotpRequestDto { TotpToken = Guid.NewGuid(), Secret = "123456" };
         //Act
         var result = _validator.TestValidate(model);
         //Assert

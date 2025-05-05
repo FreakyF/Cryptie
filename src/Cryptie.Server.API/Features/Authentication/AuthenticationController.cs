@@ -1,4 +1,4 @@
-using Cryptie.Server.Domain.Features.Authentication.DTOs;
+using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Server.Domain.Features.Authentication.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,25 +10,25 @@ public class AuthenticationController(IAuthenticationService authenticationServi
     : ControllerBase
 {
     [HttpPost("login", Name = "PostLogin")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
     {
         return await delayService.FakeDelay(() => authenticationService.LoginHandler(loginRequest));
     }
 
     [HttpPost("totp", Name = "PostTotp")]
-    public async Task<IActionResult> Totp([FromBody] TotpRequest totpRequest)
+    public async Task<IActionResult> Totp([FromBody] TotpRequestDto totpRequest)
     {
         return await delayService.FakeDelay(() => authenticationService.TotpHandler(totpRequest));
     }
 
     [HttpPost("logout", Name = "PostLogout")]
-    public async Task<IActionResult> Logout([FromBody] LogoutRequest logoutRequest)
+    public async Task<IActionResult> Logout([FromBody] LogoutRequestDto logoutRequest)
     {
         return await delayService.FakeDelay(() => authenticationService.LogoutHandler(logoutRequest));
     }
 
     [HttpPost("register", Name = "PostRegister")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
+    public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequest)
     {
         return await delayService.FakeDelay(() => authenticationService.RegisterHandler(registerRequest));
     }

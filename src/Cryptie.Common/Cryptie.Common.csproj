@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Client.Domain\Cryptie.Client.Domain.csproj"/>
-        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj"/>
+        <PackageReference Include="FluentValidation" Version="12.0.0"/>
     </ItemGroup>
 
 </Project>

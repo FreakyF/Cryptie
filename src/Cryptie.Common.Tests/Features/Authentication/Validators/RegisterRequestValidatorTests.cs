@@ -1,6 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Server.API.Features.Authentication.Validators;
-using Cryptie.Server.Domain.Features.Authentication.DTOs;
 using FluentValidation.TestHelper;
 
 namespace Cryptie.Server.API.Tests.Features.Authentication.Validators;
@@ -24,13 +23,14 @@ public class RegisterRequestValidatorTests
     public void InvalidLoginRequest(string username, string ExpectedError)
     {
         //Arrange
-        var model = new RegisterRequest { Login = username , Password = "Password!123" , Email ="test@test.pl" ,DisplayName = "JanMatejko"};
+        var model = new RegisterRequestDto
+            { Login = username, Password = "Password!123", Email = "test@test.pl", DisplayName = "JanMatejko" };
         //Act
         var result = _validator.TestValidate(model);
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.Login).WithErrorMessage(ExpectedError);
     }
-    
+
     [Theory]
     [InlineData(null, "Password cannot be empty")]
     [InlineData("", "Password cannot be empty")]
@@ -45,7 +45,8 @@ public class RegisterRequestValidatorTests
     public void InvalidPasswordRequest(string password, string ExpectedError)
     {
         //Arrange
-        var model = new RegisterRequest { Login = "User123", Password = password, Email = "test@test.pl" , DisplayName = "JanMatejko" };
+        var model = new RegisterRequestDto
+            { Login = "User123", Password = password, Email = "test@test.pl", DisplayName = "JanMatejko" };
         //Act
         var result = _validator.TestValidate(model);
         //Arrange
@@ -61,7 +62,8 @@ public class RegisterRequestValidatorTests
     public void InvalidEmailRequest(string email, string ExpectedError)
     {
         //Arrange
-        var model = new RegisterRequest { Login = "User123", Password = "Password!123", Email = email, DisplayName = "JanMatejko" };
+        var model = new RegisterRequestDto
+            { Login = "User123", Password = "Password!123", Email = email, DisplayName = "JanMatejko" };
         //Act
         var result = _validator.TestValidate(model);
         //Assert
@@ -74,7 +76,8 @@ public class RegisterRequestValidatorTests
     public void ValidRegisterRequest(string login, string password, string email)
     {
         //Arrange
-        var model = new RegisterRequest { Login = login, Password = password, Email = email, DisplayName = "JanMatejko" };
+        var model = new RegisterRequestDto
+            { Login = login, Password = password, Email = email, DisplayName = "JanMatejko" };
         //Act
         var result = _validator.TestValidate(model);
         //Assert
