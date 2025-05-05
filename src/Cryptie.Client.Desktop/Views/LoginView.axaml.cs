@@ -23,7 +23,7 @@ public partial class LoginView : ReactiveUserControl<LoginViewModel>
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel,
-                    vm => vm.errorMessage,
+                    vm => vm.ErrorMessage,
                     v => v.ErrorMessageTextBlock.Text)
                 .DisposeWith(disposables);
 

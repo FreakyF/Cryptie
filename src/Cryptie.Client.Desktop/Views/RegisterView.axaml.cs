@@ -14,37 +14,37 @@ public partial class RegisterView : ReactiveUserControl<RegisterViewModel>
         {
             this.Bind(ViewModel,
                     vm => vm.Model.Username,
-                    v  => v.UsernameTextBox.Text)
+                    v => v.UsernameTextBox.Text)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel,
                     vm => vm.Model.DisplayName,
-                    v  => v.DisplayNameTextBox.Text)
+                    v => v.DisplayNameTextBox.Text)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel,
                     vm => vm.Model.Email,
-                    v  => v.EmailTextBox.Text)
+                    v => v.EmailTextBox.Text)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel,
                     vm => vm.Model.Password,
-                    v  => v.PasswordTextBox.Text)
+                    v => v.PasswordTextBox.Text)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel,
-                    vm => vm.errorMessage,
-                    v  => v.ErrorMessageTextBlock.Text)
+                    vm => vm.ErrorMessage,
+                    v => v.ErrorMessageTextBlock.Text)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel,
                     vm => vm.RegisterCommand,
-                    v  => v.RegisterButton)
+                    v => v.RegisterButton)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel,
                     vm => vm.GoToLoginCommand,
-                    v  => v.LoginButton)
+                    v => v.LoginButton)
                 .DisposeWith(disposables);
         });
     }
