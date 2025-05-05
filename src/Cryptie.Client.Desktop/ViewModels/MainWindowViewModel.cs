@@ -1,11 +1,10 @@
-﻿using Cryptie.Client.Desktop.Composition.Factories;
+﻿using Cryptie.Client.Desktop.Coordinators;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
 public class MainWindowViewModel : ReactiveObject
 {
-    public RoutingState Router => _coordinator.Router;
     private readonly IAppCoordinator _coordinator;
 
     public MainWindowViewModel(IAppCoordinator coordinator)
@@ -13,4 +12,6 @@ public class MainWindowViewModel : ReactiveObject
         _coordinator = coordinator;
         _coordinator.Start();
     }
+
+    public RoutingState Router => _coordinator.Router;
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Cryptie.Client.Desktop.Composition.Factories;
 using Cryptie.Client.Desktop.Composition.Locators;
+using Cryptie.Client.Desktop.Coordinators;
 using Cryptie.Client.Desktop.ViewModels;
 using Cryptie.Client.Desktop.Views;
 using Cryptie.Client.Domain.Features.Authentication.Services;
