@@ -23,20 +23,24 @@
                 <TextBlock HorizontalAlignment="Center">
                     Sign in to your account
                 </TextBlock>
-                <TextBox Watermark="Username"
+                <TextBox x:Name="UsernameTextBox"
+                         Watermark="Username"
                          Text="{Binding Model.Username, Mode=TwoWay}" />
-                <TextBox Classes="RevealPasswordButton"
+                <TextBox x:Name="PasswordBox"
+                         Classes="RevealPasswordButton"
                          Watermark="Password"
                          PasswordChar="*"
                          Text="{Binding Model.Password, Mode=TwoWay}" />
 
                 <!--TODO: Add Error Message-->
-                <TextBlock Classes="Danger"
+                <TextBlock x:Name="ErrorMessageTextBlock"
+                           Classes="Danger"
                            HorizontalAlignment="Center">
                     Error Message
                 </TextBlock>
 
-                <Button Theme="{StaticResource SolidButton}"
+                <Button x:Name="LoginButton"
+                        Theme="{StaticResource SolidButton}"
                         Content="Login"
                         Command="{Binding LoginCommand}" />
 
@@ -44,7 +48,8 @@
                     <TextBlock HorizontalAlignment="Center">
                         Don't have an account?
                     </TextBlock>
-                    <Button Theme="{StaticResource BorderlessButton}"
+                    <Button x:Name="SignUpButton"
+                            Theme="{StaticResource BorderlessButton}"
                             Classes="Secondary"
                             Content="Sign up"
                             Command="{Binding GoToRegisterCommand}" />

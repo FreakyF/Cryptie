@@ -33,7 +33,7 @@ public class LoginViewModel : ViewModelBase, IRoutableViewModel
         GoToRegisterCommand = ReactiveCommand.Create(() => { _shell.ShowRegister(); });
     }
 
-    private LoginModel Model { get; } = new();
+    internal LoginModel Model { get; } = new();
     public ReactiveCommand<Unit, Unit> LoginCommand { get; }
     public ReactiveCommand<Unit, Unit> GoToRegisterCommand { get; }
 

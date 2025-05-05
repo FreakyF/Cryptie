@@ -13,7 +13,7 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
         DataContext = viewModel;
         this.WhenActivated(disposables =>
         {
-            this.OneWayBind(ViewModel, vm => vm.Router, v => v.RoutingView.Router)
+            this.OneWayBind(ViewModel, vm => vm.Router, v => v.RoutedViewHost.Router)
                 .DisposeWith(disposables);
         });
     }
