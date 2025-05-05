@@ -32,6 +32,7 @@ public static class ServiceCollectionExtensions
         Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+        services.AddSingleton<IAppCoordinator, AppCoordinator>();
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
 

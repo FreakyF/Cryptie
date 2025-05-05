@@ -3,27 +3,14 @@ using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
-public class MainWindowViewModel : ReactiveObject, IScreen
+public class MainWindowViewModel : ReactiveObject
 {
-    private readonly IViewModelFactory _viewModelFactory;
+    public RoutingState Router => _coordinator.Router;
+    private readonly IAppCoordinator _coordinator;
 
-    public MainWindowViewModel(IViewModelFactory viewModelFactory)
+    public MainWindowViewModel(IAppCoordinator coordinator)
     {
-        _viewModelFactory = viewModelFactory;
-        ShowLogin();
-    }
-
-    public RoutingState Router { get; } = new();
-
-    public void ShowLogin()
-    {
-        Router.Navigate.Execute(
-            _viewModelFactory.Create<LoginViewModel>(this));
-    }
-
-    public void ShowRegister()
-    {
-        Router.Navigate.Execute(
-            _viewModelFactory.Create<RegisterViewModel>(this));
+        _coordinator = coordinator;
+        _coordinator.Start();
     }
 }
