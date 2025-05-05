@@ -1,4 +1,7 @@
+using System.Net.WebSockets;
+using Cryptie.Server.Domain.Features.Authentication.DTOs.MessagesController;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace Cryptie.Server.API.Features.Messages;
 
@@ -12,7 +15,6 @@ public class MessagesController : ControllerBase
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
             using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-            
         }
         else
         {
