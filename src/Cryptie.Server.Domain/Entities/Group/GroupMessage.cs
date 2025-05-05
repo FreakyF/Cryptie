@@ -5,9 +5,9 @@ public class GroupMessage
     public Guid Id { get; init; }
     public Guid ReferenceId { get; set; }
 
-    public User.User FromUser { get; set; }
-    public User.User ToUser { get; set; }
+    public required User.User FromUser { get; set; }
+    public required User.User ToUser { get; set; }
 
-    public string Message { get; set; }
+    public required string Message { get; set; }
     public DateTime DateTime { get; set; }
 }
