@@ -6,6 +6,9 @@ using Cryptie.Client.Desktop.Views;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Client.Infrastructure.Configuration;
 using Cryptie.Client.Infrastructure.Features.Authentication.Services;
+using Cryptie.Common.Features.Authentication.DTOs;
+using Cryptie.Common.Features.Authentication.Validators;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -35,6 +38,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAppCoordinator, AppCoordinator>();
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
+        services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

@@ -1,5 +1,6 @@
 using System.Threading.RateLimiting;
 using Cryptie.Common.Features.Authentication.DTOs;
+using Cryptie.Common.Features.Authentication.Validators;
 using Cryptie.Server.API.Features.Authentication.Services;
 using Cryptie.Server.API.Features.Authentication.Validators;
 using Cryptie.Server.Domain.Features.Authentication.Services;

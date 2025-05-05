@@ -1,4 +1,5 @@
 ﻿using Cryptie.Common.Features.Authentication.DTOs;
+using Cryptie.Common.Features.Authentication.Validators;
 using Cryptie.Server.API.Features.Authentication.Validators;
 using FluentValidation.TestHelper;
 
