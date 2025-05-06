@@ -32,7 +32,7 @@ public class LoginViewModel : RoutableViewModelBase
         GoToRegisterCommand = ReactiveCommand.Create(() => _coordinator.ShowRegister());
     }
 
-    public LoginModel Model { get; } = new();
+    internal LoginModel Model { get; } = new();
     public ReactiveCommand<Unit, Unit> LoginCommand { get; }
     public ReactiveCommand<Unit, Unit> GoToRegisterCommand { get; }
 

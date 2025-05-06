@@ -41,7 +41,7 @@ public class RegisterViewModel : RoutableViewModelBase
         );
     }
 
-    public RegisterModel Model { get; } = new();
+    internal RegisterModel Model { get; } = new();
     public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
     public ReactiveCommand<Unit, Unit> GoToLoginCommand { get; }
 
