@@ -32,6 +32,26 @@ public class RegisterRequestValidatorTests
     }
 
     [Theory]
+    [InlineData(null, "Display name cannot be empty")]
+    [InlineData("", "Display name cannot be empty")]
+    [InlineData(" ", "Display name cannot be empty")]
+    [InlineData("Abcdefghijklmnopqrstuvwxyz", "Display name cannot exceed 20 characters")]
+    public void InvalidDisplayName(string displayName, string ExpectedError)
+    {
+        //Arrange
+        var model = new RegisterRequestDto
+        {
+            Login = "User1234",
+            DisplayName = displayName,
+            Password = "Password!123",
+            Email = "test@test.pl",
+        };
+        //Act
+        var result = _validator.TestValidate(model);
+        //Assert
+        result.ShouldHaveValidationErrorFor(x => x.DisplayName).WithErrorMessage(ExpectedError);
+    }
+    [Theory]
     [InlineData(null, "Password cannot be empty")]
     [InlineData("", "Password cannot be empty")]
     [InlineData(" ", "Password cannot be empty")]
