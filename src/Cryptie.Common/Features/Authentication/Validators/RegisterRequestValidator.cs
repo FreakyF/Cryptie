@@ -13,6 +13,12 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
             .Matches("^[A-Za-z0-9]+$").WithMessage("Username contains invalid characters")
             .MinimumLength(5).WithMessage("Username must be at least 5 characters long")
             .MaximumLength(20).WithMessage("Username cannot exceed 20 characters");
+        
+        RuleFor(x => x.DisplayName)
+            .Cascade(CascadeMode.Stop)
+            .NotEmpty().WithMessage("Display name cannot be empty")
+            .MinimumLength(1).WithMessage("Display name must be at least 1 characters long")
+            .MaximumLength(20).WithMessage("Display name cannot exceed 20 characters");
 
         RuleFor(x => x.Password)
             .Cascade(CascadeMode.Stop)

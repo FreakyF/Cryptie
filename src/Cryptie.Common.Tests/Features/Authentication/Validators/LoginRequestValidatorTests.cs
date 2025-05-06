@@ -1,5 +1,5 @@
 ﻿using Cryptie.Common.Features.Authentication.DTOs;
-using Cryptie.Server.API.Features.Authentication.Validators;
+using Cryptie.Common.Features.Authentication.Validators;
 using FluentValidation.TestHelper;
 
 namespace Cryptie.Server.API.Tests.Features.Authentication.Validators;
