@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Reactive;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 using Cryptie.Client.Desktop.Models;
 using Cryptie.Client.Domain.Features.Authentication.Services;
