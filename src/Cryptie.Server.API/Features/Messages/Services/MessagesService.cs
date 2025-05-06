@@ -5,7 +5,7 @@ using Cryptie.Server.Domain.Features.Messages;
 
 namespace Cryptie.Server.API.Features.Messages.Services;
 
-public class MessagesService(IDatabaseService databaseService)
+public class MessagesService(IDatabaseService databaseService) : IMessageService
 {
     public async Task HandleAuthentication(WebSocket webSocket, CancellationToken cancellationToken)
     {
