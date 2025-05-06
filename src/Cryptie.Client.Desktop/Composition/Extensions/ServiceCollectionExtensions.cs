@@ -37,9 +37,12 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IAppCoordinator, AppCoordinator>();
+        
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
+        
         services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
+        services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

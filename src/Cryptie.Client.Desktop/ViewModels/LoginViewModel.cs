@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Net.Http;
 using System.Reactive;
+using System.Security.Authentication;
 using System.Threading.Tasks;
-using Cryptie.Client.Desktop.Coordinators;
 using Cryptie.Client.Desktop.Models;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
+using Cryptie.Client.Desktop.Coordinators;
+using FluentValidation;
+using FluentValidation.Results;
 using ReactiveUI;
+
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
@@ -13,31 +18,49 @@ public class LoginViewModel : RoutableViewModelBase
 {
     private readonly IAuthenticationService _authentication;
     private readonly IAppCoordinator _coordinator;
+    private readonly IValidator<LoginRequestDto> _validator;
+
+    internal LoginModel Model { get; } = new();
+
+    public ReactiveCommand<Unit, Unit> LoginCommand { get; }
+    public ReactiveCommand<Unit, Unit> GoToRegisterCommand { get; }
 
     public LoginViewModel(
         IAuthenticationService authentication,
-        IAppCoordinator coordinator
+        IAppCoordinator coordinator,
+        IValidator<LoginRequestDto> validator
     ) : base(coordinator)
     {
         _authentication = authentication;
         _coordinator = coordinator;
+        _validator = validator;
 
-        var canLogin = this.WhenAnyValue(
-            x => x.Model.Username,
-            x => x.Model.Password,
-            (u, p) => !string.IsNullOrWhiteSpace(u) && !string.IsNullOrWhiteSpace(p)
+        LoginCommand = ReactiveCommand.CreateFromTask(LoginAsync);
+
+        GoToRegisterCommand = ReactiveCommand.Create(() => _coordinator.ShowRegister()
         );
-
-        LoginCommand = ReactiveCommand.CreateFromTask(LoginAsync, canLogin);
-        GoToRegisterCommand = ReactiveCommand.Create(() => _coordinator.ShowRegister());
     }
 
-    internal LoginModel Model { get; } = new();
-    public ReactiveCommand<Unit, Unit> LoginCommand { get; }
-    public ReactiveCommand<Unit, Unit> GoToRegisterCommand { get; }
+    private ValidationResult ValidateDto()
+    {
+        var dto = new LoginRequestDto
+        {
+            Login = Model.Username,
+            Password = Model.Password
+        };
+        return _validator.Validate(dto);
+    }
 
     private async Task LoginAsync()
     {
+        ErrorMessage = string.Empty;
+
+        if (!ValidateDto().IsValid)
+        {
+            ErrorMessage = "Wrong username or password";
+            return;
+        }
+
         var dto = new LoginRequestDto
         {
             Login = Model.Username,
@@ -48,6 +71,10 @@ public class LoginViewModel : RoutableViewModelBase
         {
             await _authentication.LoginAsync(dto);
             _coordinator.ShowRegister();
+        }
+        catch (HttpRequestException httpEx) when ((int?)httpEx.StatusCode == 400)
+        {
+            ErrorMessage = "Wrong username or password";
         }
         catch (Exception ex)
         {
