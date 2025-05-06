@@ -1,83 +1,62 @@
 ﻿using System;
 using System.Net.Http;
 using System.Reactive;
-using System.Threading.Tasks;
+using System.Reactive.Linq;
 using Cryptie.Client.Desktop.Models;
 using Cryptie.Client.Domain.Features.Authentication.Services;
-using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Client.Desktop.Coordinators;
+using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
-using FluentValidation.Results;
 using ReactiveUI;
-
 
 namespace Cryptie.Client.Desktop.ViewModels;
 
 public class LoginViewModel : RoutableViewModelBase
 {
-    private readonly IAuthenticationService _authentication;
-    private readonly IAppCoordinator _coordinator;
-    private readonly IValidator<LoginRequestDto> _validator;
-
     internal LoginModel Model { get; } = new();
-
     public ReactiveCommand<Unit, Unit> LoginCommand { get; }
     public ReactiveCommand<Unit, Unit> GoToRegisterCommand { get; }
 
     public LoginViewModel(
         IAuthenticationService authentication,
         IAppCoordinator coordinator,
-        IValidator<LoginRequestDto> validator
-    ) : base(coordinator)
+        IValidator<LoginRequestDto> validator)
+        : base(coordinator)
     {
-        _authentication = authentication;
-        _coordinator = coordinator;
-        _validator = validator;
+        LoginCommand = ReactiveCommand.CreateFromTask(async cancellationToken =>
+        {
+            var dto = new LoginRequestDto
+            {
+                Login = Model.Username,
+                Password = Model.Password
+            };
 
-        LoginCommand = ReactiveCommand.CreateFromTask(LoginAsync);
+            var validation = await validator.ValidateAsync(dto, cancellationToken);
+            if (!validation.IsValid)
+            {
+                throw new BadCredentialsException();
+            }
 
-        GoToRegisterCommand = ReactiveCommand.Create(() => _coordinator.ShowRegister()
-        );
+            await authentication.LoginAsync(dto, cancellationToken);
+            coordinator.ShowRegister();
+        });
+
+        LoginCommand.ThrownExceptions
+            .Select(MapExceptionToMessage)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(msg => ErrorMessage = msg);
+
+        GoToRegisterCommand = ReactiveCommand.Create(coordinator.ShowRegister);
     }
 
-    private ValidationResult ValidateDto()
-    {
-        var dto = new LoginRequestDto
+    private static string MapExceptionToMessage(Exception exception) =>
+        exception switch
         {
-            Login = Model.Username,
-            Password = Model.Password
+            BadCredentialsException => "Wrong username or password",
+            HttpRequestException http when (int?)http.StatusCode == 400 => "Wrong username or password",
+            OperationCanceledException => string.Empty,
+            _ => exception.Message,
         };
-        return _validator.Validate(dto);
-    }
-
-    private async Task LoginAsync()
-    {
-        ErrorMessage = string.Empty;
-
-        if (!ValidateDto().IsValid)
-        {
-            ErrorMessage = "Wrong username or password";
-            return;
-        }
-
-        var dto = new LoginRequestDto
-        {
-            Login = Model.Username,
-            Password = Model.Password
-        };
-
-        try
-        {
-            await _authentication.LoginAsync(dto);
-            _coordinator.ShowRegister();
-        }
-        catch (HttpRequestException httpEx) when ((int?)httpEx.StatusCode == 400)
-        {
-            ErrorMessage = "Wrong username or password";
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = ex.Message;
-        }
-    }
 }
+
+public class BadCredentialsException : Exception;
