@@ -1,5 +1,8 @@
 name: Unit Tests
 
+on:
+  workflow_call:
+    
 jobs:
   unit_test:
     name: Run Unit Tests

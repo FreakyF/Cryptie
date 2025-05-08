@@ -1,5 +1,8 @@
 name: Integration Tests
 
+on:
+  workflow_call:
+    
 jobs:
   integration_test:
     name: Run Integration Tests
