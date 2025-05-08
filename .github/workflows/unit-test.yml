@@ -1,10 +1,10 @@
 name: Unit Tests
+
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_run:
+    workflows: ["Build Project"]
+    types:
+      - completed
 
 jobs:
   unit_test:

@@ -1,11 +1,10 @@
-# .github/workflows/integration-test.yml
 name: Integration Tests
+
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_run:
+    workflows: ["Build Project"]
+    types:
+      - completed
 
 jobs:
   integration_test:
