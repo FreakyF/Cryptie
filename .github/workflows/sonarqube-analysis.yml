@@ -6,6 +6,7 @@ on:
       sonar_token:
         required: true
         type: string
+        
 jobs:
   analyze:
     name: Analyze with SonarQube

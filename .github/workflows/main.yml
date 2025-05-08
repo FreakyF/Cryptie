@@ -26,5 +26,5 @@ jobs:
       - unit-test
       - integration-test
     uses: ./.github/workflows/sonarqube-analysis.yml
-    with:
+    secrets:
       sonar_token: ${{ github.secrets.SONAR_TOKEN }}
