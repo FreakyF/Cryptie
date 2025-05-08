@@ -2,6 +2,7 @@
 using System.Net.Http.Json;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentAssertions;
+using Microsoft.AspNetCore.Identity.Data;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Xunit.Abstractions;
 
@@ -18,6 +19,18 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         _httpClient = factory.CreateClient();
     }
 
+    private RegisterRequestDto CreateRegisterRequest()
+    {
+        var request = new RegisterRequestDto()
+        {
+            Login = "Username123",
+            Password = "Password1234!",
+            DisplayName = "user 123",
+            Email = "test@test.com",
+        };
+        return request;
+    } 
+    
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -34,10 +47,9 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             DisplayName = "user 123",
             Email = "test@test.com",
         };
-        var response = await _httpClient.PostAsJsonAsync("api/register", request);
+        var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
-        _testOutputHelper.WriteLine($"Status: {(int)response.StatusCode}\n{body}");
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Theory]
@@ -60,10 +72,46 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             DisplayName = "user 123",
             Email = "test@test.com",
         };
-        var response = await _httpClient.PostAsJsonAsync("api/register", request);
+        var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
-        _testOutputHelper.WriteLine($"Status: {(int)response.StatusCode}\n{body}");
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz")]
+    public async Task InvalidRegisterDisplayNameRequest(string displayName)
+    {
+        var request = new RegisterRequestDto()
+        {
+            Login = "Username123",
+            Password = "Password1234!",
+            DisplayName = displayName,
+            Email = "test@test.com",
+        };
+        var response = await _httpClient.PostAsJsonAsync("auth/register", request);
+        var body = await response.Content.ReadAsStringAsync();
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public async Task InvalidRegisterEmailRequest(string email)
+    {
+        var request = new RegisterRequestDto()
+        {
+            Login = "Username123",
+            Password = "Password1234!",
+            DisplayName = "user 123",
+            Email = email,
+        };
+        var response = await _httpClient.PostAsJsonAsync("auth/register", request);
+        var body = await response.Content.ReadAsStringAsync();
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
     [Fact]
     public async Task ValidRegisterRequest()
@@ -77,7 +125,67 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
-        _testOutputHelper.WriteLine($"Status: {(int)response.StatusCode}\n{body}");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Theory]
+    //[InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("user*&()")]
+    [InlineData("abcd")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz")]
+    public async Task InvalidLoginUsernameRequest(string username)
+    {
+        var dto = CreateRegisterRequest();
+        await _httpClient.PostAsJsonAsync("auth/register",dto);
+        var RequestDto = new LoginRequestDto()
+        {
+            Login = username,
+            Password = "Password1234!",
+        };
+        var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
+        var body = await response.Content.ReadAsStringAsync();
+        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+    }
+
+    [Theory]
+    //[InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("\u200b")]
+    [InlineData("Te!st2")]
+    [InlineData("Test!Passwordabcd12345")]
+    [InlineData("password!123")]
+    [InlineData("PASSWORD!123")]
+    [InlineData("PASSWORD!abc")]
+    [InlineData("PASSWORD1234abc")]
+    public async Task InvalidLoginPasswordRequest(string password)
+    {
+        var dto = CreateRegisterRequest();
+        await _httpClient.PostAsJsonAsync("auth/register",dto);
+        var RequestDto = new LoginRequestDto()
+        {
+            Login = "Username123",
+            Password = password,
+        };
+        var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
+        var body = await response.Content.ReadAsStringAsync();
+        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+    }
+
+    [Fact]
+    public async Task ValidLoginRequest()
+    {
+        var dto = CreateRegisterRequest();
+        await _httpClient.PostAsJsonAsync("auth/register", dto);
+        var RequestDto = new LoginRequestDto()
+        {
+            Login = "Username123",
+            Password = "Password1234!",
+        };
+        var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
+        var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }
