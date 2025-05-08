@@ -93,7 +93,7 @@ jobs:
             $COVERAGE_ARGS = "/d:sonar.cs.opencover.reportsPaths=$env:sonar_paths"
           }
 
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" /d:sonar.token="${{ secrets.sonar_token }}" /d:sonar.host.url="https://sonarcloud.io" $COVERAGE_ARGS $PR_ARGS
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" $COVERAGE_ARGS $PR_ARGS
 
       - name: Build project (for SonarQube Roslyn analyzers)
         run: dotnet build --no-incremental
@@ -101,4 +101,4 @@ jobs:
       - name: End SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.sonar_token }}
-        run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.sonar_token }}"
+        run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
