@@ -42,14 +42,32 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Install dotnet-coverage
-        run: dotnet tool install -g coverlet.console
+        run: dotnet tool install --global dotnet-coverage
 
-      - name: Build and analyze
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="coverage.opencover.xml"
-          dotnet build
-          dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          ./.sonar/scanner/dotnet-sonarscanner begin \
+            /k:"FreakyF_Cryptie" \
+            /o:"freakyf" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.cs.opencover.reportsPaths="coverage.opencover.xml"
+
+      - name: Run tests & collect coverage
+        run: |
+          dotnet-coverage collect -- dotnet test \
+            --no-build \
+            --logger:"console;verbosity=detailed" \
+            -p:CollectCoverage=true \
+            -p:CoverletOutputFormat=opencover \
+            -p:CoverletOutput=coverage.opencover.xml
+
+      - name: End SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
