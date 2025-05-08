@@ -2,7 +2,10 @@ name: SonarQube Analysis
 
 on:
   workflow_call:
-
+    inputs:
+      SONAR_TOKEN:
+        required: true
+        type: string
 jobs:
   analyze:
     name: Analyze with SonarQube
