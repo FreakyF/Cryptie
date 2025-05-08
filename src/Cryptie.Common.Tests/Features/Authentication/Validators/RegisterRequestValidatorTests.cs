@@ -13,6 +13,7 @@ public class RegisterRequestValidatorTests
         _validator = new RegisterRequestValidator();
     }
 
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData(null, "Username cannot be empty")]
     [InlineData("", "Username cannot be empty")]
@@ -31,6 +32,7 @@ public class RegisterRequestValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Login).WithErrorMessage(ExpectedError);
     }
 
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData(null, "Display name cannot be empty")]
     [InlineData("", "Display name cannot be empty")]
@@ -51,6 +53,8 @@ public class RegisterRequestValidatorTests
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.DisplayName).WithErrorMessage(ExpectedError);
     }
+    
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData(null, "Password cannot be empty")]
     [InlineData("", "Password cannot be empty")]
@@ -73,6 +77,7 @@ public class RegisterRequestValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Password).WithErrorMessage(ExpectedError);
     }
 
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData(null, "Email cannot be empty")]
     [InlineData("", "Email cannot be empty")]
@@ -90,6 +95,7 @@ public class RegisterRequestValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Email).WithErrorMessage(ExpectedError);
     }
 
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData("User123", "Password!@1234", "test@test.pl")]
     [InlineData("Mateusz123", "Si34ln&Hasl*", "Mateusz@gmail.com")]

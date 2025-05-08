@@ -2,7 +2,6 @@
 using System.Net.Http.Json;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentAssertions;
-using Org.BouncyCastle.Asn1.Ocsp;
 using Xunit.Abstractions;
 
 namespace Cryptie.Server.API.Tests;
@@ -18,6 +17,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         _httpClient = factory.CreateClient();
     }
 
+    [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -40,6 +40,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -65,6 +66,8 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         _testOutputHelper.WriteLine($"Status: {(int)response.StatusCode}\n{body}");
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+    
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public async Task ValidRegisterRequest()
     {

@@ -13,6 +13,7 @@ public class LoginRequestValidatorTests
         _validator = new LoginRequestValidator();
     }
 
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData(null, "Username cannot be empty")]
     [InlineData("", "Username cannot be empty")]
@@ -30,6 +31,7 @@ public class LoginRequestValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Login).WithErrorMessage(ExpectedError);
     }
 
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData("User123", "P@ssw0rd123")]
     [InlineData("tester123", "marSJAnin%203")]
@@ -45,6 +47,7 @@ public class LoginRequestValidatorTests
         result.ShouldNotHaveValidationErrorFor(x => x.Password);
     }
 
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData("    ", "Password cannot be empty")]
     [InlineData(null, "Password cannot be empty")]

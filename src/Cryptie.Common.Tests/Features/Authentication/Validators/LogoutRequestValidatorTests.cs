@@ -13,6 +13,7 @@ public class LogoutRequestValidatorTests
         _validator = new LogoutRequestValidator();
     }
 
+    [Trait("TestCategory", "Unit")]
     [Fact]
     public void InvalidToken()
     {
@@ -24,6 +25,7 @@ public class LogoutRequestValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Token);
     }
 
+    [Trait("TestCategory", "Unit")]
     [Fact]
     public void ValidToken()
     {

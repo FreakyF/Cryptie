@@ -1,0 +1,122 @@
+name: SonarQube Analysis
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  analyze:
+    name: Analyze with SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Cache SonarQube Cloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache SonarQube Cloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v4
+        with:
+          path: ./.sonar/scanner
+          key: ${{ runner.os }}-sonar-scanner-${{ hashFiles('**/sonar-project.properties') }}
+          restore-keys: ${{ runner.os }}-sonar-scanner-
+
+      - name: Install SonarQube Cloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          mkdir -p ./.sonar/scanner
+          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+
+      - name: Download Unit Test Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: unit-coverage-report-${{ github.sha }}
+          path: .
+          if-no-files-found: warn
+
+      - name: Download Integration Test Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: integration-coverage-report-${{ github.sha }}
+          path: .
+          if-no-files-found: warn
+
+      - name: Construct coverage report paths
+        id: coverage_paths
+        shell: bash
+        run: |
+          paths=""
+          if [[ -f "unit-coverage.opencover.xml" ]]; then
+            paths="unit-coverage.opencover.xml"
+          fi
+          if [[ -f "integration-coverage.opencover.xml" ]]; then
+            if [[ -n "$paths" ]]; then
+              paths="$paths,integration-coverage.opencover.xml"
+            else
+              paths="integration-coverage.opencover.xml"
+            fi
+          fi
+          if [[ -z "$paths" ]]; then
+            echo "No coverage reports found to provide to SonarQube."
+            # SonarQube will proceed without coverage if paths is empty or the property is not set.
+            # You could create a dummy empty report if SonarScanner strictly requires the files listed to exist.
+            # For example:
+            # echo "sonar_paths=empty.xml" >> $GITHUB_OUTPUT
+            # touch empty.xml
+          fi
+          echo "sonar_paths=$paths" >> $GITHUB_OUTPUT
+
+      - name: Begin SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_ARGS=""
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            PR_ARGS="/d:sonar.pullrequest.base=${{ github.base_ref }} \
+                     /d:sonar.pullrequest.branch=${{ github.head_ref }} \
+                     /d:sonar.pullrequest.key=${{ github.event.pull_request.number }} \
+                     /d:sonar.pullrequest.provider=github \
+                     /d:sonar.pullrequest.github.repository=${{ github.repository }}"
+          fi
+          
+          COVERAGE_ARGS=""
+          if [ -n "${{ steps.coverage_paths.outputs.sonar_paths }}" ]; then
+            COVERAGE_ARGS="/d:sonar.cs.opencover.reportsPaths=${{ steps.coverage_paths.outputs.sonar_paths }}"
+          fi
+
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" \
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+          /d:sonar.host.url="https://sonarcloud.io" \
+          $COVERAGE_ARGS \
+          $PR_ARGS
+
+      - name: Build project (for SonarQube Roslyn analyzers)
+        run: dotnet build --no-incremental
+
+      - name: End SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

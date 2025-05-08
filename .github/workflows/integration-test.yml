@@ -1,0 +1,56 @@
+# .github/workflows/integration-test.yml
+name: Integration Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  integration_test:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Download build artifact (entire workspace)
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output-${{ github.sha }}
+          path: .
+
+      - name: Install dotnet-coverage tool
+        run: dotnet tool install --global dotnet-coverage
+
+      - name: Pull Postgres Latest image (optional, can speed up tests)
+        run: docker pull postgres:latest
+
+      - name: Pull Postgres Alpine image (optional, can speed up tests)
+        run: docker pull postgres:17-alpine
+
+      - name: Run integration tests & collect coverage
+        id: integration_tests
+        run: |
+          dotnet-coverage collect --output ./integration-coverage.opencover.xml --output-format opencover -- dotnet test --no-build --filter "TestCategory=Integration" --logger:"console;verbosity=detailed" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="./integration-coverage.opencover.xml"
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+        continue-on-error: true
+
+      - name: Upload Integration Test Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-coverage-report-${{ github.sha }}
+          path: ./integration-coverage.opencover.xml
+          if-no-files-found: warn
+          retention-days: 1
