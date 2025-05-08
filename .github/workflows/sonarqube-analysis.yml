@@ -69,13 +69,13 @@ jobs:
         run: |
           paths=""
           if [[ -f "unit-coverage.opencover.xml" ]]; then
-            paths="unit-coverage.opencover.xml"
+            paths="./unit-coverage.opencover.xml"
           fi
           if [[ -f "integration-coverage.opencover.xml" ]]; then
             if [[ -n "$paths" ]]; then
-              paths="$paths,integration-coverage.opencover.xml"
+              paths="$paths,./integration-coverage.opencover.xml"
             else
-              paths="integration-coverage.opencover.xml"
+              paths="./integration-coverage.opencover.xml"
             fi
           fi
           if [[ -z "$paths" ]]; then
