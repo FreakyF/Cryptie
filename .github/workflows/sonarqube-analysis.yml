@@ -84,13 +84,7 @@ jobs:
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $PR_ARGS = ""
-          if ($env:GITHUB_EVENT_NAME -eq "pull_request") {
-            $PR_ARGS = "/d:sonar.pullrequest.base=${{ github.base_ref }} "/d:sonar.pullrequest.branch=${{ github.head_ref }} "/d:sonar.pullrequest.key=${{ github.event.pull_request.number }} "/d:sonar.pullrequest.provider=github "/d:sonar.pullrequest.github.repository=${{ github.repository }}"
-          }
-          
           $COVERAGE_ARGS = ""
           if ($env:sonar_paths) {
             $COVERAGE_ARGS = "/d:sonar.cs.opencover.reportsPaths=$env:sonar_paths"
