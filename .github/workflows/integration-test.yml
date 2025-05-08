@@ -37,7 +37,7 @@ jobs:
       - name: Run integration tests & collect coverage
         id: integration_tests
         run: |
-          dotnet-coverage collect --output ./integration-coverage.opencover.xml --output-format opencover -- dotnet test --no-build --filter "TestCategory=Integration" --logger:"console;verbosity=detailed" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="./integration-coverage.opencover.xml"
+          dotnet-coverage collect --output ./integration-coverage.opencover.xml --output-format opencover -- dotnet test --no-build --filter "TestCategory=Integration" --logger:"console;verbosity=detailed" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="./integration-coverage.opencover.xml" /p:CoverletOutputEncoding="utf-8"
         env:
           ASPNETCORE_ENVIRONMENT: Development
         continue-on-error: true

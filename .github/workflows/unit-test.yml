@@ -30,7 +30,7 @@ jobs:
       - name: Run unit tests & collect coverage
         id: unit_tests
         run: |
-          dotnet-coverage collect --output ./unit-coverage.opencover.xml --output-format opencover -- dotnet test --no-build --filter "TestCategory=Unit" --logger:"console;verbosity=detailed" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="./unit-coverage.opencover.xml"
+          dotnet-coverage collect --output ./unit-coverage.opencover.xml --output-format opencover -- dotnet test --no-build --filter "TestCategory=Unit" --logger:"console;verbosity=detailed" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="./unit-coverage.opencover.xml" /p:CoverletOutputEncoding="utf-8"
         continue-on-error: true
 
       - name: Upload Unit Test Coverage Report
