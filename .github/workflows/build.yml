@@ -51,21 +51,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin \
-            /k:"FreakyF_Cryptie" \
-            /o:"freakyf" \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.cs.opencover.reportsPaths="coverage.opencover.xml"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="coverage.opencover.xml"
 
       - name: Run tests & collect coverage
         run: |
-          dotnet-coverage collect -- dotnet test \
-            --no-build \
-            --logger:"console;verbosity=detailed" \
-            -p:CollectCoverage=true \
-            -p:CoverletOutputFormat=opencover \
-            -p:CoverletOutput=coverage.opencover.xml
+          dotnet-coverage collect -- dotnet test --no-build --logger:"console;verbosity=detailed" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=coverage.opencover.xml
 
       - name: End SonarCloud analysis
         env:
