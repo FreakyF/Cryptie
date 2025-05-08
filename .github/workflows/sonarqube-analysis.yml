@@ -104,7 +104,7 @@ jobs:
           fi
 
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" \
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
           $COVERAGE_ARGS \
           $PR_ARGS
@@ -113,4 +113,4 @@ jobs:
         run: dotnet build --no-incremental
 
       - name: End SonarCloud analysis
-        run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
