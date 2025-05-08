@@ -33,16 +33,17 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(options.BaseUri);
             });
 
-        Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
-
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IAppCoordinator, AppCoordinator>();
-        
+
+        Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
+
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
-        
+
         services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
         services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();
+
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

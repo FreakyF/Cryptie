@@ -13,7 +13,7 @@
                 Classes="Shadow Hover"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Width="360">
+                Width="400">
             <StackPanel Spacing="16">
                 <TextBlock Theme="{StaticResource TitleTextBlock}"
                            Classes="H1"
