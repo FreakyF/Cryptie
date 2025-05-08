@@ -1,11 +1,5 @@
 name: Unit Tests
 
-on:
-  workflow_run:
-    workflows: ["Build Project"]
-    types:
-      - completed
-
 jobs:
   unit_test:
     name: Run Unit Tests

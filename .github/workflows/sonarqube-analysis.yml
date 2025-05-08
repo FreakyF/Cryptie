@@ -1,11 +1,5 @@
 name: SonarQube Analysis
 
-on:
-  workflow_run:
-    workflows: ["Unit Tests", "Integration Tests"]
-    types:
-      - completed
-
 jobs:
   analyze:
     name: Analyze with SonarQube

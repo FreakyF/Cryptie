@@ -1,0 +1,28 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    
+jobs:
+  build:
+    uses: .github/workflows/build.yml
+    
+  unit-test:
+    needs:
+      - build
+    uses: .github/workflows/unit-test.yml
+    
+  integration-test:
+    needs:
+      - build
+    uses: .github/workflows/integration-test.yml
+  
+  sonarqube-analysis:
+    needs:
+      - unit-test
+      - integration-test
+    uses: .github/workflows/sonarqube-analysis.yml

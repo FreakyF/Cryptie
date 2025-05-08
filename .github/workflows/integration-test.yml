@@ -1,11 +1,5 @@
 name: Integration Tests
 
-on:
-  workflow_run:
-    workflows: ["Build Project"]
-    types:
-      - completed
-
 jobs:
   integration_test:
     name: Run Integration Tests
