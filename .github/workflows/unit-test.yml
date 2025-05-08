@@ -26,27 +26,18 @@ jobs:
 
       - name: Install dotnet-coverage tool
         run: dotnet tool install --global dotnet-coverage
-        
-      - name: Install ReportGenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
       - name: Run unit tests & collect coverage
         id: unit_tests
         run: |
-          dotnet-coverage collect --output ./coverage.coverlet -- dotnet test --no-build --filter "TestCategory=Unit"
+          dotnet-coverage collect --output ./unit-coverage.opencover.xml --output-format opencover -- dotnet test --no-build --filter "TestCategory=Unit" --logger:"console;verbosity=detailed" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="./unit-coverage.opencover.xml" /p:CoverletOutputEncoding="utf-8"
         continue-on-error: true
-        
-      - name: Convert to OpenCover XML
-        run: reportgenerator \
-          -reports:coverage.coverlet \
-          -targetdir:cov-report \
-          -reporttypes:opencover
 
       - name: Upload Unit Test Coverage Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: unit-coverage-report-${{ github.sha }}
-          path: ./cov-report/coverage.opencover.xml
+          path: ./unit-coverage.opencover.xml
           if-no-files-found: warn
           retention-days: 1
