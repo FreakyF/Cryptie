@@ -45,7 +45,7 @@ jobs:
         run: dotnet tool install --global dotnet-coverage
 
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build
 
       - name: Begin SonarCloud analysis
         env:
