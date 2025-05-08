@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: Debug SONAR_TOKEN
         run: |
-          if [ -z "${{ github.secrets.SONAR_TOKEN }}" ]; then
+          if [ -z "${{ secrets.SONAR_TOKEN }}" ]; then
             echo "SONAR_TOKEN is empty or not set."
           else
-            echo "SONAR_TOKEN is set and starts with ${${{ github.secrets.SONAR_TOKEN }}:0:4}******"
+            echo "SONAR_TOKEN is set and starts with ${${{ secrets.SONAR_TOKEN }}:0:4}******"
           fi
   
   build:
