@@ -41,28 +41,15 @@ jobs:
         run: |
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Install dotnet-coverage
+        run: dotnet tool install -g coverlet.console
 
-      - name: Install dotCover
-        shell: powershell
-        run: |
-          dotnet tool install JetBrains.dotCover.GlobalTool --tool-path .\.dotcover
-
-      - name: Build Solution
-        shell: powershell
-        run: |
-          dotnet build
-
-      - name: Run Tests and Collect Coverage
-        shell: powershell
-        run: |
-          .\.dotcover\dotcover.exe cover /TargetExecutable="dotnet.exe" /TargetArguments="test --no-build" /Output="coverage.dcvr"
-          .\.dotcover\dotcover.exe report /Source="coverage.dcvr" /Output="coverage.xml" /ReportType="XML"
-
-      - name: Build and analyze with SonarQube
+      - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.dotcover.reportsPaths="coverage.xml"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="coverage.opencover.xml"
           dotnet build
+          dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
