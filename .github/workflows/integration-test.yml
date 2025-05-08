@@ -37,7 +37,7 @@ jobs:
       - name: Run integration tests & collect coverage
         id: integration_tests
         run: |
-          dotnet-coverage collect --output ./integration-coverage.opencover.xml --output-format opencover -- dotnet test --no-build --filter "TestCategory=Integration" --logger:"console;verbosity=detailed" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput="./integration-coverage.opencover.xml" /p:CoverletOutputEncoding="utf-8"
+          dotnet-coverage collect --output ./integration-coverage.xml --output-format xml -- dotnet test --no-build --filter "TestCategory=Integration"
         env:
           ASPNETCORE_ENVIRONMENT: Development
         continue-on-error: true
@@ -47,6 +47,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: integration-coverage-report-${{ github.sha }}
-          path: ./integration-coverage.opencover.xml
+          path: ./integration-coverage.xml
           if-no-files-found: warn
           retention-days: 1

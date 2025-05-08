@@ -68,14 +68,14 @@ jobs:
         shell: bash
         run: |
           paths=""
-          if [[ -f "unit-coverage.opencover.xml" ]]; then
-            paths="./unit-coverage.opencover.xml"
+          if [[ -f "unit-coverage.xml" ]]; then
+            paths="unit-coverage.xml"
           fi
           if [[ -f "integration-coverage.opencover.xml" ]]; then
             if [[ -n "$paths" ]]; then
-              paths="$paths,./integration-coverage.opencover.xml"
+              paths="$paths,integration-coverage.xml"
             else
-              paths="./integration-coverage.opencover.xml"
+              paths="integration-coverage.xml"
             fi
           fi
           if [[ -z "$paths" ]]; then
@@ -96,7 +96,7 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" \
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.cs.opencover.reportsPaths=${{ steps.coverage_paths.outputs.sonar_paths }} \
+          /d:sonar.cs.vscoveragexml.reportsPaths=${{ steps.coverage_paths.outputs.sonar_paths }} \
           /d:sonar.verbose=true
 
       - name: Build project (for SonarQube Roslyn analyzers)
