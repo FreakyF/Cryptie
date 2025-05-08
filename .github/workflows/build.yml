@@ -47,6 +47,9 @@ jobs:
       - name: Build
         run: dotnet build
 
+      - name: Pull Postgres Alpine image
+        run: docker pull postgres:17-alpine
+
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
