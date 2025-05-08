@@ -18,6 +18,53 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         _httpClient = factory.CreateClient();
     }
 
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(";;;abba")]
+    [InlineData("ada")]
+    [InlineData("abcdefghijklmnopqrstuvwxyz")]
+    public async Task InvalidRegisterUsernameRequest(string username)
+    {
+        var request = new RegisterRequestDto
+        {
+            Login = username,
+            Password = "Password1234!",
+            DisplayName = "user 123",
+            Email = "test@test.com",
+        };
+        var response = await _httpClient.PostAsJsonAsync("api/register", request);
+        var body = await response.Content.ReadAsStringAsync();
+        _testOutputHelper.WriteLine($"Status: {(int)response.StatusCode}\n{body}");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData("\u200b12345AA!")]
+    [InlineData("Te!st2")]
+    [InlineData("Test!Passwordabcd12345")]
+    [InlineData("te!st12356")]
+    [InlineData("TEST!123456")]
+    [InlineData("TEST!test")]
+    [InlineData("Test123456")]
+    public async Task InvalidRegisterPasswordRequest(string password)
+    {
+        var request = new RegisterRequestDto
+        {
+            Login = "Username123",
+            Password = password,
+            DisplayName = "user 123",
+            Email = "test@test.com",
+        };
+        var response = await _httpClient.PostAsJsonAsync("api/register", request);
+        var body = await response.Content.ReadAsStringAsync();
+        _testOutputHelper.WriteLine($"Status: {(int)response.StatusCode}\n{body}");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
     [Fact]
     public async Task ValidRegisterRequest()
     {
