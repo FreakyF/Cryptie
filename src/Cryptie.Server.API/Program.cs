@@ -9,7 +9,7 @@ using Scalar.AspNetCore;
 
 namespace Cryptie.Server.API;
 
-public static class Program
+public class Program
 {
     public static async Task Main(string[] args)
     {
