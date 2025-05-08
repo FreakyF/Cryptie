@@ -8,6 +8,17 @@ on:
     types: [opened, synchronize, reopened]
     
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug SONAR_TOKEN
+        run: |
+          if [ -z "${{ secrets.SONAR_TOKEN }}" ]; then
+            echo "SONAR_TOKEN is empty or not set."
+          else
+            echo "SONAR_TOKEN is set and starts with ${${{ secrets.SONAR_TOKEN }}:0:4}******"
+          fi
+  
   build:
     uses: ./.github/workflows/build.yml
     
