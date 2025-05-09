@@ -31,6 +31,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         return request;
     } 
     
+    [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
     [InlineData("", HttpStatusCode.OK)]
@@ -52,6 +53,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         response.StatusCode.Should().Be(statusCode);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
     [InlineData("", HttpStatusCode.OK)]
@@ -113,6 +115,8 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
+    
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public async Task ValidRegisterRequest()
     {

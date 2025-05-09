@@ -1,0 +1,44 @@
+name: Main
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug SONAR_TOKEN
+        env:
+          TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "SONAR_TOKEN is empty or not set."
+          else
+            echo "SONAR_TOKEN is set and starts with ${TOKEN:0:4}******"
+          fi
+
+  
+  build:
+    uses: ./.github/workflows/build.yml
+    
+  unit-test:
+    needs:
+      - build
+    uses: ./.github/workflows/unit-test.yml
+    
+  integration-test:
+    needs:
+      - build
+    uses: ./.github/workflows/integration-test.yml
+  
+  sonarqube-analysis:
+    needs:
+      - unit-test
+      - integration-test
+    uses: ./.github/workflows/sonarqube-analysis.yml
+    secrets:
+      sonar_token: ${{ secrets.SONAR_TOKEN }}

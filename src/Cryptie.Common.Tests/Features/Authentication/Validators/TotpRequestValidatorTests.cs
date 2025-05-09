@@ -13,6 +13,7 @@ public class TotpRequestValidatorTests
         _validator = new TotpRequestValidator();
     }
 
+    [Trait("TestCategory", "Unit")]
     [Fact]
     public void InvalidTotpRequest()
     {
@@ -24,6 +25,7 @@ public class TotpRequestValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.TotpToken);
     }
 
+    [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData(null, "Authentication code cannot be empty.")]
     [InlineData("", "Authentication code cannot be empty.")]
@@ -40,6 +42,7 @@ public class TotpRequestValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Secret);
     }
 
+    [Trait("TestCategory", "Unit")]
     [Fact]
     public void ValidTotpRequest()
     {
