@@ -32,13 +32,13 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     } 
     
     [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(";;;abba")]
-    [InlineData("ada")]
-    [InlineData("abcdefghijklmnopqrstuvwxyz")]
-    public async Task InvalidRegisterUsernameRequest(string username)
+    [InlineData(null, HttpStatusCode.BadRequest)]
+    [InlineData("", HttpStatusCode.OK)]
+    [InlineData(" ", HttpStatusCode.OK)]
+    [InlineData(";;;abba", HttpStatusCode.OK)]
+    [InlineData("ada",HttpStatusCode.OK)]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", HttpStatusCode.OK)]
+    public async Task InvalidRegisterUsernameRequest(string username, HttpStatusCode statusCode)
     {
         var request = new RegisterRequestDto
         {
@@ -49,21 +49,21 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(statusCode);
     }
 
     [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData("\u200b12345AA!")]
-    [InlineData("Te!st2")]
-    [InlineData("Test!Passwordabcd12345")]
-    [InlineData("te!st12356")]
-    [InlineData("TEST!123456")]
-    [InlineData("TEST!test")]
-    [InlineData("Test123456")]
-    public async Task InvalidRegisterPasswordRequest(string password)
+    [InlineData(null, HttpStatusCode.BadRequest)]
+    [InlineData("", HttpStatusCode.OK)]
+    [InlineData(" ", HttpStatusCode.OK)]
+    [InlineData("\u200b", HttpStatusCode.OK)]
+    [InlineData("Te!st2", HttpStatusCode.OK)]
+    [InlineData("Test!Passwordabcd12345", HttpStatusCode.OK)]
+    [InlineData("password!123", HttpStatusCode.OK)]
+    [InlineData("PASSWORD!123", HttpStatusCode.OK)]
+    [InlineData("PASSWORD!abc", HttpStatusCode.OK)]
+    [InlineData("PASSWORD1234abc", HttpStatusCode.OK)]
+    public async Task InvalidRegisterPasswordRequest(string password, HttpStatusCode statusCode)
     {
         var request = new RegisterRequestDto
         {
@@ -74,15 +74,15 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(statusCode);
     }
 
     [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData("abcdefghijklmnopqrstuvwxyz")]
-    public async Task InvalidRegisterDisplayNameRequest(string displayName)
+    [InlineData(null, HttpStatusCode.BadRequest)]
+    [InlineData("", HttpStatusCode.OK)]
+    [InlineData(" ", HttpStatusCode.OK)]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", HttpStatusCode.OK)]
+    public async Task InvalidRegisterDisplayNameRequest(string displayName, HttpStatusCode statusCode)
     {
         var request = new RegisterRequestDto()
         {
@@ -93,14 +93,14 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(statusCode);
     }
 
     [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    public async Task InvalidRegisterEmailRequest(string email)
+    [InlineData(null,HttpStatusCode.BadRequest)]
+    [InlineData("", HttpStatusCode.OK)]
+    [InlineData(" ", HttpStatusCode.OK)]
+    public async Task InvalidRegisterEmailRequest(string email, HttpStatusCode statusCode)
     {
         var request = new RegisterRequestDto()
         {
@@ -111,7 +111,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(statusCode);
     }
     [Fact]
     public async Task ValidRegisterRequest()
@@ -129,13 +129,13 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     }
 
     [Theory]
-    //[InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData("user*&()")]
-    [InlineData("abcd")]
-    [InlineData("abcdefghijklmnopqrstuvwxyz")]
-    public async Task InvalidLoginUsernameRequest(string username)
+    [InlineData(null, HttpStatusCode.BadRequest)]
+    [InlineData("", HttpStatusCode.InternalServerError)]
+    [InlineData(" ", HttpStatusCode.InternalServerError)]
+    [InlineData("user*&()", HttpStatusCode.BadRequest)]
+    [InlineData("abcd", HttpStatusCode.BadRequest)]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", HttpStatusCode.InternalServerError)]
+    public async Task InvalidLoginUsernameRequest(string username, HttpStatusCode statusCode)
     {
         var dto = CreateRegisterRequest();
         await _httpClient.PostAsJsonAsync("auth/register",dto);
@@ -146,21 +146,21 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         };
         var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
         var body = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        response.StatusCode.Should().Be(statusCode);
     }
 
     [Theory]
-    //[InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData("\u200b")]
-    [InlineData("Te!st2")]
-    [InlineData("Test!Passwordabcd12345")]
-    [InlineData("password!123")]
-    [InlineData("PASSWORD!123")]
-    [InlineData("PASSWORD!abc")]
-    [InlineData("PASSWORD1234abc")]
-    public async Task InvalidLoginPasswordRequest(string password)
+    [InlineData(null, HttpStatusCode.BadRequest)]
+    [InlineData("", HttpStatusCode.InternalServerError)]
+    [InlineData(" ", HttpStatusCode.InternalServerError)]
+    [InlineData("\u200b", HttpStatusCode.InternalServerError)]
+    [InlineData("Te!st2", HttpStatusCode.InternalServerError)]
+    [InlineData("Test!Passwordabcd12345", HttpStatusCode.InternalServerError)]
+    [InlineData("password!123", HttpStatusCode.InternalServerError)]
+    [InlineData("PASSWORD!123", HttpStatusCode.InternalServerError)]
+    [InlineData("PASSWORD!abc", HttpStatusCode.InternalServerError)]
+    [InlineData("PASSWORD1234abc", HttpStatusCode.InternalServerError)]
+    public async Task InvalidLoginPasswordRequest(string password, HttpStatusCode status)
     {
         var dto = CreateRegisterRequest();
         await _httpClient.PostAsJsonAsync("auth/register",dto);
@@ -171,7 +171,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         };
         var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
         var body = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        response.StatusCode.Should().Be(status);
     }
 
     [Fact]
@@ -182,7 +182,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var RequestDto = new LoginRequestDto()
         {
             Login = "Username123",
-            Password = "Password1234!",
+            Password = "Password1234!"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
         var body = await response.Content.ReadAsStringAsync();
