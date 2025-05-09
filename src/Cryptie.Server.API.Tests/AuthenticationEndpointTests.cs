@@ -78,7 +78,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
-
+    [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
     [InlineData("", HttpStatusCode.OK)]
@@ -97,7 +97,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
-
+    [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null,HttpStatusCode.BadRequest)]
     [InlineData("", HttpStatusCode.OK)]
@@ -131,7 +131,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
-
+    [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
     [InlineData("", HttpStatusCode.InternalServerError)]
@@ -152,7 +152,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
-
+    [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
     [InlineData("", HttpStatusCode.InternalServerError)]
@@ -177,7 +177,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(status);
     }
-
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public async Task ValidLoginRequest()
     {
