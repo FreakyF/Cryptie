@@ -7,13 +7,14 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cryptie.Client.Desktop.Core.Base;
+using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
 using Cryptie.Client.Desktop.Features.Authentication.Models;
-using Cryptie.Client.Desktop.Mappers;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
 using FluentValidation.Results;
+using MapsterMapper;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels;
@@ -23,17 +24,20 @@ public class RegisterViewModel : RoutableViewModelBase
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
     private readonly IValidator<RegisterRequestDto> _validator;
+    private readonly IMapper _mapper;
 
     public RegisterViewModel(
         IAuthenticationService authentication,
         IShellCoordinator coordinator,
         IValidator<RegisterRequestDto> validator,
-        IExceptionMessageMapper exceptionMapper)
+        IExceptionMessageMapper exceptionMapper,
+        IMapper mapper)
         : base(coordinator)
     {
         _authentication = authentication;
         _coordinator = coordinator;
         _validator = validator;
+        _mapper = mapper;
 
         var canRegister = IsValidated();
 
@@ -48,7 +52,6 @@ public class RegisterViewModel : RoutableViewModelBase
     }
 
     internal RegisterModel Model { get; } = new();
-
     public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
     public ReactiveCommand<Unit, Unit> GoToLoginCommand { get; }
 
@@ -112,26 +115,14 @@ public class RegisterViewModel : RoutableViewModelBase
 
     private ValidationResult ValidateDto()
     {
-        var dto = new RegisterRequestDto
-        {
-            Login = Model.Username,
-            DisplayName = Model.DisplayName,
-            Email = Model.Email,
-            Password = Model.Password
-        };
+        var dto = _mapper.Map<RegisterRequestDto>(Model);
         return _validator.Validate(dto);
     }
 
 
     private async Task RegisterAsync(CancellationToken cancellationToken)
     {
-        var dto = new RegisterRequestDto
-        {
-            Login = Model.Username,
-            DisplayName = Model.DisplayName,
-            Email = Model.Email,
-            Password = Model.Password
-        };
+        var dto = _mapper.Map<RegisterRequestDto>(Model);
 
         await _validator.ValidateAsync(dto, cancellationToken);
 

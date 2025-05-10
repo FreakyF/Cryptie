@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Reflection;
 using Cryptie.Client.Desktop.Core.Factories;
 using Cryptie.Client.Desktop.Core.Locators;
+using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
 using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
 using Cryptie.Client.Desktop.Features.Shell.ViewModels;
 using Cryptie.Client.Desktop.Features.Shell.Views;
-using Cryptie.Client.Desktop.Mappers;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Client.Infrastructure.Configuration;
 using Cryptie.Client.Infrastructure.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Validators;
 using FluentValidation;
+using Mapster;
+using MapsterMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -34,6 +37,12 @@ public static class ServiceCollectionExtensions
                 var options = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
                 client.BaseAddress = new Uri(options.BaseUri);
             });
+
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Scan(Assembly.GetExecutingAssembly());
+
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IShellCoordinator, ShellCoordinator>();
