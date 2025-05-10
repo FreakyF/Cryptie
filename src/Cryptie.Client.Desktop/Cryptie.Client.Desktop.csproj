@@ -46,9 +46,29 @@
             <DependentUpon>App.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Features\Authentication\Views\LoginView.axaml.cs">
+            <DependentUpon>LoginView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\Authentication\Views\RegisterView.axaml.cs">
+            <DependentUpon>RegisterView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\Shell\Views\MainWindow.axaml.cs">
+            <DependentUpon>MainWindow.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Cryptie.Client.Infrastructure\Cryptie.Client.Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <UpToDateCheckInput Remove="Composition\Startup\App.axaml"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="Startup\App.axaml"/>
     </ItemGroup>
 </Project>
