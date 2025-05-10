@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Net.Http;
 using System.Reactive;
 using System.Reactive.Linq;
 using Cryptie.Client.Desktop.Models;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Coordinators;
+using Cryptie.Client.Desktop.Mappers;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
 using ReactiveUI;
@@ -20,7 +20,8 @@ public class LoginViewModel : RoutableViewModelBase
     public LoginViewModel(
         IAuthenticationService authentication,
         IAppCoordinator coordinator,
-        IValidator<LoginRequestDto> validator)
+        IValidator<LoginRequestDto> validator,
+        IExceptionMessageMapper exceptionMapper)
         : base(coordinator)
     {
         LoginCommand = ReactiveCommand.CreateFromTask(async cancellationToken =>
@@ -31,32 +32,17 @@ public class LoginViewModel : RoutableViewModelBase
                 Password = Model.Password
             };
 
-            var validation = await validator.ValidateAsync(dto, cancellationToken);
-            if (!validation.IsValid)
-            {
-                throw new BadCredentialsException();
-            }
+            await validator.ValidateAsync(dto, cancellationToken);
 
             await authentication.LoginAsync(dto, cancellationToken);
             coordinator.ShowRegister();
         });
 
         LoginCommand.ThrownExceptions
-            .Select(MapExceptionToMessage)
+            .Select(exceptionMapper.Map)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(msg => ErrorMessage = msg);
 
         GoToRegisterCommand = ReactiveCommand.Create(coordinator.ShowRegister);
     }
-
-    private static string MapExceptionToMessage(Exception exception) =>
-        exception switch
-        {
-            BadCredentialsException => "Wrong username or password",
-            HttpRequestException http when (int?)http.StatusCode == 400 => "Wrong username or password",
-            OperationCanceledException => string.Empty,
-            _ => exception.Message,
-        };
 }
-
-public class BadCredentialsException : Exception;

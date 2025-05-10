@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net.Http;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cryptie.Client.Desktop.Coordinators;
+using Cryptie.Client.Desktop.Mappers;
 using Cryptie.Client.Desktop.Models;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
@@ -22,7 +22,6 @@ public class RegisterViewModel : RoutableViewModelBase
     private readonly IAuthenticationService _authentication;
     private readonly IAppCoordinator _coordinator;
     private readonly IValidator<RegisterRequestDto> _validator;
-
     internal RegisterModel Model { get; } = new();
 
     public ReactiveCommand<Unit, Unit> RegisterCommand { get; }
@@ -31,7 +30,8 @@ public class RegisterViewModel : RoutableViewModelBase
     public RegisterViewModel(
         IAuthenticationService authentication,
         IAppCoordinator coordinator,
-        IValidator<RegisterRequestDto> validator)
+        IValidator<RegisterRequestDto> validator,
+        IExceptionMessageMapper exceptionMapper)
         : base(coordinator)
     {
         _authentication = authentication;
@@ -43,7 +43,7 @@ public class RegisterViewModel : RoutableViewModelBase
         RegisterCommand = ReactiveCommand.CreateFromTask(RegisterAsync, canRegister);
 
         RegisterCommand.ThrownExceptions
-            .Select(MapExceptionToMessage)
+            .Select(exceptionMapper.Map)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(msg => ErrorMessage = msg);
 
@@ -129,11 +129,7 @@ public class RegisterViewModel : RoutableViewModelBase
             Password = Model.Password
         };
 
-        var validation = await _validator.ValidateAsync(dto, cancellationToken);
-        if (!validation.IsValid)
-        {
-            throw new ValidationException("Client‑side validation failed");
-        }
+        await _validator.ValidateAsync(dto, cancellationToken);
 
         await _authentication.RegisterAsync(dto, cancellationToken);
 
@@ -142,13 +138,4 @@ public class RegisterViewModel : RoutableViewModelBase
             _coordinator.ShowLogin();
         }
     }
-
-
-    private static string MapExceptionToMessage(Exception exception) =>
-        exception switch
-        {
-            OperationCanceledException => string.Empty,
-            HttpRequestException http when (int?)http.StatusCode == 400 => http.Message,
-            _ => exception.Message
-        };
 }

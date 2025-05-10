@@ -2,6 +2,7 @@
 using Cryptie.Client.Desktop.Composition.Factories;
 using Cryptie.Client.Desktop.Composition.Locators;
 using Cryptie.Client.Desktop.Coordinators;
+using Cryptie.Client.Desktop.Mappers;
 using Cryptie.Client.Desktop.ViewModels;
 using Cryptie.Client.Desktop.Views;
 using Cryptie.Client.Domain.Features.Authentication.Services;
@@ -35,6 +36,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IAppCoordinator, AppCoordinator>();
+        services.AddSingleton<IExceptionMessageMapper, ExceptionMessageMapper>();
 
         Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
 
