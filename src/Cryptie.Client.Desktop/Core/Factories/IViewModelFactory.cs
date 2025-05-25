@@ -5,5 +5,5 @@ namespace Cryptie.Client.Desktop.Core.Factories;
 
 public interface IViewModelFactory
 {
-    T Create<T>(IScreen hostScreen) where T : ViewModelBase;
+    T Create<T>(IScreen hostScreen, params object[] args) where T : ViewModelBase;
 }

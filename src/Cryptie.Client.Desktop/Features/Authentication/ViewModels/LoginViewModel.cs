@@ -19,8 +19,8 @@ public class LoginViewModel : RoutableViewModelBase
 {
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
-    private readonly IValidator<LoginRequestDto> _validator;
     private readonly IMapper _mapper;
+    private readonly IValidator<LoginRequestDto> _validator;
 
     public LoginViewModel(
         IAuthenticationService authentication,
@@ -56,7 +56,7 @@ public class LoginViewModel : RoutableViewModelBase
         await _validator.ValidateAsync(dto, cancellationToken);
 
         await _authentication.LoginAsync(dto, cancellationToken);
-        
+
         if (!cancellationToken.IsCancellationRequested)
         {
             _coordinator.ShowLogin();

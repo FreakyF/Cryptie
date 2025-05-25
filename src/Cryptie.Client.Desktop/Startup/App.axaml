@@ -3,16 +3,19 @@
              x:Class="Cryptie.Client.Desktop.Startup.App"
              RequestedThemeVariant="Default"
              xmlns:semi="https://irihi.tech/semi"
-             xmlns:views1="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.Views"
+             xmlns:views="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.Views"
              xmlns:viewModels="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.ViewModels"
              xmlns:locators="clr-namespace:Cryptie.Client.Desktop.Core.Locators">
     <Application.DataTemplates>
         <locators:ViewLocator />
         <DataTemplate DataType="viewModels:RegisterViewModel">
-            <views1:RegisterView />
+            <views:RegisterView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:TotpQrSetupViewModel">
+            <views:TotpQrSetupView />
         </DataTemplate>
         <DataTemplate DataType="viewModels:LoginViewModel">
-            <views1:LoginView />
+            <views:LoginView />
         </DataTemplate>
     </Application.DataTemplates>
 
