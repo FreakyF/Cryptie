@@ -6,8 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Cryptie.Client.Desktop.Features.Authentication.Views.LoginView"
-             x:DataType="viewModels:LoginViewModel">
+             x:Class="Cryptie.Client.Desktop.Features.Authentication.Views.TotpQrSetupView"
+             x:DataType="viewModels:TotpQrSetupViewModel">
     <Grid>
         <Border Theme="{StaticResource CardBorder}"
                 Classes="Shadow Hover"
@@ -21,37 +21,24 @@
                     Cryptie
                 </TextBlock>
                 <TextBlock HorizontalAlignment="Center">
-                    Sign in to your account
+                    Scan QR code with your authentication app
                 </TextBlock>
+                <Svg Width="200"
+                     Height="200"
+                     Source="{Binding QrCode}" />
                 <TextBox x:Name="UsernameTextBox"
-                         Watermark="Username"
-                         Text="{Binding Model.Username, Mode=TwoWay}" />
-                <TextBox x:Name="PasswordBox"
-                         Classes="RevealPasswordButton"
-                         Watermark="Password"
-                         PasswordChar="*"
-                         Text="{Binding Model.Password, Mode=TwoWay}" />
+                         Watermark="Auth Code"
+                         Text="{Binding Model.Secret, Mode=TwoWay}" />
 
                 <TextBlock x:Name="ErrorMessageTextBlock"
                            Classes="Danger"
                            HorizontalAlignment="Center"
                            Text="{Binding ErrorMessage, Mode=TwoWay}" />
 
-                <Button x:Name="LoginButton"
+                <Button x:Name="VerifyButton"
                         Theme="{StaticResource SolidButton}"
-                        Content="Login"
-                        Command="{Binding LoginCommand}" />
-
-                <StackPanel Spacing="0">
-                    <TextBlock HorizontalAlignment="Center">
-                        Don't have an account?
-                    </TextBlock>
-                    <Button x:Name="SignUpButton"
-                            Theme="{StaticResource BorderlessButton}"
-                            Classes="Secondary"
-                            Content="Sign up"
-                            Command="{Binding GoToRegisterCommand}" />
-                </StackPanel>
+                        Content="Verify"
+                        Command="{Binding VerifyCommand}" />
             </StackPanel>
         </Border>
     </Grid>
