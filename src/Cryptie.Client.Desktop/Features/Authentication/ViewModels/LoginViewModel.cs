@@ -7,8 +7,8 @@ using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
 using Cryptie.Client.Desktop.Features.Authentication.Models;
+using Cryptie.Client.Desktop.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Features.Authentication.State;
-using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
 using MapsterMapper;
@@ -20,8 +20,8 @@ public class LoginViewModel : RoutableViewModelBase
 {
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
-    private readonly IMapper _mapper;
     private readonly ILoginState _loginState;
+    private readonly IMapper _mapper;
     private readonly IValidator<LoginRequestDto> _validator;
 
     public LoginViewModel(
@@ -76,7 +76,7 @@ public class LoginViewModel : RoutableViewModelBase
         {
             _coordinator.ShowLogin();
         }
-        
+
         _loginState.LastResponse = result;
         _coordinator.ShowTotpCode();
     }

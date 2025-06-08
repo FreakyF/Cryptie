@@ -24,8 +24,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Cryptie.Client.Desktop\Cryptie.Client.Desktop.csproj"/>
-        <ProjectReference Include="..\Cryptie.Client.Domain\Cryptie.Client.Domain.csproj"/>
-        <ProjectReference Include="..\Cryptie.Client.Infrastructure\Cryptie.Client.Infrastructure.csproj"/>
         <ProjectReference Include="..\Cryptie.Server.API\Cryptie.Server.API.csproj"/>
         <ProjectReference Include="..\Cryptie.Server.Domain\Cryptie.Server.Domain.csproj"/>
         <ProjectReference Include="..\Cryptie.Server.Infrastructure\Cryptie.Server.Infrastructure.csproj"/>

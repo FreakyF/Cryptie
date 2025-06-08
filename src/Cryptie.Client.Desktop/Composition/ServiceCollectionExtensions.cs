@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Reflection;
+using Cryptie.Client.Desktop.Configuration;
 using Cryptie.Client.Desktop.Core.Factories;
 using Cryptie.Client.Desktop.Core.Locators;
 using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
+using Cryptie.Client.Desktop.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Features.Authentication.State;
 using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
+using Cryptie.Client.Desktop.Features.Messages.Services;
 using Cryptie.Client.Desktop.Features.Shell.ViewModels;
 using Cryptie.Client.Desktop.Features.Shell.Views;
-using Cryptie.Client.Domain.Features.Authentication.Services;
-using Cryptie.Client.Infrastructure.Configuration;
-using Cryptie.Client.Infrastructure.Features.Authentication.Services;
-using Cryptie.Client.Infrastructure.Features.Messages.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Validators;
 using FluentValidation;
@@ -65,12 +64,13 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
 
-        services.AddSingleton<MessagesService>().AddTransient<DashboardViewModel>();
-        services
-            // stan logowania trzymamy przez całą sesję
-            .AddSingleton<ILoginState, LoginState>()
+        services.AddSingleton<MessagesService>()
+            .AddTransient<DashboardViewModel>();
+
+        services.AddSingleton<ILoginState, LoginState>()
             .AddSingleton<MessagesService>()
             .AddTransient<DashboardViewModel>();
+
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();
     }

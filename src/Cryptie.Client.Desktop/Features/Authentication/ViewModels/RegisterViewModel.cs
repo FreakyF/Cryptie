@@ -10,8 +10,8 @@ using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
 using Cryptie.Client.Desktop.Features.Authentication.Models;
+using Cryptie.Client.Desktop.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Features.Authentication.State;
-using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
 using FluentValidation.Results;
@@ -137,7 +137,7 @@ public class RegisterViewModel : RoutableViewModelBase
             ErrorMessage = "An error occurred. Please try again.";
             return;
         }
-        
+
         if (cancellationToken.IsCancellationRequested)
         {
             _coordinator.ShowRegister();

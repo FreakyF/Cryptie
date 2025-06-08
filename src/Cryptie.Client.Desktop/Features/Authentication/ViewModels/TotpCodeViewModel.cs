@@ -7,8 +7,8 @@ using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
 using Cryptie.Client.Desktop.Features.Authentication.Models;
+using Cryptie.Client.Desktop.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Features.Authentication.State;
-using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
 using MapsterMapper;
@@ -20,9 +20,9 @@ public class TotpCodeViewModel : RoutableViewModelBase
 {
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
+    private readonly IKeychainManagerService _keychain;
     private readonly IMapper _mapper;
     private readonly IValidator<TotpRequestDto> _validator;
-    private readonly IKeychainManagerService _keychain;
 
     public TotpCodeViewModel(
         IAuthenticationService authentication,

@@ -1,16 +1,16 @@
+using System;
 using System.Collections.Concurrent;
 using Cryptie.Server.Domain.Features.Authentication.Entities.User;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Cryptie.Client.Infrastructure.Features.Messages.Services;
+namespace Cryptie.Client.Desktop.Features.Messages.Services;
 
 public class MessagesService
 {
-    private HubConnection hubConnection;
-
     public ConcurrentQueue<SignalRJoined> groupJoined = new ConcurrentQueue<SignalRJoined>();
     public ConcurrentQueue<SignalRMessage> groupMessages = new ConcurrentQueue<SignalRMessage>();
-    
+    private HubConnection hubConnection;
+
     public void ConnectToHub(User user)
     {
         hubConnection = new HubConnectionBuilder()
@@ -18,16 +18,12 @@ public class MessagesService
             .WithAutomaticReconnect()
             .Build();
 
-        hubConnection.On<Guid, Guid>("UserJoinedGroup", (user, groupId) =>
-        {
-            groupJoined.Enqueue(new SignalRJoined(groupId, user));
-        });
-        
-        hubConnection.On<string, Guid>("ReceiveGroupMessage", (message, groupId) =>
-        {
-            groupMessages.Enqueue(new SignalRMessage(groupId, message));
-        });
-        
+        hubConnection.On<Guid, Guid>("UserJoinedGroup",
+            (user, groupId) => { groupJoined.Enqueue(new SignalRJoined(groupId, user)); });
+
+        hubConnection.On<string, Guid>("ReceiveGroupMessage",
+            (message, groupId) => { groupMessages.Enqueue(new SignalRMessage(groupId, message)); });
+
         foreach (var group in user.Groups)
         {
             hubConnection.InvokeAsync("JoinChat", user.Id, group.Id);

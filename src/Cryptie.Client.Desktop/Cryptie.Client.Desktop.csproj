@@ -25,8 +25,12 @@
         </PackageReference>
         <PackageReference Include="Avalonia.Skia" Version="11.3.0"/>
         <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0"/>
+        <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0"/>
+        <PackageReference Include="KeySharp" Version="1.0.5"/>
         <PackageReference Include="Mapster" Version="7.4.0"/>
         <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="9.0.4"/>
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.4"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.4"/>
@@ -37,6 +41,7 @@
         <PackageReference Include="Semi.Avalonia" Version="11.2.1.7"/>
         <PackageReference Include="Semi.Avalonia.DataGrid" Version="11.2.1.7"/>
         <PackageReference Include="Semi.Avalonia.TreeDataGrid" Version="11.0.10.3"/>
+        <PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.4"/>
         <PackageReference Include="Universal.Microsoft.Extensions.Configuration.Json" Version="1.0.0"/>
     </ItemGroup>
 
@@ -66,14 +71,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Client.Infrastructure\Cryptie.Client.Infrastructure.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <UpToDateCheckInput Remove="Composition\Startup\App.axaml"/>
     </ItemGroup>
 
     <ItemGroup>
         <AdditionalFiles Include="Startup\App.axaml"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj"/>
+        <ProjectReference Include="..\Cryptie.Server.Domain\Cryptie.Server.Domain.csproj"/>
     </ItemGroup>
 </Project>

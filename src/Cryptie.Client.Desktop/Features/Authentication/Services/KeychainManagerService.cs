@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Cryptie.Client.Domain.Features.Authentication.Services;
 using KeySharp;
 
-namespace Cryptie.Client.Infrastructure.Features.Authentication.Services;
+namespace Cryptie.Client.Desktop.Features.Authentication.Services;
 
 public class KeychainManagerService : IKeychainManagerService
 {

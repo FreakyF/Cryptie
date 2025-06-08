@@ -1,8 +1,8 @@
 ﻿using System;
 using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Core.Factories;
+using Cryptie.Client.Desktop.Features.Authentication.Services;
 using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
-using Cryptie.Client.Domain.Features.Authentication.Services;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.Core.Navigation;

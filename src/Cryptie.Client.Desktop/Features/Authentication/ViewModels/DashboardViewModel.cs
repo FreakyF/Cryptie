@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Features.Authentication.State;
-using Cryptie.Client.Infrastructure.Features.Messages.Services;
+using Cryptie.Client.Desktop.Features.Messages.Services;
 using Cryptie.Server.Domain.Features.Authentication.Entities.User;
 using ReactiveUI;
 

@@ -1,8 +1,10 @@
-﻿using System.Net.Http.Json;
-using Cryptie.Client.Domain.Features.Authentication.Services;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using Cryptie.Common.Features.Authentication.DTOs;
 
-namespace Cryptie.Client.Infrastructure.Features.Authentication.Services;
+namespace Cryptie.Client.Desktop.Features.Authentication.Services;
 
 public class AuthenticationService(HttpClient httpClient) : IAuthenticationService
 {
@@ -18,7 +20,8 @@ public class AuthenticationService(HttpClient httpClient) : IAuthenticationServi
         return (await response.Content.ReadFromJsonAsync<RegisterResponseDto>(cancellationToken))!;
     }
 
-    public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto loginRequest, CancellationToken cancellationToken = default)
+    public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto loginRequest,
+        CancellationToken cancellationToken = default)
     {
         using var response = await httpClient.PostAsJsonAsync(
             "auth/login",
