@@ -1,4 +1,5 @@
-﻿using Cryptie.Client.Domain.Features.Authentication.Services;
+﻿using System.Diagnostics.CodeAnalysis;
+using Cryptie.Client.Domain.Features.Authentication.Services;
 using KeySharp;
 
 namespace Cryptie.Client.Infrastructure.Features.Authentication.Services;
@@ -9,7 +10,7 @@ public class KeychainManagerService : IKeychainManagerService
     private const string ServiceName = "SessionService";
     private const string Account = "CurrentUser";
 
-    public bool TrySaveSessionToken(string token, out string? errorMessage)
+    public bool TrySaveSessionToken(string token, [NotNullWhen(false)] out string? errorMessage)
     {
         errorMessage = null;
 
@@ -31,7 +32,7 @@ public class KeychainManagerService : IKeychainManagerService
         }
     }
 
-    public bool TryGetSessionToken(out string? token, out string? errorMessage)
+    public bool TryGetSessionToken(out string? token, [NotNullWhen(false)] out string? errorMessage)
     {
         token = null;
         errorMessage = null;
@@ -54,7 +55,7 @@ public class KeychainManagerService : IKeychainManagerService
         }
     }
 
-    public bool TryClearSessionToken(out string? errorMessage)
+    public bool TryClearSessionToken([NotNullWhen(false)] out string? errorMessage)
     {
         errorMessage = null;
 
