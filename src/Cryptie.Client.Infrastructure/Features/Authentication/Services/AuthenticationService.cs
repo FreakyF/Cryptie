@@ -6,7 +6,8 @@ namespace Cryptie.Client.Infrastructure.Features.Authentication.Services;
 
 public class AuthenticationService(HttpClient httpClient) : IAuthenticationService
 {
-    public async Task RegisterAsync(RegisterRequestDto registerRequest, CancellationToken cancellationToken = default)
+    public async Task<RegisterResponseDto?> RegisterAsync(RegisterRequestDto registerRequest,
+        CancellationToken cancellationToken = default)
     {
         using var response = await httpClient.PostAsJsonAsync(
             "auth/register",
@@ -14,9 +15,10 @@ public class AuthenticationService(HttpClient httpClient) : IAuthenticationServi
             cancellationToken);
 
         response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<RegisterResponseDto>(cancellationToken))!;
     }
 
-    public async Task LoginAsync(LoginRequestDto loginRequest, CancellationToken cancellationToken = default)
+    public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto loginRequest, CancellationToken cancellationToken = default)
     {
         using var response = await httpClient.PostAsJsonAsync(
             "auth/login",
@@ -24,5 +26,18 @@ public class AuthenticationService(HttpClient httpClient) : IAuthenticationServi
             cancellationToken);
 
         response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<LoginResponseDto>(cancellationToken))!;
+    }
+
+    public async Task<TotpResponseDto?> TotpAsync(TotpRequestDto totpRequest,
+        CancellationToken cancellationToken = default)
+    {
+        using var response = await httpClient.PostAsJsonAsync(
+            "auth/totp",
+            totpRequest,
+            cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<TotpResponseDto>(cancellationToken))!;
     }
 }

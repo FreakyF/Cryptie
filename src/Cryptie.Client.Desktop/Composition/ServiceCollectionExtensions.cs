@@ -4,6 +4,7 @@ using Cryptie.Client.Desktop.Core.Factories;
 using Cryptie.Client.Desktop.Core.Locators;
 using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
+using Cryptie.Client.Desktop.Features.Authentication.State;
 using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
 using Cryptie.Client.Desktop.Features.Shell.ViewModels;
 using Cryptie.Client.Desktop.Features.Shell.Views;
@@ -52,10 +53,15 @@ public static class ServiceCollectionExtensions
 
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
+        services.AddTransient<TotpCodeViewModel>();
+        services.AddTransient<TotpQrSetupViewModel>();
 
         services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
         services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();
+        services.AddTransient<IValidator<TotpRequestDto>, TotpRequestValidator>();
 
+        services.AddSingleton<IRegistrationState, RegistrationState>();
+        services.AddSingleton<ILoginState, LoginState>();
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

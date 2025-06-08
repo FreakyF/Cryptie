@@ -4,10 +4,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels1="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.ViewModels"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Cryptie.Client.Desktop.Features.Authentication.Views.RegisterView"
-             x:DataType="viewModels1:RegisterViewModel">
+             x:DataType="viewModels:RegisterViewModel">
     <Grid>
         <Border Theme="{StaticResource CardBorder}"
                 Classes="Shadow Hover"

@@ -16,59 +16,53 @@ using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels;
 
-public class LoginViewModel : RoutableViewModelBase
+public class TotpCodeViewModel : RoutableViewModelBase
 {
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
     private readonly IMapper _mapper;
-    private readonly ILoginState _loginState;
-    private readonly IValidator<LoginRequestDto> _validator;
+    private readonly IValidator<TotpRequestDto> _validator;
 
-    public LoginViewModel(
+    public TotpCodeViewModel(
         IAuthenticationService authentication,
+        IScreen hostScreen,
         IShellCoordinator coordinator,
-        IValidator<LoginRequestDto> validator,
+        IValidator<TotpRequestDto> validator,
         IExceptionMessageMapper exceptionMapper,
-        IMapper mapper,
-        ILoginState loginState)
-        : base(coordinator)
+        ILoginState loginState,
+        IMapper mapper)
+        : base(hostScreen)
     {
         _authentication = authentication;
         _coordinator = coordinator;
         _validator = validator;
         _mapper = mapper;
-        _loginState = loginState;
 
-        LoginCommand = ReactiveCommand.CreateFromTask(LoginAsync);
+        var loginResponse = loginState.LastResponse!;
+        Model.TotpToken = loginResponse.TotpToken;
 
-        LoginCommand.ThrownExceptions
+        VerifyCommand = ReactiveCommand.CreateFromTask(TotpAuthAsync);
+
+        VerifyCommand.ThrownExceptions
             .Select(exceptionMapper.Map)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(msg => ErrorMessage = msg);
-
-        GoToRegisterCommand = ReactiveCommand.Create(() => _coordinator.ShowRegister());
     }
 
-    internal LoginModel Model { get; } = new();
-    public ReactiveCommand<Unit, Unit> LoginCommand { get; }
-    public ReactiveCommand<Unit, Unit> GoToRegisterCommand { get; }
+    internal TotpQrSetupModel Model { get; } = new();
+    public ReactiveCommand<Unit, Unit> VerifyCommand { get; }
 
-    private async Task LoginAsync(CancellationToken cancellationToken)
+    private async Task TotpAuthAsync(CancellationToken cancellationToken)
     {
-        var dto = _mapper.Map<LoginRequestDto>(Model);
+        var dto = _mapper.Map<TotpRequestDto>(Model);
 
-        var validation = await _validator.ValidateAsync(dto, cancellationToken);
+        await _validator.ValidateAsync(dto, cancellationToken);
 
-        if (!validation.IsValid)
-        {
-            ErrorMessage = "Wrong username or password.";
-            return;
-        }
+        var result = await _authentication.TotpAsync(dto, cancellationToken);
 
-        var result = await _authentication.LoginAsync(dto, cancellationToken);
         if (result == null)
         {
-            ErrorMessage = "Wrong username or password.";
+            ErrorMessage = "An error occurred. Please try again.";
             return;
         }
 
@@ -76,8 +70,7 @@ public class LoginViewModel : RoutableViewModelBase
         {
             _coordinator.ShowLogin();
         }
-        
-        _loginState.LastResponse = result;
-        _coordinator.ShowTotpCode();
+
+        _coordinator.ShowQrSetup();
     }
 }

@@ -10,6 +10,7 @@ using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
 using Cryptie.Client.Desktop.Features.Authentication.Models;
+using Cryptie.Client.Desktop.Features.Authentication.State;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
@@ -23,21 +24,24 @@ public class RegisterViewModel : RoutableViewModelBase
 {
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
-    private readonly IValidator<RegisterRequestDto> _validator;
     private readonly IMapper _mapper;
+    private readonly IRegistrationState _registrationState;
+    private readonly IValidator<RegisterRequestDto> _validator;
 
     public RegisterViewModel(
         IAuthenticationService authentication,
         IShellCoordinator coordinator,
         IValidator<RegisterRequestDto> validator,
         IExceptionMessageMapper exceptionMapper,
-        IMapper mapper)
+        IMapper mapper,
+        IRegistrationState registrationState)
         : base(coordinator)
     {
         _authentication = authentication;
         _coordinator = coordinator;
         _validator = validator;
         _mapper = mapper;
+        _registrationState = registrationState;
 
         var canRegister = IsValidated();
 
@@ -126,11 +130,20 @@ public class RegisterViewModel : RoutableViewModelBase
 
         await _validator.ValidateAsync(dto, cancellationToken);
 
-        await _authentication.RegisterAsync(dto, cancellationToken);
+        var result = await _authentication.RegisterAsync(dto, cancellationToken);
 
-        if (!cancellationToken.IsCancellationRequested)
+        if (result == null)
         {
-            _coordinator.ShowLogin();
+            ErrorMessage = "An error occurred. Please try again.";
+            return;
         }
+        
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _coordinator.ShowRegister();
+        }
+
+        _registrationState.LastResponse = result;
+        _coordinator.ShowQrSetup();
     }
 }
