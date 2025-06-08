@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Cryptie.Client.Desktop.Core.Base;
 
-
+namespace Cryptie.Client.Desktop.Core.Locators;
 
 public class ViewLocator : IDataTemplate
 {

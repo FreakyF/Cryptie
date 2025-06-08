@@ -3,8 +3,9 @@ using Cryptie.Common.Features.Authentication.DTOs;
 using Mapster;
 
 
-
 // ReSharper disable once UnusedType.Global
+namespace Cryptie.Client.Desktop.Features.Authentication.Mapping;
+
 public class AuthenticationMappingProfile : IRegister
 {
     public void Register(TypeAdapterConfig config)

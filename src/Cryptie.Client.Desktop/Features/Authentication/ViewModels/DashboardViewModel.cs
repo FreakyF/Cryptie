@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Features.Authentication.State;
 using Cryptie.Client.Desktop.Features.Messages.Services;
-using Cryptie.Server.Domain.Features.Authentication.Entities.User;
+using Cryptie.Common.Entities.User;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels

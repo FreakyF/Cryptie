@@ -1,7 +1,7 @@
 ﻿using Cryptie.Client.Desktop.Core.Navigation;
 using ReactiveUI;
 
-
+namespace Cryptie.Client.Desktop.Features.Shell.ViewModels;
 
 public class MainWindowViewModel : ReactiveObject
 {

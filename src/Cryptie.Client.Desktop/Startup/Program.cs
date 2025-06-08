@@ -1,8 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
-
-
+using Cryptie.Client.Desktop.Startup;
 
 internal static class Program
 {

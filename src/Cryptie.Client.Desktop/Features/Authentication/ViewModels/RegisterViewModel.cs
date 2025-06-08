@@ -18,7 +18,7 @@ using FluentValidation.Results;
 using MapsterMapper;
 using ReactiveUI;
 
-
+namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels;
 
 public class RegisterViewModel : RoutableViewModelBase
 {

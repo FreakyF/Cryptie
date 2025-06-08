@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Concurrent;
-using Cryptie.Server.Domain.Features.Authentication.Entities.User;
+using Cryptie.Common.Entities.User;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Cryptie.Client.Desktop.Features.Messages.Services;

@@ -2,7 +2,7 @@
 using System.Linq;
 using ReactiveUI;
 
-
+namespace Cryptie.Client.Desktop.Core.Locators;
 
 public class ReactiveViewLocator : IViewLocator
 {
