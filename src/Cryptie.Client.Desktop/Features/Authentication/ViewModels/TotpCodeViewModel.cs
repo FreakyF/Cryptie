@@ -1,11 +1,76 @@
-﻿using Cryptie.Client.Desktop.Core.Base;
+﻿using System;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Cryptie.Client.Desktop.Core.Base;
+using Cryptie.Client.Desktop.Core.Mapping;
+using Cryptie.Client.Desktop.Core.Navigation;
+using Cryptie.Client.Desktop.Features.Authentication.Models;
+using Cryptie.Client.Desktop.Features.Authentication.State;
+using Cryptie.Client.Domain.Features.Authentication.Services;
+using Cryptie.Common.Features.Authentication.DTOs;
+using FluentValidation;
+using MapsterMapper;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels;
 
 public class TotpCodeViewModel : RoutableViewModelBase
 {
-    public TotpCodeViewModel(IScreen hostScreen) : base(hostScreen)
+    private readonly IAuthenticationService _authentication;
+    private readonly IShellCoordinator _coordinator;
+    private readonly IMapper _mapper;
+    private readonly IValidator<TotpRequestDto> _validator;
+
+    public TotpCodeViewModel(
+        IAuthenticationService authentication,
+        IScreen hostScreen,
+        IShellCoordinator coordinator,
+        IValidator<TotpRequestDto> validator,
+        IExceptionMessageMapper exceptionMapper,
+        ILoginState loginState,
+        IMapper mapper)
+        : base(hostScreen)
     {
+        _authentication = authentication;
+        _coordinator = coordinator;
+        _validator = validator;
+        _mapper = mapper;
+
+        var loginResponse = loginState.LastResponse!;
+        Model.TotpToken = loginResponse.TotpToken;
+
+        VerifyCommand = ReactiveCommand.CreateFromTask(TotpAuthAsync);
+
+        VerifyCommand.ThrownExceptions
+            .Select(exceptionMapper.Map)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(msg => ErrorMessage = msg);
+    }
+
+    internal TotpQrSetupModel Model { get; } = new();
+    public ReactiveCommand<Unit, Unit> VerifyCommand { get; }
+
+    private async Task TotpAuthAsync(CancellationToken cancellationToken)
+    {
+        var dto = _mapper.Map<TotpRequestDto>(Model);
+
+        await _validator.ValidateAsync(dto, cancellationToken);
+
+        var result = await _authentication.TotpAsync(dto, cancellationToken);
+
+        if (result == null)
+        {
+            ErrorMessage = "An error occurred. Please try again.";
+            return;
+        }
+
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _coordinator.ShowLogin();
+        }
+
+        _coordinator.ShowQrSetup();
     }
 }

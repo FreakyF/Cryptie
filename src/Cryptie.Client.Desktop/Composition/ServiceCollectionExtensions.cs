@@ -61,6 +61,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IValidator<TotpRequestDto>, TotpRequestValidator>();
 
         services.AddSingleton<IRegistrationState, RegistrationState>();
+        services.AddSingleton<ILoginState, LoginState>();
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

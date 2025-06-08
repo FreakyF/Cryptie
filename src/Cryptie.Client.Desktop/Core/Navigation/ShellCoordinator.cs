@@ -1,12 +1,11 @@
 ﻿using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Core.Factories;
-using Cryptie.Client.Desktop.Features.Authentication.State;
 using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.Core.Navigation;
 
-public class ShellCoordinator(IViewModelFactory factory, IRegistrationState registrationState) : IShellCoordinator
+public class ShellCoordinator(IViewModelFactory factory) : IShellCoordinator
 {
     public RoutingState Router { get; } = new();
 

@@ -7,6 +7,7 @@ using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Core.Mapping;
 using Cryptie.Client.Desktop.Core.Navigation;
 using Cryptie.Client.Desktop.Features.Authentication.Models;
+using Cryptie.Client.Desktop.Features.Authentication.State;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
@@ -20,6 +21,7 @@ public class LoginViewModel : RoutableViewModelBase
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
     private readonly IMapper _mapper;
+    private readonly ILoginState _loginState;
     private readonly IValidator<LoginRequestDto> _validator;
 
     public LoginViewModel(
@@ -27,13 +29,15 @@ public class LoginViewModel : RoutableViewModelBase
         IShellCoordinator coordinator,
         IValidator<LoginRequestDto> validator,
         IExceptionMessageMapper exceptionMapper,
-        IMapper mapper)
+        IMapper mapper,
+        ILoginState loginState)
         : base(coordinator)
     {
         _authentication = authentication;
         _coordinator = coordinator;
         _validator = validator;
         _mapper = mapper;
+        _loginState = loginState;
 
         LoginCommand = ReactiveCommand.CreateFromTask(LoginAsync);
 
@@ -42,7 +46,7 @@ public class LoginViewModel : RoutableViewModelBase
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(msg => ErrorMessage = msg);
 
-        GoToRegisterCommand = ReactiveCommand.Create(coordinator.ShowRegister);
+        GoToRegisterCommand = ReactiveCommand.Create(() => _coordinator.ShowRegister());
     }
 
     internal LoginModel Model { get; } = new();
@@ -53,15 +57,27 @@ public class LoginViewModel : RoutableViewModelBase
     {
         var dto = _mapper.Map<LoginRequestDto>(Model);
 
-        await _validator.ValidateAsync(dto, cancellationToken);
+        var validation = await _validator.ValidateAsync(dto, cancellationToken);
 
-        await _authentication.LoginAsync(dto, cancellationToken);
+        if (!validation.IsValid)
+        {
+            ErrorMessage = "Wrong username or password.";
+            return;
+        }
 
-        if (!cancellationToken.IsCancellationRequested)
+        var result = await _authentication.LoginAsync(dto, cancellationToken);
+        if (result == null)
+        {
+            ErrorMessage = "Wrong username or password.";
+            return;
+        }
+
+        if (cancellationToken.IsCancellationRequested)
         {
             _coordinator.ShowLogin();
         }
-
-        _coordinator.ShowRegister();
+        
+        _loginState.LastResponse = result;
+        _coordinator.ShowTotpCode();
     }
 }

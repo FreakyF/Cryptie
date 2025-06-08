@@ -17,6 +17,10 @@
         <DataTemplate DataType="viewModels:LoginViewModel">
             <views:LoginView />
         </DataTemplate>
+        <DataTemplate DataType="viewModels:TotpCodeViewModel">
+            <views:LoginView />
+        </DataTemplate>
+        
     </Application.DataTemplates>
 
     <Application.Styles>

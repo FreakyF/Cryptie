@@ -134,15 +134,16 @@ public class RegisterViewModel : RoutableViewModelBase
 
         if (result == null)
         {
-            ErrorMessage = "Something went wrong during registration. Please try again.";
+            ErrorMessage = "An error occurred. Please try again.";
             return;
+        }
+        
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _coordinator.ShowRegister();
         }
 
         _registrationState.LastResponse = result;
-
-        if (!cancellationToken.IsCancellationRequested)
-        {
-            _coordinator.ShowQrSetup();
-        }
+        _coordinator.ShowQrSetup();
     }
 }

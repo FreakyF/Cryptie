@@ -44,7 +44,7 @@ public class TotpQrSetupViewModel : RoutableViewModelBase
         Model.TotpToken = registerResponse.TotpToken;
         QrCode = GenerateQrCode(registerResponse.Secret);
 
-        VerifyCommand = ReactiveCommand.CreateFromTask(TotpAsync);
+        VerifyCommand = ReactiveCommand.CreateFromTask(TotpSetupAsync);
 
         VerifyCommand.ThrownExceptions
             .Select(exceptionMapper.Map)
@@ -57,11 +57,10 @@ public class TotpQrSetupViewModel : RoutableViewModelBase
     internal TotpQrSetupModel Model { get; } = new();
     public ReactiveCommand<Unit, Unit> VerifyCommand { get; }
 
-    private async Task TotpAsync(CancellationToken cancellationToken)
+    private async Task TotpSetupAsync(CancellationToken cancellationToken)
     {
         var dto = _mapper.Map<TotpRequestDto>(Model);
-        Console.WriteLine($"TotpToken: {dto.Secret}");
-        Console.WriteLine($"TotpCode: {dto.TotpToken}");
+
         await _validator.ValidateAsync(dto, cancellationToken);
 
         var result = await _authentication.TotpAsync(dto, cancellationToken);
@@ -72,12 +71,12 @@ public class TotpQrSetupViewModel : RoutableViewModelBase
             return;
         }
 
-        if (!cancellationToken.IsCancellationRequested)
+        if (cancellationToken.IsCancellationRequested)
         {
             _coordinator.ShowQrSetup();
         }
 
-        _coordinator.ShowRegister();
+        _coordinator.ShowLogin();
     }
 
     private static string GenerateQrCode(string payload)

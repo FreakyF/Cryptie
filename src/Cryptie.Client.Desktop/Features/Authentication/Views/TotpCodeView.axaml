@@ -1,0 +1,42 @@
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Cryptie.Client.Desktop.Features.Authentication.Views.TotpCodeView"
+             x:DataType="viewModels:TotpCodeViewModel">
+    <Grid>
+        <Border Theme="{StaticResource CardBorder}"
+                Classes="Shadow Hover"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="400">
+            <StackPanel Spacing="16">
+                <TextBlock Theme="{StaticResource TitleTextBlock}"
+                           Classes="H1"
+                           HorizontalAlignment="Center">
+                    Cryptie
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center">
+                    Enter your one time password
+                </TextBlock>
+                <TextBox x:Name="UsernameTextBox"
+                         Watermark="Auth Code"
+                         Text="{Binding Model.Secret, Mode=TwoWay}" />
+
+                <TextBlock x:Name="ErrorMessageTextBlock"
+                           Classes="Danger"
+                           HorizontalAlignment="Center"
+                           Text="{Binding ErrorMessage, Mode=TwoWay}" />
+
+                <Button x:Name="VerifyButton"
+                        Theme="{StaticResource SolidButton}"
+                        Content="Verify"
+                        Command="{Binding VerifyCommand}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
