@@ -1,7 +1,7 @@
 ﻿using System;
 using Cryptie.Common.Features.Authentication.Exceptions;
 
-namespace Cryptie.Client.Desktop.Core.Mapping;
+
 
 public class ExceptionMessageMapper : IExceptionMessageMapper
 {

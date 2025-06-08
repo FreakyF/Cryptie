@@ -1,3 +1,5 @@
+
+
 namespace Cryptie.Common.Features.Messages.Protocol;
 
 public class WebSocketResponse

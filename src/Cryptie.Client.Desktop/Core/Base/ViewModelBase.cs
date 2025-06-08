@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Core.Base;
+
 
 public class ViewModelBase : ReactiveObject
 {

@@ -1,3 +1,5 @@
+
+
 namespace Cryptie.Common.Features.Messages.DTOs;
 
 public class AuthenticationRequestDTO

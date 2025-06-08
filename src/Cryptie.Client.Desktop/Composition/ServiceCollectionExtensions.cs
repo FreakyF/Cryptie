@@ -22,7 +22,7 @@ using Microsoft.Extensions.Options;
 using ReactiveUI;
 using Splat;
 
-namespace Cryptie.Client.Desktop.Composition;
+
 
 public static class ServiceCollectionExtensions
 {

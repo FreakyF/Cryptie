@@ -4,7 +4,7 @@ using Cryptie.Client.Desktop.Core.Base;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Core.Factories;
+
 
 public class ViewModelFactory(IServiceProvider services) : IViewModelFactory
 {

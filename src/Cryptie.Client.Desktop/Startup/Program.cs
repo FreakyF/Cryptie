@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Startup;
+
 
 internal static class Program
 {

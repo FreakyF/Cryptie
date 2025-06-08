@@ -2,7 +2,7 @@
 using Cryptie.Common.Features.Authentication.Validators;
 using FluentValidation.TestHelper;
 
-namespace Cryptie.Server.API.Tests.Features.Authentication.Validators;
+namespace Cryptie.Common.Tests.Features.Authentication.Validators;
 
 public class TotpRequestValidatorTests
 {

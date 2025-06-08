@@ -14,7 +14,7 @@ using FluentValidation;
 using MapsterMapper;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels;
+
 
 public class TotpCodeViewModel : RoutableViewModelBase
 {

@@ -1,7 +1,7 @@
 ﻿using Cryptie.Client.Desktop.Core.Base;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Core.Factories;
+
 
 public interface IViewModelFactory
 {
