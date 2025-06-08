@@ -1,6 +1,4 @@
-
-
-namespace Cryptie.Server.API.Tests;
+namespace Cryptie.Server.Tests;
 
 public class UnitTest1
 {

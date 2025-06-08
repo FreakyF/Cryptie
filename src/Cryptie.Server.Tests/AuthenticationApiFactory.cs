@@ -1,31 +1,27 @@
-﻿using DotNet.Testcontainers.Builders;
+﻿using Cryptie.Server.Persistence.DatabaseContext;
+using DotNet.Testcontainers.Builders;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
-using Program = Server.Program;
 
-namespace Cryptie.Server.API.Tests;
+namespace Cryptie.Server.Tests;
 
 public class AuthenticationApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _database;
-
-    public AuthenticationApiFactory()
-    {
-        _database = new PostgreSqlBuilder()
-            .WithImage("postgres:17-alpine")
-            .WithDatabase("cryptie-test")
-            .WithUsername("postgres")
-            .WithPassword("postgres")
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilCommandIsCompleted("pg_isready -U postgres -d cryptie-test"))
-            .WithCleanUp(true)
-            .Build();
-    }
+    private readonly PostgreSqlContainer _database = new PostgreSqlBuilder()
+        .WithImage("postgres:17-alpine")
+        .WithDatabase("cryptie-test")
+        .WithUsername("postgres")
+        .WithPassword("postgres")
+        .WithWaitStrategy(Wait.ForUnixContainer().UntilCommandIsCompleted("pg_isready -U postgres -d cryptie-test"))
+        .WithCleanUp(true)
+        .Build();
 
     public async Task InitializeAsync() => await _database.StartAsync();
-    public async Task DisposeAsync() => await _database.DisposeAsync();
+
+    Task IAsyncLifetime.DisposeAsync() => _database.DisposeAsync().AsTask();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {

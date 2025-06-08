@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Cryptie.Common.Features.Authentication.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Server.Features.Authentication.Services;
+namespace Cryptie.Server.Features.Authentication.Services;
 
 public class DelayService : IDelayService
 {

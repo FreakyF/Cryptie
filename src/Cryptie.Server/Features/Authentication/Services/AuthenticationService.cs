@@ -1,13 +1,13 @@
 using Cryptie.Common.Entities.User;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
+using Cryptie.Server.Persistence.DatabaseContext;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OtpNet;
-using Server.Persistence.DatabaseContext;
 using Totp = Cryptie.Common.Entities.User.Totp;
 
-namespace Server.Features.Authentication.Services;
+namespace Cryptie.Server.Features.Authentication.Services;
 
 public class AuthenticationService(
     AppDbContext appDbContext,

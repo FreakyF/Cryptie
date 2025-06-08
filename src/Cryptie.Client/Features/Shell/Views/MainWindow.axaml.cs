@@ -1,13 +1,18 @@
 using Avalonia.ReactiveUI;
-using Cryptie.Client.Desktop.Features.Shell.ViewModels;
+using Cryptie.Client.Features.Shell.ViewModels;
 
-namespace Cryptie.Client.Desktop.Features.Shell.Views;
+namespace Cryptie.Client.Features.Shell.Views;
 
 public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
-    public MainWindow(MainWindowViewModel viewModel)
+    // ReSharper disable once MemberCanBePrivate.Global
+    public MainWindow()
     {
         InitializeComponent();
+    }
+
+    public MainWindow(MainWindowViewModel viewModel) : this()
+    {
         DataContext = viewModel;
     }
 }

@@ -1,7 +1,7 @@
 using Docker.DotNet;
 using Docker.DotNet.Models;
 
-namespace Server;
+namespace Cryptie.Server;
 
 public class DockerStarter
 {

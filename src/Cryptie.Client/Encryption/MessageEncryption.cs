@@ -3,7 +3,7 @@ using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Cryptie.Client.Desktop.Encryption;
+namespace Cryptie.Client.Encryption;
 
 public static class MessageEncryption
 {

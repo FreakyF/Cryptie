@@ -2,9 +2,9 @@ using Cryptie.Common.Entities.Honeypot;
 using Cryptie.Common.Entities.LoginPolicy;
 using Cryptie.Common.Entities.User;
 using Cryptie.Common.Features.Authentication.Services;
-using Server.Persistence.DatabaseContext;
+using Cryptie.Server.Persistence.DatabaseContext;
 
-namespace Server.Features.Authentication.Services;
+namespace Cryptie.Server.Features.Authentication.Services;
 
 public class LockoutService(AppDbContext appDbContext) : ILockoutService
 {

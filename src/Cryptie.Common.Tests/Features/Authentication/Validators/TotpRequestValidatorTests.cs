@@ -39,7 +39,7 @@ public class TotpRequestValidatorTests
         //Act
         var result = _validator.TestValidate(model);
         //Assert
-        result.ShouldHaveValidationErrorFor(x => x.Secret);
+        result.ShouldHaveValidationErrorFor(x => x.Secret).WithErrorMessage(expectedError);
     }
 
     [Trait("TestCategory", "Unit")]

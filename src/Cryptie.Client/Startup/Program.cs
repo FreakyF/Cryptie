@@ -1,7 +1,6 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using Cryptie.Client.Desktop.Startup;
 
 namespace Cryptie.Client.Startup;
 

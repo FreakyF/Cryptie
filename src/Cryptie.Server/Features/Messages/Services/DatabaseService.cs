@@ -1,8 +1,8 @@
 using Cryptie.Common.Entities.User;
 using Cryptie.Common.Features.Messages.Services;
-using Server.Persistence.DatabaseContext;
+using Cryptie.Server.Persistence.DatabaseContext;
 
-namespace Server.Features.Messages.Services;
+namespace Cryptie.Server.Features.Messages.Services;
 
 public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 {

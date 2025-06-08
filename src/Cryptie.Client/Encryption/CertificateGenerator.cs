@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Cryptie.Client.Desktop.Encryption;
+namespace Cryptie.Client.Encryption;
 
 public class CertificateGenerator
 {

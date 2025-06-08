@@ -2,13 +2,14 @@ using System.Threading.RateLimiting;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.Validators;
+using Cryptie.Server.Features.Authentication.Services;
+using Cryptie.Server.Features.Messages.Services;
+using Cryptie.Server.Persistence.DatabaseContext;
 using FluentValidation;
 using Scalar.AspNetCore;
-using Server;
-using Server.Features.Authentication.Services;
-using Server.Features.Messages.Services;
-using Server.Persistence.DatabaseContext;
-using DatabaseService = Server.Features.Authentication.Services.DatabaseService;
+using DatabaseService = Cryptie.Server.Features.Authentication.Services.DatabaseService;
+
+namespace Cryptie.Server;
 
 public class Program
 {

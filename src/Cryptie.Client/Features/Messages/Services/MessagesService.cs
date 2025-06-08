@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using Cryptie.Common.Entities.User;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Cryptie.Client.Desktop.Features.Messages.Services;
+namespace Cryptie.Client.Features.Messages.Services;
 
 public class MessagesService
 {

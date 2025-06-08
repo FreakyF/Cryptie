@@ -4,13 +4,13 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using Cryptie.Client.Desktop.Composition;
-using Cryptie.Client.Desktop.Features.Shell.Views;
+using Cryptie.Client.Composition;
+using Cryptie.Client.Features.Shell.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Cryptie.Client.Desktop.Startup;
+namespace Cryptie.Client.Startup;
 
 public class App : Application
 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Cryptie.Client.Desktop.Core.Base;
+using Cryptie.Client.Core.Base;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Core.Factories;
+namespace Cryptie.Client.Core.Factories;
 
 public class ViewModelFactory(IServiceProvider services) : IViewModelFactory
 {

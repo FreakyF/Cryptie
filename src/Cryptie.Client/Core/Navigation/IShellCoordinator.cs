@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Core.Navigation;
+namespace Cryptie.Client.Core.Navigation;
 
 public interface IShellCoordinator : IScreen
 {

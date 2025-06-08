@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using Cryptie.Client.Desktop.Core.Base;
-using Cryptie.Client.Desktop.Features.Authentication.State;
-using Cryptie.Client.Desktop.Features.Messages.Services;
+using Cryptie.Client.Core.Base;
+using Cryptie.Client.Features.Authentication.State;
+using Cryptie.Client.Features.Messages.Services;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels
+namespace Cryptie.Client.Features.Authentication.ViewModels
 {
     public class DashboardViewModel : RoutableViewModelBase
     {

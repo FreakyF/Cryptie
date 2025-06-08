@@ -1,26 +1,26 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Cryptie.Client.Desktop.Startup.App"
+             x:Class="Cryptie.Client.Startup.App"
              RequestedThemeVariant="Default"
              xmlns:semi="https://irihi.tech/semi"
-             xmlns:views="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.Views"
-             xmlns:viewModels="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.ViewModels"
-             xmlns:locators="clr-namespace:Cryptie.Client.Desktop.Core.Locators">
+             xmlns:locators="clr-namespace:Cryptie.Client.Core.Locators"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Authentication.ViewModels"
+             xmlns:views1="clr-namespace:Cryptie.Client.Features.Authentication.Views">
     <Application.DataTemplates>
         <locators:ViewLocator />
         <DataTemplate DataType="viewModels:RegisterViewModel">
-            <views:RegisterView />
+            <views1:RegisterView />
         </DataTemplate>
         <DataTemplate DataType="viewModels:TotpQrSetupViewModel">
-            <views:TotpQrSetupView />
+            <views1:TotpQrSetupView />
         </DataTemplate>
         <DataTemplate DataType="viewModels:LoginViewModel">
-            <views:LoginView />
+            <views1:LoginView />
         </DataTemplate>
         <DataTemplate DataType="viewModels:TotpCodeViewModel">
-            <views:LoginView />
+            <views1:LoginView />
         </DataTemplate>
-        
+
     </Application.DataTemplates>
 
     <Application.Styles>

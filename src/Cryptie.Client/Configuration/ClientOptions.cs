@@ -1,4 +1,4 @@
-﻿namespace Cryptie.Client.Desktop.Configuration;
+﻿namespace Cryptie.Client.Configuration;
 
 public class ClientOptions
 {

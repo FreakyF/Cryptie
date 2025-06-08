@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Cryptie.Common.Features.Authentication.DTOs;
 
-namespace Cryptie.Client.Desktop.Features.Authentication.Services;
+namespace Cryptie.Client.Features.Authentication.Services;
 
 public interface IAuthenticationService
 {

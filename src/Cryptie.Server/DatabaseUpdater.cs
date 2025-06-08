@@ -1,7 +1,7 @@
+using Cryptie.Server.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
-using Server.Persistence.DatabaseContext;
 
-namespace Server;
+namespace Cryptie.Server;
 
 public class DatabaseUpdater
 {

@@ -1,7 +1,7 @@
 ﻿using Avalonia.ReactiveUI;
-using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
+using Cryptie.Client.Features.Authentication.ViewModels;
 
-namespace Cryptie.Client.Desktop.Features.Authentication.Views;
+namespace Cryptie.Client.Features.Authentication.Views;
 
 public partial class TotpQrSetupView : ReactiveUserControl<TotpQrSetupViewModel>
 {

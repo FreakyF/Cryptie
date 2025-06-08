@@ -3,18 +3,18 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Cryptie.Client.Desktop.Core.Base;
-using Cryptie.Client.Desktop.Core.Mapping;
-using Cryptie.Client.Desktop.Core.Navigation;
-using Cryptie.Client.Desktop.Features.Authentication.Models;
-using Cryptie.Client.Desktop.Features.Authentication.Services;
-using Cryptie.Client.Desktop.Features.Authentication.State;
+using Cryptie.Client.Core.Base;
+using Cryptie.Client.Core.Mapping;
+using Cryptie.Client.Core.Navigation;
+using Cryptie.Client.Features.Authentication.Models;
+using Cryptie.Client.Features.Authentication.Services;
+using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
 using MapsterMapper;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels
+namespace Cryptie.Client.Features.Authentication.ViewModels
 {
     public class LoginViewModel : RoutableViewModelBase
     {

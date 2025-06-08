@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using Cryptie.Common.Features.Authentication.DTOs;
-using Cryptie.Server.API.Tests;
 using FluentAssertions;
 using Xunit.Abstractions;
 

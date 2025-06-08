@@ -1,11 +1,11 @@
 ﻿using System;
-using Cryptie.Client.Desktop.Core.Base;
-using Cryptie.Client.Desktop.Core.Factories;
-using Cryptie.Client.Desktop.Features.Authentication.Services;
-using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
+using Cryptie.Client.Core.Base;
+using Cryptie.Client.Core.Factories;
+using Cryptie.Client.Features.Authentication.Services;
+using Cryptie.Client.Features.Authentication.ViewModels;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Core.Navigation;
+namespace Cryptie.Client.Core.Navigation;
 
 public class ShellCoordinator(
     IViewModelFactory factory,

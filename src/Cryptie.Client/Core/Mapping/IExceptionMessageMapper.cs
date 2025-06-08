@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cryptie.Client.Desktop.Core.Mapping;
+namespace Cryptie.Client.Core.Mapping;
 
 public interface IExceptionMessageMapper
 {

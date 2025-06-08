@@ -1,7 +1,7 @@
+using Cryptie.Server.Features.UserManagement.Services;
 using Microsoft.AspNetCore.Mvc;
-using Server.Features.UserManagement.Services;
 
-namespace Server.Features.UserManagement;
+namespace Cryptie.Server.Features.UserManagement;
 
 [ApiController]
 [Route("user")]

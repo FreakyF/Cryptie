@@ -1,8 +1,8 @@
 using Cryptie.Common.Entities.User;
+using Cryptie.Server.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
-using Server.Persistence.DatabaseContext;
 
-namespace Server.Features.UserManagement.Services;
+namespace Cryptie.Server.Features.UserManagement.Services;
 
 public class DatabaseService(AppDbContext appDbContext)
 {

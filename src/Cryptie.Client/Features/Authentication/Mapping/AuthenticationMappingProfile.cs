@@ -1,10 +1,10 @@
-﻿using Cryptie.Client.Desktop.Features.Authentication.Models;
+﻿using Cryptie.Client.Features.Authentication.Models;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Mapster;
 
 
 // ReSharper disable once UnusedType.Global
-namespace Cryptie.Client.Desktop.Features.Authentication.Mapping;
+namespace Cryptie.Client.Features.Authentication.Mapping;
 
 public class AuthenticationMappingProfile : IRegister
 {

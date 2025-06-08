@@ -5,7 +5,7 @@ using Cryptie.Common.Entities.SessionTokens;
 using Cryptie.Common.Entities.User;
 using Microsoft.EntityFrameworkCore;
 
-namespace Server.Persistence.DatabaseContext;
+namespace Cryptie.Server.Persistence.DatabaseContext;
 
 public interface IAppDbContext : IDisposable
 {

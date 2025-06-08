@@ -2,7 +2,7 @@ using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Server.Features.Authentication;
+namespace Cryptie.Server.Features.Authentication;
 
 [ApiController]
 [Route("auth")]

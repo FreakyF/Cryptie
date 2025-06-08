@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Features.Authentication.Models;
+namespace Cryptie.Client.Features.Authentication.Models;
 
 public class RegisterModel : ReactiveObject
 {

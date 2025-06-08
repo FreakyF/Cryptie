@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Reflection;
-using Cryptie.Client.Desktop.Configuration;
-using Cryptie.Client.Desktop.Core.Factories;
-using Cryptie.Client.Desktop.Core.Locators;
-using Cryptie.Client.Desktop.Core.Mapping;
-using Cryptie.Client.Desktop.Core.Navigation;
-using Cryptie.Client.Desktop.Features.Authentication.Services;
-using Cryptie.Client.Desktop.Features.Authentication.State;
-using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
-using Cryptie.Client.Desktop.Features.Messages.Services;
-using Cryptie.Client.Desktop.Features.Shell.ViewModels;
-using Cryptie.Client.Desktop.Features.Shell.Views;
+using Cryptie.Client.Configuration;
+using Cryptie.Client.Core.Factories;
+using Cryptie.Client.Core.Locators;
+using Cryptie.Client.Core.Mapping;
+using Cryptie.Client.Core.Navigation;
+using Cryptie.Client.Features.Authentication.Services;
+using Cryptie.Client.Features.Authentication.State;
+using Cryptie.Client.Features.Authentication.ViewModels;
+using Cryptie.Client.Features.Messages.Services;
+using Cryptie.Client.Features.Shell.ViewModels;
+using Cryptie.Client.Features.Shell.Views;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Validators;
 using FluentValidation;
@@ -22,7 +22,7 @@ using Microsoft.Extensions.Options;
 using ReactiveUI;
 using Splat;
 
-namespace Cryptie.Client.Desktop.Composition;
+namespace Cryptie.Client.Composition;
 
 public static class ServiceCollectionExtensions
 {
