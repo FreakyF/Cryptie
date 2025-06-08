@@ -62,6 +62,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IRegistrationState, RegistrationState>();
         services.AddSingleton<ILoginState, LoginState>();
+        services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

@@ -22,6 +22,7 @@ public class TotpCodeViewModel : RoutableViewModelBase
     private readonly IShellCoordinator _coordinator;
     private readonly IMapper _mapper;
     private readonly IValidator<TotpRequestDto> _validator;
+    private readonly IKeychainManagerService _keychain;
 
     public TotpCodeViewModel(
         IAuthenticationService authentication,
@@ -30,13 +31,15 @@ public class TotpCodeViewModel : RoutableViewModelBase
         IValidator<TotpRequestDto> validator,
         IExceptionMessageMapper exceptionMapper,
         ILoginState loginState,
-        IMapper mapper)
+        IMapper mapper,
+        IKeychainManagerService keychain)
         : base(hostScreen)
     {
         _authentication = authentication;
         _coordinator = coordinator;
         _validator = validator;
         _mapper = mapper;
+        _keychain = keychain;
 
         var loginResponse = loginState.LastResponse!;
         Model.TotpToken = loginResponse.TotpToken;
@@ -66,11 +69,16 @@ public class TotpCodeViewModel : RoutableViewModelBase
             return;
         }
 
+        if (!_keychain.TrySaveSessionToken(result.Token.ToString(), out var err))
+        {
+            ErrorMessage = err;
+        }
+
         if (cancellationToken.IsCancellationRequested)
         {
             _coordinator.ShowLogin();
         }
 
-        _coordinator.ShowQrSetup();
+        _coordinator.ShowDashboard();
     }
 }
