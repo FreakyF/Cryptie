@@ -19,20 +19,8 @@ public class MessageHub : Hub
         await Clients.Group(group.ToString()).SendAsync("UserJoinedGroup", user, group);
     }
 
-    public async Task JoinChat(Guid user, Guid chat)
-    {
-        _users.TryAdd(Context.ConnectionId, user);
-        await Groups.AddToGroupAsync(Context.ConnectionId, chat.ToString());
-        await Clients.Group(chat.ToString()).SendAsync("UserJoinedChat", user, chat);
-    }
-
     public async Task SendMessageToGroup(Guid group, string message)
     {
         await Clients.Group(group.ToString()).SendAsync("ReceiveGroupMessage", message, group);
-    }
-
-    public async Task SendMessageToChat(Guid chat, string message)
-    {
-        await Clients.Group(chat.ToString()).SendAsync("ReceiveChatMessage", message, chat, chat);
     }
 }

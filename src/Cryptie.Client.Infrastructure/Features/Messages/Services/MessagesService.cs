@@ -9,9 +9,7 @@ public class MessagesService
     private HubConnection hubConnection;
 
     public ConcurrentQueue<SignalRJoined> groupJoined = new ConcurrentQueue<SignalRJoined>();
-    public ConcurrentQueue<SignalRJoined> chatJoined = new ConcurrentQueue<SignalRJoined>();
     public ConcurrentQueue<SignalRMessage> groupMessages = new ConcurrentQueue<SignalRMessage>();
-    public ConcurrentQueue<SignalRMessage> chatMessages = new ConcurrentQueue<SignalRMessage>();
     
     public void ConnectToHub(User user)
     {
@@ -25,25 +23,20 @@ public class MessagesService
             groupJoined.Enqueue(new SignalRJoined(groupId, user));
         });
         
-        hubConnection.On<Guid, Guid>("UserJoinedChat", (user, chatId) =>
-        {
-            chatJoined.Enqueue(new SignalRJoined(chatId, user));
-        });
-        
         hubConnection.On<string, Guid>("ReceiveGroupMessage", (message, groupId) =>
         {
             groupMessages.Enqueue(new SignalRMessage(groupId, message));
         });
         
-        hubConnection.On<string, Guid>("ReceiveChatMessage", (message, chatId) =>
-        {
-            chatMessages.Enqueue(new SignalRMessage(chatId, message));
-        });
-        
         foreach (var group in user.Groups)
         {
-            hubConnection.InvokeAsync("UserJoinedGroup", user.Id, group.Id);
+            hubConnection.InvokeAsync("JoinChat", user.Id, group.Id);
         }
+    }
+
+    public void SendMessageToGroup(string message, Guid group)
+    {
+        hubConnection.InvokeAsync("SendMessageToGroup", group, message);
     }
 }
 
