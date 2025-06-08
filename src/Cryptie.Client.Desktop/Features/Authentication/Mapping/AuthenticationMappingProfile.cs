@@ -2,7 +2,7 @@
 using Cryptie.Common.Features.Authentication.DTOs;
 using Mapster;
 
-namespace Cryptie.Client.Desktop.Features.Authentication.Mapping;
+
 
 // ReSharper disable once UnusedType.Global
 public class AuthenticationMappingProfile : IRegister

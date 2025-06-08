@@ -1,8 +1,9 @@
 using System.Collections.Concurrent;
-using Cryptie.Server.Domain.Features.Authentication.Entities.User;
+using Cryptie.Common.Entities.User;
+using Cryptie.Server.Domain.Entities.User;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Cryptie.Client.Infrastructure.Features.Messages.Services;
+
 
 public class MessagesService
 {

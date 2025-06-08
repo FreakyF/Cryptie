@@ -16,11 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Server.Domain\Cryptie.Server.Domain.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Migrations\" />
+        <ProjectReference Include="..\Cryptie.Common.Domain\Cryptie.Common.Domain.csproj" />
     </ItemGroup>
 
 </Project>

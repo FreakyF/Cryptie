@@ -5,7 +5,7 @@ using Cryptie.Client.Desktop.Features.Authentication.ViewModels;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Core.Navigation;
+
 
 public class ShellCoordinator(
     IViewModelFactory factory,

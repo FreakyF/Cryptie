@@ -15,7 +15,7 @@ using MapsterMapper;
 using QRCoder;
 using ReactiveUI;
 
-namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels;
+
 
 public class TotpQrSetupViewModel : RoutableViewModelBase
 {

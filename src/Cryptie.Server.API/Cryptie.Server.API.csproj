@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Server.Infrastructure\Cryptie.Server.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj" />
     </ItemGroup>
 
 </Project>

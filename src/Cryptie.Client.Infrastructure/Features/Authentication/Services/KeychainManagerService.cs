@@ -2,7 +2,7 @@
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using KeySharp;
 
-namespace Cryptie.Client.Infrastructure.Features.Authentication.Services;
+
 
 public class KeychainManagerService : IKeychainManagerService
 {

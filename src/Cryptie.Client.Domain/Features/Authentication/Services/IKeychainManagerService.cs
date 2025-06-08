@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Cryptie.Client.Domain.Features.Authentication.Services;
+
 
 public interface IKeychainManagerService
 {
