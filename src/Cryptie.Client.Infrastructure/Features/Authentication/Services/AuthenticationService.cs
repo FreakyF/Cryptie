@@ -40,4 +40,16 @@ public class AuthenticationService(HttpClient httpClient) : IAuthenticationServi
         response.EnsureSuccessStatusCode();
         return (await response.Content.ReadFromJsonAsync<TotpResponseDto>(cancellationToken))!;
     }
+
+    public async Task<TotpResponseDto?> TotpAsync(TotpRequestDto totpRequest,
+        CancellationToken cancellationToken = default)
+    {
+        using var response = await httpClient.PostAsJsonAsync(
+            "auth/totp",
+            totpRequest,
+            cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<TotpResponseDto>(cancellationToken))!;
+    }
 }
