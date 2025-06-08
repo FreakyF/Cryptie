@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
-using System.Reactive.Linq;
-using System.Text.RegularExpressions;
 using Cryptie.Client.Desktop.Core.Base;
 using Cryptie.Client.Desktop.Features.Authentication.State;
 using Cryptie.Client.Desktop.Features.Messages.Services;
-using Cryptie.Common.Entities.User;
 using ReactiveUI;
 
 namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels
@@ -25,39 +22,39 @@ namespace Cryptie.Client.Desktop.Features.Authentication.ViewModels
             ILoginState loginState // trzyma tylko TotpToken!
         ) : base(hostScreen)
         {
-            _messagesService = messagesService;
-
-            // --- HARD‐CODED: jedyna grupa, do której wszyscy w testach dołączą ---
-            var testGroupId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
-
-            // Tworzymy lokalnie obiekt User tylko po to, by 
-            // MessagesService.ConnectToHub mógł doczytać user.Id i user.Groups.
-            var tempUser = new User
-            {
-                Id = Guid.NewGuid(),
-                Groups = new[] { new Group { Id = testGroupId } }
-            };
-
-            // 1) Łączymy do hub'a
-            _messagesService.ConnectToHub(tempUser);
-
-            // 2) Wypełniamy listę grup
-            JoinedGroups.Add(testGroupId);
-            SelectedGroup = testGroupId;
-
-            // 3) Czyszczenie przy zmianie grupy
-            this.WhenAnyValue(x => x.SelectedGroup)
-                .Where(g => g != null)
-                .Subscribe(_ => ReceivedMessages.Clear());
-
-            // 4) Polling przychodzących
-            Observable
-                .Interval(TimeSpan.FromMilliseconds(500))
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(_ => ProcessIncoming());
-
-            // 5) Komenda wysyłki
-            SendMessageCommand = ReactiveCommand.Create(SendMessage);
+            // _messagesService = messagesService;
+            //
+            // // --- HARD‐CODED: jedyna grupa, do której wszyscy w testach dołączą ---
+            // var testGroupId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+            //
+            // // Tworzymy lokalnie obiekt User tylko po to, by 
+            // // MessagesService.ConnectToHub mógł doczytać user.Id i user.Groups.
+            // var tempUser = new User
+            // {
+            //     Id = Guid.NewGuid(),
+            //     Groups = new[] { new Group { Id = testGroupId } }
+            // };
+            //
+            // // 1) Łączymy do hub'a
+            // _messagesService.ConnectToHub(tempUser);
+            //
+            // // 2) Wypełniamy listę grup
+            // JoinedGroups.Add(testGroupId);
+            // SelectedGroup = testGroupId;
+            //
+            // // 3) Czyszczenie przy zmianie grupy
+            // this.WhenAnyValue(x => x.SelectedGroup)
+            //     .Where(g => g != null)
+            //     .Subscribe(_ => ReceivedMessages.Clear());
+            //
+            // // 4) Polling przychodzących
+            // Observable
+            //     .Interval(TimeSpan.FromMilliseconds(500))
+            //     .ObserveOn(RxApp.MainThreadScheduler)
+            //     .Subscribe(_ => ProcessIncoming());
+            //
+            // // 5) Komenda wysyłki
+            // SendMessageCommand = ReactiveCommand.Create(SendMessage);
         }
 
         // Kolekcje dla UI

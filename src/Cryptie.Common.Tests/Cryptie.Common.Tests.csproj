@@ -23,10 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Client.Desktop\Cryptie.Client.Desktop.csproj"/>
-        <ProjectReference Include="..\Cryptie.Server.API\Cryptie.Server.API.csproj"/>
-        <ProjectReference Include="..\Cryptie.Server.Domain\Cryptie.Server.Domain.csproj"/>
-        <ProjectReference Include="..\Cryptie.Server.Infrastructure\Cryptie.Server.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Cryptie.Client\Cryptie.Client.csproj"/>
+        <ProjectReference Include="..\Cryptie.Server\Cryptie.Server.csproj"/>
     </ItemGroup>
 
 </Project>

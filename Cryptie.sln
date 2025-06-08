@@ -1,20 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{7957778D-6CCF-4E06-BBA0-3BEB50745E26}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{9DC109E7-C132-4994-AA5D-E80171BE2A10}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Client.Desktop", "src\Cryptie.Client.Desktop\Cryptie.Client.Desktop.csproj", "{77A047B4-E2B8-426C-841D-57937357C84C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Client", "src\Cryptie.Client\Cryptie.Client.csproj", "{77A047B4-E2B8-426C-841D-57937357C84C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Common.Tests", "src\Cryptie.Common.Tests\Cryptie.Common.Tests.csproj", "{09324F05-BE7E-48E6-9DA6-4078D334686A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Common", "src\Cryptie.Common\Cryptie.Common.csproj", "{5D809325-0456-41DE-B721-6FE6049D42C8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C1B1E4FB-EDB8-4C96-9589-F408DF93CE97}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Server.Tests", "src\Cryptie.Server.Tests\Cryptie.Server.Tests.csproj", "{BDDC9AF5-DDA2-4C8A-96E3-0EBADFBAB98E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Server", "Cryptie.Server\Cryptie.Server.csproj", "{A833AF86-7484-421C-8F71-32874377ED85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Server", "src\Cryptie.Server\Cryptie.Server.csproj", "{A833AF86-7484-421C-8F71-32874377ED85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,10 +38,5 @@ Global
 		{A833AF86-7484-421C-8F71-32874377ED85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{77A047B4-E2B8-426C-841D-57937357C84C} = {7957778D-6CCF-4E06-BBA0-3BEB50745E26}
-		{5D809325-0456-41DE-B721-6FE6049D42C8} = {C1B1E4FB-EDB8-4C96-9589-F408DF93CE97}
-		{09324F05-BE7E-48E6-9DA6-4078D334686A} = {C1B1E4FB-EDB8-4C96-9589-F408DF93CE97}
-		{BDDC9AF5-DDA2-4C8A-96E3-0EBADFBAB98E} = {9DC109E7-C132-4994-AA5D-E80171BE2A10}
-		{A833AF86-7484-421C-8F71-32874377ED85} = {9DC109E7-C132-4994-AA5D-E80171BE2A10}
 	EndGlobalSection
 EndGlobal

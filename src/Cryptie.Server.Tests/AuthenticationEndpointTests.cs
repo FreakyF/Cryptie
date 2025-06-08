@@ -1,15 +1,16 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using Cryptie.Common.Features.Authentication.DTOs;
+using Cryptie.Server.API.Tests;
 using FluentAssertions;
 using Xunit.Abstractions;
 
-namespace Cryptie.Server.API.Tests;
+namespace Cryptie.Server.Tests;
 
 public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactory>
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly HttpClient _httpClient;
+    private readonly ITestOutputHelper _testOutputHelper;
 
     public AuthenticationEndpointTests(AuthenticationApiFactory factory, ITestOutputHelper testOutputHelper)
     {
@@ -27,15 +28,15 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Email = "test@test.com",
         };
         return request;
-    } 
-    
+    }
+
     [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
     [InlineData("", HttpStatusCode.OK)]
     [InlineData(" ", HttpStatusCode.OK)]
     [InlineData(";;;abba", HttpStatusCode.OK)]
-    [InlineData("ada",HttpStatusCode.OK)]
+    [InlineData("ada", HttpStatusCode.OK)]
     [InlineData("abcdefghijklmnopqrstuvwxyz", HttpStatusCode.OK)]
     public async Task InvalidRegisterUsernameRequest(string username, HttpStatusCode statusCode)
     {
@@ -76,6 +77,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
+
     [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
@@ -95,9 +97,10 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
+
     [Trait("TestCategory", "Integration")]
     [Theory]
-    [InlineData(null,HttpStatusCode.BadRequest)]
+    [InlineData(null, HttpStatusCode.BadRequest)]
     [InlineData("", HttpStatusCode.OK)]
     [InlineData(" ", HttpStatusCode.OK)]
     public async Task InvalidRegisterEmailRequest(string email, HttpStatusCode statusCode)
@@ -113,7 +116,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
-    
+
     [Trait("TestCategory", "Integration")]
     [Fact]
     public async Task ValidRegisterRequest()
@@ -129,6 +132,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
+
     [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
@@ -140,7 +144,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     public async Task InvalidLoginUsernameRequest(string username, HttpStatusCode statusCode)
     {
         var dto = CreateRegisterRequest();
-        await _httpClient.PostAsJsonAsync("auth/register",dto);
+        await _httpClient.PostAsJsonAsync("auth/register", dto);
         var RequestDto = new LoginRequestDto()
         {
             Login = username,
@@ -150,6 +154,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
+
     [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
@@ -165,7 +170,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     public async Task InvalidLoginPasswordRequest(string password, HttpStatusCode status)
     {
         var dto = CreateRegisterRequest();
-        await _httpClient.PostAsJsonAsync("auth/register",dto);
+        await _httpClient.PostAsJsonAsync("auth/register", dto);
         var RequestDto = new LoginRequestDto()
         {
             Login = "Username123",
@@ -175,6 +180,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
         var body = await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(status);
     }
+
     [Trait("TestCategory", "Integration")]
     [Fact]
     public async Task ValidLoginRequest()

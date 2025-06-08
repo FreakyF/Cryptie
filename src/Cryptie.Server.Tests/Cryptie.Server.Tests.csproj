@@ -7,7 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>Cryptie.Server.API.Tests</RootNamespace>
+        <RootNamespace>Cryptie.Server.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

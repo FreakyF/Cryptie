@@ -3,17 +3,12 @@ using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.Validators;
 using FluentValidation;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Scalar.AspNetCore;
+using Server;
 using Server.Features.Authentication.Services;
 using Server.Features.Messages.Services;
 using Server.Persistence.DatabaseContext;
 using DatabaseService = Server.Features.Authentication.Services.DatabaseService;
-
-namespace Server;
 
 public class Program
 {
@@ -23,18 +18,6 @@ public class Program
         await dbContainer.StartPostgresAsync();
 
         var builder = WebApplication.CreateBuilder(args);
-
-        const string secureCorsPolicy = "SecureCorsPolicy"; //TODO do usunięcia
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy(secureCorsPolicy, policy =>
-            {
-                policy.WithOrigins("http://localhost:4200")
-                    .WithHeaders("Content-Type", "Authorization", "X-Totp-Token", "X-Secret")
-                    .WithMethods("GET", "POST", "OPTIONS")
-                    .SetPreflightMaxAge(TimeSpan.FromHours(2));
-            });
-        });
 
         builder.Services.AddHsts(options =>
         {
@@ -71,7 +54,7 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
-        
+
         builder.Services.AddSignalR();
 
         var app = builder.Build();
@@ -90,8 +73,6 @@ public class Program
             app.MapOpenApi();
             app.MapScalarApiReference();
         }
-
-        app.UseCors(secureCorsPolicy);
 
         app.UseRateLimiter();
 

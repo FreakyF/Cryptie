@@ -1,5 +1,3 @@
-using Cryptie.Common.Features.UserManagement.DTOs;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Server.Features.UserManagement.Services;
 

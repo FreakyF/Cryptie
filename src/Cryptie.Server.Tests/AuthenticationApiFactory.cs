@@ -3,13 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Server.Persistence.DatabaseContext;
 using Testcontainers.PostgreSql;
+using Program = Server.Program;
 
 namespace Cryptie.Server.API.Tests;
 
-public class AuthenticationApiFactory:WebApplicationFactory<Program>,IAsyncLifetime
+public class AuthenticationApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _database;
 
@@ -25,6 +24,9 @@ public class AuthenticationApiFactory:WebApplicationFactory<Program>,IAsyncLifet
             .Build();
     }
 
+    public async Task InitializeAsync() => await _database.StartAsync();
+    public async Task DisposeAsync() => await _database.DisposeAsync();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
@@ -35,17 +37,13 @@ public class AuthenticationApiFactory:WebApplicationFactory<Program>,IAsyncLifet
             {
                 services.Remove(old);
             }
-            
+
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(_database.GetConnectionString()));
-            
+
             using var scope = services.BuildServiceProvider().CreateScope();
             var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             ctx.Database.Migrate();
         });
     }
-
-    public async Task InitializeAsync() => await _database.StartAsync();
-    public async Task DisposeAsync()    => await _database.DisposeAsync();
-    
 }
