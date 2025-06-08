@@ -7,8 +7,8 @@ namespace Cryptie.Client.Features.Messages.Services;
 
 public class MessagesService
 {
-    public ConcurrentQueue<SignalRJoined> groupJoined = new ConcurrentQueue<SignalRJoined>();
-    public ConcurrentQueue<SignalRMessage> groupMessages = new ConcurrentQueue<SignalRMessage>();
+    public ConcurrentQueue<SignalRJoined> groupJoined = new();
+    public ConcurrentQueue<SignalRMessage> groupMessages = new();
     private HubConnection hubConnection;
 
     public void ConnectToHub(User user)

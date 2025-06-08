@@ -1,5 +1,3 @@
-
-
 namespace Cryptie.Common.Entities.User;
 
 public class Totp

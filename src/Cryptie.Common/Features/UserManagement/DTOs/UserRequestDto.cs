@@ -1,5 +1,3 @@
-
-
 namespace Cryptie.Common.Features.UserManagement.DTOs;
 
 public class UserRequestDto

@@ -19,12 +19,12 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
 
     private RegisterRequestDto CreateRegisterRequest()
     {
-        var request = new RegisterRequestDto()
+        var request = new RegisterRequestDto
         {
             Login = "Username123",
             Password = "Password1234!",
             DisplayName = "user 123",
-            Email = "test@test.com",
+            Email = "test@test.com"
         };
         return request;
     }
@@ -44,7 +44,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Login = username,
             Password = "Password1234!",
             DisplayName = "user 123",
-            Email = "test@test.com",
+            Email = "test@test.com"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
@@ -70,7 +70,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Login = "Username123",
             Password = password,
             DisplayName = "user 123",
-            Email = "test@test.com",
+            Email = "test@test.com"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
@@ -85,12 +85,12 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     [InlineData("abcdefghijklmnopqrstuvwxyz", HttpStatusCode.OK)]
     public async Task InvalidRegisterDisplayNameRequest(string displayName, HttpStatusCode statusCode)
     {
-        var request = new RegisterRequestDto()
+        var request = new RegisterRequestDto
         {
             Login = "Username123",
             Password = "Password1234!",
             DisplayName = displayName,
-            Email = "test@test.com",
+            Email = "test@test.com"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
@@ -104,12 +104,12 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     [InlineData(" ", HttpStatusCode.OK)]
     public async Task InvalidRegisterEmailRequest(string email, HttpStatusCode statusCode)
     {
-        var request = new RegisterRequestDto()
+        var request = new RegisterRequestDto
         {
             Login = "Username123",
             Password = "Password1234!",
             DisplayName = "user 123",
-            Email = email,
+            Email = email
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
@@ -125,7 +125,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Login = "User1234",
             Password = "Password1234!",
             DisplayName = "user 123",
-            Email = "test@test.com",
+            Email = "test@test.com"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
         var body = await response.Content.ReadAsStringAsync();
@@ -144,10 +144,10 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     {
         var dto = CreateRegisterRequest();
         await _httpClient.PostAsJsonAsync("auth/register", dto);
-        var RequestDto = new LoginRequestDto()
+        var RequestDto = new LoginRequestDto
         {
             Login = username,
-            Password = "Password1234!",
+            Password = "Password1234!"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
         var body = await response.Content.ReadAsStringAsync();
@@ -170,10 +170,10 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     {
         var dto = CreateRegisterRequest();
         await _httpClient.PostAsJsonAsync("auth/register", dto);
-        var RequestDto = new LoginRequestDto()
+        var RequestDto = new LoginRequestDto
         {
             Login = "Username123",
-            Password = password,
+            Password = password
         };
         var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
         var body = await response.Content.ReadAsStringAsync();
@@ -186,7 +186,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     {
         var dto = CreateRegisterRequest();
         await _httpClient.PostAsJsonAsync("auth/register", dto);
-        var RequestDto = new LoginRequestDto()
+        var RequestDto = new LoginRequestDto
         {
             Login = "Username123",
             Password = "Password1234!"

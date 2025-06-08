@@ -5,7 +5,7 @@ namespace Cryptie.Server.Features.Messages.Services;
 
 public class MessageHub : Hub
 {
-    private static ConcurrentDictionary<string, Guid> _users = new();
+    private static readonly ConcurrentDictionary<string, Guid> _users = new();
 
     public async Task SendMessage(string message)
     {

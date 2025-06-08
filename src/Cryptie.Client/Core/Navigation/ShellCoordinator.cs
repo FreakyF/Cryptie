@@ -24,11 +24,30 @@ public class ShellCoordinator(
         ShowRegister();
     }
 
-    public void ShowLogin() => NavigateTo<LoginViewModel>();
-    public void ShowRegister() => NavigateTo<RegisterViewModel>();
-    public void ShowQrSetup() => NavigateTo<TotpQrSetupViewModel>();
-    public void ShowTotpCode() => NavigateTo<TotpCodeViewModel>();
-    public void ShowDashboard() => NavigateTo<DashboardViewModel>();
+    public void ShowLogin()
+    {
+        NavigateTo<LoginViewModel>();
+    }
+
+    public void ShowRegister()
+    {
+        NavigateTo<RegisterViewModel>();
+    }
+
+    public void ShowQrSetup()
+    {
+        NavigateTo<TotpQrSetupViewModel>();
+    }
+
+    public void ShowTotpCode()
+    {
+        NavigateTo<TotpCodeViewModel>();
+    }
+
+    public void ShowDashboard()
+    {
+        NavigateTo<DashboardViewModel>();
+    }
 
     private void NavigateTo<TViewModel>() where TViewModel : RoutableViewModelBase
     {

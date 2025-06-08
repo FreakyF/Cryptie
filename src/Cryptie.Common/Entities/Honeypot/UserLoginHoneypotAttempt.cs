@@ -1,5 +1,3 @@
-
-
 namespace Cryptie.Common.Entities.Honeypot;
 
 public class UserLoginHoneypotAttempt

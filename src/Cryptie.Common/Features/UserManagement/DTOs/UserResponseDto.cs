@@ -1,5 +1,3 @@
-
-
 using Cryptie.Common.Entities.User;
 
 namespace Cryptie.Common.Features.UserManagement.DTOs;

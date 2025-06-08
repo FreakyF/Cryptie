@@ -19,9 +19,15 @@ public class AuthenticationApiFactory : WebApplicationFactory<Program>, IAsyncLi
         .WithCleanUp(true)
         .Build();
 
-    public async Task InitializeAsync() => await _database.StartAsync();
+    public async Task InitializeAsync()
+    {
+        await _database.StartAsync();
+    }
 
-    Task IAsyncLifetime.DisposeAsync() => _database.DisposeAsync().AsTask();
+    Task IAsyncLifetime.DisposeAsync()
+    {
+        return _database.DisposeAsync().AsTask();
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
