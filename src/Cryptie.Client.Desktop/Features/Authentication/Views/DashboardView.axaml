@@ -2,7 +2,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Cryptie.Client.Desktop.Features.Authentication.Views.DashboardView">
-    Welcome to Avalonia!
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Desktop.Features.Authentication.ViewModels"
+             mc:Ignorable="d"
+             x:Class="Cryptie.Client.Desktop.Features.Authentication.Views.DashboardView"
+             x:DataType="viewModels:DashboardViewModel"
+             d:DesignWidth="800" d:DesignHeight="450">
+    <Grid ColumnDefinitions="*,1,*">
+        <!-- Odebrane -->
+        <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
+            <TextBlock Text="Odebrane"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,5" />
+            <ListBox ItemsSource="{Binding ReceivedMessages}"
+                     Grid.Row="1" />
+        </Grid>
+
+        <Border Grid.Column="1"
+                Background="#54A9FF"
+                Width="1"
+                VerticalAlignment="Stretch" />
+
+        <!-- Wyślij -->
+        <Grid Grid.Column="2" RowDefinitions="Auto,Auto,*,Auto">
+            <TextBlock Text="Wyślij"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,5"
+                       Grid.Row="0" />
+
+            <!-- Wybór grupy -->
+            <ComboBox ItemsSource="{Binding JoinedGroups}"
+                      SelectedItem="{Binding SelectedGroup}"
+                      HorizontalAlignment="Stretch"
+                      Margin="5"
+                      Grid.Row="1">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <!-- Wysłane -->
+            <ListBox ItemsSource="{Binding SentMessages}"
+                     Grid.Row="2" />
+
+            <!-- Nowa wiadomość -->
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        Spacing="5"
+                        Margin="5">
+                <TextBox Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}"
+                         Width="200"
+                         HorizontalAlignment="Stretch" />
+                <Button Content="Wyślij"
+                        Command="{Binding SendMessageCommand}"
+                        HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+    </Grid>
 </UserControl>

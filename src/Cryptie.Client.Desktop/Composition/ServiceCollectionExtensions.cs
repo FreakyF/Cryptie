@@ -11,6 +11,7 @@ using Cryptie.Client.Desktop.Features.Shell.Views;
 using Cryptie.Client.Domain.Features.Authentication.Services;
 using Cryptie.Client.Infrastructure.Configuration;
 using Cryptie.Client.Infrastructure.Features.Authentication.Services;
+using Cryptie.Client.Infrastructure.Features.Messages.Services;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Validators;
 using FluentValidation;
@@ -64,6 +65,12 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
 
+        services.AddSingleton<MessagesService>().AddTransient<DashboardViewModel>();
+        services
+            // stan logowania trzymamy przez całą sesję
+            .AddSingleton<ILoginState, LoginState>()
+            .AddSingleton<MessagesService>()
+            .AddTransient<DashboardViewModel>();
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();
     }
