@@ -2,10 +2,12 @@ using System.Threading.RateLimiting;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Validators;
 using Cryptie.Server.API.Features.Authentication.Services;
+using Cryptie.Server.API.Features.Messages.Services;
 using Cryptie.Server.Domain.Features.Authentication.Services;
 using Cryptie.Server.Infrastructure.Persistence.DatabaseContext;
 using FluentValidation;
 using Scalar.AspNetCore;
+using DatabaseService = Cryptie.Server.API.Features.Authentication.Services.DatabaseService;
 
 namespace Cryptie.Server.API;
 
@@ -65,6 +67,8 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+        
+        builder.Services.AddSignalR();
 
         var app = builder.Build();
 
@@ -94,6 +98,8 @@ public class Program
         app.UseAuthorization();
 
         app.MapControllers();
+
+        app.MapHub<MessageHub>("/messages");
 
         await app.RunAsync();
     }

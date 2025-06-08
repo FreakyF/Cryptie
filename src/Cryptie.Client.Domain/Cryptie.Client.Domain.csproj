@@ -11,6 +11,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Features\Messages\" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="KeySharp" Version="1.0.5"/>
     </ItemGroup>
 

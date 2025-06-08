@@ -7,12 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.5" />
         <PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Cryptie.Client.Domain\Cryptie.Client.Domain.csproj"/>
+        <ProjectReference Include="..\Cryptie.Server.Domain\Cryptie.Server.Domain.csproj" />
     </ItemGroup>
 
 </Project>
