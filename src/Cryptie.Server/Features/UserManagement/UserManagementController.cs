@@ -76,4 +76,17 @@ public class UserManagementController(DatabaseService databaseService) : Control
             Groups = groups
         });
     }
+
+    [HttpPost("userdisplayname", Name = "ChangeUserDisplayName")]
+    public IActionResult UserDisplayName([FromBody] UserDisplayNameRequestDto userDisplayNameRequest)
+    {
+        var user = databaseService.GetUserFromToken(userDisplayNameRequest.Token);
+        if (user == null) return BadRequest();
+        
+        //TODO dodać sprawdzanie xd
+
+        user.DisplayName = userDisplayNameRequest.Name;
+
+        return Ok();
+    }
 }
