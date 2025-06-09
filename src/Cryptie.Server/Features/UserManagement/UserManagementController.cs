@@ -37,8 +37,8 @@ public class UserManagementController(DatabaseService databaseService) : Control
         return Ok();
     }
 
-    [HttpGet("getfriendlist", Name = "GetFriendList")]
-    public IActionResult GetFriendList([FromBody] GetFriendListRequestDto getFriendListRequest)
+    [HttpGet("friendlist", Name = "GetFriendList")]
+    public IActionResult FriendList([FromBody] GetFriendListRequestDto getFriendListRequest)
     {
         var user = databaseService.GetUserFromToken(getFriendListRequest.Toekn);
         if (user == null) return BadRequest();
@@ -50,4 +50,6 @@ public class UserManagementController(DatabaseService databaseService) : Control
             Friends = friends
         });
     }
+    
+    // [HttpGet("namefromguid", )]
 }
