@@ -1,5 +1,4 @@
-﻿using System;
-using Cryptie.Client.Core.Base;
+﻿using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Factories;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.ViewModels;
@@ -15,11 +14,11 @@ public class ShellCoordinator(
 
     public void Start()
     {
-        if (keychain.TryGetSessionToken(out var token, out _) && Guid.TryParse(token, out _))
-        {
-            ShowDashboard();
-            return;
-        }
+        // if (keychain.TryGetSessionToken(out var token, out _) && Guid.TryParse(token, out _))
+        // {
+        //     ShowDashboard();
+        //     return;
+        // }
 
         ShowRegister();
     }

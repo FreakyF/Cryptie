@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Net.Http;
 using Cryptie.Common.Entities.User;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -7,55 +8,57 @@ namespace Cryptie.Client.Features.Messages.Services;
 
 public class MessagesService
 {
-    public ConcurrentQueue<SignalRJoined> groupJoined = new();
-    public ConcurrentQueue<SignalRMessage> groupMessages = new();
-    private HubConnection hubConnection;
+    private HubConnection _hubConnection;
+    public ConcurrentQueue<SignalRJoined> groupJoined { get; } = new();
+    public ConcurrentQueue<SignalRMessage> groupMessages { get; } = new();
 
     public void ConnectToHub(User user)
     {
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl("https://localhost:7161/messages")
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:7161/messages", options =>
+            {
+                options.HttpMessageHandlerFactory = _ => new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback =
+                        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                };
+            })
             .WithAutomaticReconnect()
             .Build();
 
-        hubConnection.On<Guid, Guid>("UserJoinedGroup",
-            (user, groupId) => { groupJoined.Enqueue(new SignalRJoined(groupId, user)); });
+        _hubConnection.StartAsync().GetAwaiter().GetResult();
 
-        hubConnection.On<string, Guid>("ReceiveGroupMessage",
-            (message, groupId) => { groupMessages.Enqueue(new SignalRMessage(groupId, message)); });
+        _hubConnection.On<Guid, Guid>("UserJoinedGroup", (uId, gId) =>
+            groupJoined.Enqueue(new SignalRJoined(gId, uId)));
+
+        _hubConnection.On<string, Guid>("ReceiveGroupMessage", (msg, gId) =>
+            groupMessages.Enqueue(new SignalRMessage(gId, msg)));
 
         foreach (var group in user.Groups)
         {
-            hubConnection.InvokeAsync("JoinChat", user.Id, group.Id);
+            _hubConnection.InvokeAsync("JoinGroup", user.Id, group.Id)
+                .GetAwaiter().GetResult();
         }
     }
 
-    public void SendMessageToGroup(string message, Guid group)
+    public void SendMessageToGroup(string message, Guid groupId)
     {
-        hubConnection.InvokeAsync("SendMessageToGroup", group, message);
+        if (_hubConnection == null)
+            throw new InvalidOperationException("Najpierw wywolaj ConnectToHub().");
+
+        _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message)
+            .GetAwaiter().GetResult();
     }
 }
 
-public class SignalRMessage
+public class SignalRMessage(Guid id, string message)
 {
-    public Guid Id;
-    public string Message;
-
-    public SignalRMessage(Guid id, string message)
-    {
-        Id = id;
-        Message = message;
-    }
+    public Guid Id { get; } = id;
+    public string Message { get; } = message;
 }
 
-public class SignalRJoined
+public class SignalRJoined(Guid id, Guid user)
 {
-    public Guid Id;
-    public Guid User;
-
-    public SignalRJoined(Guid id, Guid user)
-    {
-        Id = id;
-        User = user;
-    }
+    public Guid Id { get; } = id;
+    public Guid User { get; } = user;
 }

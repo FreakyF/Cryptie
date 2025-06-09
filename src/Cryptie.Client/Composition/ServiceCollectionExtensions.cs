@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ...usingi bez zmian...
+
+using System;
 using System.Reflection;
 using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Factories;
@@ -28,21 +30,28 @@ public static class ServiceCollectionExtensions
 {
     public static void AddCommonServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<ClientOptions>(
-            configuration.GetSection("Client")
-        );
+        services.Configure<ClientOptions>(configuration.GetSection("Client"));
 
+        // ------------ HTTP-klienci -----------------------------------------
         services.AddHttpClient<IAuthenticationService, AuthenticationService>()
             .ConfigureHttpClient((sp, client) =>
             {
-                var options = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
-                client.BaseAddress = new Uri(options.BaseUri);
+                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+                client.BaseAddress = new Uri(opts.BaseUri);
             });
 
-        var config = TypeAdapterConfig.GlobalSettings;
-        config.Scan(Assembly.GetExecutingAssembly());
+        services.AddHttpClient<IUserManagementService, UserManagementService>()
+            .ConfigureHttpClient((sp, client) =>
+            {
+                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+                client.BaseAddress = new Uri(opts.BaseUri);
+            });
 
-        services.AddSingleton(config);
+        // ------------ Mapster & fabryki ------------------------------------
+        var cfg = TypeAdapterConfig.GlobalSettings;
+        cfg.Scan(Assembly.GetExecutingAssembly());
+
+        services.AddSingleton(cfg);
         services.AddScoped<IMapper, ServiceMapper>();
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
@@ -51,6 +60,7 @@ public static class ServiceCollectionExtensions
 
         Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
 
+        // ------------ Moduł Authentication ---------------------------------
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<TotpCodeViewModel>();
@@ -64,12 +74,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
 
-        services.AddSingleton<MessagesService>()
-            .AddTransient<DashboardViewModel>();
-
-        services.AddSingleton<ILoginState, LoginState>()
-            .AddSingleton<MessagesService>()
-            .AddTransient<DashboardViewModel>();
+        // ------------ Moduł Messages / Shell --------------------------------
+        services.AddSingleton<MessagesService>();
+        services.AddTransient<DashboardViewModel>();
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

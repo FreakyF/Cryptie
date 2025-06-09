@@ -1,72 +1,54 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Threading;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Messages.Services;
+using Cryptie.Common.Entities.Group;
+using Cryptie.Common.Entities.User;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Authentication.ViewModels;
 
-public class DashboardViewModel : RoutableViewModelBase
+public sealed class DashboardViewModel : RoutableViewModelBase, IDisposable
 {
+    private static readonly Guid SingleGroupId = Guid.Parse("22222222-2222-2222-2222-222222222222");
+    private readonly CancellationTokenSource _cts = new();
+
+    private readonly ILoginState _loginState;
     private readonly MessagesService _messagesService;
+    private readonly IUserManagementService _userService;
+
+    private User? _currentUser;
+    private bool _initialized;
 
     private string _newMessage = string.Empty;
 
-    private Guid? _selectedGroup;
-
     public DashboardViewModel(
         IScreen hostScreen,
-        MessagesService messagesService,
-        ILoginState loginState // trzyma tylko TotpToken!
-    ) : base(hostScreen)
+        ILoginState loginState,
+        IUserManagementService userService,
+        MessagesService messagesService)
+        : base(hostScreen)
     {
-        // _messagesService = messagesService;
-        //
-        // // --- HARD‐CODED: jedyna grupa, do której wszyscy w testach dołączą ---
-        // var testGroupId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
-        //
-        // // Tworzymy lokalnie obiekt User tylko po to, by 
-        // // MessagesService.ConnectToHub mógł doczytać user.Id i user.Groups.
-        // var tempUser = new User
-        // {
-        //     Id = Guid.NewGuid(),
-        //     Groups = new[] { new Group { Id = testGroupId } }
-        // };
-        //
-        // // 1) Łączymy do hub'a
-        // _messagesService.ConnectToHub(tempUser);
-        //
-        // // 2) Wypełniamy listę grup
-        // JoinedGroups.Add(testGroupId);
-        // SelectedGroup = testGroupId;
-        //
-        // // 3) Czyszczenie przy zmianie grupy
-        // this.WhenAnyValue(x => x.SelectedGroup)
-        //     .Where(g => g != null)
-        //     .Subscribe(_ => ReceivedMessages.Clear());
-        //
-        // // 4) Polling przychodzących
-        // Observable
-        //     .Interval(TimeSpan.FromMilliseconds(500))
-        //     .ObserveOn(RxApp.MainThreadScheduler)
-        //     .Subscribe(_ => ProcessIncoming());
-        //
-        // // 5) Komenda wysyłki
-        // SendMessageCommand = ReactiveCommand.Create(SendMessage);
+        _loginState = loginState;
+        _userService = userService;
+        _messagesService = messagesService;
+
+        // 1) Startujemy init **od razu**
+        _ = InitializeAsync();
+
+        // 2) Komenda wysyłania jest zawsze aktywna (bez WhenActivated),
+        //    ale rzuci czytelny wyjątek jeśli hub nigdy się nie połączył.
+        SendMessageCommand = ReactiveCommand.Create(SendMessage);
     }
 
-    // Kolekcje dla UI
     public ObservableCollection<string> ReceivedMessages { get; } = new();
     public ObservableCollection<string> SentMessages { get; } = new();
-    public ObservableCollection<Guid> JoinedGroups { get; } = new();
-
-    public Guid? SelectedGroup
-    {
-        get => _selectedGroup;
-        set => this.RaiseAndSetIfChanged(ref _selectedGroup, value);
-    }
 
     public string NewMessage
     {
@@ -76,26 +58,70 @@ public class DashboardViewModel : RoutableViewModelBase
 
     public ReactiveCommand<Unit, Unit> SendMessageCommand { get; }
 
-    private void ProcessIncoming()
+    public void Dispose()
     {
-        while (_messagesService.groupMessages.TryDequeue(out var msg))
+        _cts.Cancel();
+        _cts.Dispose();
+    }
+
+    private async Task InitializeAsync()
+    {
+        try
         {
-            if (msg.Id == SelectedGroup)
-            {
-                ReceivedMessages.Add(msg.Message);
-            }
+            // --- pobranie usera
+            var token = _loginState.tokenTesting
+                        ?? throw new InvalidOperationException("Brak tokenu TOTP w stanie.");
+            _currentUser = await _userService.GetUserAsync(token.ToString(), _cts.Token)
+                           ?? throw new InvalidOperationException("Nie udało się pobrać User.");
+
+            // --- „doklejamy” naszą testową grupę
+            if (_currentUser.Groups.All(g => g.Id != SingleGroupId))
+                _currentUser.Groups.Add(new Group { Id = SingleGroupId, Name = "Default" });
+
+            // --- to jest klucz: wywołujemy ConnectToHub synchronnie/async tak, 
+            // że _hubConnection powstaje zawsze
+            _messagesService.ConnectToHub(_currentUser);
+
+            // --- uruchamiamy loop odbioru
+            _ = Task.Run(ReceiveLoopAsync, _cts.Token);
+
+            _initialized = true;
+        }
+        catch (Exception ex)
+        {
+            // Jeżeli tu wpadnie — będziesz miał widoczny błąd w logach,
+            // zamiast cichego "hub == null"
+            Console.WriteLine($"[Dashboard Init error] {ex.GetType().Name}: {ex.Message}");
         }
     }
 
     private void SendMessage()
     {
-        if (string.IsNullOrWhiteSpace(NewMessage) || SelectedGroup == null)
-        {
-            return;
-        }
+        if (!_initialized)
+            throw new InvalidOperationException("Init nie powiódł się — sprawdź logi.");
 
-        _messagesService.SendMessageToGroup(NewMessage, SelectedGroup.Value);
-        SentMessages.Add(NewMessage);
+        var text = NewMessage.Trim();
+        if (text.Length == 0) return;
+
+        SentMessages.Add(text);
         NewMessage = string.Empty;
+
+        // tu już hubConnection istnieje i działa
+        _messagesService.SendMessageToGroup(text, SingleGroupId);
+    }
+
+    private async Task ReceiveLoopAsync()
+    {
+        while (!_cts.IsCancellationRequested)
+        {
+            while (_messagesService.groupMessages.TryDequeue(out var msg))
+            {
+                if (msg.Id == SingleGroupId)
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                        ReceivedMessages.Add(msg.Message));
+            }
+
+            await Task.Delay(40, _cts.Token);
+        }
     }
 }
