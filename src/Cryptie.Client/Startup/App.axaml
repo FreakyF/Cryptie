@@ -20,6 +20,9 @@
         <DataTemplate DataType="viewModels:TotpCodeViewModel">
             <views1:LoginView />
         </DataTemplate>
+        <DataTemplate DataType="viewModels:DashboardViewModel">
+            <views1:DashboardView />
+        </DataTemplate>
 
     </Application.DataTemplates>
 

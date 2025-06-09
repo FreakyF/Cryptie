@@ -3,10 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Authentication.ViewModels"
-             mc:Ignorable="d"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Cryptie.Client.Features.Authentication.Views.DashboardView"
-             x:DataType="viewModels1:DashboardViewModel"
-             d:DesignWidth="800" d:DesignHeight="450">
+             x:DataType="viewModels1:DashboardViewModel">
     <Grid ColumnDefinitions="*,1,*">
         <Grid Grid.Column="0" RowDefinitions="Auto,*,Auto">
             <TextBlock Text="Received"

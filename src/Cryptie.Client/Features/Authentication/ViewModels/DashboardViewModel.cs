@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -9,7 +10,6 @@ using Cryptie.Client.Core.Base;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Messages.Services;
 using Cryptie.Common.Entities.Group;
-using Cryptie.Common.Entities.User;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Authentication.ViewModels;
@@ -23,8 +23,7 @@ public sealed class DashboardViewModel : RoutableViewModelBase, IDisposable
     private readonly MessagesService _messagesService;
     private readonly IUserManagementService _userService;
 
-    private User? _currentUser;
-    private bool _initialized;
+    private string _currentUserDetails = string.Empty;
 
     private string _newMessage = string.Empty;
 
@@ -39,16 +38,19 @@ public sealed class DashboardViewModel : RoutableViewModelBase, IDisposable
         _userService = userService;
         _messagesService = messagesService;
 
-        // 1) Startujemy init **od razu**
         _ = InitializeAsync();
 
-        // 2) Komenda wysyłania jest zawsze aktywna (bez WhenActivated),
-        //    ale rzuci czytelny wyjątek jeśli hub nigdy się nie połączył.
         SendMessageCommand = ReactiveCommand.Create(SendMessage);
     }
 
-    public ObservableCollection<string> ReceivedMessages { get; } = new();
-    public ObservableCollection<string> SentMessages { get; } = new();
+    public string CurrentUserDetails
+    {
+        get => _currentUserDetails;
+        private set => this.RaiseAndSetIfChanged(ref _currentUserDetails, value);
+    }
+
+    public ObservableCollection<string> ReceivedMessages { get; } = [];
+    public ObservableCollection<string> SentMessages { get; } = [];
 
     public string NewMessage
     {
@@ -66,47 +68,52 @@ public sealed class DashboardViewModel : RoutableViewModelBase, IDisposable
 
     private async Task InitializeAsync()
     {
-        try
+        var token = _loginState.tokenTesting
+                    ?? throw new InvalidOperationException("Brak tokenu TOTP w stanie.");
+        var currentUser = await _userService.GetUserAsync(token, _cts.Token)
+                          ?? throw new InvalidOperationException("Nie udało się pobrać User.");
+
+        if (currentUser.Groups.All(g => g.Id != SingleGroupId))
         {
-            // --- pobranie usera
-            var token = _loginState.tokenTesting
-                        ?? throw new InvalidOperationException("Brak tokenu TOTP w stanie.");
-            _currentUser = await _userService.GetUserAsync(token.ToString(), _cts.Token)
-                           ?? throw new InvalidOperationException("Nie udało się pobrać User.");
-
-            // --- „doklejamy” naszą testową grupę
-            if (_currentUser.Groups.All(g => g.Id != SingleGroupId))
-                _currentUser.Groups.Add(new Group { Id = SingleGroupId, Name = "Default" });
-
-            // --- to jest klucz: wywołujemy ConnectToHub synchronnie/async tak, 
-            // że _hubConnection powstaje zawsze
-            _messagesService.ConnectToHub(_currentUser);
-
-            // --- uruchamiamy loop odbioru
-            _ = Task.Run(ReceiveLoopAsync, _cts.Token);
-
-            _initialized = true;
+            currentUser.Groups.Add(new Group { Id = SingleGroupId, Name = "Mock Group" });
         }
-        catch (Exception ex)
-        {
-            // Jeżeli tu wpadnie — będziesz miał widoczny błąd w logach,
-            // zamiast cichego "hub == null"
-            Console.WriteLine($"[Dashboard Init error] {ex.GetType().Name}: {ex.Message}");
-        }
+
+        var groupNames = string.Join(
+            ", ",
+            currentUser.Groups
+                .Select(g => g.Name)
+                .DefaultIfEmpty("(None)")
+        );
+
+        var friendNames = string.Join(
+            ", ",
+            currentUser.Friends
+                .Select(f => f.DisplayName)
+                .DefaultIfEmpty("(None)")
+        );
+
+        CurrentUserDetails = new StringBuilder()
+            .AppendLine("DEBUG INFO")
+            .AppendLine($"Id:           {currentUser.Id}")
+            .AppendLine($"Login:        {currentUser.Login}")
+            .AppendLine($"DisplayName:  {currentUser.DisplayName}")
+            .AppendLine($"Email:        {currentUser.Email}")
+            .AppendLine($"Groups:       {groupNames}")
+            .AppendLine($"Friends:      {friendNames}")
+            .ToString();
+
+        _messagesService.ConnectToHub(currentUser);
+        _ = Task.Run(ReceiveLoopAsync, _cts.Token);
     }
 
     private void SendMessage()
     {
-        if (!_initialized)
-            throw new InvalidOperationException("Init nie powiódł się — sprawdź logi.");
-
         var text = NewMessage.Trim();
         if (text.Length == 0) return;
 
         SentMessages.Add(text);
         NewMessage = string.Empty;
 
-        // tu już hubConnection istnieje i działa
         _messagesService.SendMessageToGroup(text, SingleGroupId);
     }
 

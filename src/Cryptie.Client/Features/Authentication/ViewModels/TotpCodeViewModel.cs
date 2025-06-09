@@ -70,7 +70,7 @@ public class TotpCodeViewModel : RoutableViewModelBase
             return;
         }
 
-        _loginState.tokenTesting = result.Token.ToString();
+        _loginState.tokenTesting = result.Token.ToString(); // TODO: Remove it, ONLY FOR TESTING PURPOSES.
         if (!_keychain.TrySaveSessionToken(result.Token.ToString(), out var err))
         {
             ErrorMessage = err;
