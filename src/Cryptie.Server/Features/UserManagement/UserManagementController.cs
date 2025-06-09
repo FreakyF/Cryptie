@@ -62,4 +62,18 @@ public class UserManagementController(DatabaseService databaseService) : Control
             Name = user.DisplayName
         });
     }
+
+    [HttpGet("usergroups", Name = "GetUserGroups")]
+    public IActionResult UserGroups([FromBody] UserGroupsRequestDto userGroupsRequest)
+    {
+        var user = databaseService.GetUserFromToken(userGroupsRequest.Token);
+        if (user == null) return BadRequest();
+
+        var groups = user.Groups.Select(g => g.Id).ToList();
+
+        return Ok(new UserGroupsResponseDto
+        {
+            Groups = groups
+        });
+    }
 }
