@@ -15,7 +15,7 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
         <PackageReference Include="xunit" Version="2.5.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
-        <PackageReference Update="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+        <PackageReference Update="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -23,12 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Client.Desktop\Cryptie.Client.Desktop.csproj"/>
-        <ProjectReference Include="..\Cryptie.Client.Domain\Cryptie.Client.Domain.csproj"/>
-        <ProjectReference Include="..\Cryptie.Client.Infrastructure\Cryptie.Client.Infrastructure.csproj"/>
-        <ProjectReference Include="..\Cryptie.Server.API\Cryptie.Server.API.csproj"/>
-        <ProjectReference Include="..\Cryptie.Server.Domain\Cryptie.Server.Domain.csproj"/>
-        <ProjectReference Include="..\Cryptie.Server.Infrastructure\Cryptie.Server.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Cryptie.Client\Cryptie.Client.csproj"/>
+        <ProjectReference Include="..\Cryptie.Server\Cryptie.Server.csproj"/>
     </ItemGroup>
 
 </Project>

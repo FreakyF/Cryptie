@@ -1,0 +1,31 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Cryptie.Client.Startup.App"
+             RequestedThemeVariant="Default"
+             xmlns:semi="https://irihi.tech/semi"
+             xmlns:locators="clr-namespace:Cryptie.Client.Core.Locators"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Authentication.ViewModels"
+             xmlns:views1="clr-namespace:Cryptie.Client.Features.Authentication.Views">
+    <Application.DataTemplates>
+        <locators:ViewLocator />
+        <DataTemplate DataType="viewModels:RegisterViewModel">
+            <views1:RegisterView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:TotpQrSetupViewModel">
+            <views1:TotpQrSetupView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:LoginViewModel">
+            <views1:LoginView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:TotpCodeViewModel">
+            <views1:LoginView />
+        </DataTemplate>
+
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <semi:SemiTheme Locale="en-US" />
+        <semi:DataGridSemiTheme />
+        <semi:TreeDataGridSemiTheme />
+    </Application.Styles>
+</Application>

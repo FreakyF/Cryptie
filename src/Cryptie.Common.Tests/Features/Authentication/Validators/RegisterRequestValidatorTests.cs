@@ -2,7 +2,7 @@
 using Cryptie.Common.Features.Authentication.Validators;
 using FluentValidation.TestHelper;
 
-namespace Cryptie.Server.API.Tests.Features.Authentication.Validators;
+namespace Cryptie.Common.Tests.Features.Authentication.Validators;
 
 public class RegisterRequestValidatorTests
 {
@@ -46,14 +46,14 @@ public class RegisterRequestValidatorTests
             Login = "User1234",
             DisplayName = displayName,
             Password = "Password!123",
-            Email = "test@test.pl",
+            Email = "test@test.pl"
         };
         //Act
         var result = _validator.TestValidate(model);
         //Assert
         result.ShouldHaveValidationErrorFor(x => x.DisplayName).WithErrorMessage(ExpectedError);
     }
-    
+
     [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData(null, "Password cannot be empty")]

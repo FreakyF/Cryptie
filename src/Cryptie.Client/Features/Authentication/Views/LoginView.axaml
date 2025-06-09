@@ -1,0 +1,58 @@
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Authentication.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Cryptie.Client.Features.Authentication.Views.LoginView"
+             x:DataType="viewModels:LoginViewModel">
+    <Grid>
+        <Border Theme="{StaticResource CardBorder}"
+                Classes="Shadow Hover"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="400">
+            <StackPanel Spacing="16">
+                <TextBlock Theme="{StaticResource TitleTextBlock}"
+                           Classes="H1"
+                           HorizontalAlignment="Center">
+                    Cryptie
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center">
+                    Sign in to your account
+                </TextBlock>
+                <TextBox x:Name="UsernameTextBox"
+                         Watermark="Username"
+                         Text="{Binding Model.Username, Mode=TwoWay}" />
+                <TextBox x:Name="PasswordBox"
+                         Classes="RevealPasswordButton"
+                         Watermark="Password"
+                         PasswordChar="*"
+                         Text="{Binding Model.Password, Mode=TwoWay}" />
+
+                <TextBlock x:Name="ErrorMessageTextBlock"
+                           Classes="Danger"
+                           HorizontalAlignment="Center"
+                           Text="{Binding ErrorMessage, Mode=TwoWay}" />
+
+                <Button x:Name="LoginButton"
+                        Theme="{StaticResource SolidButton}"
+                        Content="Login"
+                        Command="{Binding LoginCommand}" />
+
+                <StackPanel Spacing="0">
+                    <TextBlock HorizontalAlignment="Center">
+                        Don't have an account?
+                    </TextBlock>
+                    <Button x:Name="SignUpButton"
+                            Theme="{StaticResource BorderlessButton}"
+                            Classes="Secondary"
+                            Content="Sign up"
+                            Command="{Binding GoToRegisterCommand}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
