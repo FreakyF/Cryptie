@@ -1,6 +1,6 @@
 namespace Cryptie.Common.Features.UserManagement.DTOs;
 
-public class GetFriendListRequestDto
+public class FriendListRequestDto
 {
     public Guid Toekn { get; set; }
 }
