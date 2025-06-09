@@ -1,7 +1,6 @@
 using Cryptie.Common.Entities.Group;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Cryptie.Server.Features.UserManagement.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cryptie.Server.Features.UserManagement;
@@ -36,5 +35,19 @@ public class UserManagementController(DatabaseService databaseService) : Control
         group.Users.Add(friend);
         
         return Ok();
+    }
+
+    [HttpGet("getfriendlist", Name = "GetFriendList")]
+    public IActionResult GetFriendList([FromBody] GetFriendListRequestDto getFriendListRequest)
+    {
+        var user = databaseService.GetUserFromToken(getFriendListRequest.Toekn);
+        if (user == null) return BadRequest();
+        
+        var friends = user.Friends.Select(f => f.Id).ToList();
+
+        return Ok(new GetFriendListResponseDto
+        {
+            Friends = friends
+        });
     }
 }
