@@ -12,4 +12,10 @@ public class DatabaseService(AppDbContext appDbContext)
 
         return userGuid?.User ?? null;
     }
+    
+    public User? FindUserById(Guid id)
+    {
+        var user = appDbContext.Users.Find(id);
+        return user;
+    }
 }

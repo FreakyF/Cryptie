@@ -1,3 +1,4 @@
+using Cryptie.Common.Entities.Group;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Cryptie.Server.Features.UserManagement.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -9,10 +10,31 @@ namespace Cryptie.Server.Features.UserManagement;
 [Route("user")]
 public class UserManagementController(DatabaseService databaseService) : ControllerBase
 {
-    [HttpPost("user", Name = "GetUser")]
+    [HttpGet("user", Name = "GetUser")]
     public IActionResult User([FromBody] UserRequestDto userRequest)
     {
         var user = databaseService.GetUserFromToken(userRequest.Toekn);
         return Ok(new UserResponseDto { User = user });
+    }
+
+    [HttpPost("addfriend", Name = "PostAddFriend")]
+    public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
+    {
+        var user = databaseService.GetUserFromToken(addFriendRequest.Token);
+        if (user == null) return BadRequest();
+        var friend = databaseService.FindUserById(addFriendRequest.Friend);
+        if (friend == null) return BadRequest();
+        user.Friends.Add(friend);
+        // friend.Friends.Add(user); // TODO może ???
+
+        var group = new Group
+        {
+            Name = user.DisplayName + "_" + friend.DisplayName
+        };
+        
+        group.Users.Add(user);
+        group.Users.Add(friend);
+        
+        return Ok();
     }
 }
