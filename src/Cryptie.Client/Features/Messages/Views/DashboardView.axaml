@@ -14,8 +14,7 @@
 
         <DataTemplate x:Key="NavItemTemplate"
                       x:DataType="models:NavigationItem">
-            <Grid Height="48"
-                  ColumnDefinitions="48,*">
+            <Grid Height="48" ColumnDefinitions="48,*">
                 <TextBlock Grid.Column="0"
                            FontFamily="Segoe MDL2 Assets"
                            Text="{Binding IconGlyph}"
@@ -32,9 +31,7 @@
         </DataTemplate>
     </UserControl.Resources>
 
-
     <UserControl.Styles>
-
         <Style Selector="ListBoxItem"
                x:DataType="models:NavigationItem">
 
@@ -57,14 +54,12 @@
                         <Binding Path="IsBottom" />
                         <Binding Path="IsPaneOpen"
                                  RelativeSource="{RelativeSource AncestorType=SplitView}" />
+                        <Binding Path="IsLast" />
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
-
         </Style>
-
     </UserControl.Styles>
-
 
     <SplitView IsPaneOpen="{Binding IsPaneOpen}"
                OpenPaneLength="240"
@@ -72,8 +67,7 @@
                DisplayMode="CompactInline">
 
         <SplitView.Pane>
-            <Grid ColumnDefinitions="*,48"
-                  RowDefinitions="*,Auto">
+            <Grid ColumnDefinitions="*,48" RowDefinitions="*,Auto">
 
                 <ListBox Grid.Column="0"
                          Grid.ColumnSpan="2"
@@ -114,7 +108,6 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center" />
                 </Button>
-
             </Grid>
         </SplitView.Pane>
 

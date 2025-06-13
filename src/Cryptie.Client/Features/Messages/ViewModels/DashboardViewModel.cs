@@ -3,18 +3,21 @@ using System.Linq;
 using System.Reactive;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Features.Messages.Models;
+using Cryptie.Client.Features.Messages.Services;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Messages.ViewModels;
 
 public sealed class DashboardViewModel : RoutableViewModelBase
 {
+    private readonly IUserDetailsService _userDetailsService;
     private bool _isPaneOpen;
 
     private NavigationItem? _selectedItem;
 
-    public DashboardViewModel(IScreen hostScreen) : base(hostScreen)
+    public DashboardViewModel(IScreen hostScreen, IUserDetailsService userDetailsService) : base(hostScreen)
     {
+        _userDetailsService = userDetailsService;
         _selectedItem = Items.FirstOrDefault();
 
         TogglePaneCommand = ReactiveCommand.Create(() => { IsPaneOpen = !IsPaneOpen; });
@@ -28,9 +31,9 @@ public sealed class DashboardViewModel : RoutableViewModelBase
 
     public ObservableCollection<NavigationItem> Items { get; } =
     [
-        new("Friends", "\uE8FA"),
-        new("Settings", "\uE713"),
-        new("Account", "\uE77B", true)
+        new("Chats", "\uE15F"),
+        new("Account", "\uE168", true, true),
+        new("Settings", "\uE115", true)
     ];
 
     public NavigationItem? SelectedItem
