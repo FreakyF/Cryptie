@@ -5,5 +5,4 @@ namespace Cryptie.Client.Features.Authentication.State;
 public class LoginState : ILoginState
 {
     public LoginResponseDto? LastResponse { get; set; }
-    public string tokenTesting { get; set; }
 }

@@ -11,6 +11,7 @@ using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Authentication.ViewModels;
 using Cryptie.Client.Features.Messages.Services;
+using Cryptie.Client.Features.Messages.ViewModels;
 using Cryptie.Client.Features.Shell.ViewModels;
 using Cryptie.Client.Features.Shell.Views;
 using Cryptie.Common.Features.Authentication.DTOs;
