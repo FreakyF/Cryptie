@@ -16,6 +16,18 @@ public class UserManagementController(DatabaseService databaseService) : Control
         return Ok(new UserResponseDto { User = user });
     }
 
+    [HttpGet("guid", Name = "GetUserGuidFromToken")]
+    public IActionResult UserGuidFromToken([FromBody] UserGuidFromTokenRequestDto userGuidFromTokenRequest)
+    {
+        var user = databaseService.GetUserFromToken(userGuidFromTokenRequest.SessionToken);
+        if (user == null) return BadRequest();
+        
+        return Ok(new UserGuidFromTokenResponseDto
+        {
+            Guid = user.Id,
+        });
+    }
+
     [HttpPost("addfriend", Name = "PostAddFriend")]
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
     {
@@ -30,10 +42,10 @@ public class UserManagementController(DatabaseService databaseService) : Control
         {
             Name = user.DisplayName + "_" + friend.DisplayName
         };
-        
+
         group.Users.Add(user);
         group.Users.Add(friend);
-        
+
         return Ok();
     }
 
@@ -42,7 +54,7 @@ public class UserManagementController(DatabaseService databaseService) : Control
     {
         var user = databaseService.GetUserFromToken(friendListRequest.Toekn);
         if (user == null) return BadRequest();
-        
+
         var friends = user.Friends.Select(f => f.Id).ToList();
 
         return Ok(new GetFriendListResponseDto
@@ -82,7 +94,7 @@ public class UserManagementController(DatabaseService databaseService) : Control
     {
         var user = databaseService.GetUserFromToken(userDisplayNameRequest.Token);
         if (user == null) return BadRequest();
-        
+
         //TODO dodać sprawdzanie xd
 
         user.DisplayName = userDisplayNameRequest.Name;
