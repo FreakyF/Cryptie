@@ -1,6 +1,6 @@
 namespace Cryptie.Common.Features.GroupManagement;
 
-public class CreateGroupResponseDTO
+public class CreateGroupResponseDto
 {
     public Guid Group { set; get; }
 }

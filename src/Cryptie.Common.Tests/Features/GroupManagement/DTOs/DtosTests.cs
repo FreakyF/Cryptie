@@ -12,7 +12,7 @@ public class DtosTests
         var expectedSessionToken = Guid.NewGuid();
         var expectedUserToAdd = Guid.NewGuid();
         
-        var dto = new AddUserToGroupRequestDTO
+        var dto = new AddUserToGroupRequestDto
         {
             GroupGuid = expectedGroupGuid,
             SessionToken = expectedSessionToken,
@@ -51,7 +51,7 @@ public class DtosTests
     {
         var expectedSessionToken = Guid.NewGuid();
         
-        var dto = new CreateGroupRequestDTO
+        var dto = new CreateGroupRequestDto
         {
             Name = name,
             SessionToken = expectedSessionToken,
@@ -67,7 +67,7 @@ public class DtosTests
     {
         var expectedGroupGuid = Guid.NewGuid();
         
-        var dto = new CreateGroupResponseDTO
+        var dto = new CreateGroupResponseDto
         {
             Group = expectedGroupGuid
         };

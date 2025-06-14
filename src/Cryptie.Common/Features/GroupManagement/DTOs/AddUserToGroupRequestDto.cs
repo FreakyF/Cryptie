@@ -1,6 +1,6 @@
 namespace Cryptie.Common.Features.GroupManagement;
 
-public class AddUserToGroupRequestDTO
+public class AddUserToGroupRequestDto
 {
     public Guid SessionToken { get; set; }
     public Guid GroupGuid { get; set; }
