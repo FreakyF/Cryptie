@@ -13,8 +13,8 @@
         <conv:BoolToInvertConverter x:Key="InvertBool" />
 
         <conv:InitialConverter x:Key="InitialConverter" />
-        <conv:TargetEqualsConverter x:Key="TargetEqualsConverter" />
-        <conv:TargetNotEqualsConverter x:Key="TargetNotEqualsConverter" />
+        <conv:AccountInitialVisibilityConverter x:Key="AccountInitialVisible" />
+        <conv:AccountGlyphVisibilityConverter x:Key="AccountGlyphVisible" />
 
         <DataTemplate x:Key="NavItemTemplate"
                       x:DataType="models:NavigationItem">
@@ -25,27 +25,40 @@
                       VerticalAlignment="Center">
 
                     <Ellipse Fill="#54A9FF"
-                             Width="24" Height="24"
-                             IsVisible="{Binding Target,
-                                       Converter={StaticResource TargetEqualsConverter},
-                                       ConverterParameter=Account}" />
+                             Width="20" Height="20">
+                        <Ellipse.IsVisible>
+                            <MultiBinding Converter="{StaticResource AccountInitialVisible}">
+                                <Binding Path="Target" />
+                                <Binding Path="FullLabel" />
+                            </MultiBinding>
+                        </Ellipse.IsVisible>
+                    </Ellipse>
+
                     <TextBlock Text="{Binding FullLabel, Converter={StaticResource InitialConverter}}"
                                FontSize="16"
                                Foreground="White"
                                HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               IsVisible="{Binding Target,
-                                         Converter={StaticResource TargetEqualsConverter},
-                                         ConverterParameter=Account}" />
+                               VerticalAlignment="Center">
+                        <TextBlock.IsVisible>
+                            <MultiBinding Converter="{StaticResource AccountInitialVisible}">
+                                <Binding Path="Target" />
+                                <Binding Path="FullLabel" />
+                            </MultiBinding>
+                        </TextBlock.IsVisible>
+                    </TextBlock>
 
                     <TextBlock FontFamily="Segoe MDL2 Assets"
                                Text="{Binding IconGlyph}"
-                               FontSize="24"
+                               FontSize="20"
                                HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               IsVisible="{Binding Target,
-                                         Converter={StaticResource TargetNotEqualsConverter},
-                                         ConverterParameter=Account}" />
+                               VerticalAlignment="Center">
+                        <TextBlock.IsVisible>
+                            <MultiBinding Converter="{StaticResource AccountGlyphVisible}">
+                                <Binding Path="Target" />
+                                <Binding Path="FullLabel" />
+                            </MultiBinding>
+                        </TextBlock.IsVisible>
+                    </TextBlock>
                 </Grid>
 
                 <TextBlock Grid.Column="1"
@@ -53,9 +66,10 @@
                            FontSize="16"
                            VerticalAlignment="Center"
                            IsVisible="{Binding IsPaneOpen,
-                                       RelativeSource={RelativeSource AncestorType=SplitView}}" />
+                               RelativeSource={RelativeSource AncestorType=SplitView}}" />
             </Grid>
         </DataTemplate>
+
     </UserControl.Resources>
 
     <UserControl.Styles>
@@ -99,7 +113,6 @@
             </ListBox.ItemsPanel>
         </ListBox>
 
-        <!-- Przycisk zamykania panelu -->
         <Button Grid.Column="1"
                 Grid.Row="0"
                 Width="48" Height="48"
@@ -109,7 +122,7 @@
                 IsVisible="{Binding IsPaneOpen}">
             <TextBlock FontFamily="Segoe MDL2 Assets"
                        Text="&#xE700;"
-                       FontSize="24"
+                       FontSize="20"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
         </Button>
@@ -122,7 +135,7 @@
                 IsVisible="{Binding IsPaneOpen, Converter={StaticResource InvertBool}}">
             <TextBlock FontFamily="Segoe MDL2 Assets"
                        Text="&#xE700;"
-                       FontSize="24"
+                       FontSize="20"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
         </Button>
