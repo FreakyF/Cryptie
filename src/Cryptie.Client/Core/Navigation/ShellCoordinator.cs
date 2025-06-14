@@ -6,37 +6,41 @@ using Cryptie.Client.Features.Authentication.ViewModels;
 using Cryptie.Client.Features.Messages.ViewModels;
 using ReactiveUI;
 
-namespace Cryptie.Client.Core.Navigation;
-
-public class ShellCoordinator(
-    IViewModelFactory factory,
-    IKeychainManagerService keychain) : IShellCoordinator
+namespace Cryptie.Client.Core.Navigation
 {
-    public RoutingState Router { get; } = new();
-
-    public void Start()
+    public class ShellCoordinator(
+        IViewModelFactory factory,
+        IKeychainManagerService keychain)
+        : IShellCoordinator
     {
-        if (keychain.TryGetSessionToken(out var token, out _) && Guid.TryParse(token, out _))
+        public RoutingState Router { get; } = new();
+
+        public void Start()
         {
-            ShowDashboard();
-            return;
+            if (keychain.TryGetSessionToken(out var token, out _) &&
+                Guid.TryParse(token, out _))
+            {
+                ShowDashboard();
+            }
+            else
+            {
+                ShowRegister();
+            }
         }
 
-        ShowRegister();
-    }
+        public void ShowLogin() => NavigateTo<LoginViewModel>();
+        public void ShowRegister() => NavigateTo<RegisterViewModel>();
+        public void ShowQrSetup() => NavigateTo<TotpQrSetupViewModel>();
+        public void ShowTotpCode() => NavigateTo<TotpCodeViewModel>();
+        public void ShowDashboard() => NavigateTo<DashboardViewModel>();
+        public void ShowChats() => NavigateTo<ChatsViewModel>();
+        public void ShowAccount() => NavigateTo<AccountViewModel>();
+        public void ShowSettings() => NavigateTo<SettingsViewModel>();
 
-    public void ShowLogin() => NavigateTo<LoginViewModel>();
-    public void ShowRegister() => NavigateTo<RegisterViewModel>();
-    public void ShowQrSetup() => NavigateTo<TotpQrSetupViewModel>();
-    public void ShowTotpCode() => NavigateTo<TotpCodeViewModel>();
-    public void ShowDashboard() => NavigateTo<DashboardViewModel>();
-    public void ShowChats() => NavigateTo<ChatsViewModel>();
-    public void ShowAccount() => NavigateTo<AccountViewModel>();
-    public void ShowSettings() => NavigateTo<SettingsViewModel>();
-
-    private void NavigateTo<TViewModel>() where TViewModel : RoutableViewModelBase
-    {
-        var vm = factory.Create<TViewModel>(this);
-        Router.Navigate.Execute(vm);
+        private void NavigateTo<TViewModel>() where TViewModel : RoutableViewModelBase
+        {
+            var vm = factory.Create<TViewModel>(this);
+            Router.Navigate.Execute(vm);
+        }
     }
 }

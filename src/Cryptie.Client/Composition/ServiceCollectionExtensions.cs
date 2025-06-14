@@ -1,17 +1,18 @@
-﻿// ...usingi bez zmian...
-
-using System;
+﻿using System;
 using System.Reflection;
 using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Factories;
 using Cryptie.Client.Core.Locators;
 using Cryptie.Client.Core.Mapping;
 using Cryptie.Client.Core.Navigation;
+using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Authentication.ViewModels;
 using Cryptie.Client.Features.Messages.Services;
 using Cryptie.Client.Features.Messages.ViewModels;
+using Cryptie.Client.Features.ServerStatus.Services;
+using Cryptie.Client.Features.ServerStatus.ViewModels;
 using Cryptie.Client.Features.Shell.ViewModels;
 using Cryptie.Client.Features.Shell.Views;
 using Cryptie.Common.Features.Authentication.DTOs;
@@ -33,6 +34,13 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<ClientOptions>(configuration.GetSection("Client"));
 
+        services.AddHttpClient<IServerStatus, ServerStatus>()
+            .ConfigureHttpClient((sp, client) =>
+            {
+                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+                client.BaseAddress = new Uri(opts.BaseUri);
+            });
+
         services.AddHttpClient<IAuthenticationService, AuthenticationService>()
             .ConfigureHttpClient((sp, client) =>
             {
@@ -47,7 +55,6 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
 
-
         var cfg = TypeAdapterConfig.GlobalSettings;
         cfg.Scan(Assembly.GetExecutingAssembly());
 
@@ -60,6 +67,7 @@ public static class ServiceCollectionExtensions
 
         Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
 
+        services.AddTransient<ServerStatusViewModel>();
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<TotpCodeViewModel>();
@@ -74,6 +82,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();
         services.AddTransient<IValidator<TotpRequestDto>, TotpRequestValidator>();
 
+        services.AddSingleton<IConnectionMonitor, ConnectionMonitor>();
         services.AddSingleton<IRegistrationState, RegistrationState>();
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();

@@ -1,0 +1,61 @@
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewModels="clr-namespace:Cryptie.Client.Features.ServerStatus.ViewModels"
+    x:Class="Cryptie.Client.Features.ServerStatus.Views.ServerStatusView"
+    x:DataType="viewModels:ServerStatusViewModel">
+
+    <Grid>
+        <Border
+            Theme="{StaticResource CardBorder}"
+            Classes="Shadow Hover"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Width="300"
+            Padding="24">
+
+            <StackPanel Spacing="16" HorizontalAlignment="Stretch">
+
+                <TextBlock
+                    Text="Cryptie"
+                    Theme="{StaticResource TitleTextBlock}"
+                    Classes="H1"
+                    HorizontalAlignment="Center"
+                    IsVisible="{Binding IsLoading}" />
+
+                <ProgressBar
+                    Width="50" Height="50"
+                    Margin="24"
+                    IsVisible="{Binding IsLoading}"
+                    IsIndeterminate="True"
+                    Theme="{DynamicResource ProgressRing}"
+                    Classes="Primary"
+                    HorizontalAlignment="Center" />
+
+                <Grid
+                    HorizontalAlignment="Stretch"
+                    ColumnDefinitions="*,Auto,*"
+                    IsVisible="{Binding IsLoading}">
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Text="Loading"
+                        Theme="{StaticResource TitleTextBlock}"
+                        Classes="H4"
+                        HorizontalAlignment="Center" />
+
+                    <TextBlock
+                        x:Name="DotAnimation"
+                        Grid.Column="2"
+                        Text=""
+                        Theme="{StaticResource TitleTextBlock}"
+                        Classes="H4"
+                        HorizontalAlignment="Left" />
+                </Grid>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
