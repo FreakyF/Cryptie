@@ -25,6 +25,9 @@
         <DataTemplate DataType="viewModels1:DashboardViewModel">
             <views:DashboardView />
         </DataTemplate>
+        <DataTemplate DataType="viewModels1:SplitViewMenuViewModel">
+            <views:SplitViewMenuView />
+        </DataTemplate>
 
     </Application.DataTemplates>
 
