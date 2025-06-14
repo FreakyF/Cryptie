@@ -1,0 +1,63 @@
+﻿using Cryptie.Client.Features.Authentication.Services;
+using KeySharp;
+
+namespace Cryptie.Client.Tests.Features.Authentication.Services;
+
+public class IKeychainManagerServiceTests:IClassFixture<KeychainManagerServiceFixture>
+{
+    private static IKeychainManagerService _service;
+    public IKeychainManagerServiceTests(KeychainManagerServiceFixture fixture)
+    {
+        _service = fixture.Service;
+    }
+
+    [Trait("TestCategory", "Unit")]
+    [Fact]
+    public void TrySaveSessionTokenReturnsTrue()
+    {
+        string token = Guid.NewGuid().ToString();
+        string? error;
+
+        var result = _service.TrySaveSessionToken(token, out error);
+        
+        Assert.True(result);
+        Assert.Null(error);
+    }
+
+    [Trait("TestCategory", "Unit")]
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void TrySaveSessionTokenReturnsFalse(string token)
+    {  
+        string? error;
+        var result = _service.TrySaveSessionToken(token, out error);
+        
+        
+        Assert.False(result);
+        Assert.Equal("Session token cannot be null or empty.", error);
+    }
+
+    [Trait("TestCategory", "Unit")]
+    [Fact]
+    public void TryGetSessionTokenReturnsTrue()
+    {
+        string token = Guid.NewGuid().ToString();
+        _service.TrySaveSessionToken(token, out string? error);
+        var result = _service.TryGetSessionToken(out string? gettoken, out error);
+        
+        Assert.True(result);
+        Assert.Equal(token, gettoken);
+        Assert.Null(error);
+    }
+
+    [Trait("TestCategory", "Unit")]
+    [Fact]
+    public void TryGetSessionTokenReturnsFalse()
+    {
+        _service.TryClearSessionToken(out string? _);
+        var result = _service.TryGetSessionToken(out string? _, out _);
+        Assert.False(result);
+    }
+}

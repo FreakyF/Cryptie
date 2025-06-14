@@ -176,15 +176,22 @@ public class AuthenticationEndpointTests(AuthenticationApiFactory factory) : ICl
     [Fact]
     public async Task ValidLoginRequest()
     {
-        var dto = CreateRegisterRequest();
-        await _httpClient.PostAsJsonAsync("auth/register", dto);
+        // var dto = new RegisterRequestDto
+        // {
+        //     Login = "Username1234",
+        //     Password = "Password1234!",
+        //     DisplayName = "user 1234",
+        //     Email = "test1@test.com"
+        // };
+        //await _httpClient.PostAsJsonAsync("auth/register", dto);
         var requestDto = new LoginRequestDto
         {
-            Login = "Username123",
+            Login = "Username1234",
             Password = "Password1234!"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/login", requestDto);
         await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);//poprawić, nie loguje
+        
     }
 }
