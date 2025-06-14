@@ -12,7 +12,5 @@ public class BottomToColumnSpanConverter : IValueConverter
     }
 
     public object ConvertBack(object? v, Type t, object? p, CultureInfo c)
-    {
-        throw new NotSupportedException();
-    }
+        => throw new NotSupportedException();
 }
