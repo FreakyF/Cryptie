@@ -43,4 +43,31 @@ public class DatabaseService(AppDbContext appDbContext)
         if (userToAdd != null) appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Users.Add(userToAdd); //TODO xd
         appDbContext.SaveChanges();
     }
+
+    public void RemoveUserFromGroup(Guid user, Guid group)
+    {
+        var userToRemove = appDbContext.Users.SingleOrDefault(u => u.Id == user);
+        if (userToRemove != null) appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Users.Remove(userToRemove); //TODO xd
+        appDbContext.SaveChanges();
+    }
+
+    public bool DeleteGroup(Guid groupGuid)
+    {
+        var group = appDbContext.Groups.SingleOrDefault(g => g.Id == groupGuid);
+        if (group == null) return false;
+        appDbContext.Groups.Remove(group);
+        appDbContext.SaveChanges();
+        return true;
+    }
+
+    public bool ChangeGroupName(Guid groupGuid, string name)
+    {
+        var group = appDbContext.Groups.SingleOrDefault(g => g.Id == groupGuid);
+        if (group == null) return false;
+
+        appDbContext.Groups.SingleOrDefault(g => g.Id == groupGuid)!.Name = name;
+        appDbContext.SaveChanges();
+        
+        return true;
+    }
 }
