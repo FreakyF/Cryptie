@@ -85,6 +85,7 @@
 
                 <Button Grid.Column="1"
                         Grid.Row="0"
+                        CornerRadius="0"
                         Width="48" Height="48"
                         VerticalAlignment="Bottom"
                         Command="{Binding TogglePaneCommand}"
@@ -98,6 +99,7 @@
 
                 <Button Grid.Column="1"
                         Grid.Row="1"
+                        CornerRadius="0"
                         Width="48" Height="48"
                         Command="{Binding TogglePaneCommand}"
                         IsVisible="{Binding IsPaneOpen,
