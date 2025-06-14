@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,26 +8,27 @@ namespace Cryptie.Client.Features.Messages.Services;
 
 public class UserDetailsService(HttpClient httpClient) : IUserDetailsService
 {
-    public async Task<NameFromGuidResponseDto?> GetUsernameFromGuidAsync(NameFromGuidRequestDto nameFromGuidRequestDto,
+    public async Task<NameFromGuidResponseDto?> GetUsernameFromGuidAsync(
+        NameFromGuidRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        var guidEscaped = Uri.EscapeDataString(nameFromGuidRequestDto.Id.ToString());
-        var url = $"user/namefromguid?Id={guidEscaped}";
-        using var response = await httpClient.GetAsync(url, cancellationToken);
+        using var request = new HttpRequestMessage(HttpMethod.Get, "user/namefromguid");
+        request.Content = JsonContent.Create(dto);
+
+        using var response = await httpClient.SendAsync(request, cancellationToken);
         response.EnsureSuccessStatusCode();
 
-        response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<NameFromGuidResponseDto>(cancellationToken))!;
+        return await response.Content.ReadFromJsonAsync<NameFromGuidResponseDto>(cancellationToken);
     }
 
     public async Task<UserGuidFromTokenResponseDto?> GetUserGuidFromTokenAsync(
-        UserGuidFromTokenRequestDto userGuidFromTokenRequestDto,
+        UserGuidFromTokenRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        var tokenEscaped = Uri.EscapeDataString(userGuidFromTokenRequestDto.SessionToken.ToString());
-        var url = $"user/guid?SessionToken={tokenEscaped}";
+        using var request = new HttpRequestMessage(HttpMethod.Get, "user/guid");
+        request.Content = JsonContent.Create(dto);
 
-        using var response = await httpClient.GetAsync(url, cancellationToken);
+        using var response = await httpClient.SendAsync(request, cancellationToken);
         response.EnsureSuccessStatusCode();
 
         return await response.Content.ReadFromJsonAsync<UserGuidFromTokenResponseDto>(cancellationToken);
