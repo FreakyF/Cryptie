@@ -27,6 +27,18 @@ public class UserManagementController(DatabaseService databaseService) : Control
             Guid = user.Id,
         });
     }
+    
+    [HttpGet("login", Name = "GetUserGuidFromToken")]
+    public IActionResult UserLoginFromToken([FromBody] UserLoginFromTokenRequestDto userLoginFromTokenRequest)
+    {
+        var user = databaseService.GetUserFromToken(userLoginFromTokenRequest.SessionToken);
+        if (user == null) return BadRequest();
+        
+        return Ok(new UserLoginFromTokenResponseDto
+        {
+            Login = user.Login,
+        });
+    }
 
     [HttpPost("addfriend", Name = "PostAddFriend")]
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
