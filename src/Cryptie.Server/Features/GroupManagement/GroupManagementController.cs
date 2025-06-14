@@ -1,12 +1,12 @@
 using Cryptie.Common.Features.GroupManagement;
-using Cryptie.Server.Features.GroupManagment.Services;
+using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cryptie.Server.Features.GroupManagment;
 
 [ApiController]
 [Route("group")]
-public class GroupManagementController(DatabaseService databaseService) : ControllerBase
+public class GroupManagementController(IDatabaseService databaseService) : ControllerBase
 {
     [HttpPost("create", Name = "CreateGroup")]
     public IActionResult createGroup([FromBody] CreateGroupRequestDTO createGroupRequest)

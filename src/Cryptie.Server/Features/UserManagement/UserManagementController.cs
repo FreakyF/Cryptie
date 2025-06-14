@@ -1,13 +1,13 @@
 using Cryptie.Common.Entities.Group;
 using Cryptie.Common.Features.UserManagement.DTOs;
-using Cryptie.Server.Features.UserManagement.Services;
+using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cryptie.Server.Features.UserManagement;
 
 [ApiController]
 [Route("user")]
-public class UserManagementController(DatabaseService databaseService) : ControllerBase
+public class UserManagementController(IDatabaseService databaseService) : ControllerBase
 {
     [HttpGet("user", Name = "GetUser")]
     public IActionResult User([FromBody] UserRequestDto userRequest)
