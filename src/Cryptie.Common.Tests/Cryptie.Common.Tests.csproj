@@ -24,6 +24,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Cryptie.Client\Cryptie.Client.csproj"/>
+        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj" />
         <ProjectReference Include="..\Cryptie.Server\Cryptie.Server.csproj"/>
     </ItemGroup>
 
