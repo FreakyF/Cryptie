@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reactive;
 using Cryptie.Client.Core.Base;
+using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Messages.Models;
 using Cryptie.Client.Features.Messages.Services;
 using ReactiveUI;
@@ -10,14 +11,21 @@ namespace Cryptie.Client.Features.Messages.ViewModels;
 
 public sealed class DashboardViewModel : RoutableViewModelBase
 {
-    private readonly IUserDetailsService _userDetailsService;
+    private readonly IKeychainManagerService _keychainManager;
+    private readonly IUserDetailsService _userDetails;
     private bool _isPaneOpen;
 
     private NavigationItem? _selectedItem;
 
-    public DashboardViewModel(IScreen hostScreen, IUserDetailsService userDetailsService) : base(hostScreen)
+    public DashboardViewModel(
+        IScreen hostScreen,
+        IUserDetailsService userDetails,
+        IKeychainManagerService keychainManager
+    ) : base(hostScreen)
     {
-        _userDetailsService = userDetailsService;
+        _userDetails = userDetails;
+        _keychainManager = keychainManager;
+        ;
         _selectedItem = Items.FirstOrDefault();
 
         TogglePaneCommand = ReactiveCommand.Create(() => { IsPaneOpen = !IsPaneOpen; });
