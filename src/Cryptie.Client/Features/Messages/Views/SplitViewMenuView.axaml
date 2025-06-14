@@ -30,7 +30,7 @@
                                        Converter={StaticResource TargetEqualsConverter},
                                        ConverterParameter=Account}" />
                     <TextBlock Text="{Binding FullLabel, Converter={StaticResource InitialConverter}}"
-                               FontSize="24"
+                               FontSize="16"
                                Foreground="White"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
