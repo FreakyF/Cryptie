@@ -15,37 +15,28 @@
             VerticalAlignment="Center"
             Width="300"
             Padding="24">
-
             <StackPanel Spacing="16" HorizontalAlignment="Stretch">
-
                 <TextBlock
                     Text="Cryptie"
                     Theme="{StaticResource TitleTextBlock}"
                     Classes="H1"
-                    HorizontalAlignment="Center"
-                    IsVisible="{Binding IsLoading}" />
+                    HorizontalAlignment="Center" />
 
                 <ProgressBar
                     Width="50" Height="50"
                     Margin="24"
-                    IsVisible="{Binding IsLoading}"
                     IsIndeterminate="True"
                     Theme="{DynamicResource ProgressRing}"
                     Classes="Primary"
                     HorizontalAlignment="Center" />
 
-                <Grid
-                    HorizontalAlignment="Stretch"
-                    ColumnDefinitions="*,Auto,*"
-                    IsVisible="{Binding IsLoading}">
-
+                <Grid HorizontalAlignment="Stretch" ColumnDefinitions="*,Auto,*">
                     <TextBlock
                         Grid.Column="1"
                         Text="Loading"
                         Theme="{StaticResource TitleTextBlock}"
                         Classes="H4"
                         HorizontalAlignment="Center" />
-
                     <TextBlock
                         x:Name="DotAnimation"
                         Grid.Column="2"
@@ -54,7 +45,6 @@
                         Classes="H4"
                         HorizontalAlignment="Left" />
                 </Grid>
-
             </StackPanel>
         </Border>
     </Grid>
