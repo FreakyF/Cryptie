@@ -6,9 +6,9 @@ namespace Cryptie.Client.Features.Messages.Services;
 
 public interface IUserDetailsService
 {
-    Task<NameFromGuidResponseDto?> GetUsernameFromGuidAsync(NameFromGuidRequestDto nameFromGuidRequestDto,
+    public Task<NameFromGuidResponseDto?> GetUsernameFromGuidAsync(NameFromGuidRequestDto nameFromGuidRequest,
         CancellationToken cancellationToken = default);
 
-    Task<UserGuidFromTokenResponseDto?> GetUserGuidFromTokenAsync(UserGuidFromTokenRequestDto requestDto,
+    public Task<UserGuidFromTokenResponseDto?> GetUserGuidFromTokenAsync(UserGuidFromTokenRequestDto userGuidFromTokenRequest,
         CancellationToken cancellationToken = default);
 }

@@ -15,6 +15,7 @@ public interface IAppDbContext : IDisposable
     public DbSet<User> Users { get; set; }
     public DbSet<Password> Passwords { get; set; }
     public DbSet<Totp> Totps { get; set; }
+    public DbSet<PrivateKey> PrivateKeys { get; set; }
     public DbSet<UserToken> UserTokens { get; set; }
     public DbSet<TotpToken> TotpTokens { get; set; }
     public DbSet<UserLoginAttempt> UserLoginAttempts { get; set; }

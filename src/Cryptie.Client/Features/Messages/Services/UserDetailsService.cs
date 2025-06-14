@@ -9,11 +9,11 @@ namespace Cryptie.Client.Features.Messages.Services;
 public class UserDetailsService(HttpClient httpClient) : IUserDetailsService
 {
     public async Task<NameFromGuidResponseDto?> GetUsernameFromGuidAsync(
-        NameFromGuidRequestDto nameFromGuidRequestDto,
+        NameFromGuidRequestDto nameFromGuidRequest,
         CancellationToken cancellationToken = default)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, "user/namefromguid");
-        request.Content = JsonContent.Create(nameFromGuidRequestDto);
+        request.Content = JsonContent.Create(nameFromGuidRequest);
 
         using var response = await httpClient.SendAsync(request, cancellationToken);
         response.EnsureSuccessStatusCode();
@@ -22,11 +22,11 @@ public class UserDetailsService(HttpClient httpClient) : IUserDetailsService
     }
 
     public async Task<UserGuidFromTokenResponseDto?> GetUserGuidFromTokenAsync(
-        UserGuidFromTokenRequestDto requestDto,
+        UserGuidFromTokenRequestDto userGuidFromTokenRequest,
         CancellationToken cancellationToken = default)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, "user/guid");
-        request.Content = JsonContent.Create(requestDto);
+        request.Content = JsonContent.Create(userGuidFromTokenRequest);
 
         using var response = await httpClient.SendAsync(request, cancellationToken);
         response.EnsureSuccessStatusCode();

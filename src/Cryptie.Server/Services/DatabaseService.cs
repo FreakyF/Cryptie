@@ -43,14 +43,16 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
     public void AddUserToGroup(Guid user, Guid group)
     {
         var userToAdd = appDbContext.Users.SingleOrDefault(u => u.Id == user);
-        if (userToAdd != null) appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Users.Add(userToAdd); //TODO xd
+        if (userToAdd == null) return;
+        appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Users.Add(userToAdd);
         appDbContext.SaveChanges();
     }
 
     public void RemoveUserFromGroup(Guid user, Guid group)
     {
         var userToRemove = appDbContext.Users.SingleOrDefault(u => u.Id == user);
-        if (userToRemove != null) appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Users.Remove(userToRemove); //TODO xd
+        if (userToRemove == null) return;
+        appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Users.Remove(userToRemove);
         appDbContext.SaveChanges();
     }
 

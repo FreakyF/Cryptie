@@ -11,7 +11,7 @@ public class GroupManagementController(
 ) : ControllerBase
 {
     [HttpPost("create", Name = "CreateGroup")]
-    public IActionResult createGroup([FromBody] CreateGroupRequestDTO createGroupRequest)
+    public IActionResult createGroup([FromBody] CreateGroupRequestDto createGroupRequest)
     {
         var user = databaseService.GetUserFromToken(createGroupRequest.SessionToken);
         if (user == null) return BadRequest();
@@ -23,7 +23,7 @@ public class GroupManagementController(
             return BadRequest();
         }
 
-        return Ok(new CreateGroupResponseDTO
+        return Ok(new CreateGroupResponseDto
         {
             Group = group.Id,
         });
@@ -54,7 +54,7 @@ public class GroupManagementController(
     }
 
     [HttpPost("add", Name = "AddUserToGroup")]
-    public IActionResult addUserToGroup([FromBody] AddUserToGroupRequestDTO addUserToGroupRequest)
+    public IActionResult addUserToGroup([FromBody] AddUserToGroupRequestDto addUserToGroupRequest)
     {
         var user = databaseService.GetUserFromToken(addUserToGroupRequest.SessionToken);
         if (user == null) return BadRequest();
