@@ -5,6 +5,18 @@
              x:Class="Cryptie.Client.Features.Messages.Views.DashboardView"
              x:DataType="vm:DashboardViewModel">
 
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="vm:ChatsViewModel">
+            <views:ChatsView />
+        </DataTemplate>
+        <DataTemplate DataType="vm:AccountViewModel">
+            <views:AccountView />
+        </DataTemplate>
+        <DataTemplate DataType="vm:SettingsViewModel">
+            <views:SettingsView />
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
     <SplitView IsPaneOpen="{Binding Menu.IsPaneOpen}"
                OpenPaneLength="240"
                CompactPaneLength="48"
@@ -15,10 +27,7 @@
         </SplitView.Pane>
 
         <SplitView.Content>
-            <TextBlock FontSize="24"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Text="Content" />
+            <ContentControl Content="{Binding Content}" />
         </SplitView.Content>
 
     </SplitView>
