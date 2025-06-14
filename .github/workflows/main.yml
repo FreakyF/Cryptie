@@ -7,21 +7,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     
-jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Debug SONAR_TOKEN
-        env:
-          TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          if [ -z "$TOKEN" ]; then
-            echo "SONAR_TOKEN is empty or not set."
-          else
-            echo "SONAR_TOKEN is set and starts with ${TOKEN:0:4}******"
-          fi
-
-  
+jobs:  
   build:
     uses: ./.github/workflows/build.yml
     

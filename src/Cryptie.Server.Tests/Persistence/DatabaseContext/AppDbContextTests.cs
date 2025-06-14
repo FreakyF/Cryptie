@@ -10,7 +10,7 @@ namespace Cryptie.Server.Tests.Persistence.DatabaseContext;
 
 public class AppDbContextTests
 {
-    private AppDbContext CreateContext()
+    private IAppDbContext CreateContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase("TestDatabase")
@@ -19,6 +19,18 @@ public class AppDbContextTests
         return new AppDbContext(options);
     }
 
+    [Trait("TestCategory", "Integration")]
+    [Fact]
+    public void Can_Create_DbContext_WO_Options()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>().Options;
+        var context = new AppDbContext(options);
+
+        Assert.NotNull(context);
+        Assert.Equal("Host=localhost;Port=55123;Database=cryptie;Username=postgres;Password=admin", context.Database.GetDbConnection().ConnectionString);
+    }
+    
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Create_DbContext()
     {
@@ -27,6 +39,7 @@ public class AppDbContextTests
         Assert.NotNull(context);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Access_DbSets()
     {
@@ -47,6 +60,7 @@ public class AppDbContextTests
         Assert.NotNull(context.UserAccountHoneypotLocks);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_Group()
     {
@@ -65,6 +79,7 @@ public class AppDbContextTests
         Assert.Equal(name, result.Name);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_GroupMessage()
     {
@@ -115,6 +130,7 @@ public class AppDbContextTests
         Assert.Equal(to.Id, result.ToUser.Id);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_UserGroupPublicKey()
     {
@@ -146,6 +162,7 @@ public class AppDbContextTests
         Assert.Equal(user.Id, result.User.Id);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_User()
     {
@@ -169,6 +186,7 @@ public class AppDbContextTests
         Assert.NotNull(result);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_Password()
     {
@@ -186,6 +204,7 @@ public class AppDbContextTests
         Assert.Equal(secret, result.Secret);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_Totp()
     {
@@ -203,6 +222,7 @@ public class AppDbContextTests
         Assert.Equal(secret, result.Secret);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_PrivateKey()
     {
@@ -222,6 +242,7 @@ public class AppDbContextTests
         Assert.Equal(key, result.Key);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_UserToken()
     {
@@ -251,6 +272,7 @@ public class AppDbContextTests
         Assert.Equal(user.Id, result.User.Id);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_TotpToken()
     {
@@ -281,6 +303,7 @@ public class AppDbContextTests
         Assert.Equal(time, result.Until);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_UserLoginAttempt()
     {
@@ -312,6 +335,7 @@ public class AppDbContextTests
         Assert.Equal(time, result.TimeStamp);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_UserLoginHoneypotAttempt()
     {
@@ -332,6 +356,7 @@ public class AppDbContextTests
         Assert.Equal(time, result.TimeStamp);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_UserAccountLock()
     {
@@ -363,6 +388,7 @@ public class AppDbContextTests
         Assert.Equal(until, result.Until);
     }
 
+    [Trait("TestCategory", "Integration")]
     [Fact]
     public void Can_Insert_And_Query_UserAccountHoneypotLock()
     {
