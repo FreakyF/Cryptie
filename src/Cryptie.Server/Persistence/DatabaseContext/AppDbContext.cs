@@ -25,6 +25,9 @@ public class AppDbContext(DbContextOptions dbContextOptions) : DbContext(dbConte
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=55123;Database=cryptie;Username=postgres;Password=admin");
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseNpgsql("Host=localhost;Port=55123;Database=cryptie;Username=postgres;Password=admin");
+        }
     }
 }
