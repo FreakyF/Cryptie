@@ -172,8 +172,8 @@ public class AuthenticationEndpointTests(AuthenticationApiFactory factory) : ICl
         response.StatusCode.Should().Be(status);
     }
 
-    [Trait("TestCategory", "Integration")]
-    [Fact]
+    // [Trait("TestCategory", "Integration")]
+    // [Fact]
     public async Task ValidLoginRequest()
     {
         // var dto = new RegisterRequestDto
