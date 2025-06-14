@@ -8,25 +8,52 @@
 
     <UserControl.Resources>
         <conv:BoolToDockConverter x:Key="BoolDock" />
-        <conv:BoolToInvertConverter x:Key="InvertBool" />
         <conv:BottomToColumnSpanConverter x:Key="ColSpan" />
         <conv:BottomPaneMarginConverter x:Key="PaneMargin" />
+        <conv:BoolToInvertConverter x:Key="InvertBool" />
+
+        <conv:InitialConverter x:Key="InitialConverter" />
+        <conv:TargetEqualsConverter x:Key="TargetEqualsConverter" />
+        <conv:TargetNotEqualsConverter x:Key="TargetNotEqualsConverter" />
 
         <DataTemplate x:Key="NavItemTemplate"
                       x:DataType="models:NavigationItem">
             <Grid Height="48" ColumnDefinitions="48,*">
-                <TextBlock Grid.Column="0"
-                           FontFamily="Segoe MDL2 Assets"
-                           Text="{Binding IconGlyph}"
-                           FontSize="16"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center" />
+                <Grid Grid.Column="0"
+                      Width="48" Height="48"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+
+                    <Ellipse Fill="#54A9FF"
+                             Width="24" Height="24"
+                             IsVisible="{Binding Target,
+                                       Converter={StaticResource TargetEqualsConverter},
+                                       ConverterParameter=Account}" />
+                    <TextBlock Text="{Binding FullLabel, Converter={StaticResource InitialConverter}}"
+                               FontSize="16"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               IsVisible="{Binding Target,
+                                         Converter={StaticResource TargetEqualsConverter},
+                                         ConverterParameter=Account}" />
+
+                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                               Text="{Binding IconGlyph}"
+                               FontSize="24"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               IsVisible="{Binding Target,
+                                         Converter={StaticResource TargetNotEqualsConverter},
+                                         ConverterParameter=Account}" />
+                </Grid>
+
                 <TextBlock Grid.Column="1"
                            Text="{Binding FullLabel}"
                            FontSize="16"
                            VerticalAlignment="Center"
                            IsVisible="{Binding IsPaneOpen,
-                                               RelativeSource={RelativeSource AncestorType=SplitView}}" />
+                                       RelativeSource={RelativeSource AncestorType=SplitView}}" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -34,20 +61,14 @@
     <UserControl.Styles>
         <Style Selector="ListBoxItem"
                x:DataType="models:NavigationItem">
-
             <Setter Property="Height" Value="48" />
             <Setter Property="Padding" Value="0" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-
             <Setter Property="DockPanel.Dock"
-                    Value="{Binding IsBottom,
-                                    Converter={StaticResource BoolDock}}" />
-
+                    Value="{Binding IsBottom, Converter={StaticResource BoolDock}}" />
             <Setter Property="(Grid.ColumnSpan)"
-                    Value="{Binding IsBottom,
-                                    Converter={StaticResource ColSpan}}" />
-
+                    Value="{Binding IsBottom, Converter={StaticResource ColSpan}}" />
             <Setter Property="Margin">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource PaneMargin}">
@@ -58,6 +79,8 @@
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+            <Setter Property="ContentTemplate"
+                    Value="{StaticResource NavItemTemplate}" />
         </Style>
     </UserControl.Styles>
 
@@ -76,29 +99,30 @@
             </ListBox.ItemsPanel>
         </ListBox>
 
+        <!-- Przycisk zamykania panelu -->
         <Button Grid.Column="1"
                 Grid.Row="0"
-                CornerRadius="0"
                 Width="48" Height="48"
+                CornerRadius="0"
                 VerticalAlignment="Bottom"
                 Command="{Binding TogglePaneCommand}"
                 IsVisible="{Binding IsPaneOpen}">
             <TextBlock FontFamily="Segoe MDL2 Assets"
                        Text="&#xE700;"
-                       FontSize="16"
+                       FontSize="24"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
         </Button>
 
         <Button Grid.Column="1"
                 Grid.Row="1"
-                CornerRadius="0"
                 Width="48" Height="48"
+                CornerRadius="0"
                 Command="{Binding TogglePaneCommand}"
                 IsVisible="{Binding IsPaneOpen, Converter={StaticResource InvertBool}}">
             <TextBlock FontFamily="Segoe MDL2 Assets"
                        Text="&#xE700;"
-                       FontSize="16"
+                       FontSize="24"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
         </Button>
