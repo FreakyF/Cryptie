@@ -34,7 +34,7 @@ public sealed class SplitViewMenuViewModel : ViewModelBase
             new NavigationItem("Account", "\uE168", NavigationTarget.Account, true, true),
             new NavigationItem("Settings", "\uE115", NavigationTarget.Settings, true)
         ];
-        _selectedItem = Items.First();
+        _selectedItem = Items[0];
 
         TogglePaneCommand = ReactiveCommand.Create(() => { IsPaneOpen = !IsPaneOpen; });
         NavigateCommand = ReactiveCommand.Create<NavigationItem>(Navigate);
