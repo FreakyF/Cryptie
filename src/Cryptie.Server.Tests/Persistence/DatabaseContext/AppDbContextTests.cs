@@ -20,6 +20,16 @@ public class AppDbContextTests
     }
 
     [Fact]
+    public void Can_Create_DbContext_WO_Options()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>().Options;
+        var context = new AppDbContext(options);
+
+        Assert.NotNull(context);
+        Assert.Equal("Host=localhost;Port=55123;Database=cryptie;Username=postgres;Password=admin", context.Database.GetDbConnection().ConnectionString);
+    }
+    
+    [Fact]
     public void Can_Create_DbContext()
     {
         using var context = CreateContext();
