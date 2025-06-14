@@ -33,18 +33,16 @@ public class AuthenticationApiFactory : WebApplicationFactory<Program>, IAsyncLi
     {
         builder.ConfigureServices(services =>
         {
-            var old = services.SingleOrDefault(d =>
-                d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-            if (old is not null)
-            {
-                services.Remove(old);
-            }
+            var old = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+            if (old is not null) services.Remove(old);
 
             services.AddDbContext<AppDbContext>(opt =>
                 opt.UseNpgsql(_database.GetConnectionString()));
 
             using var scope = services.BuildServiceProvider().CreateScope();
             var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            ctx.Database.EnsureDeleted();
             ctx.Database.Migrate();
         });
     }

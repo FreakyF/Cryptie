@@ -71,6 +71,11 @@ public static class ServiceCollectionExtensions
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<TotpCodeViewModel>();
         services.AddTransient<TotpQrSetupViewModel>();
+        services.AddTransient<SplitViewMenuViewModel>();
+        services.AddTransient<ChatsViewModel>();
+        services.AddTransient<AccountViewModel>();
+        services.AddTransient<SettingsViewModel>();
+
 
         services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
         services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();

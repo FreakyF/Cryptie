@@ -25,30 +25,14 @@ public class ShellCoordinator(
         ShowRegister();
     }
 
-    public void ShowLogin()
-    {
-        NavigateTo<LoginViewModel>();
-    }
-
-    public void ShowRegister()
-    {
-        NavigateTo<RegisterViewModel>();
-    }
-
-    public void ShowQrSetup()
-    {
-        NavigateTo<TotpQrSetupViewModel>();
-    }
-
-    public void ShowTotpCode()
-    {
-        NavigateTo<TotpCodeViewModel>();
-    }
-
-    public void ShowDashboard()
-    {
-        NavigateTo<DashboardViewModel>();
-    }
+    public void ShowLogin() => NavigateTo<LoginViewModel>();
+    public void ShowRegister() => NavigateTo<RegisterViewModel>();
+    public void ShowQrSetup() => NavigateTo<TotpQrSetupViewModel>();
+    public void ShowTotpCode() => NavigateTo<TotpCodeViewModel>();
+    public void ShowDashboard() => NavigateTo<DashboardViewModel>();
+    public void ShowChats() => NavigateTo<ChatsViewModel>();
+    public void ShowAccount() => NavigateTo<AccountViewModel>();
+    public void ShowSettings() => NavigateTo<SettingsViewModel>();
 
     private void NavigateTo<TViewModel>() where TViewModel : RoutableViewModelBase
     {

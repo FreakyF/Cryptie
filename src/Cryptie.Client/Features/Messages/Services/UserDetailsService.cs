@@ -8,14 +8,29 @@ namespace Cryptie.Client.Features.Messages.Services;
 
 public class UserDetailsService(HttpClient httpClient) : IUserDetailsService
 {
-    public async Task<NameFromGuidResponseDto?> GetUsernameFromGuid(NameFromGuidRequestDto nameFromGuidRequestDto,
+    public async Task<NameFromGuidResponseDto?> GetUsernameFromGuidAsync(
+        NameFromGuidRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        var url = $"user/namefromguid?Id={nameFromGuidRequestDto.Id}";
-        using var response = await httpClient.GetAsync(url, cancellationToken);
+        using var request = new HttpRequestMessage(HttpMethod.Get, "user/namefromguid");
+        request.Content = JsonContent.Create(dto);
+
+        using var response = await httpClient.SendAsync(request, cancellationToken);
         response.EnsureSuccessStatusCode();
 
+        return await response.Content.ReadFromJsonAsync<NameFromGuidResponseDto>(cancellationToken);
+    }
+
+    public async Task<UserGuidFromTokenResponseDto?> GetUserGuidFromTokenAsync(
+        UserGuidFromTokenRequestDto dto,
+        CancellationToken cancellationToken = default)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, "user/guid");
+        request.Content = JsonContent.Create(dto);
+
+        using var response = await httpClient.SendAsync(request, cancellationToken);
         response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<NameFromGuidResponseDto>(cancellationToken))!;
+
+        return await response.Content.ReadFromJsonAsync<UserGuidFromTokenResponseDto>(cancellationToken);
     }
 }

@@ -131,7 +131,7 @@ public class AuthenticationEndpointTests(AuthenticationApiFactory factory) : ICl
     [InlineData(" ", HttpStatusCode.BadRequest)]
     [InlineData("user*&()", HttpStatusCode.BadRequest)]
     [InlineData("abcd", HttpStatusCode.BadRequest)]
-    [InlineData("abcdefghijklmnopqrstuvwxyz", HttpStatusCode.InternalServerError)]
+    [InlineData("abcdefghijklmnopqrstuvwxyz", HttpStatusCode.BadRequest)]
     public async Task InvalidLoginUsernameRequest(string username, HttpStatusCode statusCode)
     {
         var dto = CreateRegisterRequest();

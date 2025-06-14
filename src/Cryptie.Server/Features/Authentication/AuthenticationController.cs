@@ -6,7 +6,10 @@ namespace Cryptie.Server.Features.Authentication;
 
 [ApiController]
 [Route("auth")]
-public class AuthenticationController(IAuthenticationService authenticationService, IDelayService delayService)
+public class AuthenticationController(
+    IAuthenticationService authenticationService,
+    IDelayService delayService
+)
     : ControllerBase
 {
     [HttpPost("login", Name = "PostLogin")]

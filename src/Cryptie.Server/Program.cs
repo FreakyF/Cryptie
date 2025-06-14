@@ -5,9 +5,9 @@ using Cryptie.Common.Features.Authentication.Validators;
 using Cryptie.Server.Features.Authentication.Services;
 using Cryptie.Server.Features.Messages.Services;
 using Cryptie.Server.Persistence.DatabaseContext;
+using Cryptie.Server.Services;
 using FluentValidation;
 using Scalar.AspNetCore;
-using DatabaseService = Cryptie.Server.Features.Authentication.Services.DatabaseService;
 
 namespace Cryptie.Server;
 
@@ -46,8 +46,7 @@ public class Program
         builder.Services.AddScoped<ILockoutService, LockoutService>();
         builder.Services.AddScoped<IDatabaseService, DatabaseService>();
         builder.Services.AddScoped<IDelayService, DelayService>();
-        builder.Services.AddScoped<Features.UserManagement.Services.DatabaseService>();
-
+        
         builder.Services.AddScoped<IValidator<LoginRequestDto>, LoginRequestValidator>();
         builder.Services.AddScoped<IValidator<LogoutRequestDto>, LogoutRequestValidator>();
         builder.Services.AddScoped<IValidator<RegisterRequestDto>, RegisterRequestValidator>();

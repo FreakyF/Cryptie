@@ -2,6 +2,7 @@ using Cryptie.Common.Entities.User;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Server.Persistence.DatabaseContext;
+using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OtpNet;
@@ -10,7 +11,7 @@ using Totp = Cryptie.Common.Entities.User.Totp;
 namespace Cryptie.Server.Features.Authentication.Services;
 
 public class AuthenticationService(
-    AppDbContext appDbContext,
+    IAppDbContext appDbContext,
     ILockoutService lockoutService,
     IDatabaseService databaseService)
     : ControllerBase, IAuthenticationService
@@ -91,7 +92,7 @@ public class AuthenticationService(
         }
 
         appDbContext.UserTokens.Remove(userToken);
-        appDbContext.SaveChangesAsync();
+        appDbContext.SaveChanges();
 
         return Ok();
     }
