@@ -40,13 +40,6 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
 
-        services.AddHttpClient<IUserManagementService, UserManagementService>()
-            .ConfigureHttpClient((sp, client) =>
-            {
-                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
-                client.BaseAddress = new Uri(opts.BaseUri);
-            });
-
         services.AddHttpClient<IUserDetailsService, UserDetailsService>()
             .ConfigureHttpClient((sp, client) =>
             {

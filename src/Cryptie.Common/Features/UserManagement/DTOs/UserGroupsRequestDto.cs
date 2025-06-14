@@ -2,5 +2,5 @@ namespace Cryptie.Common.Features.UserManagement.DTOs;
 
 public class UserGroupsRequestDto
 {
-    public Guid Token { get; set; }
+    public Guid SessionToken { get; set; }
 }

@@ -9,13 +9,6 @@ namespace Cryptie.Server.Features.UserManagement;
 [Route("user")]
 public class UserManagementController(IDatabaseService databaseService) : ControllerBase
 {
-    [HttpGet("user", Name = "GetUser")]
-    public IActionResult User([FromBody] UserRequestDto userRequest)
-    {
-        var user = databaseService.GetUserFromToken(userRequest.Toekn);
-        return Ok(new UserResponseDto { User = user });
-    }
-
     [HttpGet("guid", Name = "GetUserGuidFromToken")]
     public IActionResult UserGuidFromToken([FromBody] UserGuidFromTokenRequestDto userGuidFromTokenRequest)
     {
@@ -43,7 +36,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
     [HttpPost("addfriend", Name = "PostAddFriend")]
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
     {
-        var user = databaseService.GetUserFromToken(addFriendRequest.Token);
+        var user = databaseService.GetUserFromToken(addFriendRequest.SessionToken);
         if (user == null) return BadRequest();
         var friend = databaseService.FindUserById(addFriendRequest.Friend);
         if (friend == null) return BadRequest();
@@ -64,7 +57,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
     [HttpGet("friendlist", Name = "GetFriendList")]
     public IActionResult FriendList([FromBody] FriendListRequestDto friendListRequest)
     {
-        var user = databaseService.GetUserFromToken(friendListRequest.Toekn);
+        var user = databaseService.GetUserFromToken(friendListRequest.SessionToken);
         if (user == null) return BadRequest();
 
         var friends = user.Friends.Select(f => f.Id).ToList();
@@ -90,7 +83,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
     [HttpGet("usergroups", Name = "GetUserGroups")]
     public IActionResult UserGroups([FromBody] UserGroupsRequestDto userGroupsRequest)
     {
-        var user = databaseService.GetUserFromToken(userGroupsRequest.Token);
+        var user = databaseService.GetUserFromToken(userGroupsRequest.SessionToken);
         if (user == null) return BadRequest();
 
         var groups = user.Groups.Select(g => g.Id).ToList();
