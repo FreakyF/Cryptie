@@ -28,6 +28,15 @@
         <DataTemplate DataType="viewModels1:SplitViewMenuViewModel">
             <views:SplitViewMenuView />
         </DataTemplate>
+        <DataTemplate DataType="viewModels1:ChatsViewModel">
+            <views:ChatsView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels1:AccountViewModel">
+            <views:AccountView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels1:SettingsViewModel">
+            <views:SettingsView />
+        </DataTemplate>
 
     </Application.DataTemplates>
 

@@ -10,4 +10,7 @@ public interface IShellCoordinator : IScreen
     void ShowQrSetup();
     void ShowTotpCode();
     void ShowDashboard();
+    void ShowChats();
+    void ShowAccount();
+    void ShowSettings();
 }

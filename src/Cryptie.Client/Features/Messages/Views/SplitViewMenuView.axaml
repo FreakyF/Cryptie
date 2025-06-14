@@ -4,7 +4,7 @@
              xmlns:models="clr-namespace:Cryptie.Client.Features.Messages.Models"
              xmlns:conv="clr-namespace:Cryptie.Client.Features.Messages.Converters"
              x:Class="Cryptie.Client.Features.Messages.Views.SplitViewMenuView"
-             x:DataType="vm:DashboardViewModel">
+             x:DataType="vm:SplitViewMenuViewModel">
 
     <UserControl.Resources>
         <conv:BoolToDockConverter x:Key="BoolDock" />
