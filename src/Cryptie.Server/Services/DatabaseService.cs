@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cryptie.Server.Services;
 
-public class DatabaseService(AppDbContext appDbContext) : IDatabaseService
+public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 {
     public User? GetUserFromToken(Guid guid)
     {

@@ -11,7 +11,7 @@ using Totp = Cryptie.Common.Entities.User.Totp;
 namespace Cryptie.Server.Features.Authentication.Services;
 
 public class AuthenticationService(
-    AppDbContext appDbContext,
+    IAppDbContext appDbContext,
     ILockoutService lockoutService,
     IDatabaseService databaseService)
     : ControllerBase, IAuthenticationService
@@ -92,7 +92,7 @@ public class AuthenticationService(
         }
 
         appDbContext.UserTokens.Remove(userToken);
-        appDbContext.SaveChangesAsync();
+        appDbContext.SaveChanges();
 
         return Ok();
     }
