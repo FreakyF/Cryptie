@@ -28,7 +28,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         });
     }
     
-    [HttpGet("login", Name = "GetUserGuidFromToken")]
+    [HttpGet("login", Name = "GetUserLoginFromToken")]
     public IActionResult UserLoginFromToken([FromBody] UserLoginFromTokenRequestDto userLoginFromTokenRequest)
     {
         var user = databaseService.GetUserFromToken(userLoginFromTokenRequest.SessionToken);
