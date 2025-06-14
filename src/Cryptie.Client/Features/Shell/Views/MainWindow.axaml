@@ -8,7 +8,7 @@
         x:Class="Cryptie.Client.Features.Shell.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/CryptieIcon.ico"
         Title="Cryptie">
 
     <reactiveUi:RoutedViewHost x:Name="RoutedViewHost" Router="{Binding Router}" PageTransition="{x:Null}" />
