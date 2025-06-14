@@ -45,7 +45,8 @@ public class DtosTests
     [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData("login", "password", "displayname", "email")]
-    public void RegisterRequestDto_ShouldSetAndReturnCorrectValue(string login, string password, string displayName, string email)
+    public void RegisterRequestDto_ShouldSetAndReturnCorrectValue(string login, string password, string displayName,
+        string email)
     {
         var dto = new RegisterRequestDto
         {
@@ -59,7 +60,7 @@ public class DtosTests
         Assert.Equal(displayName, dto.DisplayName);
         Assert.Equal(email, dto.Email);
     }
-    
+
     [Trait("TestCategory", "Unit")]
     [Theory]
     [InlineData("secret")]

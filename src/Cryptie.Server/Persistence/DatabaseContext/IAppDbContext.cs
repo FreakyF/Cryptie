@@ -22,7 +22,7 @@ public interface IAppDbContext : IDisposable
     public DbSet<UserLoginHoneypotAttempt> UserLoginHoneypotAttempts { get; set; }
     public DbSet<UserAccountLock> UserAccountLocks { get; set; }
     public DbSet<UserAccountHoneypotLock> UserAccountHoneypotLocks { get; set; }
-    
+
     public int SaveChanges();
     public int SaveChanges(bool acceptAllChangesOnSuccess);
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken);

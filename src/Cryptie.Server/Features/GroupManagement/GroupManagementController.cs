@@ -18,14 +18,11 @@ public class GroupManagementController(
 
         var group = databaseService.CreateNewGroup(user, createGroupRequest.Name);
 
-        if (group == null)
-        {
-            return BadRequest();
-        }
+        if (group == null) return BadRequest();
 
         return Ok(new CreateGroupResponseDto
         {
-            Group = group.Id,
+            Group = group.Id
         });
     }
 

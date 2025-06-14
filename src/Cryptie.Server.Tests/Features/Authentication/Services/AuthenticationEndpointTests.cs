@@ -191,7 +191,6 @@ public class AuthenticationEndpointTests(AuthenticationApiFactory factory) : ICl
         };
         var response = await _httpClient.PostAsJsonAsync("auth/login", requestDto);
         await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);//poprawić, nie loguje
-        
+        response.StatusCode.Should().Be(HttpStatusCode.OK); //poprawić, nie loguje
     }
 }

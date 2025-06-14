@@ -39,10 +39,7 @@ public class KeychainManagerService : IKeychainManagerService
         try
         {
             token = Keyring.GetPassword(ProductName, ServiceName, Account);
-            if (!string.IsNullOrEmpty(token))
-            {
-                return true;
-            }
+            if (!string.IsNullOrEmpty(token)) return true;
 
             errorMessage = "No session token found.";
             return false;

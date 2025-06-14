@@ -9,6 +9,7 @@ public interface IUserDetailsService
     public Task<NameFromGuidResponseDto?> GetUsernameFromGuidAsync(NameFromGuidRequestDto nameFromGuidRequest,
         CancellationToken cancellationToken = default);
 
-    public Task<UserGuidFromTokenResponseDto?> GetUserGuidFromTokenAsync(UserGuidFromTokenRequestDto userGuidFromTokenRequest,
+    public Task<UserGuidFromTokenResponseDto?> GetUserGuidFromTokenAsync(
+        UserGuidFromTokenRequestDto userGuidFromTokenRequest,
         CancellationToken cancellationToken = default);
 }

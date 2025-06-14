@@ -5,42 +5,41 @@ using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 using Cryptie.Client.Features.ServerStatus.ViewModels;
 
-namespace Cryptie.Client.Features.ServerStatus.Views
+namespace Cryptie.Client.Features.ServerStatus.Views;
+
+public partial class ServerStatusView : ReactiveUserControl<ServerStatusViewModel>
 {
-    public partial class ServerStatusView : ReactiveUserControl<ServerStatusViewModel>
+    private CancellationTokenSource? _dotAnimationCts;
+
+    public ServerStatusView()
     {
-        private CancellationTokenSource? _dotAnimationCts;
+        InitializeComponent();
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
+    }
 
-        public ServerStatusView()
+    private void OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        _dotAnimationCts = new CancellationTokenSource();
+        _ = AnimateDotsAsync(DotAnimation, _dotAnimationCts.Token);
+    }
+
+    private void OnUnloaded(object? sender, RoutedEventArgs e)
+    {
+        _dotAnimationCts?.Cancel();
+        _dotAnimationCts?.Dispose();
+    }
+
+    private static async Task AnimateDotsAsync(TextBlock dotAnimation, CancellationToken token)
+    {
+        var dotStates = new[] { "", ".", "..", "..." };
+        var index = 0;
+
+        while (!token.IsCancellationRequested)
         {
-            InitializeComponent();
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
-        }
-
-        private void OnLoaded(object? sender, RoutedEventArgs e)
-        {
-            _dotAnimationCts = new CancellationTokenSource();
-            _ = AnimateDotsAsync(DotAnimation, _dotAnimationCts.Token);
-        }
-
-        private void OnUnloaded(object? sender, RoutedEventArgs e)
-        {
-            _dotAnimationCts?.Cancel();
-            _dotAnimationCts?.Dispose();
-        }
-
-        private static async Task AnimateDotsAsync(TextBlock dotAnimation, CancellationToken token)
-        {
-            var dotStates = new[] { "", ".", "..", "..." };
-            var index = 0;
-
-            while (!token.IsCancellationRequested)
-            {
-                dotAnimation.Text = dotStates[index];
-                index = (index + 1) % dotStates.Length;
-                await Task.Delay(500, token);
-            }
+            dotAnimation.Text = dotStates[index];
+            index = (index + 1) % dotStates.Length;
+            await Task.Delay(500, token);
         }
     }
 }

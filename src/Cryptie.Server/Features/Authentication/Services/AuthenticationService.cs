@@ -22,10 +22,7 @@ public class AuthenticationService(
             .Include(user => user.Password)
             .SingleOrDefault(u => u.Login == loginRequest.Login);
 
-        if (lockoutService.IsUserLockedOut(user, loginRequest.Login))
-        {
-            return NotFound();
-        }
+        if (lockoutService.IsUserLockedOut(user, loginRequest.Login)) return NotFound();
 
         if (user != null && !BCrypt.Net.BCrypt.Verify(loginRequest.Password, user.Password.Secret))
         {
@@ -54,10 +51,7 @@ public class AuthenticationService(
             .SingleOrDefault(t => t.Id == totpRequest.TotpToken
             );
 
-        if (totpToken == null)
-        {
-            return BadRequest();
-        }
+        if (totpToken == null) return BadRequest();
 
         if (totpToken.Until < now)
         {
@@ -68,10 +62,7 @@ public class AuthenticationService(
         var totp = new OtpNet.Totp(totpToken.User.Totp.Secret);
         var isValid = totp.VerifyTotp(totpRequest.Secret, out _);
 
-        if (!isValid)
-        {
-            return BadRequest();
-        }
+        if (!isValid) return BadRequest();
 
         var token = databaseService.GenerateUserToken(totpToken.User);
         appDbContext.TotpTokens.Remove(totpToken);
@@ -86,10 +77,7 @@ public class AuthenticationService(
     {
         var userToken = appDbContext.UserTokens.SingleOrDefault(t => t.Id == logoutRequest.Token);
 
-        if (userToken == null)
-        {
-            return BadRequest();
-        }
+        if (userToken == null) return BadRequest();
 
         appDbContext.UserTokens.Remove(userToken);
         appDbContext.SaveChanges();

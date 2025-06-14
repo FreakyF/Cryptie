@@ -138,10 +138,7 @@ public class RegisterViewModel : RoutableViewModelBase
             return;
         }
 
-        if (cancellationToken.IsCancellationRequested)
-        {
-            _coordinator.ShowRegister();
-        }
+        if (cancellationToken.IsCancellationRequested) _coordinator.ShowRegister();
 
         _registrationState.LastResponse = result;
         _coordinator.ShowQrSetup();

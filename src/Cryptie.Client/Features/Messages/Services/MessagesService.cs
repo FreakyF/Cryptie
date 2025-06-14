@@ -35,10 +35,8 @@ public class MessagesService
             groupMessages.Enqueue(new SignalRMessage(gId, msg)));
 
         foreach (var group in user.Groups)
-        {
             _hubConnection.InvokeAsync("JoinGroup", user.Id, group.Id)
                 .GetAwaiter().GetResult();
-        }
     }
 
     public void SendMessageToGroup(string message, Guid groupId)

@@ -5,16 +5,17 @@ namespace Cryptie.Client.Tests.Features.Authentication.Services;
 
 public class KeychainManagerServiceFixture
 {
-    public ServiceProvider ServiceProvider { get; }
-    public IKeychainManagerService Service =>
-        ServiceProvider.GetRequiredService<IKeychainManagerService>();
-
     public KeychainManagerServiceFixture()
     {
         var services = new ServiceCollection();
-        
+
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
 
         ServiceProvider = services.BuildServiceProvider();
     }
+
+    public ServiceProvider ServiceProvider { get; }
+
+    public IKeychainManagerService Service =>
+        ServiceProvider.GetRequiredService<IKeychainManagerService>();
 }

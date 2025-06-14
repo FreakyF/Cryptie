@@ -46,7 +46,7 @@ public class Program
         builder.Services.AddScoped<ILockoutService, LockoutService>();
         builder.Services.AddScoped<IDatabaseService, DatabaseService>();
         builder.Services.AddScoped<IDelayService, DelayService>();
-        
+
         builder.Services.AddScoped<IValidator<LoginRequestDto>, LoginRequestValidator>();
         builder.Services.AddScoped<IValidator<LogoutRequestDto>, LogoutRequestValidator>();
         builder.Services.AddScoped<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
