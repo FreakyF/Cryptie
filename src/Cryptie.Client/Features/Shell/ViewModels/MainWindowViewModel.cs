@@ -93,5 +93,7 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
     }
 
     private void ThrowIfDisposed()
-        => ObjectDisposedException.ThrowIf(_disposed, this);
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+    }
 }

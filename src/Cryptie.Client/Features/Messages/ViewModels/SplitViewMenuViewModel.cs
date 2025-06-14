@@ -31,8 +31,8 @@ public sealed class SplitViewMenuViewModel : ViewModelBase
         Items =
         [
             new NavigationItem("Chats", "\uE15F", NavigationTarget.Chats),
-            new NavigationItem("Account", "\uE168", NavigationTarget.Account, IsBottom: true, IsLast: true),
-            new NavigationItem("Settings", "\uE115", NavigationTarget.Settings, IsBottom: true)
+            new NavigationItem("Account", "\uE168", NavigationTarget.Account, true, true),
+            new NavigationItem("Settings", "\uE115", NavigationTarget.Settings, true)
         ];
         _selectedItem = Items.First();
 

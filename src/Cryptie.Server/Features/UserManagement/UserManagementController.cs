@@ -14,22 +14,22 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
     {
         var user = databaseService.GetUserFromToken(userGuidFromTokenRequest.SessionToken);
         if (user == null) return BadRequest();
-        
+
         return Ok(new UserGuidFromTokenResponseDto
         {
-            Guid = user.Id,
+            Guid = user.Id
         });
     }
-    
+
     [HttpGet("login", Name = "GetUserLoginFromToken")]
     public IActionResult UserLoginFromToken([FromBody] UserLoginFromTokenRequestDto userLoginFromTokenRequest)
     {
         var user = databaseService.GetUserFromToken(userLoginFromTokenRequest.SessionToken);
         if (user == null) return BadRequest();
-        
+
         return Ok(new UserLoginFromTokenResponseDto
         {
-            Login = user.Login,
+            Login = user.Login
         });
     }
 

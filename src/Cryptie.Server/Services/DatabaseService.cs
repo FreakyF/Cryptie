@@ -16,7 +16,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
         return userGuid?.User ?? null;
     }
-    
+
     public User? FindUserById(Guid id)
     {
         var user = appDbContext.Users.Find(id);
@@ -29,14 +29,12 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         {
             Id = Guid.Empty,
             Name = name,
-            Keys = {  },
-            Messages = {  },
             Users = { user }
         };
 
         var createdGroup = appDbContext.Groups.Add(newGroup);
         appDbContext.SaveChanges();
-        
+
         return createdGroup.Entity;
     }
 
@@ -72,10 +70,10 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
         appDbContext.Groups.SingleOrDefault(g => g.Id == groupGuid)!.Name = name;
         appDbContext.SaveChanges();
-        
+
         return true;
     }
-    
+
     public Guid CreateTotpToken(User user)
     {
         var totpToken = appDbContext.TotpTokens.Add(new TotpToken

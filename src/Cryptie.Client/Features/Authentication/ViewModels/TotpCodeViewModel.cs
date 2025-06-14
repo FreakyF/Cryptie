@@ -68,15 +68,9 @@ public class TotpCodeViewModel : RoutableViewModelBase
             return;
         }
 
-        if (!_keychain.TrySaveSessionToken(result.Token.ToString(), out var err))
-        {
-            ErrorMessage = err;
-        }
+        if (!_keychain.TrySaveSessionToken(result.Token.ToString(), out var err)) ErrorMessage = err;
 
-        if (cancellationToken.IsCancellationRequested)
-        {
-            _coordinator.ShowLogin();
-        }
+        if (cancellationToken.IsCancellationRequested) _coordinator.ShowLogin();
 
         _coordinator.ShowDashboard();
     }
