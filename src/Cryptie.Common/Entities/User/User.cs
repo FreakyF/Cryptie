@@ -14,4 +14,6 @@ public class User
     public List<Group.Group> Groups { get; } = [];
 
     public List<User> Friends { get; } = [];
+
+    public List<PrivateKey> PrivateKeys { get; } = [];
 }
