@@ -49,7 +49,7 @@ namespace Cryptie.Client.Features.Messages.ViewModels
                 .InvokeCommand(NavigateCommand);
 
             _connSub = connectionMonitor.ConnectionStatusChanged
-                .StartWith(false)
+                .StartWith(true)
                 .Where(isUp => isUp)
                 .ObserveOn(AvaloniaScheduler.Instance)
                 .Subscribe(isUp => { _ = LoadUserNameAsync(); });
