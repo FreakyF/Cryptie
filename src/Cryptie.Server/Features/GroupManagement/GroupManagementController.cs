@@ -6,7 +6,9 @@ namespace Cryptie.Server.Features.GroupManagment;
 
 [ApiController]
 [Route("group")]
-public class GroupManagementController(IDatabaseService databaseService) : ControllerBase
+public class GroupManagementController(
+    IDatabaseService databaseService
+) : ControllerBase
 {
     [HttpPost("create", Name = "CreateGroup")]
     public IActionResult createGroup([FromBody] CreateGroupRequestDTO createGroupRequest)
@@ -35,7 +37,7 @@ public class GroupManagementController(IDatabaseService databaseService) : Contr
         if (user.Groups.All(g => g.Id != deleteGroupRequest.GroupGuid)) return BadRequest();
 
         databaseService.DeleteGroup(deleteGroupRequest.GroupGuid);
-        
+
         return Ok();
     }
 
@@ -47,7 +49,7 @@ public class GroupManagementController(IDatabaseService databaseService) : Contr
         if (user.Groups.All(g => g.Id != changeGroupNameRequest.GroupGuid)) return BadRequest();
 
         databaseService.ChangeGroupName(changeGroupNameRequest.GroupGuid, changeGroupNameRequest.NewName);
-        
+
         return Ok();
     }
 

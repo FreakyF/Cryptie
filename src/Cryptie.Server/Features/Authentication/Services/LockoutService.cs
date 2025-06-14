@@ -6,7 +6,7 @@ using Cryptie.Server.Persistence.DatabaseContext;
 
 namespace Cryptie.Server.Features.Authentication.Services;
 
-public class LockoutService(AppDbContext appDbContext) : ILockoutService
+public class LockoutService(IAppDbContext appDbContext) : ILockoutService
 {
     public bool IsUserLockedOut(User? user, string honeypotLogin = "")
     {
