@@ -5,7 +5,9 @@
              xmlns:semi="https://irihi.tech/semi"
              xmlns:locators="clr-namespace:Cryptie.Client.Core.Locators"
              xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Authentication.ViewModels"
-             xmlns:views1="clr-namespace:Cryptie.Client.Features.Authentication.Views">
+             xmlns:views1="clr-namespace:Cryptie.Client.Features.Authentication.Views"
+             xmlns:views="clr-namespace:Cryptie.Client.Features.Messages.Views"
+             xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Messages.ViewModels">
     <Application.DataTemplates>
         <locators:ViewLocator />
         <DataTemplate DataType="viewModels:RegisterViewModel">
@@ -19,6 +21,9 @@
         </DataTemplate>
         <DataTemplate DataType="viewModels:TotpCodeViewModel">
             <views1:LoginView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels1:DashboardViewModel">
+            <views:DashboardView />
         </DataTemplate>
 
     </Application.DataTemplates>

@@ -2,22 +2,14 @@
 using System.Net.Http.Json;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentAssertions;
-using Xunit.Abstractions;
 
 namespace Cryptie.Server.Tests;
 
-public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactory>
+public class AuthenticationEndpointTests(AuthenticationApiFactory factory) : IClassFixture<AuthenticationApiFactory>
 {
-    private readonly HttpClient _httpClient;
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly HttpClient _httpClient = factory.CreateClient();
 
-    public AuthenticationEndpointTests(AuthenticationApiFactory factory, ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-        _httpClient = factory.CreateClient();
-    }
-
-    private RegisterRequestDto CreateRegisterRequest()
+    private static RegisterRequestDto CreateRegisterRequest()
     {
         var request = new RegisterRequestDto
         {
@@ -47,7 +39,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Email = "test@test.com"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
-        var body = await response.Content.ReadAsStringAsync();
+        await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
 
@@ -73,7 +65,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Email = "test@test.com"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
-        var body = await response.Content.ReadAsStringAsync();
+        await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
 
@@ -93,7 +85,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Email = "test@test.com"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
-        var body = await response.Content.ReadAsStringAsync();
+        await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
 
@@ -112,7 +104,7 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Email = email
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
-        var body = await response.Content.ReadAsStringAsync();
+        await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
 
@@ -128,15 +120,15 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
             Email = "test@test.com"
         };
         var response = await _httpClient.PostAsJsonAsync("auth/register", request);
-        var body = await response.Content.ReadAsStringAsync();
+        await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Trait("TestCategory", "Integration")]
     [Theory]
     [InlineData(null, HttpStatusCode.BadRequest)]
-    [InlineData("", HttpStatusCode.InternalServerError)]
-    [InlineData(" ", HttpStatusCode.InternalServerError)]
+    [InlineData("", HttpStatusCode.BadRequest)]
+    [InlineData(" ", HttpStatusCode.BadRequest)]
     [InlineData("user*&()", HttpStatusCode.BadRequest)]
     [InlineData("abcd", HttpStatusCode.BadRequest)]
     [InlineData("abcdefghijklmnopqrstuvwxyz", HttpStatusCode.InternalServerError)]
@@ -144,13 +136,13 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     {
         var dto = CreateRegisterRequest();
         await _httpClient.PostAsJsonAsync("auth/register", dto);
-        var RequestDto = new LoginRequestDto
+        var requestDto = new LoginRequestDto
         {
             Login = username,
             Password = "Password1234!"
         };
-        var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
-        var body = await response.Content.ReadAsStringAsync();
+        var response = await _httpClient.PostAsJsonAsync("auth/login", requestDto);
+        await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(statusCode);
     }
 
@@ -170,13 +162,13 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     {
         var dto = CreateRegisterRequest();
         await _httpClient.PostAsJsonAsync("auth/register", dto);
-        var RequestDto = new LoginRequestDto
+        var requestDto = new LoginRequestDto
         {
             Login = "Username123",
             Password = password
         };
-        var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
-        var body = await response.Content.ReadAsStringAsync();
+        var response = await _httpClient.PostAsJsonAsync("auth/login", requestDto);
+        await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(status);
     }
 
@@ -186,13 +178,13 @@ public class AuthenticationEndpointTests : IClassFixture<AuthenticationApiFactor
     {
         var dto = CreateRegisterRequest();
         await _httpClient.PostAsJsonAsync("auth/register", dto);
-        var RequestDto = new LoginRequestDto
+        var requestDto = new LoginRequestDto
         {
             Login = "Username123",
             Password = "Password1234!"
         };
-        var response = await _httpClient.PostAsJsonAsync("auth/login", RequestDto);
-        var body = await response.Content.ReadAsStringAsync();
+        var response = await _httpClient.PostAsJsonAsync("auth/login", requestDto);
+        await response.Content.ReadAsStringAsync();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 }

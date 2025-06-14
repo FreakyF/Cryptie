@@ -21,7 +21,6 @@ public class TotpCodeViewModel : RoutableViewModelBase
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
     private readonly IKeychainManagerService _keychain;
-    private readonly ILoginState _loginState;
     private readonly IMapper _mapper;
     private readonly IValidator<TotpRequestDto> _validator;
 
@@ -41,9 +40,8 @@ public class TotpCodeViewModel : RoutableViewModelBase
         _validator = validator;
         _mapper = mapper;
         _keychain = keychain;
-        _loginState = loginState;
 
-        var loginResponse = _loginState.LastResponse!;
+        var loginResponse = loginState.LastResponse!;
         Model.TotpToken = loginResponse.TotpToken;
 
         VerifyCommand = ReactiveCommand.CreateFromTask(TotpAuthAsync);
@@ -70,7 +68,6 @@ public class TotpCodeViewModel : RoutableViewModelBase
             return;
         }
 
-        _loginState.tokenTesting = result.Token.ToString();
         if (!_keychain.TrySaveSessionToken(result.Token.ToString(), out var err))
         {
             ErrorMessage = err;

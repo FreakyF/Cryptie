@@ -11,6 +11,7 @@ using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Authentication.ViewModels;
 using Cryptie.Client.Features.Messages.Services;
+using Cryptie.Client.Features.Messages.ViewModels;
 using Cryptie.Client.Features.Shell.ViewModels;
 using Cryptie.Client.Features.Shell.Views;
 using Cryptie.Common.Features.Authentication.DTOs;
@@ -32,7 +33,6 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<ClientOptions>(configuration.GetSection("Client"));
 
-        // ------------ HTTP-klienci -----------------------------------------
         services.AddHttpClient<IAuthenticationService, AuthenticationService>()
             .ConfigureHttpClient((sp, client) =>
             {
@@ -47,7 +47,14 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
 
-        // ------------ Mapster & fabryki ------------------------------------
+        services.AddHttpClient<IUserDetailsService, UserDetailsService>()
+            .ConfigureHttpClient((sp, client) =>
+            {
+                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+                client.BaseAddress = new Uri(opts.BaseUri);
+            });
+
+
         var cfg = TypeAdapterConfig.GlobalSettings;
         cfg.Scan(Assembly.GetExecutingAssembly());
 
@@ -60,7 +67,6 @@ public static class ServiceCollectionExtensions
 
         Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
 
-        // ------------ Moduł Authentication ---------------------------------
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<TotpCodeViewModel>();
@@ -74,7 +80,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
 
-        // ------------ Moduł Messages / Shell --------------------------------
         services.AddSingleton<MessagesService>();
         services.AddTransient<DashboardViewModel>();
 

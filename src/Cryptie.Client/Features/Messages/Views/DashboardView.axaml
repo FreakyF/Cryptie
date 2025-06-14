@@ -1,0 +1,124 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Cryptie.Client.Features.Messages.ViewModels"
+             xmlns:models="clr-namespace:Cryptie.Client.Features.Messages.Models"
+             xmlns:conv="clr-namespace:Cryptie.Client.Features.Messages.Converters"
+             x:Class="Cryptie.Client.Features.Messages.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+
+    <UserControl.Resources>
+        <conv:BoolToDockConverter x:Key="BoolDock" />
+        <conv:BoolToInvertConverter x:Key="InvertBool" />
+        <conv:BottomToColumnSpanConverter x:Key="ColSpan" />
+        <conv:BottomPaneMarginConverter x:Key="PaneMargin" />
+
+        <DataTemplate x:Key="NavItemTemplate"
+                      x:DataType="models:NavigationItem">
+            <Grid Height="48" ColumnDefinitions="48,*">
+                <TextBlock Grid.Column="0"
+                           FontFamily="Segoe MDL2 Assets"
+                           Text="{Binding IconGlyph}"
+                           FontSize="16"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1"
+                           Text="{Binding FullLabel}"
+                           FontSize="16"
+                           VerticalAlignment="Center"
+                           IsVisible="{Binding IsPaneOpen,
+                                               RelativeSource={RelativeSource AncestorType=SplitView}}" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="ListBoxItem"
+               x:DataType="models:NavigationItem">
+
+            <Setter Property="Height" Value="48" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+
+            <Setter Property="DockPanel.Dock"
+                    Value="{Binding IsBottom,
+                                    Converter={StaticResource BoolDock}}" />
+
+            <Setter Property="(Grid.ColumnSpan)"
+                    Value="{Binding IsBottom,
+                                    Converter={StaticResource ColSpan}}" />
+
+            <Setter Property="Margin">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource PaneMargin}">
+                        <Binding Path="IsBottom" />
+                        <Binding Path="IsPaneOpen"
+                                 RelativeSource="{RelativeSource AncestorType=SplitView}" />
+                        <Binding Path="IsLast" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Styles>
+
+    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+               OpenPaneLength="240"
+               CompactPaneLength="48"
+               DisplayMode="CompactInline">
+
+        <SplitView.Pane>
+            <Grid ColumnDefinitions="*,48" RowDefinitions="*,Auto">
+
+                <ListBox Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="0"
+                         ItemsSource="{Binding Items}"
+                         SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                         ItemTemplate="{StaticResource NavItemTemplate}"
+                         BorderThickness="0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <DockPanel LastChildFill="False" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+
+                <Button Grid.Column="1"
+                        Grid.Row="0"
+                        CornerRadius="0"
+                        Width="48" Height="48"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding TogglePaneCommand}"
+                        IsVisible="{Binding IsPaneOpen}">
+                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                               Text="&#xE700;"
+                               FontSize="16"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Button>
+
+                <Button Grid.Column="1"
+                        Grid.Row="1"
+                        CornerRadius="0"
+                        Width="48" Height="48"
+                        Command="{Binding TogglePaneCommand}"
+                        IsVisible="{Binding IsPaneOpen,
+                                            Converter={StaticResource InvertBool}}">
+                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                               Text="&#xE700;"
+                               FontSize="16"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Button>
+            </Grid>
+        </SplitView.Pane>
+
+        <SplitView.Content>
+            <TextBlock FontSize="24"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="Content" />
+        </SplitView.Content>
+
+    </SplitView>
+</UserControl>
