@@ -1,4 +1,30 @@
 #!/bin/sh
 rm -rf ./.coverage/
-dotnet test --collect:"XPlat Code Coverage" --results-directory ./.coverage/
-git add -f ./.coverage/*/coverage.cobertura.xml
+dotnet test --collect:"XPlat Code Coverage" --results-directory ./.coverage/tmp
+
+output=".coverage/coverage.xml"
+first_file=""
+
+find .coverage/tmp -type f -name "coverage.cobertura.xml" | while IFS= read -r file; do
+  echo "Znaleziono plik: $file"
+
+  if [ -z "$first_file" ]; then
+    cp "$file" "$output"
+    first_file="$file"
+    continue
+  fi
+
+  xmlstarlet sel -t -m "//package/class" -c . -n "$file" > tmp_classes.xml
+
+  while IFS= read -r line; do
+    if [ -n "$line" ]; then
+      echo "$line" | xmlstarlet ed -L -s "//packages" -t elem -n "__TEMP__" -v "" "$output" > /dev/null
+      echo "$line" | xmlstarlet ed -L -r "//__TEMP__" -v class "$output" > /dev/null
+    fi
+  done < tmp_classes.xml
+done
+
+rm -f tmp_classes.xml
+rm -r ./.coverage/tmp
+
+git add -f ./.coverage/coverage.xml
