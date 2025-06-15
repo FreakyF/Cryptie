@@ -56,7 +56,7 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" \
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.cobertura.reportPath=".coverage/coverage.xml" \
+          /d:sonar.cobertura.reportPath=".coverage/coverage.cobertura.xml" \
           /d:sonar.verbose=true
 
       - name: Build project (for SonarQube Roslyn analyzers)
