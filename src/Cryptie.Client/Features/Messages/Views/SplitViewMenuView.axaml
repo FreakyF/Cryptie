@@ -35,7 +35,7 @@
                     </Ellipse>
 
                     <TextBlock Text="{Binding FullLabel, Converter={StaticResource InitialConverter}}"
-                               FontSize="16"
+                               FontSize="12"
                                Foreground="White"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center">
@@ -130,6 +130,8 @@
 
         <Button Grid.Column="1"
                 Grid.Row="1"
+                Background="Transparent"
+                BorderBrush="Transparent"
                 Width="48" Height="48"
                 CornerRadius="0"
                 Command="{Binding TogglePaneCommand}"

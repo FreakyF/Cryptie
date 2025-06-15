@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.044500000000000005" branch-rate="0" version="1.9" timestamp="1749993304" lines-covered="150" lines-valid="3364" branches-covered="0" branches-valid="276">
+<coverage line-rate="0.044500000000000005" branch-rate="0" version="1.9" timestamp="1749993649" lines-covered="150" lines-valid="3365" branches-covered="0" branches-valid="276">
   <sources>
     <source>/Users/janchojnacki/RiderProjects/Cryptie/src/</source>
   </sources>
@@ -6959,7 +6959,7 @@
                 <line number="1" hits="0" branch="True" condition-coverage="0% (0/4)">
                   <conditions>
                     <condition number="76" type="jump" coverage="0%" />
-                    <condition number="2859" type="jump" coverage="0%" />
+                    <condition number="2891" type="jump" coverage="0%" />
                   </conditions>
                 </line>
                 <line number="10" hits="0" branch="False" />
@@ -7005,12 +7005,13 @@
                 <line number="127" hits="0" branch="False" />
                 <line number="131" hits="0" branch="False" />
                 <line number="133" hits="0" branch="False" />
-                <line number="134" hits="0" branch="False" />
                 <line number="135" hits="0" branch="False" />
                 <line number="136" hits="0" branch="False" />
                 <line number="137" hits="0" branch="False" />
                 <line number="138" hits="0" branch="False" />
+                <line number="139" hits="0" branch="False" />
                 <line number="140" hits="0" branch="False" />
+                <line number="142" hits="0" branch="False" />
               </lines>
             </method>
           </methods>
@@ -7018,7 +7019,7 @@
             <line number="1" hits="0" branch="True" condition-coverage="0% (0/4)">
               <conditions>
                 <condition number="76" type="jump" coverage="0%" />
-                <condition number="2859" type="jump" coverage="0%" />
+                <condition number="2891" type="jump" coverage="0%" />
               </conditions>
             </line>
             <line number="10" hits="0" branch="False" />
@@ -7064,12 +7065,13 @@
             <line number="127" hits="0" branch="False" />
             <line number="131" hits="0" branch="False" />
             <line number="133" hits="0" branch="False" />
-            <line number="134" hits="0" branch="False" />
             <line number="135" hits="0" branch="False" />
             <line number="136" hits="0" branch="False" />
             <line number="137" hits="0" branch="False" />
             <line number="138" hits="0" branch="False" />
+            <line number="139" hits="0" branch="False" />
             <line number="140" hits="0" branch="False" />
+            <line number="142" hits="0" branch="False" />
           </lines>
         </class>
         <class name="Cryptie.Client.Features.Messages.Views.SplitViewMenuView/XamlClosure_2" filename="Cryptie.Client/Features/Messages/Views/SplitViewMenuView.axaml" line-rate="0" branch-rate="1" complexity="2">
