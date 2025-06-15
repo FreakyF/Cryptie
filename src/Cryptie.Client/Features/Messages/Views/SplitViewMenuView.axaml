@@ -28,7 +28,6 @@
                              Width="20" Height="20">
                         <Ellipse.IsVisible>
                             <MultiBinding Converter="{StaticResource AccountInitialVisible}">
-                                <Binding Path="Target" />
                                 <Binding Path="FullLabel" />
                             </MultiBinding>
                         </Ellipse.IsVisible>
@@ -41,7 +40,6 @@
                                VerticalAlignment="Center">
                         <TextBlock.IsVisible>
                             <MultiBinding Converter="{StaticResource AccountInitialVisible}">
-                                <Binding Path="Target" />
                                 <Binding Path="FullLabel" />
                             </MultiBinding>
                         </TextBlock.IsVisible>
@@ -54,7 +52,6 @@
                                VerticalAlignment="Center">
                         <TextBlock.IsVisible>
                             <MultiBinding Converter="{StaticResource AccountGlyphVisible}">
-                                <Binding Path="Target" />
                                 <Binding Path="FullLabel" />
                             </MultiBinding>
                         </TextBlock.IsVisible>

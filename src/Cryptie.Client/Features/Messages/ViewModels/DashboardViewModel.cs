@@ -1,6 +1,6 @@
 ﻿using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Factories;
-using Cryptie.Client.Features.Messages.Models;
+using Cryptie.Client.Core.Navigation;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Messages.ViewModels;
@@ -15,28 +15,21 @@ public sealed class DashboardViewModel : RoutableViewModelBase
         IViewModelFactory vmFactory)
         : base(hostScreen)
     {
-        var factory = vmFactory;
         Menu = menu;
+        ContentCoordinator = new ContentCoordinator(this, vmFactory, HostScreen);
 
-        Content = factory.Create<ChatsViewModel>(HostScreen);
+        Menu.ContentCoordinator = ContentCoordinator;
 
-        Menu.MenuItemSelected += target =>
-        {
-            Content = target switch
-            {
-                NavigationTarget.Chats => factory.Create<ChatsViewModel>(HostScreen),
-                NavigationTarget.Account => factory.Create<AccountViewModel>(HostScreen),
-                NavigationTarget.Settings => factory.Create<SettingsViewModel>(HostScreen),
-                _ => Content
-            };
-        };
+        Content = vmFactory.Create<ChatsViewModel>(HostScreen);
     }
+
+    private IContentCoordinator ContentCoordinator { get; }
 
     public SplitViewMenuViewModel Menu { get; }
 
     public ViewModelBase Content
     {
         get => _content;
-        private set => this.RaiseAndSetIfChanged(ref _content, value);
+        set => this.RaiseAndSetIfChanged(ref _content, value);
     }
 }

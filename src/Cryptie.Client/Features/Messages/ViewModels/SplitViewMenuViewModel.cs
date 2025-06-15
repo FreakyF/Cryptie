@@ -6,10 +6,10 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia.ReactiveUI;
 using Cryptie.Client.Core.Base;
+using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Messages.Models;
-using Cryptie.Client.Features.Messages.Services;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using ReactiveUI;
 
@@ -34,9 +34,9 @@ namespace Cryptie.Client.Features.Messages.ViewModels
 
             Items =
             [
-                new NavigationItem("Chats", "\uE168", NavigationTarget.Chats),
-                new NavigationItem("Account", "\uE4C2", NavigationTarget.Account, IsBottom: true, IsLast: true),
-                new NavigationItem("Settings", "\uE272", NavigationTarget.Settings, IsBottom: true)
+                new NavigationItem("Chats", "\uE168", c => c.ShowChats()),
+                new NavigationItem("Account", "\uE4C2", c => c.ShowAccount(), IsBottom: true, IsLast: true),
+                new NavigationItem("Settings", "\uE272", c => c.ShowSettings(), IsBottom: true),
             ];
             _selectedItem = Items[0];
 
@@ -54,6 +54,8 @@ namespace Cryptie.Client.Features.Messages.ViewModels
                 .ObserveOn(AvaloniaScheduler.Instance)
                 .Subscribe(isUp => { _ = LoadUserNameAsync(); });
         }
+
+        public IContentCoordinator? ContentCoordinator { get; set; }
 
         public bool IsPaneOpen
         {
@@ -79,8 +81,13 @@ namespace Cryptie.Client.Features.Messages.ViewModels
             _disposed = true;
         }
 
-        public event Action<NavigationTarget>? MenuItemSelected;
-        private void Navigate(NavigationItem item) => MenuItemSelected?.Invoke(item.Target);
+        private void Navigate(NavigationItem item)
+        {
+            if (ContentCoordinator != null)
+            {
+                item.NavigateAction(ContentCoordinator);
+            }
+        }
 
         private async Task LoadUserNameAsync()
         {
@@ -110,13 +117,14 @@ namespace Cryptie.Client.Features.Messages.ViewModels
 
         private void ReplaceAccountItem(string userName)
         {
-            var accountItem = Items.FirstOrDefault(i =>
+            var oldItem = Items.FirstOrDefault(i =>
                 i is { FullLabel: "Account", IconGlyph: "\uE4C2" });
-            if (accountItem is null) return;
-            var idx = Items.IndexOf(accountItem);
+            if (oldItem is null) return;
+
+            var idx = Items.IndexOf(oldItem);
             if (idx < 0) return;
 
-            Items[idx] = accountItem with { FullLabel = userName };
+            Items[idx] = oldItem with { FullLabel = userName };
         }
     }
 }

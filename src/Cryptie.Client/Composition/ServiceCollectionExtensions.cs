@@ -63,6 +63,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IShellCoordinator, ShellCoordinator>();
+        services.AddSingleton<IContentCoordinator, ContentCoordinator>();
         services.AddSingleton<IExceptionMessageMapper, ExceptionMessageMapper>();
 
         Locator.CurrentMutable.RegisterLazySingleton(() => new ReactiveViewLocator(), typeof(IViewLocator));
@@ -92,5 +93,6 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();
+        services.AddSingleton<IScreen>(provider => provider.GetRequiredService<MainWindowViewModel>());
     }
 }
