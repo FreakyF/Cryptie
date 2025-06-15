@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.0274" branch-rate="0.0212" version="1.9" timestamp="1749991279" lines-covered="37" lines-valid="1350" branches-covered="4" branches-valid="188">
+<coverage line-rate="0.0274" branch-rate="0.0212" version="1.9" timestamp="1749991481" lines-covered="37" lines-valid="1350" branches-covered="4" branches-valid="188">
   <sources>
-    <source>C:\Repos\Cryptie\src\</source>
+    <source>/home/jakubbabiarski/RiderProjects/Cryptie/src/</source>
   </sources>
   <packages>
     <package name="Cryptie.Common" line-rate="0.006500000000000001" branch-rate="1" complexity="93">
       <classes>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.AddFriendRequestDto" filename="Cryptie.Common\Features\UserManagement\DTOs\AddFriendRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.AddFriendRequestDto" filename="Cryptie.Common/Features/UserManagement/DTOs/AddFriendRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -24,7 +24,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.FriendListRequestDto" filename="Cryptie.Common\Features\UserManagement\DTOs\FriendListRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.FriendListRequestDto" filename="Cryptie.Common/Features/UserManagement/DTOs/FriendListRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -36,7 +36,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.GetFriendListResponseDto" filename="Cryptie.Common\Features\UserManagement\DTOs\GetFriendListResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.GetFriendListResponseDto" filename="Cryptie.Common/Features/UserManagement/DTOs/GetFriendListResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_Friends" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -48,7 +48,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.NameFromGuidRequestDto" filename="Cryptie.Common\Features\UserManagement\DTOs\NameFromGuidRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.NameFromGuidRequestDto" filename="Cryptie.Common/Features/UserManagement/DTOs/NameFromGuidRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -60,7 +60,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.NameFromGuidResponseDto" filename="Cryptie.Common\Features\UserManagement\DTOs\NameFromGuidResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.NameFromGuidResponseDto" filename="Cryptie.Common/Features/UserManagement/DTOs/NameFromGuidResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_Name" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -72,7 +72,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserDisplayNameRequestDto" filename="Cryptie.Common\Features\UserManagement\DTOs\UserDisplayNameRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserDisplayNameRequestDto" filename="Cryptie.Common/Features/UserManagement/DTOs/UserDisplayNameRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_Token" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -90,7 +90,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserGroupsRequestDto" filename="Cryptie.Common\Features\UserManagement\DTOs\UserGroupsRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserGroupsRequestDto" filename="Cryptie.Common/Features/UserManagement/DTOs/UserGroupsRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -102,7 +102,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserGroupsResponseDto" filename="Cryptie.Common\Features\UserManagement\DTOs\UserGroupsResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserGroupsResponseDto" filename="Cryptie.Common/Features/UserManagement/DTOs/UserGroupsResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_Groups" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -114,7 +114,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserGuidFromTokenRequestDto" filename="Cryptie.Common\Features\UserManagement\DTOs\UserGuidFromTokenRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserGuidFromTokenRequestDto" filename="Cryptie.Common/Features/UserManagement/DTOs/UserGuidFromTokenRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -126,7 +126,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserGuidFromTokenResponseDto" filename="Cryptie.Common\Features\UserManagement\DTOs\UserGuidFromTokenResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserGuidFromTokenResponseDto" filename="Cryptie.Common/Features/UserManagement/DTOs/UserGuidFromTokenResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_Guid" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -138,7 +138,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserLoginFromTokenRequestDto" filename="Cryptie.Common\Features\UserManagement\DTOs\UserLoginFromTokenRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserLoginFromTokenRequestDto" filename="Cryptie.Common/Features/UserManagement/DTOs/UserLoginFromTokenRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -150,7 +150,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserLoginFromTokenResponseDto" filename="Cryptie.Common\Features\UserManagement\DTOs\UserLoginFromTokenResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.UserManagement.DTOs.UserLoginFromTokenResponseDto" filename="Cryptie.Common/Features/UserManagement/DTOs/UserLoginFromTokenResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_Login" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -162,7 +162,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.GroupManagement.AddUserToGroupRequestDto" filename="Cryptie.Common\Features\GroupManagement\DTOs\AddUserToGroupRequestDto.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Features.GroupManagement.AddUserToGroupRequestDto" filename="Cryptie.Common/Features/GroupManagement/DTOs/AddUserToGroupRequestDto.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -186,7 +186,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.GroupManagement.ChangeGroupNameRequestDto" filename="Cryptie.Common\Features\GroupManagement\DTOs\ChangeGroupNameRequestDto.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Features.GroupManagement.ChangeGroupNameRequestDto" filename="Cryptie.Common/Features/GroupManagement/DTOs/ChangeGroupNameRequestDto.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -210,7 +210,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.GroupManagement.CreateGroupRequestDto" filename="Cryptie.Common\Features\GroupManagement\DTOs\CreateGroupRequestDTO.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Features.GroupManagement.CreateGroupRequestDto" filename="Cryptie.Common/Features/GroupManagement/DTOs/CreateGroupRequestDTO.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -228,7 +228,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.GroupManagement.CreateGroupResponseDto" filename="Cryptie.Common\Features\GroupManagement\DTOs\CreateGroupResponseDTO.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.GroupManagement.CreateGroupResponseDto" filename="Cryptie.Common/Features/GroupManagement/DTOs/CreateGroupResponseDTO.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="set_Group" signature="(System.Guid)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -240,7 +240,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.GroupManagement.DeleteGroupRequestDto" filename="Cryptie.Common\Features\GroupManagement\DTOs\DeleteGroupRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Features.GroupManagement.DeleteGroupRequestDto" filename="Cryptie.Common/Features/GroupManagement/DTOs/DeleteGroupRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -258,7 +258,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.GroupManagement.RemoveUserFromGroupRequestDto" filename="Cryptie.Common\Features\GroupManagement\DTOs\RemoveUserFromGroupRequestDto.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Features.GroupManagement.RemoveUserFromGroupRequestDto" filename="Cryptie.Common/Features/GroupManagement/DTOs/RemoveUserFromGroupRequestDto.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_SessionToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -282,7 +282,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.Validators.LoginRequestValidator" filename="Cryptie.Common\Features\Authentication\Validators\LoginRequestValidator.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.Authentication.Validators.LoginRequestValidator" filename="Cryptie.Common/Features/Authentication/Validators/LoginRequestValidator.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -330,7 +330,7 @@
             <line number="27" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.Validators.LogoutRequestValidator" filename="Cryptie.Common\Features\Authentication\Validators\LogoutRequestValidator.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.Authentication.Validators.LogoutRequestValidator" filename="Cryptie.Common/Features/Authentication/Validators/LogoutRequestValidator.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -350,7 +350,7 @@
             <line number="12" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.Validators.RegisterRequestValidator" filename="Cryptie.Common\Features\Authentication\Validators\RegisterRequestValidator.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.Authentication.Validators.RegisterRequestValidator" filename="Cryptie.Common/Features/Authentication/Validators/RegisterRequestValidator.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -414,7 +414,7 @@
             <line number="37" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.Validators.TotpRequestValidator" filename="Cryptie.Common\Features\Authentication\Validators\TotpRequestValidator.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.Authentication.Validators.TotpRequestValidator" filename="Cryptie.Common/Features/Authentication/Validators/TotpRequestValidator.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -448,7 +448,7 @@
             <line number="20" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.Exceptions.BadCredentialsException" filename="Cryptie.Common\Features\Authentication\Exceptions\BadCredentialsException.cs" line-rate="1" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.Authentication.Exceptions.BadCredentialsException" filename="Cryptie.Common/Features/Authentication/Exceptions/BadCredentialsException.cs" line-rate="1" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
@@ -460,7 +460,7 @@
             <line number="3" hits="1" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.DTOs.LoginRequestDto" filename="Cryptie.Common\Features\Authentication\DTOs\LoginRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Features.Authentication.DTOs.LoginRequestDto" filename="Cryptie.Common/Features/Authentication/DTOs/LoginRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_Login" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -478,7 +478,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.DTOs.LoginResponseDto" filename="Cryptie.Common\Features\Authentication\DTOs\LoginResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.Authentication.DTOs.LoginResponseDto" filename="Cryptie.Common/Features/Authentication/DTOs/LoginResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_TotpToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -490,7 +490,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.DTOs.LogoutRequestDto" filename="Cryptie.Common\Features\Authentication\DTOs\LogoutRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.Authentication.DTOs.LogoutRequestDto" filename="Cryptie.Common/Features/Authentication/DTOs/LogoutRequestDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_Token" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -502,7 +502,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.DTOs.RegisterRequestDto" filename="Cryptie.Common\Features\Authentication\DTOs\RegisterRequestDto.cs" line-rate="0" branch-rate="1" complexity="4">
+        <class name="Cryptie.Common.Features.Authentication.DTOs.RegisterRequestDto" filename="Cryptie.Common/Features/Authentication/DTOs/RegisterRequestDto.cs" line-rate="0" branch-rate="1" complexity="4">
           <methods>
             <method name="get_Login" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -532,7 +532,7 @@
             <line number="8" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.DTOs.RegisterResponseDto" filename="Cryptie.Common\Features\Authentication\DTOs\RegisterResponseDto.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Features.Authentication.DTOs.RegisterResponseDto" filename="Cryptie.Common/Features/Authentication/DTOs/RegisterResponseDto.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_Secret" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -550,7 +550,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.DTOs.TotpRequestDto" filename="Cryptie.Common\Features\Authentication\DTOs\TotpRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Features.Authentication.DTOs.TotpRequestDto" filename="Cryptie.Common/Features/Authentication/DTOs/TotpRequestDto.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_TotpToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -568,7 +568,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Features.Authentication.DTOs.TotpResponseDto" filename="Cryptie.Common\Features\Authentication\DTOs\TotpResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Common.Features.Authentication.DTOs.TotpResponseDto" filename="Cryptie.Common/Features/Authentication/DTOs/TotpResponseDto.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_Token" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -580,7 +580,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.User.Password" filename="Cryptie.Common\Entities\User\Password.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Entities.User.Password" filename="Cryptie.Common/Entities/User/Password.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -598,7 +598,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.User.PrivateKey" filename="Cryptie.Common\Entities\User\PrivateKey.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Entities.User.PrivateKey" filename="Cryptie.Common/Entities/User/PrivateKey.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -622,7 +622,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.User.Totp" filename="Cryptie.Common\Entities\User\Totp.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Entities.User.Totp" filename="Cryptie.Common/Entities/User/Totp.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -640,7 +640,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.User.User" filename="Cryptie.Common\Entities\User\User.cs" line-rate="0" branch-rate="1" complexity="9">
+        <class name="Cryptie.Common.Entities.User.User" filename="Cryptie.Common/Entities/User/User.cs" line-rate="0" branch-rate="1" complexity="9">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -700,7 +700,7 @@
             <line number="18" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.SessionTokens.TotpToken" filename="Cryptie.Common\Entities\SessionTokens\TotpToken.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Entities.SessionTokens.TotpToken" filename="Cryptie.Common/Entities/SessionTokens/TotpToken.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -724,7 +724,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.SessionTokens.UserToken" filename="Cryptie.Common\Entities\SessionTokens\UserToken.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Common.Entities.SessionTokens.UserToken" filename="Cryptie.Common/Entities/SessionTokens/UserToken.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -742,7 +742,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.LoginPolicy.UserAccountLock" filename="Cryptie.Common\Entities\LoginPolicy\UserAccountLock.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Entities.LoginPolicy.UserAccountLock" filename="Cryptie.Common/Entities/LoginPolicy/UserAccountLock.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -766,7 +766,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.LoginPolicy.UserLoginAttempt" filename="Cryptie.Common\Entities\LoginPolicy\UserLoginAttempt.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Entities.LoginPolicy.UserLoginAttempt" filename="Cryptie.Common/Entities/LoginPolicy/UserLoginAttempt.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -790,7 +790,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.Honeypot.UserAccountHoneypotLock" filename="Cryptie.Common\Entities\Honeypot\UserAccountHoneypotLock.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Entities.Honeypot.UserAccountHoneypotLock" filename="Cryptie.Common/Entities/Honeypot/UserAccountHoneypotLock.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -814,7 +814,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.Honeypot.UserLoginHoneypotAttempt" filename="Cryptie.Common\Entities\Honeypot\UserLoginHoneypotAttempt.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Entities.Honeypot.UserLoginHoneypotAttempt" filename="Cryptie.Common/Entities/Honeypot/UserLoginHoneypotAttempt.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -838,7 +838,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.Group.Group" filename="Cryptie.Common\Entities\Group\Group.cs" line-rate="0" branch-rate="1" complexity="5">
+        <class name="Cryptie.Common.Entities.Group.Group" filename="Cryptie.Common/Entities/Group/Group.cs" line-rate="0" branch-rate="1" complexity="5">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -874,7 +874,7 @@
             <line number="10" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.Group.GroupMessage" filename="Cryptie.Common\Entities\Group\GroupMessage.cs" line-rate="0" branch-rate="1" complexity="6">
+        <class name="Cryptie.Common.Entities.Group.GroupMessage" filename="Cryptie.Common/Entities/Group/GroupMessage.cs" line-rate="0" branch-rate="1" complexity="6">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -916,7 +916,7 @@
             <line number="12" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Common.Entities.Group.UserGroupPublicKey" filename="Cryptie.Common\Entities\Group\UserGroupPublicKey.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Common.Entities.Group.UserGroupPublicKey" filename="Cryptie.Common/Entities/Group/UserGroupPublicKey.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -944,7 +944,7 @@
     </package>
     <package name="Cryptie" line-rate="0.03" branch-rate="0.0212" complexity="333">
       <classes>
-        <class name="Cryptie.Client.Startup.App" filename="Cryptie.Client\Startup\App.axaml.cs" line-rate="0" branch-rate="0" complexity="5">
+        <class name="Cryptie.Client.Startup.App" filename="Cryptie.Client/Startup/App.axaml.cs" line-rate="0" branch-rate="0" complexity="5">
           <methods>
             <method name="Initialize" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1030,7 +1030,7 @@
             <line number="51" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Startup.App" filename="Cryptie.Client\Startup\App.axaml" line-rate="0" branch-rate="0" complexity="4">
+        <class name="Cryptie.Client.Startup.App" filename="Cryptie.Client/Startup/App.axaml" line-rate="0" branch-rate="0" complexity="4">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Startup.App)" line-rate="0" branch-rate="0" complexity="4">
               <lines>
@@ -1098,7 +1098,7 @@
             <line number="58" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Startup.Program" filename="Cryptie.Client\Startup\Program.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Client.Startup.Program" filename="Cryptie.Client/Startup/Program.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="Main" signature="(System.String[])" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1134,7 +1134,7 @@
             <line number="23" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Shell.Views.MainWindow" filename="Cryptie.Client\Features\Shell\Views\MainWindow.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Shell.Views.MainWindow" filename="Cryptie.Client/Features/Shell/Views/MainWindow.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Shell.Views.MainWindow)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -1160,7 +1160,7 @@
             <line number="14" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Shell.Views.MainWindow" filename="Cryptie.Client\Features\Shell\Views\MainWindow.axaml.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Client.Features.Shell.Views.MainWindow" filename="Cryptie.Client/Features/Shell/Views/MainWindow.axaml.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1190,7 +1190,7 @@
             <line number="17" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Shell.ViewModels.MainWindowViewModel" filename="Cryptie.Client\Features\Shell\ViewModels\MainWindowViewModel.cs" line-rate="0" branch-rate="0" complexity="22">
+        <class name="Cryptie.Client.Features.Shell.ViewModels.MainWindowViewModel" filename="Cryptie.Client/Features/Shell/ViewModels/MainWindowViewModel.cs" line-rate="0" branch-rate="0" complexity="22">
           <methods>
             <method name="Dispose" signature="()" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -1418,7 +1418,7 @@
             <line number="45" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.Views.ServerStatusView" filename="Cryptie.Client\Features\ServerStatus\Views\ServerStatusView.axaml.cs" line-rate="0" branch-rate="0" complexity="6">
+        <class name="Cryptie.Client.Features.ServerStatus.Views.ServerStatusView" filename="Cryptie.Client/Features/ServerStatus/Views/ServerStatusView.axaml.cs" line-rate="0" branch-rate="0" complexity="6">
           <methods>
             <method name="OnLoaded" signature="(System.Object,Avalonia.Interactivity.RoutedEventArgs)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1480,7 +1480,7 @@
             <line number="19" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.Views.ServerStatusView/&lt;AnimateDotsAsync&gt;d__4" filename="Cryptie.Client\Features\ServerStatus\Views\ServerStatusView.axaml.cs" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.ServerStatus.Views.ServerStatusView/&lt;AnimateDotsAsync&gt;d__4" filename="Cryptie.Client/Features/ServerStatus/Views/ServerStatusView.axaml.cs" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -1518,7 +1518,7 @@
             <line number="44" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.Views.ServerStatusView" filename="Cryptie.Client\Features\ServerStatus\Views\ServerStatusView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.ServerStatus.Views.ServerStatusView" filename="Cryptie.Client/Features/ServerStatus/Views/ServerStatusView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.ServerStatus.Views.ServerStatusView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -1590,7 +1590,7 @@
             <line number="46" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel" filename="Cryptie.Client\Features\ServerStatus\ViewModels\ServerStatusViewModel.cs" line-rate="0" branch-rate="0" complexity="8">
+        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel" filename="Cryptie.Client/Features/ServerStatus/ViewModels/ServerStatusViewModel.cs" line-rate="0" branch-rate="0" complexity="8">
           <methods>
             <method name="get_IsLoading" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1682,7 +1682,7 @@
             <line number="24" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel/&lt;InitializeAsync&gt;d__11" filename="Cryptie.Client\Features\ServerStatus\ViewModels\ServerStatusViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel/&lt;InitializeAsync&gt;d__11" filename="Cryptie.Client/Features/ServerStatus/ViewModels/ServerStatusViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1706,7 +1706,7 @@
             <line number="55" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel/&lt;MonitorLoopAsync&gt;d__12" filename="Cryptie.Client\Features\ServerStatus\ViewModels\ServerStatusViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel/&lt;MonitorLoopAsync&gt;d__12" filename="Cryptie.Client/Features/ServerStatus/ViewModels/ServerStatusViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1752,7 +1752,7 @@
             <line number="78" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel/&lt;RetryAsync&gt;d__13" filename="Cryptie.Client\Features\ServerStatus\ViewModels\ServerStatusViewModel.cs" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel/&lt;RetryAsync&gt;d__13" filename="Cryptie.Client/Features/ServerStatus/ViewModels/ServerStatusViewModel.cs" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -1802,7 +1802,7 @@
             <line number="100" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel/&lt;RetryUntilOkAsync&gt;d__14" filename="Cryptie.Client\Features\ServerStatus\ViewModels\ServerStatusViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.ServerStatus.ViewModels.ServerStatusViewModel/&lt;RetryUntilOkAsync&gt;d__14" filename="Cryptie.Client/Features/ServerStatus/ViewModels/ServerStatusViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1844,7 +1844,7 @@
             <line number="122" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.Services.ServerStatus" filename="Cryptie.Client\Features\ServerStatus\Services\ServerStatus.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.ServerStatus.Services.ServerStatus" filename="Cryptie.Client/Features/ServerStatus/Services/ServerStatus.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="(System.Net.Http.HttpClient)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1856,7 +1856,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.ServerStatus.Services.ServerStatus/&lt;GetServerStatusAsync&gt;d__2" filename="Cryptie.Client\Features\ServerStatus\Services\ServerStatus.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.ServerStatus.Services.ServerStatus/&lt;GetServerStatusAsync&gt;d__2" filename="Cryptie.Client/Features/ServerStatus/Services/ServerStatus.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1876,7 +1876,7 @@
             <line number="15" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.AccountView" filename="Cryptie.Client\Features\Messages\Views\AccountView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Messages.Views.AccountView" filename="Cryptie.Client/Features/Messages/Views/AccountView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Messages.Views.AccountView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -1898,7 +1898,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.AccountView" filename="Cryptie.Client\Features\Messages\Views\AccountView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.Views.AccountView" filename="Cryptie.Client/Features/Messages/Views/AccountView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1916,7 +1916,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.ChatsView" filename="Cryptie.Client\Features\Messages\Views\ChatsView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Messages.Views.ChatsView" filename="Cryptie.Client/Features/Messages/Views/ChatsView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Messages.Views.ChatsView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -1938,7 +1938,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.ChatsView" filename="Cryptie.Client\Features\Messages\Views\ChatsView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.Views.ChatsView" filename="Cryptie.Client/Features/Messages/Views/ChatsView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -1956,7 +1956,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.DashboardView" filename="Cryptie.Client\Features\Messages\Views\DashboardView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Messages.Views.DashboardView" filename="Cryptie.Client/Features/Messages/Views/DashboardView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Messages.Views.DashboardView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -1996,7 +1996,7 @@
             <line number="30" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.DashboardView" filename="Cryptie.Client\Features\Messages\Views\DashboardView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.Views.DashboardView" filename="Cryptie.Client/Features/Messages/Views/DashboardView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2014,7 +2014,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.SettingsView" filename="Cryptie.Client\Features\Messages\Views\SettingsView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Messages.Views.SettingsView" filename="Cryptie.Client/Features/Messages/Views/SettingsView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Messages.Views.SettingsView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -2036,7 +2036,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.SettingsView" filename="Cryptie.Client\Features\Messages\Views\SettingsView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.Views.SettingsView" filename="Cryptie.Client/Features/Messages/Views/SettingsView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2054,7 +2054,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.SplitViewMenuView" filename="Cryptie.Client\Features\Messages\Views\SplitViewMenuView.axaml" line-rate="0" branch-rate="0" complexity="4">
+        <class name="Cryptie.Client.Features.Messages.Views.SplitViewMenuView" filename="Cryptie.Client/Features/Messages/Views/SplitViewMenuView.axaml" line-rate="0" branch-rate="0" complexity="4">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Messages.Views.SplitViewMenuView)" line-rate="0" branch-rate="0" complexity="4">
               <lines>
@@ -2176,7 +2176,7 @@
             <line number="142" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.SplitViewMenuView/XamlClosure_2" filename="Cryptie.Client\Features\Messages\Views\SplitViewMenuView.axaml" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Client.Features.Messages.Views.SplitViewMenuView/XamlClosure_2" filename="Cryptie.Client/Features/Messages/Views/SplitViewMenuView.axaml" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="Build_8" signature="(System.IServiceProvider)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2242,7 +2242,7 @@
             <line number="68" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Views.SplitViewMenuView" filename="Cryptie.Client\Features\Messages\Views\SplitViewMenuView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.Views.SplitViewMenuView" filename="Cryptie.Client/Features/Messages/Views/SplitViewMenuView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2260,7 +2260,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.ViewModels.AccountViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\AccountViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.ViewModels.AccountViewModel" filename="Cryptie.Client/Features/Messages/ViewModels/AccountViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="(ReactiveUI.IScreen)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2276,7 +2276,7 @@
             <line number="10" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.ViewModels.ChatsViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\ChatsViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.ViewModels.ChatsViewModel" filename="Cryptie.Client/Features/Messages/ViewModels/ChatsViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="(ReactiveUI.IScreen)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2292,7 +2292,7 @@
             <line number="10" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.ViewModels.DashboardViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\DashboardViewModel.cs" line-rate="0" branch-rate="0" complexity="7">
+        <class name="Cryptie.Client.Features.Messages.ViewModels.DashboardViewModel" filename="Cryptie.Client/Features/Messages/ViewModels/DashboardViewModel.cs" line-rate="0" branch-rate="0" complexity="7">
           <methods>
             <method name="get_Menu" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2362,7 +2362,7 @@
             <line number="33" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.ViewModels.SettingsViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\SettingsViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.ViewModels.SettingsViewModel" filename="Cryptie.Client/Features/Messages/ViewModels/SettingsViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="(ReactiveUI.IScreen)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2374,7 +2374,7 @@
             <line number="6" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.ViewModels.SplitViewMenuViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\SplitViewMenuViewModel.cs" line-rate="0" branch-rate="0" complexity="22">
+        <class name="Cryptie.Client.Features.Messages.ViewModels.SplitViewMenuViewModel" filename="Cryptie.Client/Features/Messages/ViewModels/SplitViewMenuViewModel.cs" line-rate="0" branch-rate="0" complexity="22">
           <methods>
             <method name="get_IsPaneOpen" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2568,7 +2568,7 @@
             <line number="56" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.ViewModels.SplitViewMenuViewModel/&lt;LoadUserNameAsync&gt;d__27" filename="Cryptie.Client\Features\Messages\ViewModels\SplitViewMenuViewModel.cs" line-rate="0" branch-rate="0" complexity="10">
+        <class name="Cryptie.Client.Features.Messages.ViewModels.SplitViewMenuViewModel/&lt;LoadUserNameAsync&gt;d__27" filename="Cryptie.Client/Features/Messages/ViewModels/SplitViewMenuViewModel.cs" line-rate="0" branch-rate="0" complexity="10">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="10">
               <lines>
@@ -2656,7 +2656,7 @@
             <line number="109" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Services.MessagesService" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="0" complexity="6">
+        <class name="Cryptie.Client.Features.Messages.Services.MessagesService" filename="Cryptie.Client/Features/Messages/Services/MessagesService.cs" line-rate="0" branch-rate="0" complexity="6">
           <methods>
             <method name="get_groupJoined" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2752,7 +2752,7 @@
             <line number="49" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Services.SignalRMessage" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Client.Features.Messages.Services.SignalRMessage" filename="Cryptie.Client/Features/Messages/Services/MessagesService.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2776,7 +2776,7 @@
             <line number="52" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Services.SignalRJoined" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Client.Features.Messages.Services.SignalRJoined" filename="Cryptie.Client/Features/Messages/Services/MessagesService.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2800,7 +2800,7 @@
             <line number="58" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Services.UserDetailsService" filename="Cryptie.Client\Features\Messages\Services\UserDetailsService.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.Services.UserDetailsService" filename="Cryptie.Client/Features/Messages/Services/UserDetailsService.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="(System.Net.Http.HttpClient)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2812,7 +2812,7 @@
             <line number="9" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Services.UserDetailsService/&lt;GetUserGuidFromTokenAsync&gt;d__3" filename="Cryptie.Client\Features\Messages\Services\UserDetailsService.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.Services.UserDetailsService/&lt;GetUserGuidFromTokenAsync&gt;d__3" filename="Cryptie.Client/Features/Messages/Services/UserDetailsService.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2836,7 +2836,7 @@
             <line number="35" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Services.UserDetailsService/&lt;GetUsernameFromGuidAsync&gt;d__2" filename="Cryptie.Client\Features\Messages\Services\UserDetailsService.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.Services.UserDetailsService/&lt;GetUsernameFromGuidAsync&gt;d__2" filename="Cryptie.Client/Features/Messages/Services/UserDetailsService.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2860,7 +2860,7 @@
             <line number="22" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Models.NavigationItem" filename="Cryptie.Client\Features\Messages\Models\NavigationItem.cs" line-rate="0" branch-rate="1" complexity="6">
+        <class name="Cryptie.Client.Features.Messages.Models.NavigationItem" filename="Cryptie.Client/Features/Messages/Models/NavigationItem.cs" line-rate="0" branch-rate="1" complexity="6">
           <methods>
             <method name="get_FullLabel" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -2902,7 +2902,7 @@
             <line number="3" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Converters.AccountGlyphVisibilityConverter" filename="Cryptie.Client\Features\Messages\Converters\AccountGlyphVisibilityConverter.cs" line-rate="0" branch-rate="0" complexity="6">
+        <class name="Cryptie.Client.Features.Messages.Converters.AccountGlyphVisibilityConverter" filename="Cryptie.Client/Features/Messages/Converters/AccountGlyphVisibilityConverter.cs" line-rate="0" branch-rate="0" complexity="6">
           <methods>
             <method name="Convert" signature="(System.Collections.Generic.IList`1&lt;System.Object&gt;,System.Type,System.Object,System.Globalization.CultureInfo)" line-rate="0" branch-rate="0" complexity="6">
               <lines>
@@ -2946,7 +2946,7 @@
             <line number="21" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Converters.AccountInitialVisibilityConverter" filename="Cryptie.Client\Features\Messages\Converters\AccountInitialVisibilityConverter.cs" line-rate="0" branch-rate="0" complexity="6">
+        <class name="Cryptie.Client.Features.Messages.Converters.AccountInitialVisibilityConverter" filename="Cryptie.Client/Features/Messages/Converters/AccountInitialVisibilityConverter.cs" line-rate="0" branch-rate="0" complexity="6">
           <methods>
             <method name="Convert" signature="(System.Collections.Generic.IList`1&lt;System.Object&gt;,System.Type,System.Object,System.Globalization.CultureInfo)" line-rate="0" branch-rate="0" complexity="6">
               <lines>
@@ -2990,7 +2990,7 @@
             <line number="21" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Converters.BoolToDockConverter" filename="Cryptie.Client\Features\Messages\Converters\BoolToDockConverter.cs" line-rate="0" branch-rate="0" complexity="4">
+        <class name="Cryptie.Client.Features.Messages.Converters.BoolToDockConverter" filename="Cryptie.Client/Features/Messages/Converters/BoolToDockConverter.cs" line-rate="0" branch-rate="0" complexity="4">
           <methods>
             <method name="Convert" signature="(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -3032,7 +3032,7 @@
             <line number="18" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Converters.BoolToInvertConverter" filename="Cryptie.Client\Features\Messages\Converters\BoolToInvertConverter.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Client.Features.Messages.Converters.BoolToInvertConverter" filename="Cryptie.Client/Features/Messages/Converters/BoolToInvertConverter.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="Convert" signature="(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3058,7 +3058,7 @@
             <line number="17" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Converters.BottomPaneMarginConverter" filename="Cryptie.Client\Features\Messages\Converters\BottomPaneMarginConverter.cs" line-rate="0" branch-rate="0" complexity="5">
+        <class name="Cryptie.Client.Features.Messages.Converters.BottomPaneMarginConverter" filename="Cryptie.Client/Features/Messages/Converters/BottomPaneMarginConverter.cs" line-rate="0" branch-rate="0" complexity="5">
           <methods>
             <method name="Convert" signature="(System.Collections.Generic.IList`1&lt;System.Object&gt;,System.Type,System.Object,System.Globalization.CultureInfo)" line-rate="0" branch-rate="0" complexity="4">
               <lines>
@@ -3106,7 +3106,7 @@
             <line number="12" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Converters.BottomToColumnSpanConverter" filename="Cryptie.Client\Features\Messages\Converters\BottomToColumnSpanConverter.cs" line-rate="0" branch-rate="0" complexity="3">
+        <class name="Cryptie.Client.Features.Messages.Converters.BottomToColumnSpanConverter" filename="Cryptie.Client/Features/Messages/Converters/BottomToColumnSpanConverter.cs" line-rate="0" branch-rate="0" complexity="3">
           <methods>
             <method name="Convert" signature="(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -3136,7 +3136,7 @@
             <line number="15" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Converters.InitialConverter" filename="Cryptie.Client\Features\Messages\Converters\InitialConverter.cs" line-rate="0" branch-rate="0" complexity="3">
+        <class name="Cryptie.Client.Features.Messages.Converters.InitialConverter" filename="Cryptie.Client/Features/Messages/Converters/InitialConverter.cs" line-rate="0" branch-rate="0" complexity="3">
           <methods>
             <method name="Convert" signature="(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -3168,7 +3168,7 @@
             <line number="16" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Views.LoginView" filename="Cryptie.Client\Features\Authentication\Views\LoginView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Authentication.Views.LoginView" filename="Cryptie.Client/Features/Authentication/Views/LoginView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Authentication.Views.LoginView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -3242,7 +3242,7 @@
             <line number="53" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Views.LoginView" filename="Cryptie.Client\Features\Authentication\Views\LoginView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Views.LoginView" filename="Cryptie.Client/Features/Authentication/Views/LoginView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3260,7 +3260,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Views.RegisterView" filename="Cryptie.Client\Features\Authentication\Views\RegisterView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Authentication.Views.RegisterView" filename="Cryptie.Client/Features/Authentication/Views/RegisterView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Authentication.Views.RegisterView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -3346,7 +3346,7 @@
             <line number="59" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Views.RegisterView" filename="Cryptie.Client\Features\Authentication\Views\RegisterView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Views.RegisterView" filename="Cryptie.Client/Features/Authentication/Views/RegisterView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3364,7 +3364,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Views.TotpCodeView" filename="Cryptie.Client\Features\Authentication\Views\TotpCodeView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Authentication.Views.TotpCodeView" filename="Cryptie.Client/Features/Authentication/Views/TotpCodeView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Authentication.Views.TotpCodeView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -3420,7 +3420,7 @@
             <line number="38" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Views.TotpCodeView" filename="Cryptie.Client\Features\Authentication\Views\TotpCodeView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Views.TotpCodeView" filename="Cryptie.Client/Features/Authentication/Views/TotpCodeView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3438,7 +3438,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Views.TotpQrSetupView" filename="Cryptie.Client\Features\Authentication\Views\TotpQrSetupView.axaml" line-rate="0" branch-rate="0" complexity="2">
+        <class name="Cryptie.Client.Features.Authentication.Views.TotpQrSetupView" filename="Cryptie.Client/Features/Authentication/Views/TotpQrSetupView.axaml" line-rate="0" branch-rate="0" complexity="2">
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Authentication.Views.TotpQrSetupView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
@@ -3498,7 +3498,7 @@
             <line number="41" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Views.TotpQrSetupView" filename="Cryptie.Client\Features\Authentication\Views\TotpQrSetupView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Views.TotpQrSetupView" filename="Cryptie.Client/Features/Authentication/Views/TotpQrSetupView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3516,7 +3516,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.ViewModels.LoginViewModel" filename="Cryptie.Client\Features\Authentication\ViewModels\LoginViewModel.cs" line-rate="0" branch-rate="1" complexity="6">
+        <class name="Cryptie.Client.Features.Authentication.ViewModels.LoginViewModel" filename="Cryptie.Client/Features/Authentication/ViewModels/LoginViewModel.cs" line-rate="0" branch-rate="1" complexity="6">
           <methods>
             <method name="get_Model" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3580,7 +3580,7 @@
             <line number="50" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.ViewModels.LoginViewModel/&lt;LoginAsync&gt;d__15" filename="Cryptie.Client\Features\Authentication\ViewModels\LoginViewModel.cs" line-rate="0" branch-rate="0" complexity="6">
+        <class name="Cryptie.Client.Features.Authentication.ViewModels.LoginViewModel/&lt;LoginAsync&gt;d__15" filename="Cryptie.Client/Features/Authentication/ViewModels/LoginViewModel.cs" line-rate="0" branch-rate="0" complexity="6">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="6">
               <lines>
@@ -3646,7 +3646,7 @@
             <line number="79" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.ViewModels.RegisterViewModel" filename="Cryptie.Client\Features\Authentication\ViewModels\RegisterViewModel.cs" line-rate="0" branch-rate="0" complexity="13">
+        <class name="Cryptie.Client.Features.Authentication.ViewModels.RegisterViewModel" filename="Cryptie.Client/Features/Authentication/ViewModels/RegisterViewModel.cs" line-rate="0" branch-rate="0" complexity="13">
           <methods>
             <method name="get_Model" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3852,7 +3852,7 @@
             <line number="56" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.ViewModels.RegisterViewModel/&lt;RegisterAsync&gt;d__18" filename="Cryptie.Client\Features\Authentication\ViewModels\RegisterViewModel.cs" line-rate="0" branch-rate="0" complexity="4">
+        <class name="Cryptie.Client.Features.Authentication.ViewModels.RegisterViewModel/&lt;RegisterAsync&gt;d__18" filename="Cryptie.Client/Features/Authentication/ViewModels/RegisterViewModel.cs" line-rate="0" branch-rate="0" complexity="4">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="4">
               <lines>
@@ -3902,7 +3902,7 @@
             <line number="145" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.ViewModels.TotpCodeViewModel" filename="Cryptie.Client\Features\Authentication\ViewModels\TotpCodeViewModel.cs" line-rate="0" branch-rate="1" complexity="4">
+        <class name="Cryptie.Client.Features.Authentication.ViewModels.TotpCodeViewModel" filename="Cryptie.Client/Features/Authentication/ViewModels/TotpCodeViewModel.cs" line-rate="0" branch-rate="1" complexity="4">
           <methods>
             <method name="get_Model" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -3958,7 +3958,7 @@
             <line number="53" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.ViewModels.TotpCodeViewModel/&lt;TotpAuthAsync&gt;d__12" filename="Cryptie.Client\Features\Authentication\ViewModels\TotpCodeViewModel.cs" line-rate="0" branch-rate="0" complexity="6">
+        <class name="Cryptie.Client.Features.Authentication.ViewModels.TotpCodeViewModel/&lt;TotpAuthAsync&gt;d__12" filename="Cryptie.Client/Features/Authentication/ViewModels/TotpCodeViewModel.cs" line-rate="0" branch-rate="0" complexity="6">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="6">
               <lines>
@@ -4016,7 +4016,7 @@
             <line number="76" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.ViewModels.TotpQrSetupViewModel" filename="Cryptie.Client\Features\Authentication\ViewModels\TotpQrSetupViewModel.cs" line-rate="0" branch-rate="1" complexity="6">
+        <class name="Cryptie.Client.Features.Authentication.ViewModels.TotpQrSetupViewModel" filename="Cryptie.Client/Features/Authentication/ViewModels/TotpQrSetupViewModel.cs" line-rate="0" branch-rate="1" complexity="6">
           <methods>
             <method name="get_QrCode" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4100,7 +4100,7 @@
             <line number="53" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.ViewModels.TotpQrSetupViewModel/&lt;TotpSetupAsync&gt;d__15" filename="Cryptie.Client\Features\Authentication\ViewModels\TotpQrSetupViewModel.cs" line-rate="0" branch-rate="0" complexity="4">
+        <class name="Cryptie.Client.Features.Authentication.ViewModels.TotpQrSetupViewModel/&lt;TotpSetupAsync&gt;d__15" filename="Cryptie.Client/Features/Authentication/ViewModels/TotpQrSetupViewModel.cs" line-rate="0" branch-rate="0" complexity="4">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="0" complexity="4">
               <lines>
@@ -4148,7 +4148,7 @@
             <line number="77" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.State.LoginState" filename="Cryptie.Client\Features\Authentication\State\LoginState.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.State.LoginState" filename="Cryptie.Client/Features/Authentication/State/LoginState.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_LastResponse" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4160,7 +4160,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.State.RegistrationState" filename="Cryptie.Client\Features\Authentication\State\RegistrationState.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.State.RegistrationState" filename="Cryptie.Client/Features/Authentication/State/RegistrationState.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_LastResponse" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4172,7 +4172,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Services.AuthenticationService" filename="Cryptie.Client\Features\Authentication\Services\AuthenticationService.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Services.AuthenticationService" filename="Cryptie.Client/Features/Authentication/Services/AuthenticationService.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="(System.Net.Http.HttpClient)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4184,7 +4184,7 @@
             <line number="9" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Services.AuthenticationService/&lt;LoginAsync&gt;d__3" filename="Cryptie.Client\Features\Authentication\Services\AuthenticationService.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Services.AuthenticationService/&lt;LoginAsync&gt;d__3" filename="Cryptie.Client/Features/Authentication/Services/AuthenticationService.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4210,7 +4210,7 @@
             <line number="33" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Services.AuthenticationService/&lt;RegisterAsync&gt;d__2" filename="Cryptie.Client\Features\Authentication\Services\AuthenticationService.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Services.AuthenticationService/&lt;RegisterAsync&gt;d__2" filename="Cryptie.Client/Features/Authentication/Services/AuthenticationService.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4236,7 +4236,7 @@
             <line number="21" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Services.AuthenticationService/&lt;TotpAsync&gt;d__4" filename="Cryptie.Client\Features\Authentication\Services\AuthenticationService.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Services.AuthenticationService/&lt;TotpAsync&gt;d__4" filename="Cryptie.Client/Features/Authentication/Services/AuthenticationService.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="MoveNext" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4262,7 +4262,7 @@
             <line number="45" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Services.KeychainManagerService" filename="Cryptie.Client\Features\Authentication\Services\KeychainManagerService.cs" line-rate="0.8108" branch-rate="0.75" complexity="5">
+        <class name="Cryptie.Client.Features.Authentication.Services.KeychainManagerService" filename="Cryptie.Client/Features/Authentication/Services/KeychainManagerService.cs" line-rate="0.8108" branch-rate="0.75" complexity="5">
           <methods>
             <method name="TrySaveSessionToken" signature="(System.String,System.String&amp;)" line-rate="0.7142000000000001" branch-rate="1" complexity="2">
               <lines>
@@ -4370,7 +4370,7 @@
             <line number="68" hits="1" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Models.LoginModel" filename="Cryptie.Client\Features\Authentication\Models\LoginModel.cs" line-rate="0" branch-rate="1" complexity="5">
+        <class name="Cryptie.Client.Features.Authentication.Models.LoginModel" filename="Cryptie.Client/Features/Authentication/Models/LoginModel.cs" line-rate="0" branch-rate="1" complexity="5">
           <methods>
             <method name="get_Username" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4408,7 +4408,7 @@
             <line number="8" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Models.RegisterModel" filename="Cryptie.Client\Features\Authentication\Models\RegisterModel.cs" line-rate="0" branch-rate="1" complexity="9">
+        <class name="Cryptie.Client.Features.Authentication.Models.RegisterModel" filename="Cryptie.Client/Features/Authentication/Models/RegisterModel.cs" line-rate="0" branch-rate="1" complexity="9">
           <methods>
             <method name="get_Username" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4474,7 +4474,7 @@
             <line number="10" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Models.TotpQrSetupModel" filename="Cryptie.Client\Features\Authentication\Models\TotpQrSetupModel.cs" line-rate="0" branch-rate="1" complexity="5">
+        <class name="Cryptie.Client.Features.Authentication.Models.TotpQrSetupModel" filename="Cryptie.Client/Features/Authentication/Models/TotpQrSetupModel.cs" line-rate="0" branch-rate="1" complexity="5">
           <methods>
             <method name="get_TotpToken" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4512,7 +4512,7 @@
             <line number="9" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Authentication.Mapping.AuthenticationMappingProfile" filename="Cryptie.Client\Features\Authentication\Mapping\AuthenticationMappingProfile.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Authentication.Mapping.AuthenticationMappingProfile" filename="Cryptie.Client/Features/Authentication/Mapping/AuthenticationMappingProfile.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="Register" signature="(Mapster.TypeAdapterConfig)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4542,7 +4542,7 @@
             <line number="22" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Encryption.CertificateGenerator" filename="Cryptie.Client\Encryption\CertificateGenerator.cs" line-rate="0" branch-rate="1" complexity="4">
+        <class name="Cryptie.Client.Encryption.CertificateGenerator" filename="Cryptie.Client/Encryption/CertificateGenerator.cs" line-rate="0" branch-rate="1" complexity="4">
           <methods>
             <method name="GenerateCertificate" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4594,7 +4594,7 @@
             <line number="16" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Encryption.MessageEncryption" filename="Cryptie.Client\Encryption\MessageEncryption.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Client.Encryption.MessageEncryption" filename="Cryptie.Client/Encryption/MessageEncryption.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="EncryptMessage" signature="(System.String,System.Security.Cryptography.X509Certificates.X509Certificate2)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4638,7 +4638,7 @@
             <line number="31" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Core.Services.ConnectionMonitor" filename="Cryptie.Client\Core\Services\ConnectionMonitor.cs" line-rate="0" branch-rate="0" complexity="12">
+        <class name="Cryptie.Client.Core.Services.ConnectionMonitor" filename="Cryptie.Client/Core/Services/ConnectionMonitor.cs" line-rate="0" branch-rate="0" complexity="12">
           <methods>
             <method name="get_ConnectionStatusChanged" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4810,11 +4810,11 @@
             <line number="18" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Core.Services.ConnectionMonitor/&lt;&lt;Start&gt;b__8_0&gt;d" filename="Cryptie.Client\Core\Services\ConnectionMonitor.cs" line-rate="1" branch-rate="0" complexity="6">
+        <class name="Cryptie.Client.Core.Services.ConnectionMonitor/&lt;&lt;Start&gt;b__8_0&gt;d" filename="Cryptie.Client/Core/Services/ConnectionMonitor.cs" line-rate="1" branch-rate="0" complexity="6">
           <methods />
           <lines />
         </class>
-        <class name="Cryptie.Client.Core.Navigation.ShellCoordinator" filename="Cryptie.Client\Core\Navigation\ShellCoordinator.cs" line-rate="0" branch-rate="0" complexity="15">
+        <class name="Cryptie.Client.Core.Navigation.ShellCoordinator" filename="Cryptie.Client/Core/Navigation/ShellCoordinator.cs" line-rate="0" branch-rate="0" complexity="15">
           <methods>
             <method name="get_Router" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -4954,7 +4954,7 @@
             <line number="13" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Core.Mapping.ExceptionMessageMapper" filename="Cryptie.Client\Core\Mapping\ExceptionMessageMapper.cs" line-rate="0.8571" branch-rate="0.5" complexity="2">
+        <class name="Cryptie.Client.Core.Mapping.ExceptionMessageMapper" filename="Cryptie.Client/Core/Mapping/ExceptionMessageMapper.cs" line-rate="0.8571" branch-rate="0.5" complexity="2">
           <methods>
             <method name="Map" signature="(System.Exception)" line-rate="0.8571" branch-rate="0.5" complexity="2">
               <lines>
@@ -4986,7 +4986,7 @@
             <line number="15" hits="1" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Core.Locators.ReactiveViewLocator" filename="Cryptie.Client\Core\Locators\ReactiveViewLocator.cs" line-rate="0" branch-rate="0" complexity="12">
+        <class name="Cryptie.Client.Core.Locators.ReactiveViewLocator" filename="Cryptie.Client/Core/Locators/ReactiveViewLocator.cs" line-rate="0" branch-rate="0" complexity="12">
           <methods>
             <method name="ResolveView" signature="(T,System.String)" line-rate="0" branch-rate="0" complexity="10">
               <lines>
@@ -5096,7 +5096,7 @@
             <line number="40" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Core.Locators.ViewLocator" filename="Cryptie.Client\Core\Locators\ViewLocator.cs" line-rate="0" branch-rate="0" complexity="5">
+        <class name="Cryptie.Client.Core.Locators.ViewLocator" filename="Cryptie.Client/Core/Locators/ViewLocator.cs" line-rate="0" branch-rate="0" complexity="5">
           <methods>
             <method name="Build" signature="(System.Object)" line-rate="0" branch-rate="0" complexity="4">
               <lines>
@@ -5146,7 +5146,7 @@
             <line number="25" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Core.Factories.ViewModelFactory" filename="Cryptie.Client\Core\Factories\ViewModelFactory.cs" line-rate="0" branch-rate="1" complexity="2">
+        <class name="Cryptie.Client.Core.Factories.ViewModelFactory" filename="Cryptie.Client/Core/Factories/ViewModelFactory.cs" line-rate="0" branch-rate="1" complexity="2">
           <methods>
             <method name="Create" signature="(ReactiveUI.IScreen,System.Object[])" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -5170,7 +5170,7 @@
             <line number="9" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Core.Base.RoutableViewModelBase" filename="Cryptie.Client\Core\Base\RoutableViewModelBase.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Client.Core.Base.RoutableViewModelBase" filename="Cryptie.Client/Core/Base/RoutableViewModelBase.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_UrlPathSegment" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -5202,7 +5202,7 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Core.Base.ViewModelBase" filename="Cryptie.Client\Core\Base\ViewModelBase.cs" line-rate="0" branch-rate="1" complexity="3">
+        <class name="Cryptie.Client.Core.Base.ViewModelBase" filename="Cryptie.Client/Core/Base/ViewModelBase.cs" line-rate="0" branch-rate="1" complexity="3">
           <methods>
             <method name="get_ErrorMessage" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -5226,7 +5226,7 @@
             <line number="7" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Configuration.ClientOptions" filename="Cryptie.Client\Configuration\ClientOptions.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Configuration.ClientOptions" filename="Cryptie.Client/Configuration/ClientOptions.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="get_BaseUri" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -5238,7 +5238,7 @@
             <line number="5" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Composition.ServiceCollectionExtensions" filename="Cryptie.Client\Composition\ServiceCollectionExtensions.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Composition.ServiceCollectionExtensions" filename="Cryptie.Client/Composition/ServiceCollectionExtensions.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name="AddCommonServices" signature="(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
