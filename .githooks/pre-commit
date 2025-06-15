@@ -1,0 +1,4 @@
+#!/bin/sh
+rm -rf ./.coverage/
+dotnet test --collect:"XPlat Code Coverage" --results-directory ./.coverage/
+git add -f ./.coverage/*/coverage.cobertura.xml
