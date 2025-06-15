@@ -30,7 +30,10 @@ jobs:
       - name: Run unit tests & collect coverage
         id: unit_tests
         run: |
-          dotnet-coverage collect --output ./unit-coverage.xml --output-format xml -- dotnet test --no-build --filter "TestCategory=Unit"
+          dotnet-coverage collect \
+            --format opencover \
+            --output ./unit-coverage.opencover.xml \
+            -- dotnet test --no-build --filter "TestCategory=Unit"
         continue-on-error: true
 
       - name: Upload Unit Test Coverage Report
@@ -38,6 +41,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: unit-coverage-report-${{ github.sha }}
-          path: ./unit-coverage.xml
+          path: ./unit-coverage.opencover.xml
           if-no-files-found: warn
           retention-days: 1
