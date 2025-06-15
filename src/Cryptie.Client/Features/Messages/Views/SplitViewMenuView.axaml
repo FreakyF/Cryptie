@@ -113,6 +113,8 @@
         </ListBox>
 
         <Button Grid.Column="1"
+                Background="Transparent"
+                BorderBrush="Transparent"
                 Grid.Row="0"
                 Width="48" Height="48"
                 CornerRadius="0"
