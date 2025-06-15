@@ -118,7 +118,7 @@ public class AuthenticationService(
         return Ok(new RegisterResponseDto
         {
             Secret =
-                $"otpauth://totp/Panel:{user.Entity.Login}?secret={Base32Encoding.ToString(totp.Entity.Secret)}&issuer=Panel",
+                $"otpauth://totp/Cryptie:{user.Entity.Login}?secret={Base32Encoding.ToString(totp.Entity.Secret)}&issuer=Cryptie",
             TotpToken = totpToken
         });
     }

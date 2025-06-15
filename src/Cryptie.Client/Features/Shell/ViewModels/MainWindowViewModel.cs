@@ -30,7 +30,7 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
         _connectionMonitor = connectionMonitor ?? throw new ArgumentNullException(nameof(connectionMonitor));
         _factory = factory ?? throw new ArgumentNullException(nameof(factory));
 
-        _shellCoordinator.Start();
+        _shellCoordinator.StartAsync();
 
         _connectionSubscription = _connectionMonitor.ConnectionStatusChanged
             .StartWith(false)
@@ -72,7 +72,7 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
             .Subscribe(_ => OnConnectionRestored());
     }
 
-    private void OnConnectionRestored()
+    private async void OnConnectionRestored()
     {
         ThrowIfDisposed();
 
@@ -83,6 +83,8 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
         _statusVmIsLoadingSub = null;
 
         Router.NavigateBack.Execute();
+
+        await _shellCoordinator.StartAsync();
     }
 
     private void Stop()

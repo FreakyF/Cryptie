@@ -21,6 +21,19 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
 
     public IObservable<bool> ConnectionStatusChanged => _subject;
 
+    public async Task<bool> IsBackendAliveAsync()
+    {
+        try
+        {
+            await _serverStatus.GetServerStatusAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public void Start(CancellationToken token = default)
     {
         ThrowIfDisposed();
