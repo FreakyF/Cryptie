@@ -10,6 +10,26 @@
              xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Messages.ViewModels"
              xmlns:views2="clr-namespace:Cryptie.Client.Features.ServerStatus.Views"
              xmlns:viewModels2="clr-namespace:Cryptie.Client.Features.ServerStatus.ViewModels">
+    <Application.Resources>
+        <FontFamily x:Key="PhosphorBold">
+            avares://Cryptie/Assets/Fonts/PhosphorBold.ttf#Phosphor
+        </FontFamily>
+        <FontFamily x:Key="PhosphorDuotone">
+            avares://Cryptie/Assets/Fonts/PhosphorDuotone.ttf#Phosphor
+        </FontFamily>
+        <FontFamily x:Key="PhosphorFill">
+            avares://Cryptie/Assets/Fonts/PhosphorFill.ttf#Phosphor
+        </FontFamily>
+        <FontFamily x:Key="PhosphorLight">
+            avares://Cryptie/Assets/Fonts/PhosphorLight.ttf#Phosphor
+        </FontFamily>
+        <FontFamily x:Key="PhosphorRegular">
+            avares://Cryptie/Assets/Fonts/PhosphorRegular.ttf#Phosphor
+        </FontFamily>
+        <FontFamily x:Key="PhosphorThin">
+            avares://Cryptie/Assets/Fonts/Phosphor-Thin.ttf#Phosphor
+        </FontFamily>
+    </Application.Resources>
     <Application.DataTemplates>
         <locators:ViewLocator />
         <DataTemplate DataType="viewModels2:ServerStatusViewModel">

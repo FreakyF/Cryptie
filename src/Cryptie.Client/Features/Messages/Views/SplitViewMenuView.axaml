@@ -47,7 +47,7 @@
                         </TextBlock.IsVisible>
                     </TextBlock>
 
-                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                    <TextBlock FontFamily="{StaticResource PhosphorRegular}"
                                Text="{Binding IconGlyph}"
                                FontSize="20"
                                HorizontalAlignment="Center"
@@ -69,7 +69,6 @@
                                RelativeSource={RelativeSource AncestorType=SplitView}}" />
             </Grid>
         </DataTemplate>
-
     </UserControl.Resources>
 
     <UserControl.Styles>
@@ -120,8 +119,8 @@
                 VerticalAlignment="Bottom"
                 Command="{Binding TogglePaneCommand}"
                 IsVisible="{Binding IsPaneOpen}">
-            <TextBlock FontFamily="Segoe MDL2 Assets"
-                       Text="&#xE700;"
+            <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                       Text="&#xE128;"
                        FontSize="20"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />
@@ -133,8 +132,8 @@
                 CornerRadius="0"
                 Command="{Binding TogglePaneCommand}"
                 IsVisible="{Binding IsPaneOpen, Converter={StaticResource InvertBool}}">
-            <TextBlock FontFamily="Segoe MDL2 Assets"
-                       Text="&#xE700;"
+            <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                       Text="&#xE12A;"
                        FontSize="20"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center" />

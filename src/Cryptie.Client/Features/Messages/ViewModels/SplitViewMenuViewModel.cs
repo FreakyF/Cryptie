@@ -34,9 +34,9 @@ namespace Cryptie.Client.Features.Messages.ViewModels
 
             Items =
             [
-                new NavigationItem("Chats", "\uE15F", NavigationTarget.Chats),
-                new NavigationItem("Account", "\uE168", NavigationTarget.Account, IsBottom: true, IsLast: true),
-                new NavigationItem("Settings", "\uE115", NavigationTarget.Settings, IsBottom: true)
+                new NavigationItem("Chats", "\uE168", NavigationTarget.Chats),
+                new NavigationItem("Account", "\uE4C2", NavigationTarget.Account, IsBottom: true, IsLast: true),
+                new NavigationItem("Settings", "\uE272", NavigationTarget.Settings, IsBottom: true)
             ];
             _selectedItem = Items[0];
 
@@ -111,7 +111,7 @@ namespace Cryptie.Client.Features.Messages.ViewModels
         private void ReplaceAccountItem(string userName)
         {
             var accountItem = Items.FirstOrDefault(i =>
-                i is { FullLabel: "Account", IconGlyph: "\uE168" });
+                i is { FullLabel: "Account", IconGlyph: "\uE4C2" });
             if (accountItem is null) return;
             var idx = Items.IndexOf(accountItem);
             if (idx < 0) return;
