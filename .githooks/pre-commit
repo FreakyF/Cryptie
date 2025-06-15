@@ -2,7 +2,7 @@
 rm -rf ./.coverage/
 dotnet test --collect:"XPlat Code Coverage" --results-directory ./.coverage/tmp
 
-output=".coverage/coverage.xml"
+output=".coverage/coverage.cobertura.xml"
 first_file=""
 
 find .coverage/tmp -type f -name "coverage.cobertura.xml" | while IFS= read -r file; do
@@ -27,4 +27,4 @@ done
 rm -f tmp_classes.xml
 rm -r ./.coverage/tmp
 
-git add -f ./.coverage/coverage.xml
+git add -f ./.coverage/coverage.cobertura.xml
