@@ -32,7 +32,7 @@ jobs:
         run: |
           dotnet-coverage collect \
             --output-format opencover \
-            --output-format ./unit-coverage.opencover.xml \
+            --output ./unit-coverage.opencover.xml \
             -- dotnet test --no-build --filter "TestCategory=Unit"
         continue-on-error: true
 
