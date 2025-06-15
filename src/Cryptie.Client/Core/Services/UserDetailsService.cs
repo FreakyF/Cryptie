@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cryptie.Common.Features.UserManagement.DTOs;
 
-namespace Cryptie.Client.Features.Messages.Services;
+namespace Cryptie.Client.Core.Services;
 
 public class UserDetailsService(HttpClient httpClient) : IUserDetailsService
 {

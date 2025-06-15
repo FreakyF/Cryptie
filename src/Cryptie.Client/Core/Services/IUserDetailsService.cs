@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Cryptie.Common.Features.UserManagement.DTOs;
 
-namespace Cryptie.Client.Features.Messages.Services;
+namespace Cryptie.Client.Core.Services;
 
 public interface IUserDetailsService
 {
