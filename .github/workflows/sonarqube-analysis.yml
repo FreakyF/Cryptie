@@ -49,46 +49,6 @@ jobs:
           mkdir -p ./.sonar/scanner
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
 
-      - name: Download Unit Test Coverage Report
-        uses: actions/download-artifact@v4
-        with:
-          name: unit-coverage-report-${{ github.sha }}
-          path: .
-          if-no-files-found: warn
-
-      - name: Download Integration Test Coverage Report
-        uses: actions/download-artifact@v4
-        with:
-          name: integration-coverage-report-${{ github.sha }}
-          path: .
-          if-no-files-found: warn
-
-      - name: Construct coverage report paths
-        id: coverage_paths
-        shell: bash
-        run: |
-          paths=""
-          if [[ -f "unit-coverage.xml" ]]; then
-            paths="unit-coverage.xml"
-          fi
-          if [[ -f "integration-coverage.opencover.xml" ]]; then
-            if [[ -n "$paths" ]]; then
-              paths="$paths,integration-coverage.xml"
-            else
-              paths="integration-coverage.xml"
-            fi
-          fi
-          if [[ -z "$paths" ]]; then
-            echo "No coverage reports found to provide to SonarQube."
-            # SonarQube will proceed without coverage if paths is empty or the property is not set.
-            # You could create a dummy empty report if SonarScanner strictly requires the files listed to exist.
-            # For example:
-            # echo "sonar_paths=empty.xml" >> $GITHUB_OUTPUT
-            # touch empty.xml
-          fi
-          echo "sonar_paths=$paths" >> $GITHUB_OUTPUT
-          echo "sonar_paths=$paths"
-
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -96,7 +56,7 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" \
           /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.cs.vscoveragexml.reportsPaths=${{ steps.coverage_paths.outputs.sonar_paths }} \
+          /d:sonar.cobertura.reportPath=".coverage/coverage.cobertura.xml" \
           /d:sonar.verbose=true
 
       - name: Build project (for SonarQube Roslyn analyzers)
