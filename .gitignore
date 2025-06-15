@@ -115,7 +115,7 @@ _TeamCity*
 *.dotCover
 
 # Visual Studio code coverage results
-#*.coverage
+*.coverage
 *.coveragexml
 
 # NCrunch
@@ -345,7 +345,7 @@ StyleCopReport.xml
 
 # Coverlet is a free, cross platform Code Coverage Tool
 coverage*.json
-#coverage*.xml
+coverage*.xml
 coverage*.info
 
 # Visual Studio code coverage results
