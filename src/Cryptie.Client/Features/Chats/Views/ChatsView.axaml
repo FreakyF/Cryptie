@@ -18,7 +18,11 @@
     </UserControl.DataTemplates>
 
     <Grid ColumnDefinitions="250,*">
-        <ContentControl Content="{Binding GroupsPanel}" />
+        <Border Grid.Column="0"
+                BorderBrush="{DynamicResource SplitViewSeparatorBackground}"
+                BorderThickness="0,0,1,0">
+            <ContentControl Content="{Binding GroupsPanel}" />
+        </Border>
 
         <TextBlock Grid.Column="1" Text="CHAT"
                    FontSize="32"
