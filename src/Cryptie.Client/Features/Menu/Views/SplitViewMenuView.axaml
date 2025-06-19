@@ -1,0 +1,145 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:Cryptie.Client.Features.Messages.Converters"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Menu.ViewModels"
+             xmlns:models1="clr-namespace:Cryptie.Client.Features.Menu.Models"
+             x:Class="Cryptie.Client.Features.Menu.Views.SplitViewMenuView"
+             x:DataType="viewModels:SplitViewMenuViewModel">
+
+    <UserControl.Resources>
+        <conv:BoolToDockConverter x:Key="BoolDock" />
+        <conv:BottomToColumnSpanConverter x:Key="ColSpan" />
+        <conv:BottomPaneMarginConverter x:Key="PaneMargin" />
+        <conv:BoolToInvertConverter x:Key="InvertBool" />
+
+        <conv:InitialConverter x:Key="InitialConverter" />
+        <conv:AccountInitialVisibilityConverter x:Key="AccountInitialVisible" />
+        <conv:AccountGlyphVisibilityConverter x:Key="AccountGlyphVisible" />
+
+        <DataTemplate x:Key="NavItemTemplate"
+                      x:DataType="models1:NavigationItem">
+            <Grid Height="48" ColumnDefinitions="48,*">
+                <Grid Grid.Column="0"
+                      Width="48" Height="48"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+
+                    <Ellipse Fill="#54A9FF"
+                             Width="20" Height="20">
+                        <Ellipse.IsVisible>
+                            <MultiBinding Converter="{StaticResource AccountInitialVisible}">
+                                <Binding Path="FullLabel" />
+                            </MultiBinding>
+                        </Ellipse.IsVisible>
+                    </Ellipse>
+
+                    <TextBlock Text="{Binding FullLabel, Converter={StaticResource InitialConverter}}"
+                               FontSize="12"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                        <TextBlock.IsVisible>
+                            <MultiBinding Converter="{StaticResource AccountInitialVisible}">
+                                <Binding Path="FullLabel" />
+                            </MultiBinding>
+                        </TextBlock.IsVisible>
+                    </TextBlock>
+
+                    <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                               Text="{Binding IconGlyph}"
+                               FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                        <TextBlock.IsVisible>
+                            <MultiBinding Converter="{StaticResource AccountGlyphVisible}">
+                                <Binding Path="FullLabel" />
+                            </MultiBinding>
+                        </TextBlock.IsVisible>
+                    </TextBlock>
+                </Grid>
+
+                <TextBlock Grid.Column="1"
+                           Text="{Binding FullLabel}"
+                           FontSize="16"
+                           VerticalAlignment="Center"
+                           TextWrapping="NoWrap"
+                           TextTrimming="CharacterEllipsis"
+                           IsVisible="{Binding IsPaneOpen,
+                               RelativeSource={RelativeSource AncestorType=SplitView}}" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="ListBoxItem"
+               x:DataType="models1:NavigationItem">
+            <Setter Property="Height" Value="48" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="DockPanel.Dock"
+                    Value="{Binding IsBottom, Converter={StaticResource BoolDock}}" />
+            <Setter Property="(Grid.ColumnSpan)"
+                    Value="{Binding IsBottom, Converter={StaticResource ColSpan}}" />
+            <Setter Property="Margin">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource PaneMargin}">
+                        <Binding Path="IsBottom" />
+                        <Binding Path="IsPaneOpen"
+                                 RelativeSource="{RelativeSource AncestorType=SplitView}" />
+                        <Binding Path="IsLast" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ContentTemplate"
+                    Value="{StaticResource NavItemTemplate}" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid ColumnDefinitions="*,48" RowDefinitions="*,Auto">
+        <ListBox Grid.Column="0"
+                 Grid.ColumnSpan="2"
+                 Grid.Row="0"
+                 ItemsSource="{Binding Items}"
+                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                 ItemTemplate="{StaticResource NavItemTemplate}"
+                 BorderThickness="0">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel LastChildFill="False" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+
+        <Button Grid.Column="1"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Grid.Row="0"
+                Width="48" Height="48"
+                CornerRadius="0"
+                VerticalAlignment="Bottom"
+                Command="{Binding TogglePaneCommand}"
+                IsVisible="{Binding IsPaneOpen}">
+            <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                       Text="&#xE128;"
+                       FontSize="20"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+        </Button>
+
+        <Button Grid.Column="1"
+                Grid.Row="1"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Width="48" Height="48"
+                CornerRadius="0"
+                Command="{Binding TogglePaneCommand}"
+                IsVisible="{Binding IsPaneOpen, Converter={StaticResource InvertBool}}">
+            <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                       Text="&#xE12A;"
+                       FontSize="20"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center" />
+        </Button>
+    </Grid>
+</UserControl>

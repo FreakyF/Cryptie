@@ -1,0 +1,40 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views1="clr-namespace:Cryptie.Client.Features.Chats.Views"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Chats.ViewModels"
+             xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Account.ViewModels"
+             xmlns:views2="clr-namespace:Cryptie.Client.Features.Account.Views"
+             xmlns:viewModels2="clr-namespace:Cryptie.Client.Features.Settings.ViewModels"
+             xmlns:views3="clr-namespace:Cryptie.Client.Features.Settings.Views"
+             xmlns:views4="clr-namespace:Cryptie.Client.Features.Menu.Views"
+             xmlns:vm1="clr-namespace:Cryptie.Client.Features.Dashboard.ViewModels"
+             x:Class="Cryptie.Client.Features.Dashboard.Views.DashboardView"
+             x:DataType="vm1:DashboardViewModel">
+
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="viewModels:ChatsViewModel">
+            <views1:ChatsView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels1:AccountViewModel">
+            <views2:AccountView />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels2:SettingsViewModel">
+            <views3:SettingsView />
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <SplitView IsPaneOpen="{Binding Menu.IsPaneOpen}"
+               OpenPaneLength="240"
+               CompactPaneLength="48"
+               DisplayMode="CompactInline">
+
+        <SplitView.Pane>
+            <views4:SplitViewMenuView DataContext="{Binding Menu}" />
+        </SplitView.Pane>
+
+        <SplitView.Content>
+            <ContentControl Content="{Binding Content}" />
+        </SplitView.Content>
+
+    </SplitView>
+</UserControl>

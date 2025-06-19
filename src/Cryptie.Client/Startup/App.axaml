@@ -6,10 +6,10 @@
              xmlns:locators="clr-namespace:Cryptie.Client.Core.Locators"
              xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Authentication.ViewModels"
              xmlns:views1="clr-namespace:Cryptie.Client.Features.Authentication.Views"
-             xmlns:views="clr-namespace:Cryptie.Client.Features.Messages.Views"
-             xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Messages.ViewModels"
              xmlns:views2="clr-namespace:Cryptie.Client.Features.ServerStatus.Views"
-             xmlns:viewModels2="clr-namespace:Cryptie.Client.Features.ServerStatus.ViewModels">
+             xmlns:viewModels2="clr-namespace:Cryptie.Client.Features.ServerStatus.ViewModels"
+             xmlns:views="clr-namespace:Cryptie.Client.Features.Dashboard.Views"
+             xmlns:viewModels3="clr-namespace:Cryptie.Client.Features.Dashboard.ViewModels">
     <Application.Resources>
         <FontFamily x:Key="PhosphorBold">
             avares://Cryptie/Assets/Fonts/PhosphorBold.ttf#Phosphor
@@ -47,7 +47,7 @@
         <DataTemplate DataType="viewModels:TotpCodeViewModel">
             <views1:LoginView />
         </DataTemplate>
-        <DataTemplate DataType="viewModels1:DashboardViewModel">
+        <DataTemplate DataType="viewModels3:DashboardViewModel">
             <views:DashboardView />
         </DataTemplate>
     </Application.DataTemplates>

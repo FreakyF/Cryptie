@@ -73,6 +73,26 @@
             <DependentUpon>DashboardView.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Features\Chats\Views\ChatsView.axaml.cs">
+            <DependentUpon>ChatsView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\Account\Views\AccountView.axaml.cs">
+            <DependentUpon>AccountView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\Groups\Views\GroupsListView.axaml.cs">
+            <DependentUpon>GroupsListView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\Settings\Views\SettingsView.axaml.cs">
+            <DependentUpon>SettingsView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\Menu\Views\SplitViewMenuView.axaml.cs">
+            <DependentUpon>SplitViewMenuView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -85,9 +105,5 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="Features\ServerStatus\Models\"/>
     </ItemGroup>
 </Project>

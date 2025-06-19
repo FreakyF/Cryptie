@@ -1,0 +1,30 @@
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Settings.ViewModels"
+             mc:Ignorable="d"
+             x:Class="Cryptie.Client.Features.Settings.Views.SettingsView"
+             x:DataType="viewModels1:SettingsViewModel">
+
+    <Border Padding="24">
+        <StackPanel Spacing="24">
+            <TextBlock Theme="{StaticResource TitleTextBlock}"
+                       Classes="H1">
+                Settings
+            </TextBlock>
+            <StackPanel Spacing="24">
+                <StackPanel Spacing="12">
+                    <TextBlock Classes="H5"
+                               Text="Theme" />
+                    <ComboBox Width="220"
+                              ItemsSource="{Binding AvailableThemes}"
+                              SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
+                              HorizontalAlignment="Left" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

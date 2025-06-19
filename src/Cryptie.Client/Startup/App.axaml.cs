@@ -5,7 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Cryptie.Client.Composition;
-using Cryptie.Client.Features.Messages.ViewModels;
+using Cryptie.Client.Features.Settings.Services;
 using Cryptie.Client.Features.Shell.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

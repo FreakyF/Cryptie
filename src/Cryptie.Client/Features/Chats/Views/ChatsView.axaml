@@ -1,0 +1,29 @@
+﻿<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Chats.ViewModels"
+    xmlns:viewModels2="clr-namespace:Cryptie.Client.Features.Groups.ViewModels"
+    xmlns:views1="clr-namespace:Cryptie.Client.Features.Groups.Views"
+    mc:Ignorable="d"
+    x:Class="Cryptie.Client.Features.Chats.Views.ChatsView"
+    x:DataType="viewModels1:ChatsViewModel"
+    d:DataContext="{d:DesignInstance Type=viewModels1:ChatsViewModel, IsDesignTimeCreatable=True}">
+
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="viewModels2:GroupsListViewModel">
+            <views1:GroupsListView />
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <Grid ColumnDefinitions="250,*">
+        <ContentControl Content="{Binding GroupsPanel}" />
+
+        <TextBlock Grid.Column="1" Text="CHAT"
+                   FontSize="32"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center" />
+    </Grid>
+</UserControl>

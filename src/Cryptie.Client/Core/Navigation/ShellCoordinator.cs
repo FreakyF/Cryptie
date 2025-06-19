@@ -5,7 +5,7 @@ using Cryptie.Client.Core.Factories;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.ViewModels;
-using Cryptie.Client.Features.Messages.ViewModels;
+using Cryptie.Client.Features.Dashboard.ViewModels;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using ReactiveUI;
 
