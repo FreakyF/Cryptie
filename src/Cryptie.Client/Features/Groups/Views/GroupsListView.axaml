@@ -11,6 +11,7 @@
              x:DataType="viewModels1:GroupsListViewModel">
     <UserControl.Resources>
         <converters1:InitialConverter x:Key="InitialConverter" />
+        <converters1:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,*">
         <Grid Row="0"
@@ -59,7 +60,7 @@
                         <Grid Grid.Column="0"
                               Width="32" Height="32"
                               Margin="0,0,8,0">
-                            <Ellipse Fill="#54A9FF" />
+                            <Ellipse Fill="{Binding Converter={StaticResource InitialBackgroundConverter}}" />
                             <TextBlock Text="{Binding Converter={StaticResource InitialConverter}}"
                                        Foreground="White"
                                        FontSize="16"

@@ -14,8 +14,10 @@
         <conv:BoolToInvertConverter x:Key="InvertBool" />
 
         <converters:InitialConverter x:Key="InitialConverter" />
+        <converters:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
         <conv:AccountInitialVisibilityConverter x:Key="AccountInitialVisible" />
         <conv:AccountGlyphVisibilityConverter x:Key="AccountGlyphVisible" />
+
 
         <DataTemplate x:Key="NavItemTemplate"
                       x:DataType="models1:NavigationItem">
@@ -25,7 +27,7 @@
                       HorizontalAlignment="Center"
                       VerticalAlignment="Center">
 
-                    <Ellipse Fill="#54A9FF"
+                    <Ellipse Fill="{Binding Converter={StaticResource InitialBackgroundConverter}}"
                              Width="20" Height="20">
                         <Ellipse.IsVisible>
                             <MultiBinding Converter="{StaticResource AccountInitialVisible}">
