@@ -5,6 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Cryptie.Client.Composition;
+using Cryptie.Client.Features.Messages.ViewModels;
 using Cryptie.Client.Features.Shell.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,7 +31,7 @@ public class App : Application
             })
             .ConfigureServices((ctx, services) => { services.AddCommonServices(ctx.Configuration); })
             .Build();
-
+        host.Services.GetRequiredService<IThemeService>();
         var mainWindow = host.Services.GetRequiredService<MainWindow>();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

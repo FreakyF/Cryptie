@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.0255" branch-rate="0.0206" version="1.9" timestamp="1750356135" lines-covered="37" lines-valid="1448" branches-covered="4" branches-valid="194">
+<coverage line-rate="0.024399999999999998" branch-rate="0.0194" version="1.9" timestamp="1750367109" lines-covered="37" lines-valid="1514" branches-covered="4" branches-valid="206">
   <sources>
     <source>C:\Repos\Cryptie\src\</source>
   </sources>
@@ -942,20 +942,19 @@
         </class>
       </classes>
     </package>
-    <package name="Cryptie" line-rate="0.0277" branch-rate="0.0206" complexity="349">
+    <package name="Cryptie" line-rate="0.0264" branch-rate="0.0194" complexity="368">
       <classes>
         <class name="Cryptie.Client.Startup.App" filename="Cryptie.Client\Startup\App.axaml.cs" line-rate="0" branch-rate="0" complexity="5">
           <methods>
             <method name="Initialize" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="18" hits="0" branch="False" />
                 <line number="19" hits="0" branch="False" />
                 <line number="20" hits="0" branch="False" />
+                <line number="21" hits="0" branch="False" />
               </lines>
             </method>
             <method name="OnFrameworkInitializationCompleted" signature="()" line-rate="0" branch-rate="0" complexity="2">
               <lines>
-                <line number="23" hits="0" branch="False" />
                 <line number="24" hits="0" branch="False" />
                 <line number="25" hits="0" branch="False" />
                 <line number="26" hits="0" branch="False" />
@@ -965,39 +964,40 @@
                 <line number="30" hits="0" branch="False" />
                 <line number="31" hits="0" branch="False" />
                 <line number="32" hits="0" branch="False" />
+                <line number="33" hits="0" branch="False" />
                 <line number="34" hits="0" branch="False" />
-                <line number="36" hits="0" branch="True" condition-coverage="0% (0/2)">
+                <line number="35" hits="0" branch="False" />
+                <line number="37" hits="0" branch="True" condition-coverage="0% (0/2)">
                   <conditions>
-                    <condition number="114" type="jump" coverage="0%" />
+                    <condition number="126" type="jump" coverage="0%" />
                   </conditions>
                 </line>
-                <line number="37" hits="0" branch="False" />
                 <line number="38" hits="0" branch="False" />
                 <line number="39" hits="0" branch="False" />
                 <line number="40" hits="0" branch="False" />
-                <line number="42" hits="0" branch="False" />
+                <line number="41" hits="0" branch="False" />
                 <line number="43" hits="0" branch="False" />
+                <line number="44" hits="0" branch="False" />
               </lines>
             </method>
             <method name="DisableAvaloniaDataAnnotationValidation" signature="()" line-rate="0" branch-rate="0" complexity="2">
               <lines>
-                <line number="46" hits="0" branch="False" />
                 <line number="47" hits="0" branch="False" />
                 <line number="48" hits="0" branch="False" />
-                <line number="50" hits="0" branch="True" condition-coverage="0% (0/2)">
+                <line number="49" hits="0" branch="False" />
+                <line number="51" hits="0" branch="True" condition-coverage="0% (0/2)">
                   <conditions>
                     <condition number="48" type="jump" coverage="0%" />
                   </conditions>
                 </line>
-                <line number="51" hits="0" branch="False" />
+                <line number="52" hits="0" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="18" hits="0" branch="False" />
             <line number="19" hits="0" branch="False" />
             <line number="20" hits="0" branch="False" />
-            <line number="23" hits="0" branch="False" />
+            <line number="21" hits="0" branch="False" />
             <line number="24" hits="0" branch="False" />
             <line number="25" hits="0" branch="False" />
             <line number="26" hits="0" branch="False" />
@@ -1007,27 +1007,29 @@
             <line number="30" hits="0" branch="False" />
             <line number="31" hits="0" branch="False" />
             <line number="32" hits="0" branch="False" />
+            <line number="33" hits="0" branch="False" />
             <line number="34" hits="0" branch="False" />
-            <line number="36" hits="0" branch="True" condition-coverage="0% (0/2)">
+            <line number="35" hits="0" branch="False" />
+            <line number="37" hits="0" branch="True" condition-coverage="0% (0/2)">
               <conditions>
-                <condition number="114" type="jump" coverage="0%" />
+                <condition number="126" type="jump" coverage="0%" />
               </conditions>
             </line>
-            <line number="37" hits="0" branch="False" />
             <line number="38" hits="0" branch="False" />
             <line number="39" hits="0" branch="False" />
             <line number="40" hits="0" branch="False" />
-            <line number="42" hits="0" branch="False" />
+            <line number="41" hits="0" branch="False" />
             <line number="43" hits="0" branch="False" />
-            <line number="46" hits="0" branch="False" />
+            <line number="44" hits="0" branch="False" />
             <line number="47" hits="0" branch="False" />
             <line number="48" hits="0" branch="False" />
-            <line number="50" hits="0" branch="True" condition-coverage="0% (0/2)">
+            <line number="49" hits="0" branch="False" />
+            <line number="51" hits="0" branch="True" condition-coverage="0% (0/2)">
               <conditions>
                 <condition number="48" type="jump" coverage="0%" />
               </conditions>
             </line>
-            <line number="51" hits="0" branch="False" />
+            <line number="52" hits="0" branch="False" />
           </lines>
         </class>
         <class name="Cryptie.Client.Startup.App" filename="Cryptie.Client\Startup\App.axaml" line-rate="0" branch-rate="0" complexity="4">
@@ -2156,22 +2158,42 @@
           <methods>
             <method name="!XamlIlPopulate" signature="(System.IServiceProvider,Cryptie.Client.Features.Messages.Views.SettingsView)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
-                <line number="1" hits="0" branch="True" condition-coverage="0% (0/2)">
+                <line number="3" hits="0" branch="True" condition-coverage="0% (0/2)">
                   <conditions>
-                    <condition number="76" type="jump" coverage="0%" />
+                    <condition number="779" type="jump" coverage="0%" />
                   </conditions>
                 </line>
-                <line number="6" hits="0" branch="False" />
+                <line number="12" hits="0" branch="False" />
+                <line number="13" hits="0" branch="False" />
+                <line number="14" hits="0" branch="False" />
+                <line number="15" hits="0" branch="False" />
+                <line number="18" hits="0" branch="False" />
+                <line number="19" hits="0" branch="False" />
+                <line number="20" hits="0" branch="False" />
+                <line number="21" hits="0" branch="False" />
+                <line number="22" hits="0" branch="False" />
+                <line number="23" hits="0" branch="False" />
+                <line number="24" hits="0" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="1" hits="0" branch="True" condition-coverage="0% (0/2)">
+            <line number="3" hits="0" branch="True" condition-coverage="0% (0/2)">
               <conditions>
-                <condition number="76" type="jump" coverage="0%" />
+                <condition number="779" type="jump" coverage="0%" />
               </conditions>
             </line>
-            <line number="6" hits="0" branch="False" />
+            <line number="12" hits="0" branch="False" />
+            <line number="13" hits="0" branch="False" />
+            <line number="14" hits="0" branch="False" />
+            <line number="15" hits="0" branch="False" />
+            <line number="18" hits="0" branch="False" />
+            <line number="19" hits="0" branch="False" />
+            <line number="20" hits="0" branch="False" />
+            <line number="21" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="23" hits="0" branch="False" />
+            <line number="24" hits="0" branch="False" />
           </lines>
         </class>
         <class name="Cryptie.Client.Features.Messages.Views.SettingsView" filename="Cryptie.Client\Features\Messages\Views\SettingsView.axaml.cs" line-rate="0" branch-rate="1" complexity="1">
@@ -2394,6 +2416,298 @@
             <line number="11" hits="0" branch="False" />
           </lines>
         </class>
+        <class name="Cryptie.Client.Features.Messages.Services.MessagesService" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="0" complexity="6">
+          <methods>
+            <method name="get_groupJoined" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="12" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="get_groupMessages" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="13" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="ConnectToHub" signature="(Cryptie.Common.Entities.User.User)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="16" hits="0" branch="False" />
+                <line number="17" hits="0" branch="False" />
+                <line number="18" hits="0" branch="False" />
+                <line number="19" hits="0" branch="False" />
+                <line number="20" hits="0" branch="False" />
+                <line number="21" hits="0" branch="False" />
+                <line number="22" hits="0" branch="False" />
+                <line number="23" hits="0" branch="False" />
+                <line number="24" hits="0" branch="False" />
+                <line number="25" hits="0" branch="False" />
+                <line number="26" hits="0" branch="False" />
+                <line number="27" hits="0" branch="False" />
+                <line number="29" hits="0" branch="False" />
+                <line number="31" hits="0" branch="False" />
+                <line number="32" hits="0" branch="False" />
+                <line number="34" hits="0" branch="False" />
+                <line number="35" hits="0" branch="False" />
+                <line number="37" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="246" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="38" hits="0" branch="False" />
+                <line number="39" hits="0" branch="False" />
+                <line number="40" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="SendMessageToGroup" signature="(System.String,System.Guid)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="43" hits="0" branch="False" />
+                <line number="44" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="12" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="45" hits="0" branch="False" />
+                <line number="47" hits="0" branch="False" />
+                <line number="48" hits="0" branch="False" />
+                <line number="49" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="12" hits="0" branch="False" />
+            <line number="13" hits="0" branch="False" />
+            <line number="16" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="18" hits="0" branch="False" />
+            <line number="19" hits="0" branch="False" />
+            <line number="20" hits="0" branch="False" />
+            <line number="21" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="23" hits="0" branch="False" />
+            <line number="24" hits="0" branch="False" />
+            <line number="25" hits="0" branch="False" />
+            <line number="26" hits="0" branch="False" />
+            <line number="27" hits="0" branch="False" />
+            <line number="29" hits="0" branch="False" />
+            <line number="31" hits="0" branch="False" />
+            <line number="32" hits="0" branch="False" />
+            <line number="34" hits="0" branch="False" />
+            <line number="35" hits="0" branch="False" />
+            <line number="37" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="246" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="38" hits="0" branch="False" />
+            <line number="39" hits="0" branch="False" />
+            <line number="40" hits="0" branch="False" />
+            <line number="43" hits="0" branch="False" />
+            <line number="44" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="12" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="45" hits="0" branch="False" />
+            <line number="47" hits="0" branch="False" />
+            <line number="48" hits="0" branch="False" />
+            <line number="49" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="Cryptie.Client.Features.Messages.Services.SignalRMessage" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="54" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Message" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="55" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.String)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="52" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="54" hits="0" branch="False" />
+            <line number="55" hits="0" branch="False" />
+            <line number="52" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="Cryptie.Client.Features.Messages.Services.SignalRJoined" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="60" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="get_User" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="61" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Guid,System.Guid)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="58" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="60" hits="0" branch="False" />
+            <line number="61" hits="0" branch="False" />
+            <line number="58" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="Cryptie.Client.Features.Messages.Services.ThemeService" filename="Cryptie.Client\Features\Messages\Services\ThemeService.cs" line-rate="0" branch-rate="0" complexity="14">
+          <methods>
+            <method name="get_AvailableThemes" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="44" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="get_CurrentTheme" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="48" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="set_CurrentTheme" signature="(System.String)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="50" hits="0" branch="False" />
+                <line number="51" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="20" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="52" hits="0" branch="False" />
+                <line number="53" hits="0" branch="False" />
+                <line number="54" hits="0" branch="False" />
+                <line number="55" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="ApplyTheme" signature="(System.String)" line-rate="0" branch-rate="0" complexity="4">
+              <lines>
+                <line number="59" hits="0" branch="False" />
+                <line number="60" hits="0" branch="True" condition-coverage="0% (0/4)">
+                  <conditions>
+                    <condition number="22" type="jump" coverage="0%" />
+                    <condition number="35" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="61" hits="0" branch="False" />
+                <line number="62" hits="0" branch="False" />
+                <line number="63" hits="0" branch="False" />
+                <line number="64" hits="0" branch="False" />
+                <line number="65" hits="0" branch="False" />
+                <line number="66" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Save" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="69" hits="0" branch="False" />
+                <line number="70" hits="0" branch="False" />
+                <line number="71" hits="0" branch="False" />
+                <line number="72" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="()" line-rate="0" branch-rate="0" complexity="4">
+              <lines>
+                <line number="24" hits="0" branch="False" />
+                <line number="25" hits="0" branch="False" />
+                <line number="26" hits="0" branch="False" />
+                <line number="27" hits="0" branch="False" />
+                <line number="28" hits="0" branch="False" />
+                <line number="29" hits="0" branch="False" />
+                <line number="31" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="112" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="32" hits="0" branch="False" />
+                <line number="33" hits="0" branch="False" />
+                <line number="34" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="140" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="35" hits="0" branch="False" />
+                <line number="37" hits="0" branch="False" />
+                <line number="38" hits="0" branch="False" />
+                <line number="39" hits="0" branch="False" />
+                <line number="41" hits="0" branch="False" />
+                <line number="42" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".cctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="0" branch="False" />
+                <line number="17" hits="0" branch="False" />
+                <line number="18" hits="0" branch="False" />
+                <line number="19" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="44" hits="0" branch="False" />
+            <line number="48" hits="0" branch="False" />
+            <line number="50" hits="0" branch="False" />
+            <line number="51" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="20" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="52" hits="0" branch="False" />
+            <line number="53" hits="0" branch="False" />
+            <line number="54" hits="0" branch="False" />
+            <line number="55" hits="0" branch="False" />
+            <line number="59" hits="0" branch="False" />
+            <line number="60" hits="0" branch="True" condition-coverage="0% (0/4)">
+              <conditions>
+                <condition number="22" type="jump" coverage="0%" />
+                <condition number="35" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="61" hits="0" branch="False" />
+            <line number="62" hits="0" branch="False" />
+            <line number="63" hits="0" branch="False" />
+            <line number="64" hits="0" branch="False" />
+            <line number="65" hits="0" branch="False" />
+            <line number="66" hits="0" branch="False" />
+            <line number="69" hits="0" branch="False" />
+            <line number="70" hits="0" branch="False" />
+            <line number="71" hits="0" branch="False" />
+            <line number="72" hits="0" branch="False" />
+            <line number="24" hits="0" branch="False" />
+            <line number="25" hits="0" branch="False" />
+            <line number="26" hits="0" branch="False" />
+            <line number="27" hits="0" branch="False" />
+            <line number="28" hits="0" branch="False" />
+            <line number="29" hits="0" branch="False" />
+            <line number="31" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="112" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="32" hits="0" branch="False" />
+            <line number="33" hits="0" branch="False" />
+            <line number="34" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="140" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="35" hits="0" branch="False" />
+            <line number="37" hits="0" branch="False" />
+            <line number="38" hits="0" branch="False" />
+            <line number="39" hits="0" branch="False" />
+            <line number="41" hits="0" branch="False" />
+            <line number="42" hits="0" branch="False" />
+            <line number="16" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="18" hits="0" branch="False" />
+            <line number="19" hits="0" branch="False" />
+          </lines>
+        </class>
         <class name="Cryptie.Client.Features.Messages.ViewModels.AccountViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\AccountViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
           <methods>
             <method name=".ctor" signature="(ReactiveUI.IScreen)" line-rate="0" branch-rate="1" complexity="1">
@@ -2538,16 +2852,62 @@
             <line number="30" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.ViewModels.SettingsViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\SettingsViewModel.cs" line-rate="0" branch-rate="1" complexity="1">
+        <class name="Cryptie.Client.Features.Messages.ViewModels.SettingsViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\SettingsViewModel.cs" line-rate="0" branch-rate="0" complexity="5">
           <methods>
-            <method name=".ctor" signature="(ReactiveUI.IScreen)" line-rate="0" branch-rate="1" complexity="1">
+            <method name="get_AvailableThemes" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="6" hits="0" branch="False" />
+                <line number="21" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="get_SelectedTheme" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="25" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="set_SelectedTheme" signature="(System.String)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="27" hits="0" branch="False" />
+                <line number="28" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="15" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="29" hits="0" branch="False" />
+                <line number="31" hits="0" branch="False" />
+                <line number="34" hits="0" branch="False" />
+                <line number="35" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(ReactiveUI.IScreen,Cryptie.Client.Features.Messages.ViewModels.IThemeService)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="14" hits="0" branch="False" />
+                <line number="15" hits="0" branch="False" />
+                <line number="16" hits="0" branch="False" />
+                <line number="17" hits="0" branch="False" />
+                <line number="18" hits="0" branch="False" />
+                <line number="19" hits="0" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="6" hits="0" branch="False" />
+            <line number="21" hits="0" branch="False" />
+            <line number="25" hits="0" branch="False" />
+            <line number="27" hits="0" branch="False" />
+            <line number="28" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="15" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="29" hits="0" branch="False" />
+            <line number="31" hits="0" branch="False" />
+            <line number="34" hits="0" branch="False" />
+            <line number="35" hits="0" branch="False" />
+            <line number="14" hits="0" branch="False" />
+            <line number="15" hits="0" branch="False" />
+            <line number="16" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="18" hits="0" branch="False" />
+            <line number="19" hits="0" branch="False" />
           </lines>
         </class>
         <class name="Cryptie.Client.Features.Messages.ViewModels.SplitViewMenuViewModel" filename="Cryptie.Client\Features\Messages\ViewModels\SplitViewMenuViewModel.cs" line-rate="0" branch-rate="0" complexity="23">
@@ -2848,150 +3208,6 @@
             <line number="116" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="Cryptie.Client.Features.Messages.Services.MessagesService" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="0" complexity="6">
-          <methods>
-            <method name="get_groupJoined" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="12" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="get_groupMessages" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="13" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="ConnectToHub" signature="(Cryptie.Common.Entities.User.User)" line-rate="0" branch-rate="0" complexity="2">
-              <lines>
-                <line number="16" hits="0" branch="False" />
-                <line number="17" hits="0" branch="False" />
-                <line number="18" hits="0" branch="False" />
-                <line number="19" hits="0" branch="False" />
-                <line number="20" hits="0" branch="False" />
-                <line number="21" hits="0" branch="False" />
-                <line number="22" hits="0" branch="False" />
-                <line number="23" hits="0" branch="False" />
-                <line number="24" hits="0" branch="False" />
-                <line number="25" hits="0" branch="False" />
-                <line number="26" hits="0" branch="False" />
-                <line number="27" hits="0" branch="False" />
-                <line number="29" hits="0" branch="False" />
-                <line number="31" hits="0" branch="False" />
-                <line number="32" hits="0" branch="False" />
-                <line number="34" hits="0" branch="False" />
-                <line number="35" hits="0" branch="False" />
-                <line number="37" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="246" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="38" hits="0" branch="False" />
-                <line number="39" hits="0" branch="False" />
-                <line number="40" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="SendMessageToGroup" signature="(System.String,System.Guid)" line-rate="0" branch-rate="0" complexity="2">
-              <lines>
-                <line number="43" hits="0" branch="False" />
-                <line number="44" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="12" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="45" hits="0" branch="False" />
-                <line number="47" hits="0" branch="False" />
-                <line number="48" hits="0" branch="False" />
-                <line number="49" hits="0" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="12" hits="0" branch="False" />
-            <line number="13" hits="0" branch="False" />
-            <line number="16" hits="0" branch="False" />
-            <line number="17" hits="0" branch="False" />
-            <line number="18" hits="0" branch="False" />
-            <line number="19" hits="0" branch="False" />
-            <line number="20" hits="0" branch="False" />
-            <line number="21" hits="0" branch="False" />
-            <line number="22" hits="0" branch="False" />
-            <line number="23" hits="0" branch="False" />
-            <line number="24" hits="0" branch="False" />
-            <line number="25" hits="0" branch="False" />
-            <line number="26" hits="0" branch="False" />
-            <line number="27" hits="0" branch="False" />
-            <line number="29" hits="0" branch="False" />
-            <line number="31" hits="0" branch="False" />
-            <line number="32" hits="0" branch="False" />
-            <line number="34" hits="0" branch="False" />
-            <line number="35" hits="0" branch="False" />
-            <line number="37" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="246" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="38" hits="0" branch="False" />
-            <line number="39" hits="0" branch="False" />
-            <line number="40" hits="0" branch="False" />
-            <line number="43" hits="0" branch="False" />
-            <line number="44" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="12" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="45" hits="0" branch="False" />
-            <line number="47" hits="0" branch="False" />
-            <line number="48" hits="0" branch="False" />
-            <line number="49" hits="0" branch="False" />
-          </lines>
-        </class>
-        <class name="Cryptie.Client.Features.Messages.Services.SignalRMessage" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="1" complexity="3">
-          <methods>
-            <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="54" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="get_Message" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="55" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(System.Guid,System.String)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="52" hits="0" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="54" hits="0" branch="False" />
-            <line number="55" hits="0" branch="False" />
-            <line number="52" hits="0" branch="False" />
-          </lines>
-        </class>
-        <class name="Cryptie.Client.Features.Messages.Services.SignalRJoined" filename="Cryptie.Client\Features\Messages\Services\MessagesService.cs" line-rate="0" branch-rate="1" complexity="3">
-          <methods>
-            <method name="get_Id" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="60" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="get_User" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="61" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(System.Guid,System.Guid)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="58" hits="0" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="60" hits="0" branch="False" />
-            <line number="61" hits="0" branch="False" />
-            <line number="58" hits="0" branch="False" />
-          </lines>
-        </class>
         <class name="Cryptie.Client.Features.Messages.Models.NavigationItem" filename="Cryptie.Client\Features\Messages\Models\NavigationItem.cs" line-rate="0" branch-rate="1" complexity="6">
           <methods>
             <method name="get_FullLabel" signature="()" line-rate="0" branch-rate="1" complexity="1">
@@ -3032,6 +3248,18 @@
             <line number="10" hits="0" branch="False" />
             <line number="11" hits="0" branch="False" />
             <line number="6" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="Cryptie.Client.Features.Messages.Models.SettingsModel" filename="Cryptie.Client\Features\Messages\Models\SettingsModel.cs" line-rate="0" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_SelectedTheme" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="5" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="5" hits="0" branch="False" />
           </lines>
         </class>
         <class name="Cryptie.Client.Features.Messages.Converters.AccountGlyphVisibilityConverter" filename="Cryptie.Client\Features\Messages\Converters\AccountGlyphVisibilityConverter.cs" line-rate="0" branch-rate="0" complexity="6">
@@ -5587,11 +5815,12 @@
                 <line number="89" hits="0" branch="False" />
                 <line number="90" hits="0" branch="False" />
                 <line number="91" hits="0" branch="False" />
-                <line number="93" hits="0" branch="False" />
-                <line number="95" hits="0" branch="False" />
+                <line number="92" hits="0" branch="False" />
+                <line number="94" hits="0" branch="False" />
                 <line number="96" hits="0" branch="False" />
                 <line number="97" hits="0" branch="False" />
                 <line number="98" hits="0" branch="False" />
+                <line number="99" hits="0" branch="False" />
               </lines>
             </method>
           </methods>
@@ -5643,11 +5872,12 @@
             <line number="89" hits="0" branch="False" />
             <line number="90" hits="0" branch="False" />
             <line number="91" hits="0" branch="False" />
-            <line number="93" hits="0" branch="False" />
-            <line number="95" hits="0" branch="False" />
+            <line number="92" hits="0" branch="False" />
+            <line number="94" hits="0" branch="False" />
             <line number="96" hits="0" branch="False" />
             <line number="97" hits="0" branch="False" />
             <line number="98" hits="0" branch="False" />
+            <line number="99" hits="0" branch="False" />
           </lines>
         </class>
       </classes>
