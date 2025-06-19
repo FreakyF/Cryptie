@@ -73,8 +73,10 @@ public static class ServiceCollectionExtensions
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<TotpCodeViewModel>();
         services.AddTransient<TotpQrSetupViewModel>();
+        services.AddTransient<DashboardViewModel>();
         services.AddTransient<SplitViewMenuViewModel>();
         services.AddTransient<ChatsViewModel>();
+        services.AddTransient<GroupsListViewModel>();
         services.AddTransient<AccountViewModel>();
         services.AddTransient<SettingsViewModel>();
 
@@ -89,7 +91,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
 
         services.AddSingleton<MessagesService>();
-        services.AddTransient<DashboardViewModel>();
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

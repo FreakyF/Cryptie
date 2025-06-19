@@ -3,9 +3,7 @@ using ReactiveUI;
 
 namespace Cryptie.Client.Features.Messages.ViewModels;
 
-public class ChatsViewModel : RoutableViewModelBase
+public class ChatsViewModel(IScreen hostScreen) : RoutableViewModelBase(hostScreen)
 {
-    public ChatsViewModel(IScreen hostScreen) : base(hostScreen)
-    {
-    }
+    public GroupsListViewModel GroupsPanel { get; } = new(hostScreen);
 }
