@@ -48,14 +48,21 @@
 
             <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center"
-                                Spacing="4">
-                        <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                    <Grid ColumnDefinitions="Auto,*"
+                          VerticalAlignment="Center"
+                          Margin="0">
+                        <TextBlock Grid.Column="0"
+                                   FontFamily="{StaticResource PhosphorRegular}"
                                    Text="user-circle"
-                                   FontSize="20" />
-                        <TextBlock Text="{Binding}" FontSize="16" />
-                    </StackPanel>
+                                   FontSize="20"
+                                   Margin="0,0,4,0" />
+
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding}"
+                                   FontSize="16"
+                                   TextWrapping="NoWrap"
+                                   TextTrimming="CharacterEllipsis" />
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

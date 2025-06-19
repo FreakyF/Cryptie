@@ -62,6 +62,8 @@
                            Text="{Binding FullLabel}"
                            FontSize="16"
                            VerticalAlignment="Center"
+                           TextWrapping="NoWrap"
+                           TextTrimming="CharacterEllipsis"
                            IsVisible="{Binding IsPaneOpen,
                                RelativeSource={RelativeSource AncestorType=SplitView}}" />
             </Grid>
