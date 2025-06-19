@@ -5,9 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Messages.ViewModels"
+             xmlns:converters="clr-namespace:Cryptie.Client.Features.Messages.Converters"
              mc:Ignorable="d"
              x:Class="Cryptie.Client.Features.Messages.Views.GroupsListView"
              x:DataType="viewModels:GroupsListViewModel">
+    <UserControl.Resources>
+        <converters:InitialConverter x:Key="InitialConverter" />
+    </UserControl.Resources>
     <Grid RowDefinitions="Auto,*">
         <Grid Row="0"
               VerticalAlignment="Center"
@@ -51,15 +55,22 @@
                     <Grid ColumnDefinitions="Auto,*"
                           VerticalAlignment="Center"
                           Margin="0">
-                        <TextBlock Grid.Column="0"
-                                   FontFamily="{StaticResource PhosphorRegular}"
-                                   Text="user-circle"
-                                   FontSize="20"
-                                   Margin="0,0,4,0" />
+
+                        <Grid Grid.Column="0"
+                              Width="32" Height="32"
+                              Margin="0,0,8,0">
+                            <Ellipse Fill="#54A9FF" />
+                            <TextBlock Text="{Binding Converter={StaticResource InitialConverter}}"
+                                       Foreground="White"
+                                       FontSize="16"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                        </Grid>
 
                         <TextBlock Grid.Column="1"
                                    Text="{Binding}"
                                    FontSize="16"
+                                   VerticalAlignment="Center"
                                    TextWrapping="NoWrap"
                                    TextTrimming="CharacterEllipsis" />
                     </Grid>
