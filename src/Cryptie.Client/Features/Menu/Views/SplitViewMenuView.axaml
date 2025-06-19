@@ -3,6 +3,7 @@
              xmlns:conv="clr-namespace:Cryptie.Client.Features.Messages.Converters"
              xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Menu.ViewModels"
              xmlns:models1="clr-namespace:Cryptie.Client.Features.Menu.Models"
+             xmlns:converters="clr-namespace:Cryptie.Client.Core.Converters"
              x:Class="Cryptie.Client.Features.Menu.Views.SplitViewMenuView"
              x:DataType="viewModels:SplitViewMenuViewModel">
 
@@ -12,7 +13,7 @@
         <conv:BottomPaneMarginConverter x:Key="PaneMargin" />
         <conv:BoolToInvertConverter x:Key="InvertBool" />
 
-        <conv:InitialConverter x:Key="InitialConverter" />
+        <converters:InitialConverter x:Key="InitialConverter" />
         <conv:AccountInitialVisibilityConverter x:Key="AccountInitialVisible" />
         <conv:AccountGlyphVisibilityConverter x:Key="AccountGlyphVisible" />
 

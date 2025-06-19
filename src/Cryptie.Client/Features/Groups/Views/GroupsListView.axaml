@@ -4,13 +4,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:converters="clr-namespace:Cryptie.Client.Features.Messages.Converters"
              xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Groups.ViewModels"
+             xmlns:converters1="clr-namespace:Cryptie.Client.Core.Converters"
              mc:Ignorable="d"
              x:Class="Cryptie.Client.Features.Groups.Views.GroupsListView"
              x:DataType="viewModels1:GroupsListViewModel">
     <UserControl.Resources>
-        <converters:InitialConverter x:Key="InitialConverter" />
+        <converters1:InitialConverter x:Key="InitialConverter" />
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,*">
         <Grid Row="0"
