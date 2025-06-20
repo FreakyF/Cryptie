@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Threading.RateLimiting;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
@@ -29,16 +30,45 @@ public class Program
 
         builder.Services.AddRateLimiter(options =>
         {
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            options.OnRejected = async (context, ct) =>
+            {
+                if (context.Lease.TryGetMetadata(MetadataName.RetryAfter, out var retry))
+                {
+                    context.HttpContext.Response.Headers.RetryAfter =
+                        ((int)retry.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+                }
+
+                await context.HttpContext.Response.WriteAsync(
+                    "Too many requests—please try again later.", ct);
+            };
+
             options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
-                RateLimitPartition.GetFixedWindowLimiter(
-                    context.Request.Headers.Host.ToString(),
-                    _ => new FixedWindowRateLimiterOptions
+            {
+                string userKey;
+                if (context.User.Identity?.IsAuthenticated == true)
+                {
+                    userKey = context.User.Identity.Name!;
+                }
+                else
+                {
+                    userKey = context.Connection.RemoteIpAddress?.ToString() ?? "anonymous";
+                }
+
+                return RateLimitPartition.GetTokenBucketLimiter(
+                    userKey,
+                    _ => new TokenBucketRateLimiterOptions
                     {
-                        PermitLimit = 100,
-                        Window = TimeSpan.FromMinutes(1),
-                        QueueLimit = 0
-                    }));
+                        TokenLimit = 60,
+                        TokensPerPeriod = 1,
+                        ReplenishmentPeriod = TimeSpan.FromSeconds(1),
+                        AutoReplenishment = true,
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 5
+                    });
+            });
         });
+
 
         // Add services to the container.
         builder.Services.AddDbContext<IAppDbContext, AppDbContext>();
