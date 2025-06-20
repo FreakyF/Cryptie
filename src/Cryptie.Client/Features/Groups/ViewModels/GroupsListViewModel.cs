@@ -7,7 +7,9 @@ using System.Threading;
 using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Services;
+using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
+using Cryptie.Client.Features.Authentication.Services;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
 
@@ -20,7 +22,8 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
     private bool _disposed;
 
     public GroupsListViewModel(IScreen hostScreen, IConnectionMonitor connectionMonitor,
-        IOptions<ClientOptions> options) : base(hostScreen)
+        IOptions<ClientOptions> options, IFriendsService friendsService,
+        IKeychainManagerService keychainManager) : base(hostScreen)
     {
         IconUri = options.Value.FontUri;
         AddFriendCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -28,7 +31,7 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
             _addFriendCts = new CancellationTokenSource();
             try
             {
-                var vm = new AddFriendViewModel(hostScreen);
+                var vm = new AddFriendViewModel(hostScreen, friendsService, keychainManager);
                 await ShowAddFriend.Handle((vm, _addFriendCts.Token));
             }
             finally
