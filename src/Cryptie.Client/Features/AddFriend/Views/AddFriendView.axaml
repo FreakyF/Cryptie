@@ -1,8 +1,50 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Features.AddFriend.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Cryptie.Client.Features.AddFriend.Views.AddFriendView">
-    Welcome to Avalonia!
+             x:Class="Cryptie.Client.Features.AddFriend.Views.AddFriendView"
+             x:DataType="viewModels:AddFriendViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <TextBlock Grid.Row="0"
+                   Theme="{StaticResource TitleTextBlock}"
+                   Classes="H4"
+                   HorizontalAlignment="Center"
+                   Margin="0,16,0,0">
+            Add friend
+        </TextBlock>
+
+        <StackPanel Grid.Row="1"
+                    Width="300"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="4">
+            <Grid Height="40">
+                <TextBox Name="FriendInput"
+                         Watermark="Username"
+                         Padding="8,0,40,0"
+                         VerticalAlignment="Center" />
+                <Button Name="SendButton"
+                        Width="36"
+                        Height="32"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,0,0"
+                        Focusable="False">
+                    <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                               Text="&#xE4D0;"
+                               FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Button>
+            </Grid>
+            <TextBlock x:Name="ErrorMessageTextBlock"
+                       Classes="Danger"
+                       HorizontalAlignment="Center"
+                       Text="{Binding ErrorMessage, Mode=TwoWay}" />
+        </StackPanel>
+    </Grid>
 </UserControl>

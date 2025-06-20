@@ -4,9 +4,11 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
+using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
+using Microsoft.Extensions.Options;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Groups.ViewModels;
@@ -17,8 +19,10 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
     private CancellationTokenSource? _addFriendCts;
     private bool _disposed;
 
-    public GroupsListViewModel(IScreen hostScreen, IConnectionMonitor connectionMonitor) : base(hostScreen)
+    public GroupsListViewModel(IScreen hostScreen, IConnectionMonitor connectionMonitor,
+        IOptions<ClientOptions> options) : base(hostScreen)
     {
+        IconUri = options.Value.FontUri;
         AddFriendCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             _addFriendCts = new CancellationTokenSource();
@@ -42,6 +46,8 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
 
         connectionMonitor.Start();
     }
+
+    public string IconUri { get; }
 
     public ObservableCollection<string> Friends { get; } =
     [
