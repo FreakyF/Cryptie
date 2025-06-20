@@ -2,5 +2,5 @@
 
 public class SettingsModel
 {
-    public string SelectedTheme { get; set; } = "System";
+    public string SelectedTheme { get; set; } = "Default";
 }
