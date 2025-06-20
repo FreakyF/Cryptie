@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Avalonia.ReactiveUI;
 using Cryptie.Client.Core.Factories;
 using Cryptie.Client.Core.Navigation;
@@ -72,19 +73,31 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
             .Subscribe(_ => OnConnectionRestored());
     }
 
-    private async void OnConnectionRestored()
+    private void OnConnectionRestored()
     {
         ThrowIfDisposed();
 
-        if (!_isShowingStatus) return;
-        _isShowingStatus = false;
+        _ = HandleConnectionRestoredAsync();
+    }
 
-        _statusVmIsLoadingSub?.Dispose();
-        _statusVmIsLoadingSub = null;
+    private async Task HandleConnectionRestoredAsync()
+    {
+        try
+        {
+            if (!_isShowingStatus) return;
+            _isShowingStatus = false;
 
-        Router.NavigateBack.Execute();
+            _statusVmIsLoadingSub?.Dispose();
+            _statusVmIsLoadingSub = null;
 
-        await _shellCoordinator.StartAsync();
+            Router.NavigateBack.Execute();
+
+            await _shellCoordinator.StartAsync();
+        }
+        catch (Exception)
+        {
+            // Swallow exception: do nothing
+        }
     }
 
     private void Stop()

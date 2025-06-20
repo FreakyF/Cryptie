@@ -1,5 +1,6 @@
 ﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
 <!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<!-- ReSharper disable Xaml.RedundantResource -->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,10 +9,21 @@
              xmlns:converters1="clr-namespace:Cryptie.Client.Core.Converters"
              mc:Ignorable="d"
              x:Class="Cryptie.Client.Features.Groups.Views.GroupsListView"
-             x:DataType="viewModels1:GroupsListViewModel">
+             x:DataType="viewModels1:GroupsListViewModel"
+             Background="{DynamicResource GroupsListBackground}">
     <UserControl.Resources>
-        <converters1:InitialConverter x:Key="InitialConverter" />
-        <converters1:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="GroupsListBackground" Color="#F9F9F9" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="GroupsListBackground" Color="#18181C" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            <converters1:InitialConverter x:Key="InitialConverter" />
+            <converters1:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid RowDefinitions="Auto,*">
         <Grid Row="0"
@@ -24,6 +36,7 @@
                        VerticalAlignment="Center"
                        Margin="5,0,0,0" />
             <Button Grid.Column="1"
+                    Command="{Binding AddFriendCommand}"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Width="48" Height="48"

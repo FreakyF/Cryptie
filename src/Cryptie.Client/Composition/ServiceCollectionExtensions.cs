@@ -7,6 +7,7 @@ using Cryptie.Client.Core.Mapping;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Account.ViewModels;
+using Cryptie.Client.Features.AddFriend.ViewModels;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Authentication.ViewModels;
@@ -85,6 +86,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<GroupsListViewModel>();
         services.AddTransient<AccountViewModel>();
         services.AddTransient<SettingsViewModel>();
+        services.AddTransient<AddFriendViewModel>();
 
 
         services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();

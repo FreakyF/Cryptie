@@ -1,11 +1,48 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
 using Cryptie.Client.Core.Base;
+using Cryptie.Client.Core.Services;
+using Cryptie.Client.Features.AddFriend.ViewModels;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Groups.ViewModels;
 
-public class GroupsListViewModel(IScreen hostScreen) : RoutableViewModelBase(hostScreen)
+public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
 {
+    private readonly CompositeDisposable _disposables = new();
+    private CancellationTokenSource? _addFriendCts;
+    private bool _disposed;
+
+    public GroupsListViewModel(IScreen hostScreen, IConnectionMonitor connectionMonitor) : base(hostScreen)
+    {
+        AddFriendCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            _addFriendCts = new CancellationTokenSource();
+            try
+            {
+                var vm = new AddFriendViewModel(hostScreen);
+                await ShowAddFriend.Handle((vm, _addFriendCts.Token));
+            }
+            finally
+            {
+                _addFriendCts?.Dispose();
+                _addFriendCts = null;
+            }
+        });
+
+        connectionMonitor.ConnectionStatusChanged
+            .Where(isConnected => !isConnected)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(_ => { _addFriendCts?.Cancel(); })
+            .DisposeWith(_disposables);
+
+        connectionMonitor.Start();
+    }
+
     public ObservableCollection<string> Friends { get; } =
     [
         "user4.dev", // idx=0  → #F44336 (red)
@@ -25,4 +62,27 @@ public class GroupsListViewModel(IScreen hostScreen) : RoutableViewModelBase(hos
         "user2.dev", // idx=14 → #FF9800 (orange)
         "user3.dev" // idx=15 → #FF5722 (deep orange)
     ];
+
+    public ReactiveCommand<Unit, Unit> AddFriendCommand { get; }
+
+    public Interaction<(AddFriendViewModel, CancellationToken), Unit> ShowAddFriend { get; } = new();
+
+    public void Dispose()
+    {
+        Dispose(true);
+    }
+
+    private void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+
+        if (disposing)
+        {
+            _disposables.Dispose();
+            _addFriendCts?.Dispose();
+            _addFriendCts = null;
+        }
+
+        _disposed = true;
+    }
 }

@@ -1,4 +1,5 @@
-﻿<UserControl
+﻿<!-- ReSharper disable Xaml.RedundantResource -->
+<UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,8 +10,20 @@
     mc:Ignorable="d"
     x:Class="Cryptie.Client.Features.Chats.Views.ChatsView"
     x:DataType="viewModels1:ChatsViewModel"
-    d:DataContext="{d:DesignInstance Type=viewModels1:ChatsViewModel, IsDesignTimeCreatable=True}">
-
+    d:DataContext="{d:DesignInstance Type=viewModels1:ChatsViewModel, IsDesignTimeCreatable=True}"
+    Background="{DynamicResource ChatsViewBackground}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ChatsViewBackground" Color="#FFFFFF" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ChatsViewBackground" Color="#1E1E22" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <UserControl.DataTemplates>
         <DataTemplate DataType="viewModels2:GroupsListViewModel">
             <views1:GroupsListView />

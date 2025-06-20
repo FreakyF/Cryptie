@@ -1,76 +1,89 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+﻿<!-- ReSharper disable Xaml.RedundantResource -->
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:conv="clr-namespace:Cryptie.Client.Features.Messages.Converters"
              xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Menu.ViewModels"
              xmlns:models1="clr-namespace:Cryptie.Client.Features.Menu.Models"
              xmlns:converters="clr-namespace:Cryptie.Client.Core.Converters"
              x:Class="Cryptie.Client.Features.Menu.Views.SplitViewMenuView"
-             x:DataType="viewModels:SplitViewMenuViewModel">
+             x:DataType="viewModels:SplitViewMenuViewModel"
+             Background="{DynamicResource SplitViewMenuBackground}">
 
     <UserControl.Resources>
-        <conv:BoolToDockConverter x:Key="BoolDock" />
-        <conv:BottomToColumnSpanConverter x:Key="ColSpan" />
-        <conv:BottomPaneMarginConverter x:Key="PaneMargin" />
-        <conv:BoolToInvertConverter x:Key="InvertBool" />
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="SplitViewMenuBackground" Color="#EDEDED" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="SplitViewMenuBackground" Color="#0C0C10" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
 
-        <converters:InitialConverter x:Key="InitialConverter" />
-        <converters:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
-        <conv:AccountInitialVisibilityConverter x:Key="AccountInitialVisible" />
-        <conv:AccountGlyphVisibilityConverter x:Key="AccountGlyphVisible" />
+            <conv:BoolToDockConverter x:Key="BoolDock" />
+            <conv:BottomToColumnSpanConverter x:Key="ColSpan" />
+            <conv:BottomPaneMarginConverter x:Key="PaneMargin" />
+            <conv:BoolToInvertConverter x:Key="InvertBool" />
 
+            <converters:InitialConverter x:Key="InitialConverter" />
+            <converters:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
+            <conv:AccountInitialVisibilityConverter x:Key="AccountInitialVisible" />
+            <conv:AccountGlyphVisibilityConverter x:Key="AccountGlyphVisible" />
 
-        <DataTemplate x:Key="NavItemTemplate"
-                      x:DataType="models1:NavigationItem">
-            <Grid Height="48" ColumnDefinitions="48,*">
-                <Grid Grid.Column="0"
-                      Width="48" Height="48"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center">
+            <DataTemplate x:Key="NavItemTemplate"
+                          x:DataType="models1:NavigationItem">
+                <Grid Height="48" ColumnDefinitions="48,*">
+                    <Grid Grid.Column="0"
+                          Width="48" Height="48"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
 
-                    <Ellipse Fill="{Binding Converter={StaticResource InitialBackgroundConverter}}"
-                             Width="20" Height="20">
-                        <Ellipse.IsVisible>
-                            <MultiBinding Converter="{StaticResource AccountInitialVisible}">
-                                <Binding Path="FullLabel" />
-                            </MultiBinding>
-                        </Ellipse.IsVisible>
-                    </Ellipse>
+                        <Ellipse Fill="{Binding Converter={StaticResource InitialBackgroundConverter}}"
+                                 Width="20" Height="20">
+                            <Ellipse.IsVisible>
+                                <MultiBinding Converter="{StaticResource AccountInitialVisible}">
+                                    <Binding Path="FullLabel" />
+                                </MultiBinding>
+                            </Ellipse.IsVisible>
+                        </Ellipse>
 
-                    <TextBlock Text="{Binding FullLabel, Converter={StaticResource InitialConverter}}"
-                               FontSize="12"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center">
-                        <TextBlock.IsVisible>
-                            <MultiBinding Converter="{StaticResource AccountInitialVisible}">
-                                <Binding Path="FullLabel" />
-                            </MultiBinding>
-                        </TextBlock.IsVisible>
-                    </TextBlock>
+                        <TextBlock Text="{Binding FullLabel, Converter={StaticResource InitialConverter}}"
+                                   FontSize="12"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                            <TextBlock.IsVisible>
+                                <MultiBinding Converter="{StaticResource AccountInitialVisible}">
+                                    <Binding Path="FullLabel" />
+                                </MultiBinding>
+                            </TextBlock.IsVisible>
+                        </TextBlock>
 
-                    <TextBlock FontFamily="{StaticResource PhosphorRegular}"
-                               Text="{Binding IconGlyph}"
-                               FontSize="20"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center">
-                        <TextBlock.IsVisible>
-                            <MultiBinding Converter="{StaticResource AccountGlyphVisible}">
-                                <Binding Path="FullLabel" />
-                            </MultiBinding>
-                        </TextBlock.IsVisible>
-                    </TextBlock>
+                        <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                                   Text="{Binding IconGlyph}"
+                                   FontSize="20"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
+                            <TextBlock.IsVisible>
+                                <MultiBinding Converter="{StaticResource AccountGlyphVisible}">
+                                    <Binding Path="FullLabel" />
+                                </MultiBinding>
+                            </TextBlock.IsVisible>
+                        </TextBlock>
+                    </Grid>
+
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding FullLabel}"
+                               FontSize="16"
+                               VerticalAlignment="Center"
+                               TextWrapping="NoWrap"
+                               TextTrimming="CharacterEllipsis"
+                               IsVisible="{Binding IsPaneOpen,
+                         RelativeSource={RelativeSource AncestorType=SplitView}}" />
                 </Grid>
+            </DataTemplate>
 
-                <TextBlock Grid.Column="1"
-                           Text="{Binding FullLabel}"
-                           FontSize="16"
-                           VerticalAlignment="Center"
-                           TextWrapping="NoWrap"
-                           TextTrimming="CharacterEllipsis"
-                           IsVisible="{Binding IsPaneOpen,
-                               RelativeSource={RelativeSource AncestorType=SplitView}}" />
-            </Grid>
-        </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <UserControl.Styles>
