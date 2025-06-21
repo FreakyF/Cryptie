@@ -23,7 +23,7 @@
                     <Grid Width="220"
                           Height="48"
                           HorizontalAlignment="Left">
-                        <TextBox Text="Username"
+                        <TextBox Text="{Binding Username, Mode=TwoWay}"
                                  Padding="5,0,54,0"
                                  HorizontalAlignment="Stretch" />
                         <Button Width="50"
