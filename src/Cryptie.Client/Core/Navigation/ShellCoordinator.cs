@@ -67,6 +67,16 @@ public class ShellCoordinator(
         NavigateTo<LoginViewModel>();
     }
 
+    public void ResetAndShowLogin()
+    {
+        var vm = factory.Create<LoginViewModel>(this);
+
+        Router
+            .NavigateAndReset
+            .Execute(vm)
+            .Subscribe();
+    }
+
     public void ShowRegister()
     {
         NavigateTo<RegisterViewModel>();
