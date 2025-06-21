@@ -60,7 +60,7 @@ public class Program
                     _ => new TokenBucketRateLimiterOptions
                     {
                         TokenLimit = 60,
-                        TokensPerPeriod = 1,
+                        TokensPerPeriod = 20,
                         ReplenishmentPeriod = TimeSpan.FromSeconds(1),
                         AutoReplenishment = true,
                         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
