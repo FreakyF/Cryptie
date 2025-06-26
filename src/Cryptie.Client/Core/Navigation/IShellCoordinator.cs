@@ -7,6 +7,7 @@ public interface IShellCoordinator : IScreen
 {
     Task StartAsync();
     void ShowLogin();
+    void ResetAndShowLogin();
     void ShowRegister();
     void ShowQrSetup();
     void ShowTotpCode();

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,8 +14,8 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
 {
     private readonly TimeSpan _interval = interval ?? TimeSpan.FromSeconds(5);
 
-    private readonly IServerStatus _serverStatus = serverStatus
-                                                   ?? throw new ArgumentNullException(nameof(serverStatus));
+    private readonly IServerStatus
+        _serverStatus = serverStatus ?? throw new ArgumentNullException(nameof(serverStatus));
 
     private readonly Subject<bool> _subject = new();
     private CancellationTokenSource? _cts;
@@ -23,15 +25,7 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
 
     public async Task<bool> IsBackendAliveAsync()
     {
-        try
-        {
-            await _serverStatus.GetServerStatusAsync();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+        return await CheckServerAsync(CancellationToken.None);
     }
 
     public void Start(CancellationToken token = default)
@@ -46,16 +40,7 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
             bool? last = null;
             while (!_cts.Token.IsCancellationRequested)
             {
-                bool ok;
-                try
-                {
-                    await _serverStatus.GetServerStatusAsync(_cts.Token);
-                    ok = true;
-                }
-                catch
-                {
-                    ok = false;
-                }
+                var ok = await CheckServerAsync(_cts.Token);
 
                 if (last == null || ok != last.Value)
                     _subject.OnNext(ok);
@@ -68,22 +53,35 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
 
     public void Dispose()
     {
-        if (_disposed)
-            return;
-
+        if (_disposed) return;
         Stop();
         _subject.Dispose();
         _disposed = true;
     }
 
+    private async Task<bool> CheckServerAsync(CancellationToken token)
+    {
+        try
+        {
+            await _serverStatus.GetServerStatusAsync(token);
+            return true;
+        }
+        catch (HttpRequestException httpEx)
+        {
+            return httpEx.StatusCode == HttpStatusCode.TooManyRequests;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     private void Stop()
     {
         if (_cts == null) return;
-
         _cts.Cancel();
         _cts.Dispose();
         _cts = null;
-
         _subject.OnCompleted();
     }
 

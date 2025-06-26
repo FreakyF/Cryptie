@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using Avalonia;
 using Avalonia.Styling;
@@ -11,14 +13,11 @@ namespace Cryptie.Client.Features.Settings.Services;
 internal class ThemeService : IThemeService
 {
     private const string FileName = "settings.json";
-
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        WriteIndented = true
-    };
+    private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     private readonly string _filePath;
     private readonly SettingsModel _model;
+    private readonly Dictionary<string, SettingsModel> _settingsMap;
 
     public ThemeService()
     {
@@ -30,17 +29,32 @@ internal class ThemeService : IThemeService
         if (File.Exists(_filePath))
         {
             var json = File.ReadAllText(_filePath);
-            _model = JsonSerializer.Deserialize<SettingsModel>(json, JsonOptions) ?? new SettingsModel();
+            _settingsMap = JsonSerializer.Deserialize<Dictionary<string, SettingsModel>>(json, JsonOptions)
+                           ?? new Dictionary<string, SettingsModel>();
         }
         else
         {
-            _model = new SettingsModel();
+            _settingsMap = new Dictionary<string, SettingsModel>();
         }
+
+        var username = Environment.UserName;
+        var userHash = ComputeSha256Hash(username);
+
+        if (!_settingsMap.TryGetValue(userHash, out var model))
+        {
+            model = new SettingsModel();
+            _settingsMap[userHash] = model;
+            Save();
+        }
+
+        _model = model;
 
         ApplyTheme(_model.SelectedTheme);
     }
 
-    public IReadOnlyList<string> AvailableThemes { get; } = new List<string> { "System", "Light", "Dark" };
+
+    public IReadOnlyList<string> AvailableThemes { get; }
+        = new List<string> { "Default", "Light", "Dark" };
 
     public string CurrentTheme
     {
@@ -66,7 +80,17 @@ internal class ThemeService : IThemeService
 
     private void Save()
     {
-        var json = JsonSerializer.Serialize(_model, JsonOptions);
+        var json = JsonSerializer.Serialize(_settingsMap, JsonOptions);
         File.WriteAllText(_filePath, json);
+    }
+
+    private static string ComputeSha256Hash(string raw)
+    {
+        var bytes = Encoding.UTF8.GetBytes(raw);
+        var hash = SHA256.HashData(bytes);
+        var sb = new StringBuilder(hash.Length * 2);
+        foreach (var b in hash)
+            sb.Append(b.ToString("x2"));
+        return sb.ToString();
     }
 }

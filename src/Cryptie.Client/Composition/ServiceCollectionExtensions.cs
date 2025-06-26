@@ -7,6 +7,7 @@ using Cryptie.Client.Core.Mapping;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Account.ViewModels;
+using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
@@ -15,6 +16,7 @@ using Cryptie.Client.Features.Chats.ViewModels;
 using Cryptie.Client.Features.Dashboard.Services;
 using Cryptie.Client.Features.Dashboard.ViewModels;
 using Cryptie.Client.Features.Groups.ViewModels;
+using Cryptie.Client.Features.Menu.State;
 using Cryptie.Client.Features.Menu.ViewModels;
 using Cryptie.Client.Features.ServerStatus.Services;
 using Cryptie.Client.Features.ServerStatus.ViewModels;
@@ -62,6 +64,14 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
 
+        services.AddHttpClient<IFriendsService, FriendsService>()
+            .ConfigureHttpClient((sp, client) =>
+            {
+                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+                client.BaseAddress = new Uri(opts.BaseUri);
+            });
+
+
         var cfg = TypeAdapterConfig.GlobalSettings;
         cfg.Scan(Assembly.GetExecutingAssembly());
 
@@ -95,6 +105,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IConnectionMonitor, ConnectionMonitor>();
         services.AddSingleton<IRegistrationState, RegistrationState>();
+        services.AddSingleton<IUserState, UserState>();
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
         services.AddSingleton<IThemeService, ThemeService>();

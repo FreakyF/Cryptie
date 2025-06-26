@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Server", "src\Crypt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Client.Tests", "src\Cryptie.Client.Tests\Cryptie.Client.Tests.csproj", "{6D328EC8-562B-4CB7-8733-98FEC2AF2F81}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CFA628FC-316F-4591-A0F7-C01743397CD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,8 @@ Global
 		{6D328EC8-562B-4CB7-8733-98FEC2AF2F81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{BDDC9AF5-DDA2-4C8A-96E3-0EBADFBAB98E} = {CFA628FC-316F-4591-A0F7-C01743397CD2}
+		{09324F05-BE7E-48E6-9DA6-4078D334686A} = {CFA628FC-316F-4591-A0F7-C01743397CD2}
+		{6D328EC8-562B-4CB7-8733-98FEC2AF2F81} = {CFA628FC-316F-4591-A0F7-C01743397CD2}
 	EndGlobalSection
 EndGlobal

@@ -45,13 +45,34 @@ public sealed class ServerStatusViewModel : RoutableViewModelBase, INotifyProper
 
     private async Task InitializeAsync(CancellationToken ct)
     {
-        await RetryAsync(TimeSpan.FromSeconds(1), 5, ct);
-        await RetryAsync(TimeSpan.FromSeconds(10), 5, ct);
-        await RetryUntilOkAsync(TimeSpan.FromSeconds(30), ct);
+        var firstOk = await TryWithRetries(TimeSpan.FromSeconds(1), 5, ct);
+        if (!firstOk)
+        {
+            await RetryAsync(TimeSpan.FromSeconds(10), 5, ct);
+            await RetryUntilOkAsync(TimeSpan.FromSeconds(30), ct);
+        }
 
         IsLoading = false;
-
         await MonitorLoopAsync(ct);
+    }
+
+    private async Task<bool> TryWithRetries(TimeSpan delay, int maxAttempts, CancellationToken ct)
+    {
+        for (var i = 0; i < maxAttempts; i++)
+        {
+            ct.ThrowIfCancellationRequested();
+            try
+            {
+                await _serverStatus.GetServerStatusAsync(ct);
+                return true;
+            }
+            catch
+            {
+                await Task.Delay(delay, ct);
+            }
+        }
+
+        return false;
     }
 
     private async Task MonitorLoopAsync(CancellationToken ct)

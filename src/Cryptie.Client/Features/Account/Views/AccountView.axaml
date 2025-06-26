@@ -1,8 +1,57 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Cryptie.Client.Features.Account.Views.AccountView">
-    Account
+             xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Account.ViewModels"
+             mc:Ignorable="d"
+             x:Class="Cryptie.Client.Features.Account.Views.AccountView"
+             x:DataType="viewModels1:AccountViewModel">
+
+    <Border Padding="24">
+        <StackPanel Spacing="24">
+
+            <TextBlock Theme="{StaticResource TitleTextBlock}"
+                       Classes="H1">
+                Account
+            </TextBlock>
+            <StackPanel Spacing="24">
+                <StackPanel Spacing="12">
+                    <TextBlock Classes="H5"
+                               Text="Change name" />
+                    <Grid Width="220"
+                          Height="48"
+                          HorizontalAlignment="Left">
+                        <TextBox Text="{Binding Username, Mode=TwoWay}"
+                                 Padding="5,0,54,0"
+                                 HorizontalAlignment="Stretch" />
+                        <Button Width="50"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Margin="0,0,0,0">
+                            <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                                       Text="&#xE3B4;"
+                                       FontSize="20"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Spacing="12">
+                    <TextBlock Classes="H5"
+                               Text="Sign out" />
+                    <Button Width="110"
+                            HorizontalAlignment="Left"
+                            Command="{Binding SignOutCommand}">
+                        <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                                   Text="&#xE42A;"
+                                   FontSize="20"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </Border>
 </UserControl>

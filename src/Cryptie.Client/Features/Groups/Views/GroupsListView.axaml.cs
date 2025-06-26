@@ -1,6 +1,8 @@
-﻿using System.Reactive;
+﻿using System;
+using System.Reactive;
 using System.Reactive.Disposables;
 using Avalonia.Controls;
+using Avalonia.Platform;
 using Avalonia.ReactiveUI;
 using Cryptie.Client.Features.AddFriend.Views;
 using Cryptie.Client.Features.Groups.ViewModels;
@@ -22,12 +24,14 @@ public partial class GroupsListView : ReactiveUserControl<GroupsListViewModel>
 
                 var window = new Window
                 {
+                    Title = "Add Friend",
+                    Icon = new WindowIcon(AssetLoader.Open(new Uri(ViewModel.IconUri))),
                     Content = new AddFriendView
                     {
                         DataContext = addFriendVm
                     },
                     Width = 400,
-                    Height = 200,
+                    Height = 150,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 };
 

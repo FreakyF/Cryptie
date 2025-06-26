@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Factories;
@@ -22,35 +24,39 @@ public class ShellCoordinator(
 
     public async Task StartAsync()
     {
-        if (keychain.TryGetSessionToken(out var token, out _) && Guid.TryParse(token, out var sessionToken))
+        if (keychain.TryGetSessionToken(out var token, out _)
+            && Guid.TryParse(token, out var sessionToken))
         {
             var isConnected = await connectionMonitor.IsBackendAliveAsync();
             if (!isConnected)
-            {
                 return;
-            }
 
             try
             {
-                var result =
-                    await userDetailsService.GetUserGuidFromTokenAsync(
-                        new UserGuidFromTokenRequestDto { SessionToken = sessionToken });
-                if (result is not null && result.Guid != Guid.Empty)
+                var result = await userDetailsService.GetUserGuidFromTokenAsync(
+                    new UserGuidFromTokenRequestDto { SessionToken = sessionToken });
+
+                if (result?.Guid != Guid.Empty)
                 {
                     ShowDashboard();
                     return;
                 }
+
+                keychain.TryClearSessionToken(out _);
+                ShowLogin();
+                return;
+            }
+            catch (HttpRequestException httpEx)
+                when (httpEx.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
+            {
+                keychain.TryClearSessionToken(out _);
+                ShowLogin();
+                return;
             }
             catch
             {
-                // Swallowing any exceptions related to user lookup
-                // to ensure the app remains stable and navigates correctly.
+                return;
             }
-
-            keychain.TryClearSessionToken(out _);
-            ShowLogin();
-
-            return;
         }
 
         ShowLogin();
@@ -59,6 +65,16 @@ public class ShellCoordinator(
     public void ShowLogin()
     {
         NavigateTo<LoginViewModel>();
+    }
+
+    public void ResetAndShowLogin()
+    {
+        var vm = factory.Create<LoginViewModel>(this);
+
+        Router
+            .NavigateAndReset
+            .Execute(vm)
+            .Subscribe();
     }
 
     public void ShowRegister()
