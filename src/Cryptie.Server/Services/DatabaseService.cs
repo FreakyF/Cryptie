@@ -23,7 +23,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         return user;
     }
 
-    public User? FindUserById(string login)
+    public User? FindUserByLogin(string login)
     {
         var user = appDbContext.Users.SingleOrDefault(u => u.Login == login);
         return user;

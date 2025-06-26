@@ -38,7 +38,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
     {
         var user = databaseService.GetUserFromToken(addFriendRequest.SessionToken);
         if (user == null) return BadRequest();
-        var friend = databaseService.FindUserById(addFriendRequest.Friend);
+        var friend = databaseService.FindUserByLogin(addFriendRequest.Friend);
         if (friend == null) return BadRequest();
         user.Friends.Add(friend);
         // friend.Friends.Add(user); // TODO może ???

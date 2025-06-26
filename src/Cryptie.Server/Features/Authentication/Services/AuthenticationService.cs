@@ -87,6 +87,11 @@ public class AuthenticationService(
 
     public IActionResult RegisterHandler(RegisterRequestDto registerRequest)
     {
+        if (databaseService.FindUserByLogin(registerRequest.Login) != null)
+        {
+            return BadRequest();
+        }
+
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerRequest.Password);
 
         var password = appDbContext.Passwords.Add(new Password
