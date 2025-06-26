@@ -9,7 +9,7 @@ public class DtosTests
     public void AddFriendRequestDto_ShouldSetAndReturnCorrectValue()
     {
         var expectedSessionToken = Guid.NewGuid();
-        var expectedFriend = Guid.NewGuid();
+        var expectedFriend = "f";
 
         var dto = new AddFriendRequestDto
         {
