@@ -23,6 +23,12 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         return user;
     }
 
+    public User? FindUserById(string login)
+    {
+        var user = appDbContext.Users.SingleOrDefault(u => u.Login == login);
+        return user;
+    }
+
     public Group? CreateNewGroup(User user, string name)
     {
         var newGroup = new Group

@@ -7,6 +7,7 @@ public interface IDatabaseService
 {
     public User? GetUserFromToken(Guid guid);
     public User? FindUserById(Guid id);
+    public User? FindUserById(string login);
     public Group? CreateNewGroup(User user, string name);
     public void AddUserToGroup(Guid user, Guid group);
     public void RemoveUserFromGroup(Guid user, Guid group);
