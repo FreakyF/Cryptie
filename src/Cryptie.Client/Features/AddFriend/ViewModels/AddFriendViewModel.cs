@@ -39,7 +39,7 @@ public class AddFriendViewModel : RoutableViewModelBase
                 var request = new AddFriendRequestDto
                 {
                     SessionToken = sessionToken,
-                    Friend = Guid.Parse(FriendInput)
+                    Friend = FriendInput
                 };
 
                 await friendsService.AddFriendAsync(request);
