@@ -27,6 +27,12 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         var user = appDbContext.Users.FirstOrDefault(u => u.Login == login);
         return user;
     }
+    
+    public Group? FindGroupById(Guid id)
+    {
+        var user = appDbContext.Groups.Find(id);
+        return user;
+    }
 
     public Group? CreateNewGroup(User user, string name)
     {
