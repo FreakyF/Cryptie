@@ -25,7 +25,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
     public User? FindUserByLogin(string login)
     {
-        var user = appDbContext.Users.SingleOrDefault(u => u.Login == login);
+        var user = appDbContext.Users.FirstOrDefault(u => u.Login == login);
         return user;
     }
 
