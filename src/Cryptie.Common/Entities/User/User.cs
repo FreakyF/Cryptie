@@ -15,5 +15,5 @@ public class User
 
     public List<User> Friends { get; } = [];
 
-    public List<PrivateKey> PrivateKeys { get; } = [];
+    public string PrivateKey { get; set; }
 }

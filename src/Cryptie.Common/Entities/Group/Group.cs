@@ -6,6 +6,5 @@ public class Group
     public required string Name { get; set; }
 
     public List<User.User> Users { get; } = [];
-    public List<UserGroupPublicKey> Keys { get; } = [];
     public List<GroupMessage> Messages { get; } = [];
 }

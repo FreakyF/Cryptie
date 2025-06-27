@@ -24,8 +24,6 @@ public class EntitiesTests
         Assert.Equal(name, group.Name);
         Assert.NotNull(group.Users);
         Assert.Empty(group.Users);
-        Assert.NotNull(group.Keys);
-        Assert.Empty(group.Keys);
         Assert.NotNull(group.Messages);
         Assert.Empty(group.Messages);
     }
@@ -65,30 +63,6 @@ public class EntitiesTests
         Assert.Equal(toUser, msg.ToUser);
         Assert.Equal(messageText, msg.Message);
         Assert.Equal(dt, msg.DateTime);
-    }
-
-    [Trait("TestCategory", "Unit")]
-    [Fact]
-    public void UserGroupPublicKey_ShouldSetAndReturnCorrectValues()
-    {
-        var id = Guid.NewGuid();
-        var user = new User
-        {
-            Id = Guid.NewGuid(), Login = "u", DisplayName = "U", Email = "u@x.com",
-            Password = new Password { Secret = "s" }, Totp = new Totp { Secret = [1] }
-        };
-        var key = "publicKey";
-
-        var ugpk = new UserGroupPublicKey
-        {
-            Id = id,
-            User = user,
-            Key = key
-        };
-
-        Assert.Equal(id, ugpk.Id);
-        Assert.Equal(user, ugpk.User);
-        Assert.Equal(key, ugpk.Key);
     }
 
     [Trait("TestCategory", "Unit")]
@@ -259,26 +233,6 @@ public class EntitiesTests
 
     [Trait("TestCategory", "Unit")]
     [Fact]
-    public void PrivateKey_ShouldSetAndReturnCorrectValues()
-    {
-        var id = Guid.NewGuid();
-        var groupGuid = Guid.NewGuid();
-        const string keyText = "p";
-
-        var pk = new PrivateKey
-        {
-            Id = id,
-            GroupGuid = groupGuid,
-            Key = keyText
-        };
-
-        Assert.Equal(id, pk.Id);
-        Assert.Equal(groupGuid, pk.GroupGuid);
-        Assert.Equal(keyText, pk.Key);
-    }
-
-    [Trait("TestCategory", "Unit")]
-    [Fact]
     public void Totp_ShouldSetAndReturnCorrectValues()
     {
         var id = Guid.NewGuid();
@@ -304,6 +258,7 @@ public class EntitiesTests
         const string email = "u@x.com";
         var pwd = new Password { Secret = "p" };
         var totp = new Totp { Secret = [1] };
+        var key = "k";
 
         var user = new User
         {
@@ -312,7 +267,8 @@ public class EntitiesTests
             DisplayName = displayName,
             Email = email,
             Password = pwd,
-            Totp = totp
+            Totp = totp,
+            PrivateKey = key
         };
 
         Assert.Equal(id, user.Id);
@@ -321,12 +277,11 @@ public class EntitiesTests
         Assert.Equal(email, user.Email);
         Assert.Equal(pwd, user.Password);
         Assert.Equal(totp, user.Totp);
+        Assert.Equal(key, user.PrivateKey);
 
         Assert.NotNull(user.Groups);
         Assert.Empty(user.Groups);
         Assert.NotNull(user.Friends);
         Assert.Empty(user.Friends);
-        Assert.NotNull(user.PrivateKeys);
-        Assert.Empty(user.PrivateKeys);
     }
 }

@@ -130,4 +130,22 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
         return token.Entity.Id;
     }
+
+    public void AddFriend(User user, User friend)
+    {
+        user.Friends.Add(friend);
+        appDbContext.SaveChanges();
+    }
+
+    public Group CreateGroup(string name)
+    {
+        var group = appDbContext.Groups.Add(new Group
+        {
+            Name = name
+        });
+
+        appDbContext.SaveChanges();
+        
+        return group.Entity;
+    }
 }

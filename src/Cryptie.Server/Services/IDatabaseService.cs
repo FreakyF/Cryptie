@@ -17,4 +17,6 @@ public interface IDatabaseService
     public void LogLoginAttempt(User user);
     public void LogLoginAttempt(string user);
     public Guid GenerateUserToken(User user);
+    public void AddFriend(User user, User friend);
+    public Group CreateGroup(string name);
 }

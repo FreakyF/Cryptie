@@ -48,10 +48,8 @@ public class AppDbContextTests
         Assert.NotNull(context.Users);
         Assert.NotNull(context.Groups);
         Assert.NotNull(context.GroupMessages);
-        Assert.NotNull(context.UserGroupPublicKeys);
         Assert.NotNull(context.Passwords);
         Assert.NotNull(context.Totps);
-        Assert.NotNull(context.PrivateKeys);
         Assert.NotNull(context.UserTokens);
         Assert.NotNull(context.TotpTokens);
         Assert.NotNull(context.UserLoginAttempts);
@@ -93,7 +91,8 @@ public class AppDbContextTests
             DisplayName = "F",
             Email = "f@x.com",
             Password = new Password { Id = Guid.NewGuid(), Secret = "p" },
-            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] }
+            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] },
+            PrivateKey = "k"
         };
 
         var to = new User
@@ -103,7 +102,8 @@ public class AppDbContextTests
             DisplayName = "T",
             Email = "t@x.com",
             Password = new Password { Id = Guid.NewGuid(), Secret = "p" },
-            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] }
+            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] },
+            PrivateKey = "k"
         };
 
         context.Users.AddRange(from, to);
@@ -132,38 +132,6 @@ public class AppDbContextTests
 
     [Trait("TestCategory", "Integration")]
     [Fact]
-    public void Can_Insert_And_Query_UserGroupPublicKey()
-    {
-        using var context = CreateContext();
-        var id = Guid.NewGuid();
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            Login = "u",
-            DisplayName = "U",
-            Email = "u@x.com",
-            Password = new Password { Id = Guid.NewGuid(), Secret = "p" },
-            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] }
-        };
-
-        context.Users.Add(user);
-        context.SaveChanges();
-
-        const string key = "p";
-
-        var entity = new UserGroupPublicKey { Id = id, User = user, Key = key };
-
-        context.UserGroupPublicKeys.Add(entity);
-        context.SaveChanges();
-
-        var result = context.UserGroupPublicKeys.Find(id);
-        Assert.NotNull(result);
-        Assert.Equal(key, result.Key);
-        Assert.Equal(user.Id, result.User.Id);
-    }
-
-    [Trait("TestCategory", "Integration")]
-    [Fact]
     public void Can_Insert_And_Query_User()
     {
         using var context = CreateContext();
@@ -176,7 +144,8 @@ public class AppDbContextTests
             DisplayName = "U",
             Email = "u@x.com",
             Password = new Password { Id = Guid.NewGuid(), Secret = "p" },
-            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] }
+            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] },
+            PrivateKey = "k"
         };
 
         context.Users.Add(entity);
@@ -224,26 +193,6 @@ public class AppDbContextTests
 
     [Trait("TestCategory", "Integration")]
     [Fact]
-    public void Can_Insert_And_Query_PrivateKey()
-    {
-        using var context = CreateContext();
-        var id = Guid.NewGuid();
-        var groupGuid = Guid.NewGuid();
-        const string key = "p";
-
-        var entity = new PrivateKey { Id = id, GroupGuid = groupGuid, Key = key };
-
-        context.PrivateKeys.Add(entity);
-        context.SaveChanges();
-
-        var result = context.PrivateKeys.Find(id);
-        Assert.NotNull(result);
-        Assert.Equal(groupGuid, result.GroupGuid);
-        Assert.Equal(key, result.Key);
-    }
-
-    [Trait("TestCategory", "Integration")]
-    [Fact]
     public void Can_Insert_And_Query_UserToken()
     {
         using var context = CreateContext();
@@ -256,7 +205,8 @@ public class AppDbContextTests
             DisplayName = "U",
             Email = "u@x.com",
             Password = new Password { Id = Guid.NewGuid(), Secret = "p" },
-            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] }
+            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] },
+            PrivateKey = "k"
         };
 
         context.Users.Add(user);
@@ -286,7 +236,8 @@ public class AppDbContextTests
             DisplayName = "U",
             Email = "u@x.com",
             Password = new Password { Id = Guid.NewGuid(), Secret = "p" },
-            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] }
+            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] },
+            PrivateKey = "k"
         };
 
         context.Users.Add(user);
@@ -317,7 +268,8 @@ public class AppDbContextTests
             DisplayName = "U",
             Email = "u@x.com",
             Password = new Password { Id = Guid.NewGuid(), Secret = "p" },
-            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] }
+            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] },
+            PrivateKey = "k"
         };
 
         context.Users.Add(user);
@@ -370,7 +322,8 @@ public class AppDbContextTests
             DisplayName = "U",
             Email = "u@x.com",
             Password = new Password { Id = Guid.NewGuid(), Secret = "p" },
-            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] }
+            Totp = new Totp { Id = Guid.NewGuid(), Secret = [1] },
+            PrivateKey = "k"
         };
 
         context.Users.Add(user);

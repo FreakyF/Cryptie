@@ -40,16 +40,12 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         if (friend == null) return NotFound();
         var user = databaseService.GetUserFromToken(addFriendRequest.SessionToken);
         if (user == null) return BadRequest();
-        user.Friends.Add(friend);
-        // friend.Friends.Add(user); // TODO może ???
+        databaseService.AddFriend(user, friend);
 
-        var group = new Group
-        {
-            Name = user.DisplayName + "_" + friend.DisplayName
-        };
-
-        group.Users.Add(user);
-        group.Users.Add(friend);
+        var group = databaseService.CreateGroup(user.DisplayName + "_" + friend.DisplayName);
+        
+        databaseService.AddUserToGroup(user.Id, group.Id);
+        databaseService.AddUserToGroup(friend.Id, group.Id);
 
         return Ok();
     }
