@@ -6,6 +6,7 @@ using Cryptie.Client.Core.Locators;
 using Cryptie.Client.Core.Mapping;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
+using Cryptie.Client.Features.Account.services;
 using Cryptie.Client.Features.Account.ViewModels;
 using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
@@ -24,6 +25,7 @@ using Cryptie.Client.Features.Settings.Services;
 using Cryptie.Client.Features.Settings.ViewModels;
 using Cryptie.Client.Features.Shell.ViewModels;
 using Cryptie.Client.Features.Shell.Views;
+using Cryptie.Common.Features.Account.Validators;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Validators;
 using Cryptie.Common.Features.UserManagement.DTOs;
@@ -73,6 +75,13 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
 
+        services.AddHttpClient<IAccountService, AccountService>()
+            .ConfigureHttpClient((sp, client) =>
+            {
+                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+                client.BaseAddress = new Uri(opts.BaseUri);
+            });
+
 
         var cfg = TypeAdapterConfig.GlobalSettings;
         cfg.Scan(Assembly.GetExecutingAssembly());
@@ -104,6 +113,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();
         services.AddTransient<IValidator<TotpRequestDto>, TotpRequestValidator>();
         services.AddTransient<IValidator<AddFriendRequestDto>, AddFriendRequestValidator>();
+        services.AddTransient<IValidator<UserDisplayNameRequestDto>, UserDisplayNameRequestValidator>();
 
 
         services.AddSingleton<IConnectionMonitor, ConnectionMonitor>();

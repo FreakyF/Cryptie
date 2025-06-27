@@ -31,7 +31,7 @@ public class KeychainManagerService : IKeychainManagerService
         }
     }
 
-    public bool TryGetSessionToken(out string? token, [NotNullWhen(false)] out string? errorMessage)
+    public bool TryGetSessionToken([NotNullWhen(true)] out string? token, [NotNullWhen(false)] out string? errorMessage)
     {
         token = null;
         errorMessage = null;
