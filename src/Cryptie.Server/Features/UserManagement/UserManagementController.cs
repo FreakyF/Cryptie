@@ -43,7 +43,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         databaseService.AddFriend(user, friend);
 
         var group = databaseService.CreateGroup(user.DisplayName + "_" + friend.DisplayName);
-        
+
         databaseService.AddUserToGroup(user.Id, group.Id);
         databaseService.AddUserToGroup(friend.Id, group.Id);
 
@@ -96,9 +96,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         var user = databaseService.GetUserFromToken(userDisplayNameRequest.Token);
         if (user == null) return BadRequest();
 
-        //TODO dodać sprawdzanie xd
-
-        user.DisplayName = userDisplayNameRequest.Name;
+        databaseService.ChangeUserDisplayName(user, userDisplayNameRequest.Name);
 
         return Ok();
     }
