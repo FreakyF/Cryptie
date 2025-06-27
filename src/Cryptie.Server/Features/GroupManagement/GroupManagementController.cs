@@ -2,7 +2,7 @@ using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.GroupManagment;
+namespace Cryptie.Server.Features.GroupManagement;
 
 [ApiController]
 [Route("group")]

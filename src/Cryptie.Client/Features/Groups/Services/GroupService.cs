@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Common.Features.UserManagement.DTOs;
 
 namespace Cryptie.Client.Features.Groups.Services;
@@ -24,5 +25,21 @@ public class GroupService(HttpClient httpClient) : IGroupService
             .ReadFromJsonAsync<UserGroupsResponseDto>(cancellationToken: cancellationToken);
 
         return result?.Groups ?? [];
+    }
+
+    public async Task<string?> GetGroupNameAsync(
+        GetGroupNameRequestDto request,
+        CancellationToken cancellationToken = default)
+    {
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Get, "group/getName");
+        httpRequest.Content = JsonContent.Create(request);
+
+        using var response = await httpClient.SendAsync(httpRequest, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content
+            .ReadFromJsonAsync<GetGroupNameResponseDto>(cancellationToken: cancellationToken);
+
+        return result?.name;
     }
 }
