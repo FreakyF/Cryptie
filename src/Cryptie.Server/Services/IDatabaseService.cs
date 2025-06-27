@@ -1,5 +1,4 @@
-using Cryptie.Common.Entities.Group;
-using Cryptie.Common.Entities.User;
+using Cryptie.Common.Entities;
 
 namespace Cryptie.Server.Services;
 

@@ -1,4 +1,4 @@
-using Cryptie.Common.Entities.User;
+using Cryptie.Common.Entities;
 
 namespace Cryptie.Common.Features.Authentication.Services;
 

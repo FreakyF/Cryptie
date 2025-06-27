@@ -1,4 +1,4 @@
-using Cryptie.Common.Entities.Group;
+using Cryptie.Common.Entities;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;

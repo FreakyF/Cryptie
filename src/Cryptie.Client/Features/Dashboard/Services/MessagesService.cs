@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Net.Http;
-using Cryptie.Common.Entities.User;
+using Cryptie.Common.Entities;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Cryptie.Client.Features.Dashboard.Services;

@@ -1,8 +1,4 @@
-using Cryptie.Common.Entities.Group;
-using Cryptie.Common.Entities.Honeypot;
-using Cryptie.Common.Entities.LoginPolicy;
-using Cryptie.Common.Entities.SessionTokens;
-using Cryptie.Common.Entities.User;
+using Cryptie.Common.Entities;
 using Cryptie.Server.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +34,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         {
             Id = Guid.Empty,
             Name = name,
-            Users = { user }
+            Members = { user }
         };
 
         var createdGroup = appDbContext.Groups.Add(newGroup);
@@ -51,7 +47,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
     {
         var userToAdd = appDbContext.Users.SingleOrDefault(u => u.Id == user);
         if (userToAdd == null) return;
-        appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Users.Add(userToAdd);
+        appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Members.Add(userToAdd);
         appDbContext.SaveChanges();
     }
 
@@ -59,7 +55,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
     {
         var userToRemove = appDbContext.Users.SingleOrDefault(u => u.Id == user);
         if (userToRemove == null) return;
-        appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Users.Remove(userToRemove);
+        appDbContext.Groups.SingleOrDefault(g => g.Id == group)?.Members.Remove(userToRemove);
         appDbContext.SaveChanges();
     }
 
@@ -102,7 +98,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         appDbContext.UserLoginAttempts.Add(new UserLoginAttempt
         {
             Id = Guid.Empty,
-            TimeStamp = DateTime.UtcNow,
+            Timestamp = DateTime.UtcNow,
             User = user
         });
 
@@ -111,11 +107,11 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
     public void LogLoginAttempt(string user)
     {
-        appDbContext.UserLoginHoneypotAttempts.Add(new UserLoginHoneypotAttempt
+        appDbContext.HoneypotLoginAttempts.Add(new HoneypotLoginAttempt
         {
             Id = Guid.Empty,
-            TimeStamp = DateTime.UtcNow,
-            User = user
+            Timestamp = DateTime.UtcNow,
+            Username = user
         });
 
         appDbContext.SaveChanges();

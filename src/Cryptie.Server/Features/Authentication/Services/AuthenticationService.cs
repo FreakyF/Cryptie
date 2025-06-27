@@ -1,4 +1,4 @@
-using Cryptie.Common.Entities.User;
+using Cryptie.Common.Entities;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Server.Persistence.DatabaseContext;
@@ -6,7 +6,7 @@ using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OtpNet;
-using Totp = Cryptie.Common.Entities.User.Totp;
+using Totp = Cryptie.Common.Entities.Totp;
 
 namespace Cryptie.Server.Features.Authentication.Services;
 
