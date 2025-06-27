@@ -20,24 +20,33 @@
                 <StackPanel Spacing="12">
                     <TextBlock Classes="H5"
                                Text="Change name" />
-                    <Grid Width="220"
-                          Height="48"
-                          HorizontalAlignment="Left">
-                        <TextBox Text="{Binding Username, Mode=TwoWay}"
-                                 Padding="5,0,54,0"
-                                 HorizontalAlignment="Stretch" />
-                        <Button Width="50"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
-                                Margin="0,0,0,0">
-                            <TextBlock FontFamily="{StaticResource PhosphorRegular}"
-                                       Text="&#xE3B4;"
-                                       FontSize="20"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center" />
-                        </Button>
-                    </Grid>
+
+                    <StackPanel Spacing="0">
+                        <Grid Width="220"
+                              Height="48"
+                              HorizontalAlignment="Left">
+                            <TextBox Text="{Binding Username, Mode=TwoWay}"
+                                     Padding="5,0,54,0"
+                                     HorizontalAlignment="Stretch" />
+                            <Button Width="50"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding ChangeNameCommand}">
+                                <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                                           Text="&#xE3B4;"
+                                           FontSize="20"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                            </Button>
+                        </Grid>
+
+                        <TextBlock x:Name="ErrorMessageTextBlock"
+                                   Classes="Danger"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding ErrorMessage, Mode=TwoWay}" />
+                    </StackPanel>
                 </StackPanel>
+
                 <StackPanel Spacing="12">
                     <TextBlock Classes="H5"
                                Text="Sign out" />
