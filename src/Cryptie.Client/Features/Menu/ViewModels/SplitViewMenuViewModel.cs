@@ -21,6 +21,7 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
     private readonly IDisposable _connSub;
     private readonly IKeychainManagerService _keychainManager;
     private readonly IUserDetailsService _userDetails;
+    private readonly IDisposable _userNameSub;
     private readonly IUserState _userState;
     private bool _disposed;
     private bool _isPaneOpen;
@@ -57,6 +58,12 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
             .Where(isUp => isUp)
             .ObserveOn(AvaloniaScheduler.Instance)
             .Subscribe(isUp => { _ = LoadUserNameAsync(); });
+
+        _userNameSub = _userState
+            .WhenAnyValue(s => s.Username)
+            .Where(name => !string.IsNullOrWhiteSpace(name))
+            .ObserveOn(AvaloniaScheduler.Instance)
+            .Subscribe(name => ReplaceAccountItem(name!));
     }
 
     public IContentCoordinator? ContentCoordinator { get; set; }
@@ -82,6 +89,7 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
     {
         if (_disposed) return;
         _connSub.Dispose();
+        _userNameSub.Dispose();
         _disposed = true;
     }
 
@@ -121,8 +129,7 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
 
     private void ReplaceAccountItem(string userName)
     {
-        var oldItem = Items.FirstOrDefault(i =>
-            i is { FullLabel: "Account", IconGlyph: "\uE4C2" });
+        var oldItem = Items.FirstOrDefault(i => i.IconGlyph == "\uE4C2");
         if (oldItem is null) return;
 
         var idx = Items.IndexOf(oldItem);

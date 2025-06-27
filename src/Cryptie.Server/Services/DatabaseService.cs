@@ -9,6 +9,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
     public User? GetUserFromToken(Guid guid)
     {
         return appDbContext.UserTokens
+            .AsTracking()
             .Where(t => t.Id == guid)
             .Include(t => t.User)
             .ThenInclude(u => u!.Groups)

@@ -22,7 +22,6 @@ public class GroupService(HttpClient httpClient) : IGroupService
 
         var result = await response.Content
             .ReadFromJsonAsync<UserGroupsResponseDto>(cancellationToken: cancellationToken);
-        Console.WriteLine($"### GROUPS FROM API: {string.Join(", ", result?.Groups ?? [])}");
 
         return result?.Groups ?? [];
     }

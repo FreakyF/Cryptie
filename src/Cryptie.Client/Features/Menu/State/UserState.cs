@@ -1,6 +1,14 @@
-﻿namespace Cryptie.Client.Features.Menu.State;
+﻿using ReactiveUI;
 
-public class UserState : IUserState
+namespace Cryptie.Client.Features.Menu.State;
+
+public class UserState : ReactiveObject, IUserState
 {
-    public string? Username { get; set; }
+    private string? _username;
+
+    public string? Username
+    {
+        get => _username;
+        set => this.RaiseAndSetIfChanged(ref _username, value);
+    }
 }

@@ -56,12 +56,9 @@ public class AccountViewModel : RoutableViewModelBase
                 (result, touched) => touched && !result.IsValid
                     ? result.Errors[0].ErrorMessage
                     : string.Empty)
+            .DistinctUntilChanged()
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(msg =>
-            {
-                if (!string.IsNullOrEmpty(msg) || string.IsNullOrEmpty(ErrorMessage))
-                    ErrorMessage = msg;
-            });
+            .Subscribe(msg => ErrorMessage = msg);
 
         var canChange = validationChanged.Select(v => v.IsValid);
 
