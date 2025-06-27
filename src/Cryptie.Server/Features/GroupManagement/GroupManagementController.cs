@@ -10,6 +10,18 @@ public class GroupManagementController(
     IDatabaseService databaseService
 ) : ControllerBase
 {
+    [HttpGet("getName", Name = "GetGroupName")]
+    public IActionResult getName([FromBody] GetGroupNameRequestDto getGroupNameRequest)
+    {
+        var group = databaseService.FindGroupById(getGroupNameRequest.GroupId);
+        if (group == null) return NotFound();
+
+        return Ok(new GetGroupNameResponseDto
+        {
+            name = group.Name
+        });
+    }
+
     [HttpPost("create", Name = "CreateGroup")]
     public IActionResult createGroup([FromBody] CreateGroupRequestDto createGroupRequest)
     {

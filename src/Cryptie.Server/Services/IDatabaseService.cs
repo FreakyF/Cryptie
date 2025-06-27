@@ -19,4 +19,5 @@ public interface IDatabaseService
     public void AddFriend(User user, User friend);
     public Group CreateGroup(string name);
     public void ChangeUserDisplayName(User user, string name);
+    public Group? FindGroupById(Guid id);
 }
