@@ -36,10 +36,10 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
     [HttpPost("addfriend", Name = "PostAddFriend")]
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
     {
+        var friend = databaseService.FindUserByLogin(addFriendRequest.Friend);
+        if (friend == null) return NotFound();
         var user = databaseService.GetUserFromToken(addFriendRequest.SessionToken);
         if (user == null) return BadRequest();
-        var friend = databaseService.FindUserByLogin(addFriendRequest.Friend);
-        if (friend == null) return BadRequest();
         user.Friends.Add(friend);
         // friend.Friends.Add(user); // TODO może ???
 

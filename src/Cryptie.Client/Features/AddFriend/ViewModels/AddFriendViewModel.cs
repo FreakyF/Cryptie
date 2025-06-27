@@ -1,56 +1,55 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.Authentication.Services;
+using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.UserManagement.DTOs;
+using FluentValidation;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.AddFriend.ViewModels;
 
 public class AddFriendViewModel : RoutableViewModelBase
 {
+    private readonly IFriendsService _friendsService;
+    private readonly IKeychainManagerService _keychainService;
+    private readonly IUserState _userState;
+    private readonly IValidator<AddFriendRequestDto> _validator;
+    private string _confirmationMessage = string.Empty;
+
     private string _friendInput = string.Empty;
 
-    public AddFriendViewModel(IScreen hostScreen, IFriendsService friendsService,
-        IKeychainManagerService keychainService)
+    public AddFriendViewModel(
+        IScreen hostScreen,
+        IFriendsService friendsService,
+        IKeychainManagerService keychainService,
+        IValidator<AddFriendRequestDto> validator,
+        IUserState userState)
         : base(hostScreen)
     {
-        var canSend = this.WhenAnyValue(x => x.FriendInput, input => !string.IsNullOrWhiteSpace(input));
+        _friendsService = friendsService;
+        _keychainService = keychainService;
+        _validator = validator;
+        _userState = userState;
 
-        SendFriendRequest = ReactiveCommand.CreateFromTask(async () =>
-        {
-            ErrorMessage = string.Empty;
-            try
-            {
-                if (!keychainService.TryGetSessionToken(out var tokenStr, out var err) ||
-                    string.IsNullOrWhiteSpace(tokenStr))
-                {
-                    ErrorMessage = err ?? "Session token not found!";
-                    return;
-                }
+        var canSend = this
+            .WhenAnyValue(x => x.FriendInput, input => !string.IsNullOrWhiteSpace(input));
 
-                if (!Guid.TryParse(tokenStr, out var sessionToken))
-                {
-                    ErrorMessage = "Session token is invalid!";
-                    return;
-                }
+        SendFriendRequest = ReactiveCommand.CreateFromTask(AddFriendAsync, canSend);
 
-                var request = new AddFriendRequestDto
-                {
-                    SessionToken = sessionToken,
-                    Friend = FriendInput
-                };
+        this.WhenAnyValue(vm => vm.ErrorMessage)
+            .Where(msg => !string.IsNullOrWhiteSpace(msg))
+            .Subscribe(_ => ConfirmationMessage = string.Empty);
 
-                await friendsService.AddFriendAsync(request);
-                FriendInput = string.Empty;
-                ErrorMessage = "Friend added successfully!";
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = ex.Message;
-            }
-        }, canSend);
+        this.WhenAnyValue(vm => vm.ConfirmationMessage)
+            .Where(msg => !string.IsNullOrWhiteSpace(msg))
+            .Subscribe(_ => ErrorMessage = string.Empty);
     }
 
     public string FriendInput
@@ -59,5 +58,63 @@ public class AddFriendViewModel : RoutableViewModelBase
         set => this.RaiseAndSetIfChanged(ref _friendInput, value);
     }
 
+    public string ConfirmationMessage
+    {
+        get => _confirmationMessage;
+        private set => this.RaiseAndSetIfChanged(ref _confirmationMessage, value);
+    }
+
     public ReactiveCommand<Unit, Unit> SendFriendRequest { get; }
+
+    private async Task AddFriendAsync(CancellationToken ct)
+    {
+        ErrorMessage = string.Empty;
+        ConfirmationMessage = string.Empty;
+
+        if (!_keychainService.TryGetSessionToken(out var tokenStr, out _) ||
+            string.IsNullOrWhiteSpace(tokenStr) ||
+            !Guid.TryParse(tokenStr, out var sessionToken))
+        {
+            ErrorMessage = "An error occurred. Please try again.";
+            return;
+        }
+
+        var currentUser = _userState.Username ?? string.Empty;
+        var friendName = FriendInput.Trim();
+
+        if (string.Equals(currentUser, friendName, StringComparison.OrdinalIgnoreCase))
+        {
+            ErrorMessage = "You cannot add yourself!";
+            return;
+        }
+
+        var dto = new AddFriendRequestDto
+        {
+            SessionToken = sessionToken,
+            Friend = friendName
+        };
+
+        var validation = await _validator.ValidateAsync(dto, ct);
+        if (!validation.IsValid)
+        {
+            ErrorMessage = "User not found!";
+            return;
+        }
+
+        try
+        {
+            await _friendsService.AddFriendAsync(dto, ct);
+
+            FriendInput = string.Empty;
+            ConfirmationMessage = "Friend added successfully!";
+        }
+        catch (HttpRequestException httpEx) when (httpEx.StatusCode == HttpStatusCode.NotFound)
+        {
+            ErrorMessage = "User not found!";
+        }
+        catch
+        {
+            ErrorMessage = "An error occurred. Please try again.";
+        }
+    }
 }

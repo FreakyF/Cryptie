@@ -26,6 +26,8 @@ using Cryptie.Client.Features.Shell.ViewModels;
 using Cryptie.Client.Features.Shell.Views;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Validators;
+using Cryptie.Common.Features.UserManagement.DTOs;
+using Cryptie.Common.Features.UserManagement.Validators;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
@@ -98,10 +100,11 @@ public static class ServiceCollectionExtensions
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<AddFriendViewModel>();
 
-
         services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
         services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();
         services.AddTransient<IValidator<TotpRequestDto>, TotpRequestValidator>();
+        services.AddTransient<IValidator<AddFriendRequestDto>, AddFriendRequestValidator>();
+
 
         services.AddSingleton<IConnectionMonitor, ConnectionMonitor>();
         services.AddSingleton<IRegistrationState, RegistrationState>();
