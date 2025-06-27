@@ -19,4 +19,5 @@ public interface IDatabaseService
     public Guid GenerateUserToken(User user);
     public void AddFriend(User user, User friend);
     public Group CreateGroup(string name);
+    public void ChangeUserDisplayName(User user, string name);
 }

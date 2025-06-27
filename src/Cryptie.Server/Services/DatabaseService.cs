@@ -151,4 +151,11 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
         return group.Entity;
     }
+
+    public void ChangeUserDisplayName(User user, string name)
+    {
+        user.DisplayName = name;
+
+        appDbContext.SaveChanges();
+    }
 }
