@@ -47,7 +47,8 @@ public class ShellCoordinator(
                 return;
             }
             catch (HttpRequestException httpEx)
-                when (httpEx.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
+                when (httpEx.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden
+                          or HttpStatusCode.BadRequest)
             {
                 keychain.TryClearSessionToken(out _);
                 ShowLogin();

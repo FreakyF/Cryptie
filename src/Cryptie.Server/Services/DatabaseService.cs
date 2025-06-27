@@ -12,9 +12,12 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 {
     public User? GetUserFromToken(Guid guid)
     {
-        var userGuid = appDbContext.UserTokens.Include(userToken => userToken.User).SingleOrDefault(t => t.Id == guid);
-
-        return userGuid?.User ?? null;
+        return appDbContext.UserTokens
+            .Where(t => t.Id == guid)
+            .Include(t => t.User)
+            .ThenInclude(u => u!.Groups)
+            .FirstOrDefault()?
+            .User;
     }
 
     public User? FindUserById(Guid id)
@@ -145,7 +148,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         });
 
         appDbContext.SaveChanges();
-        
+
         return group.Entity;
     }
 }
