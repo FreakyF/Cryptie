@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Cryptie.Common.Entities;
 using Cryptie.Server.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         var user = appDbContext.Users.FirstOrDefault(u => u.Login == login);
         return user;
     }
-    
+
     public Group? FindGroupById(Guid id)
     {
         var user = appDbContext.Groups.Find(id);
@@ -158,6 +159,24 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
     public void ChangeUserDisplayName(User user, string name)
     {
         user.DisplayName = name;
+
+        appDbContext.SaveChanges();
+    }
+
+    public X509Certificate2 GetUserPublicKey(Guid userId) 
+    {
+        var user = appDbContext.Users
+            .AsTracking()
+            .Include(u => u.PublicKey)
+            .FirstOrDefault(u => u.Id == userId);
+
+        return user.PublicKey;
+    }
+    
+    public void SaveUserKeys(User user, X509Certificate2 privateKey, X509Certificate2 publicKey)
+    {
+        user.PrivateKey = privateKey;
+        user.PublicKey = publicKey;
 
         appDbContext.SaveChanges();
     }

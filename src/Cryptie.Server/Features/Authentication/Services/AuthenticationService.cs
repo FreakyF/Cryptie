@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Cryptie.Common.Entities;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
@@ -114,7 +115,7 @@ public class AuthenticationService(
             DisplayName = registerRequest.DisplayName,
             Password = password.Entity,
             Totp = totp.Entity,
-            PrivateKey = "p"
+            PrivateKey = null
         });
 
         var totpToken = databaseService.CreateTotpToken(user.Entity);
