@@ -3,17 +3,11 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Services;
-using Cryptie.Client.Features.Authentication.Services;
-using Cryptie.Client.Features.Chats.Services;
+using Cryptie.Client.Features.Chats.Dependencies;
 using Cryptie.Client.Features.ChatSettings.ViewModels;
-using Cryptie.Client.Features.Groups.Dependencies;
-using Cryptie.Client.Features.Groups.Services;
-using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Groups.ViewModels;
-using Microsoft.Extensions.Options;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Chats.ViewModels;
@@ -25,133 +19,101 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     private bool _isChatSettingsOpen;
     private string? _messageText;
 
-    public ChatsViewModel(
-        IScreen hostScreen,
-        IConnectionMonitor connectionMonitor,
-        IOptions<ClientOptions> options,
-        AddFriendDependencies deps,
-        IGroupService groupService,
-        IGroupSelectionState groupState,
-        IKeychainManagerService keychain,
-        IMessagesService messagesService,
-        ChatSettingsViewModel settingsPanel)
+    public ChatsViewModel(IScreen hostScreen, IConnectionMonitor connectionMonitor,
+        ChatsViewModelDependencies deps)
         : base(hostScreen)
     {
-        var messagesService1 = messagesService;
-        var groupState1 = groupState;
-        SettingsPanel = settingsPanel;
+        SettingsPanel = deps.SettingsPanel;
 
-        // 1) Panel grup
         GroupsPanel = new GroupsListViewModel(
             hostScreen,
             connectionMonitor,
-            options,
-            deps,
-            groupService,
-            groupState);
+            deps.Options,
+            deps.AddFriendDependencies,
+            deps.GroupService,
+            deps.GroupState);
 
-        // 2) Kolekcja wiadomości
-        Messages = new ObservableCollection<ChatMessageViewModel>();
+        Messages = [];
 
-        // 3) Nazwa bieżącej grupy (do nagłówka)
-        _currentGroupName = groupState
+        _currentGroupName = deps.GroupState
             .WhenAnyValue(gs => gs.SelectedGroupName)
             .ObserveOn(RxApp.MainThreadScheduler)
             .ToProperty(this, vm => vm.CurrentGroupName);
 
-        // 4) Komenda wysyłania — tylko gdy jest jakiś tekst
         var canSend = this
             .WhenAnyValue(vm => vm.MessageText, txt => !string.IsNullOrWhiteSpace(txt));
 
         SendMessageCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var gid = groupState1.SelectedGroupId;
-            if (gid == Guid.Empty)
+            var gid = deps.GroupState.SelectedGroupId;
+            if (gid == Guid.Empty || string.IsNullOrWhiteSpace(MessageText))
                 return;
 
-            // Wyślij do serwera
-            await messagesService1.SendMessageToGroupAsync(gid, MessageText!);
+            var trimmedMessage = MessageText!.Trim();
 
-            // Dodaj do kolekcji z przekazaniem GroupName
+            await deps.MessagesService.SendMessageToGroupAsync(gid, trimmedMessage);
+
             Messages.Add(new ChatMessageViewModel(
-                message: MessageText!,
+                message: trimmedMessage,
                 isOwn: true,
-                groupName: groupState1.SelectedGroupName));
+                groupName: deps.GroupState.SelectedGroupName ?? string.Empty));
 
             MessageText = string.Empty;
         }, canSend);
 
-        // 5) Obsługa błędów
         SendMessageCommand
             .ThrownExceptions
-            .Subscribe(ex => { Console.Error.WriteLine($"Błąd wysyłania wiadomości: {ex}"); })
+            .Subscribe()
             .DisposeWith(_disposables);
 
-        // 6) Odbieranie wiadomości z hubu
-        messagesService1.MessageReceived
-            .Where(m => m.GroupId == groupState1.SelectedGroupId)
+        deps.MessagesService.MessageReceived
+            .Where(m => m.GroupId == deps.GroupState.SelectedGroupId)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(m =>
                 Messages.Add(new ChatMessageViewModel(
-                    message: m.Message,
+                    message: m.Message.Trim(),
                     isOwn: false,
-                    groupName: groupState1.SelectedGroupName)))
+                    groupName: deps.GroupState.SelectedGroupName ?? string.Empty)))
             .DisposeWith(_disposables);
 
-        // 7) Przełącznik panelu ustawień
         ToggleChatSettingsCommand = ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; });
 
-        // 8) Po wybraniu grupy: ConnectAsync
-        if (keychain.TryGetSessionToken(out var tok, out _)
+        if (deps.KeychainManagerService.TryGetSessionToken(out var tok, out _)
             && Guid.TryParse(tok, out var userId))
         {
-            groupState1
+            deps.GroupState
                 .WhenAnyValue(gs => gs.SelectedGroupId)
                 .Where(id => id != Guid.Empty)
                 .Take(1)
                 .ObserveOn(RxApp.TaskpoolScheduler)
-                .Subscribe(async _ =>
+                .Subscribe(async void (_) =>
                 {
                     try
                     {
-                        await messagesService1.ConnectAsync(userId, GroupsPanel.GroupIds);
+                        await deps.MessagesService.ConnectAsync(userId, GroupsPanel.GroupIds);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        Console.Error.WriteLine($"Błąd nawiązywania połączenia: {ex}");
+                        // Swallow exception: do nothing
                     }
                 })
                 .DisposeWith(_disposables);
         }
     }
 
-    /// <summary>
-    /// Panel wyboru grup.
-    /// </summary>
+
     public GroupsListViewModel GroupsPanel { get; }
 
-    /// <summary>
-    /// Kolekcja wiadomości widoczna w UI.
-    /// </summary>
     public ObservableCollection<ChatMessageViewModel> Messages { get; }
 
-    /// <summary>
-    /// Tekst wpisywany w polu.
-    /// </summary>
     public string? MessageText
     {
         get => _messageText;
         set => this.RaiseAndSetIfChanged(ref _messageText, value);
     }
 
-    /// <summary>
-    /// Nazwa bieżącej grupy.
-    /// </summary>
     public string? CurrentGroupName => _currentGroupName.Value;
 
-    /// <summary>
-    /// Panel ustawień czatu.
-    /// </summary>
     public ChatSettingsViewModel SettingsPanel { get; }
 
     public ReactiveCommand<Unit, Unit> SendMessageCommand { get; }
