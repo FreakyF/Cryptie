@@ -5,19 +5,19 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:vm="clr-namespace:Cryptie.Client.Features.ChatSettings.ViewModels"
     x:Class="Cryptie.Client.Features.ChatSettings.Views.ChatSettingsView"
+    x:DataType="vm:ChatSettingsViewModel"
     d:DesignWidth="220" d:DesignHeight="450">
 
     <StackPanel Spacing="4">
 
-        <!-- Nagłówek -->
-        <TextBlock Text="Alice"
+        <TextBlock Text="{Binding CurrentGroupName}"
                    Theme="{StaticResource TitleTextBlock}" Classes="H4"
                    Margin="17,12,16,20"
                    HorizontalAlignment="Left"
                    TextTrimming="CharacterEllipsis" />
 
-        <!-- Edit group name -->
         <Button Theme="{StaticResource BorderlessButton}"
                 Classes="Primary"
                 Width="196"
@@ -27,21 +27,18 @@
                 HorizontalContentAlignment="Left">
             <DockPanel LastChildFill="True"
                        HorizontalAlignment="Stretch">
-                <!-- ikonka -->
                 <TextBlock DockPanel.Dock="Left"
                            FontFamily="{StaticResource PhosphorRegular}"
                            Text="&#xE3B4;"
                            FontSize="20"
                            Width="28"
                            VerticalAlignment="Center" />
-                <!-- tekst -->
                 <TextBlock Text="Edit group name"
                            VerticalAlignment="Center"
                            Margin="8,0,0,0" />
             </DockPanel>
         </Button>
 
-        <!-- Add users -->
         <Button Theme="{StaticResource BorderlessButton}"
                 Classes="Primary"
                 Width="196"
@@ -51,14 +48,12 @@
                 HorizontalContentAlignment="Left">
             <DockPanel LastChildFill="True"
                        HorizontalAlignment="Stretch">
-                <!-- ikonka -->
                 <TextBlock DockPanel.Dock="Left"
                            FontFamily="{StaticResource PhosphorRegular}"
                            Text="&#xE4D0;"
                            FontSize="20"
                            Width="28"
                            VerticalAlignment="Center" />
-                <!-- tekst -->
                 <TextBlock Text="Add users"
                            VerticalAlignment="Center"
                            Margin="8,0,0,0" />

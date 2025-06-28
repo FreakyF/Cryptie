@@ -18,6 +18,7 @@ using Cryptie.Client.Features.ChatSettings.ViewModels;
 using Cryptie.Client.Features.Dashboard.Services;
 using Cryptie.Client.Features.Dashboard.ViewModels;
 using Cryptie.Client.Features.Groups.Services;
+using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Groups.ViewModels;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Client.Features.Menu.ViewModels;
@@ -128,10 +129,10 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IConnectionMonitor, ConnectionMonitor>();
         services.AddSingleton<IRegistrationState, RegistrationState>();
         services.AddSingleton<IUserState, UserState>();
+        services.AddSingleton<IGroupSelectionState, GroupSelectionState>();
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
         services.AddSingleton<IThemeService, ThemeService>();
-
         services.AddSingleton<MessagesService>();
 
         services.AddSingleton<MainWindowViewModel>();

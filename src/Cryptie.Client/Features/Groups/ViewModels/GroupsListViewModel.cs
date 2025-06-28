@@ -13,6 +13,7 @@ using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Groups.Services;
+using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Common.Features.UserManagement.DTOs;
@@ -40,8 +41,10 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         IKeychainManagerService keychainManager,
         IValidator<AddFriendRequestDto> validator,
         IGroupService groupService,
+        IGroupSelectionState groupState,
         IUserState userState) : base(hostScreen)
     {
+        var groupState1 = groupState;
         _keychain = keychainManager;
         _groupService = groupService;
 
@@ -73,6 +76,11 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
             .DisposeWith(_disposables);
 
         connectionMonitor.Start();
+
+        this.WhenAnyValue(vm => vm.SelectedGroup)
+            .Where(name => !string.IsNullOrWhiteSpace(name))
+            .Subscribe(name => groupState1.SelectedGroupName = name!)
+            .DisposeWith(_disposables);
 
         _ = LoadGroupsAsync(CancellationToken.None);
     }
