@@ -51,6 +51,13 @@ public class AccountViewModel : RoutableViewModelBase
             .Publish()
             .RefCount();
 
+        var isDifferent = this.WhenAnyValue(vm => vm.Username)
+            .Select(name => !string.Equals(
+                name?.Trim(),
+                _userState.Username?.Trim(),
+                StringComparison.Ordinal
+            ));
+
         validationChanged
             .CombineLatest(nameTouched,
                 (result, touched) => touched && !result.IsValid
@@ -60,13 +67,16 @@ public class AccountViewModel : RoutableViewModelBase
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(msg => ErrorMessage = msg);
 
-        var canChange = validationChanged.Select(v => v.IsValid);
+        var canChange = validationChanged
+            .CombineLatest(isDifferent,
+                (validation, different) => validation.IsValid && different);
 
         ChangeNameCommand = ReactiveCommand.CreateFromTask(
             ExecuteChangeNameAsync, canChange);
 
         SignOutCommand = ReactiveCommand.Create(ExecuteLogout);
     }
+
 
     public ReactiveCommand<Unit, Unit> ChangeNameCommand { get; }
     public ReactiveCommand<Unit, Unit> SignOutCommand { get; }
