@@ -1,5 +1,8 @@
-﻿using System;
+﻿// ChatsViewModel.cs
+
+using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -19,7 +22,9 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     private bool _isChatSettingsOpen;
     private string? _messageText;
 
-    public ChatsViewModel(IScreen hostScreen, IConnectionMonitor connectionMonitor,
+    public ChatsViewModel(
+        IScreen hostScreen,
+        IConnectionMonitor connectionMonitor,
         ChatsViewModelDependencies deps)
         : base(hostScreen)
     {
@@ -32,6 +37,8 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
             deps.AddFriendDependencies,
             deps.GroupService,
             deps.GroupState);
+
+        GroupsPanel.Groups.CollectionChanged += OnGroupsChanged;
 
         Messages = [];
 
@@ -102,7 +109,6 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
         }
     }
 
-
     public GroupsListViewModel GroupsPanel { get; }
 
     public ObservableCollection<ChatMessageViewModel> Messages { get; }
@@ -126,5 +132,15 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
         set => this.RaiseAndSetIfChanged(ref _isChatSettingsOpen, value);
     }
 
+    public bool HasGroups => GroupsPanel.Groups.Count > 0;
+
+    public bool HasNoGroups => !HasGroups;
+
     public void Dispose() => _disposables.Dispose();
+
+    private void OnGroupsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        this.RaisePropertyChanged(nameof(HasGroups));
+        this.RaisePropertyChanged(nameof(HasNoGroups));
+    }
 }

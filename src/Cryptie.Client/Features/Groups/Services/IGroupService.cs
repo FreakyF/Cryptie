@@ -16,4 +16,6 @@ public interface IGroupService
     Task<string?> GetGroupNameAsync(
         GetGroupNameRequestDto request,
         CancellationToken cancellationToken = default);
+
+    Task<bool> IsGroupPrivateAsync(IsGroupPrivateRequestDto request, CancellationToken cancellationToken = default);
 }

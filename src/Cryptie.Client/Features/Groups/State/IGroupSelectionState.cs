@@ -6,4 +6,5 @@ public interface IGroupSelectionState
 {
     Guid SelectedGroupId { get; set; }
     string? SelectedGroupName { get; set; }
+    bool IsGroupPrivate { get; set; }
 }

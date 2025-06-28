@@ -4,8 +4,11 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Navigation;
+using Cryptie.Client.Features.Account.Dependencies;
 using Cryptie.Client.Features.Account.services;
 using Cryptie.Client.Features.Authentication.Services;
+using Cryptie.Client.Features.Authentication.State;
+using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using FluentValidation;
@@ -17,8 +20,12 @@ namespace Cryptie.Client.Features.Account.ViewModels;
 public class AccountViewModel : RoutableViewModelBase
 {
     private readonly IAccountService _account;
+    private readonly IGroupSelectionState _groupSelectionState;
     private readonly IKeychainManagerService _keychain;
+    private readonly ILoginState _loginState;
+    private readonly IRegistrationState _registrationState;
     private readonly IShellCoordinator _shell;
+
     private readonly IUserState _userState;
     private readonly IValidator<UserDisplayNameRequestDto> _validator;
 
@@ -28,16 +35,20 @@ public class AccountViewModel : RoutableViewModelBase
         IScreen hostScreen,
         IKeychainManagerService keychain,
         IShellCoordinator shell,
-        IUserState userState,
         IAccountService accountService,
-        IValidator<UserDisplayNameRequestDto> validator)
+        IValidator<UserDisplayNameRequestDto> validator,
+        AccountState state)
         : base(hostScreen)
     {
         _keychain = keychain;
         _shell = shell;
-        _userState = userState;
         _account = accountService;
         _validator = validator;
+
+        _userState = state.UserState;
+        _groupSelectionState = state.GroupSelectionState;
+        _loginState = state.LoginState;
+        _registrationState = state.RegistrationState;
 
         _username = _userState.Username;
 
@@ -77,7 +88,6 @@ public class AccountViewModel : RoutableViewModelBase
         SignOutCommand = ReactiveCommand.Create(ExecuteLogout);
     }
 
-
     public ReactiveCommand<Unit, Unit> ChangeNameCommand { get; }
     public ReactiveCommand<Unit, Unit> SignOutCommand { get; }
 
@@ -111,7 +121,6 @@ public class AccountViewModel : RoutableViewModelBase
             };
 
             await _validator.ValidateAndThrowAsync(dto);
-
             await _account.ChangeUserDisplayNameAsync(dto);
 
             _userState.Username = Username;
@@ -126,6 +135,16 @@ public class AccountViewModel : RoutableViewModelBase
     private void ExecuteLogout()
     {
         _keychain.TryClearSessionToken(out _);
+
+        _userState.Username = null;
+
+        _groupSelectionState.SelectedGroupId = Guid.Empty;
+        _groupSelectionState.SelectedGroupName = null;
+        _groupSelectionState.IsGroupPrivate = false;
+
+        _loginState.LastResponse = null;
+        _registrationState.LastResponse = null;
+
         _shell.ResetAndShowLogin();
     }
 }

@@ -28,6 +28,7 @@
                     <SolidColorBrush x:Key="FriendBubbleForeground" Color="#000000" />
                     <SolidColorBrush x:Key="DisabledButtonBackground" Color="#F5F5F6" />
                     <SolidColorBrush x:Key="DisabledButtonForeground" Color="#BBC6C9" />
+                    <SolidColorBrush x:Key="NoFriendsTextBrush" Color="Black" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="TopBarBackground" Color="#1E1E22" />
@@ -35,6 +36,7 @@
                     <SolidColorBrush x:Key="FriendBubbleForeground" Color="#FFFFFF" />
                     <SolidColorBrush x:Key="DisabledButtonBackground" Color="#313135" />
                     <SolidColorBrush x:Key="DisabledButtonForeground" Color="#636D75" />
+                    <SolidColorBrush x:Key="NoFriendsTextBrush" Color="White" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
@@ -72,6 +74,7 @@
         <DataTemplate DataType="viewModels2:GroupsListViewModel">
             <views1:GroupsListView />
         </DataTemplate>
+
         <DataTemplate DataType="viewModels3:ChatSettingsViewModel">
             <settings:ChatSettingsView />
         </DataTemplate>
@@ -126,6 +129,7 @@
         </DataTemplate>
     </UserControl.DataTemplates>
 
+
     <Grid ColumnDefinitions="250,*">
         <Border Grid.Column="0"
                 BorderBrush="{DynamicResource SplitViewSeparatorBackground}"
@@ -133,111 +137,122 @@
             <ContentControl Content="{Binding GroupsPanel}" />
         </Border>
 
-        <SplitView Grid.Column="1"
-                   PanePlacement="Right"
-                   DisplayMode="Inline"
-                   OpenPaneLength="220"
-                   IsPaneOpen="{Binding IsChatSettingsOpen}">
+        <Grid Grid.Column="1">
 
-            <SplitView.Pane>
-                <ContentControl Content="{Binding SettingsPanel}" Width="220" />
-            </SplitView.Pane>
+            <TextBlock
+                Text="No friends? Add one!"
+                Theme="{StaticResource TitleTextBlock}"
+                Classes="H1"
+                Foreground="{DynamicResource NoFriendsTextBrush}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsVisible="{Binding HasNoGroups}" />
 
-            <SplitView.Content>
-                <Grid RowDefinitions="48,*,Auto">
+            <SplitView
+                PanePlacement="Right"
+                DisplayMode="Inline"
+                OpenPaneLength="220"
+                IsPaneOpen="{Binding IsChatSettingsOpen}"
+                IsVisible="{Binding HasGroups}">
 
-                    <Border Grid.Row="0"
-                            Background="{DynamicResource TopBarBackground}"
-                            BorderThickness="0,0,0,1"
-                            BorderBrush="{DynamicResource SplitViewSeparatorBackground}">
-                        <Grid ColumnDefinitions="Auto,*,Auto"
-                              VerticalAlignment="Center"
-                              Margin="12,0,0,0">
+                <SplitView.Pane>
+                    <ContentControl Content="{Binding SettingsPanel}" Width="220" />
+                </SplitView.Pane>
 
-                            <Grid Width="32" Height="32" Margin="0,0,8,0">
-                                <Ellipse
-                                    Fill="{Binding CurrentGroupName, Converter={StaticResource InitialBackgroundConverter}}" />
-                                <TextBlock
-                                    Text="{Binding CurrentGroupName, Converter={StaticResource InitialConverter}}"
-                                    Foreground="White"
-                                    FontSize="16"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center" />
+                <SplitView.Content>
+                    <Grid RowDefinitions="48,*,Auto">
+                        <Border Grid.Row="0"
+                                Background="{DynamicResource TopBarBackground}"
+                                BorderThickness="0,0,0,1"
+                                BorderBrush="{DynamicResource SplitViewSeparatorBackground}">
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  VerticalAlignment="Center"
+                                  Margin="12,0,0,0">
+
+                                <Grid Width="32" Height="32" Margin="0,0,8,0">
+                                    <Ellipse
+                                        Fill="{Binding CurrentGroupName, Converter={StaticResource InitialBackgroundConverter}}" />
+                                    <TextBlock
+                                        Text="{Binding CurrentGroupName, Converter={StaticResource InitialConverter}}"
+                                        Foreground="White"
+                                        FontSize="16"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center" />
+                                </Grid>
+
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding CurrentGroupName}"
+                                           Theme="{StaticResource TitleTextBlock}"
+                                           Classes="H4"
+                                           VerticalAlignment="Center"
+                                           TextWrapping="NoWrap"
+                                           TextTrimming="CharacterEllipsis" />
+
+                                <Button Grid.Column="2"
+                                        Width="48" Height="48"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        CornerRadius="0"
+                                        Command="{Binding ToggleChatSettingsCommand}">
+                                    <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                                               Text="&#xE1FE;"
+                                               FontSize="20" />
+                                </Button>
                             </Grid>
+                        </Border>
 
-                            <TextBlock Grid.Column="1"
-                                       Text="{Binding CurrentGroupName}"
-                                       Theme="{StaticResource TitleTextBlock}"
-                                       Classes="H4"
-                                       VerticalAlignment="Center"
-                                       TextWrapping="NoWrap"
-                                       TextTrimming="CharacterEllipsis" />
+                        <ScrollViewer x:Name="MessagesScrollViewer" Grid.Row="1">
+                            <ScrollViewer.Styles>
+                                <Style Selector="ScrollBar[Orientation=Vertical]">
+                                    <Setter Property="Margin" Value="0,0,5,0" />
+                                </Style>
+                            </ScrollViewer.Styles>
 
-                            <Button Grid.Column="2"
+                            <ItemsControl ItemsSource="{Binding Messages}">
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <Grid Grid.Row="2" Margin="12,8" ColumnDefinitions="*,Auto">
+                            <TextBox Grid.Column="0"
+                                     Watermark="Type a message…"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     MinHeight="48"
+                                     MaxHeight="96"
+                                     MaxLength="2000"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                     Padding="0"
+                                     Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.KeyBindings>
+                                    <KeyBinding Gesture="Enter"
+                                                Command="{Binding SendMessageCommand}" />
+                                </TextBox.KeyBindings>
+                                <TextBox.Styles>
+                                    <Style Selector="ScrollContentPresenter">
+                                        <Setter Property="Margin" Value="10,8,20,8" />
+                                    </Style>
+                                    <Style Selector="ScrollBar[Orientation=Vertical]">
+                                        <Setter Property="Margin" Value="0,5,5,5" />
+                                    </Style>
+                                </TextBox.Styles>
+                            </TextBox>
+
+                            <Button Grid.Column="1"
+                                    Classes="SendButton"
                                     Width="48" Height="48"
-                                    Background="Transparent"
-                                    BorderBrush="Transparent"
-                                    CornerRadius="0"
-                                    Command="{Binding ToggleChatSettingsCommand}">
-                                <TextBlock FontFamily="{StaticResource PhosphorRegular}"
-                                           Text="&#xE1FE;"
+                                    VerticalAlignment="Bottom"
+                                    Margin="8,0,0,0"
+                                    Command="{Binding SendMessageCommand}">
+                                <TextBlock FontFamily="{StaticResource PhosphorLight}"
+                                           Text="&#xE398;"
                                            FontSize="20" />
                             </Button>
                         </Grid>
-                    </Border>
 
-                    <ScrollViewer x:Name="MessagesScrollViewer" Grid.Row="1">
-                        <ScrollViewer.Styles>
-                            <Style Selector="ScrollBar[Orientation=Vertical]">
-                                <Setter Property="Margin" Value="0,0,5,0" />
-                            </Style>
-                        </ScrollViewer.Styles>
-
-                        <ItemsControl ItemsSource="{Binding Messages}">
-                            <ItemsControl.ItemTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-
-                    <Grid Grid.Row="2" Margin="12,8" ColumnDefinitions="*,Auto">
-                        <TextBox Grid.Column="0"
-                                 Watermark="Type a message…"
-                                 AcceptsReturn="True"
-                                 TextWrapping="Wrap"
-                                 MinHeight="48"
-                                 MaxHeight="96"
-                                 MaxLength="2000"
-                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                 Padding="0"
-                                 Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <TextBox.KeyBindings>
-                                <KeyBinding Gesture="Enter"
-                                            Command="{Binding SendMessageCommand}" />
-                            </TextBox.KeyBindings>
-                            <TextBox.Styles>
-                                <Style Selector="ScrollContentPresenter">
-                                    <Setter Property="Margin" Value="10,8,20,8" />
-                                </Style>
-                                <Style Selector="ScrollBar[Orientation=Vertical]">
-                                    <Setter Property="Margin" Value="0,5,5,5" />
-                                </Style>
-                            </TextBox.Styles>
-                        </TextBox>
-
-                        <Button Grid.Column="1"
-                                Classes="SendButton"
-                                Width="48" Height="48"
-                                VerticalAlignment="Bottom"
-                                Margin="8,0,0,0"
-                                Command="{Binding SendMessageCommand}">
-                            <TextBlock FontFamily="{StaticResource PhosphorLight}"
-                                       Text="&#xE398;"
-                                       FontSize="20" />
-                        </Button>
                     </Grid>
+                </SplitView.Content>
 
-                </Grid>
-            </SplitView.Content>
-        </SplitView>
+            </SplitView>
+        </Grid>
     </Grid>
 </UserControl>

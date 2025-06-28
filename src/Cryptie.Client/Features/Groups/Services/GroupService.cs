@@ -42,4 +42,21 @@ public class GroupService(HttpClient httpClient) : IGroupService
 
         return result?.name;
     }
+
+    public async Task<bool> IsGroupPrivateAsync(
+        IsGroupPrivateRequestDto request,
+        CancellationToken cancellationToken = default)
+    {
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "group/isPrivate");
+        httpRequest.Content = JsonContent.Create(request);
+
+        using var response = await httpClient.SendAsync(httpRequest, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content
+                         .ReadFromJsonAsync<IsGroupPrivateResponseDto>(cancellationToken: cancellationToken)
+                     ?? throw new InvalidOperationException("Brak danych z serwera");
+
+        return result.IsPrivate;
+    }
 }

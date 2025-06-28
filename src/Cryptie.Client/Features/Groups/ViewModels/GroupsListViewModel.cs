@@ -29,7 +29,7 @@ namespace Cryptie.Client.Features.Groups.ViewModels
         private readonly IKeychainManagerService _keychain;
         private CancellationTokenSource? _addFriendCts;
         private bool _disposed;
-        private List<Guid> _groupIds = new();
+        private List<Guid> _groupIds = [];
         private string? _selectedGroup;
 
         public GroupsListViewModel(
@@ -43,6 +43,7 @@ namespace Cryptie.Client.Features.Groups.ViewModels
         {
             _keychain = deps.KeychainManager;
             _groupService = groupService;
+            var groupState1 = groupState;
             IconUri = options.Value.FontUri;
 
             AddFriendCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -57,8 +58,9 @@ namespace Cryptie.Client.Features.Groups.ViewModels
                         deps.Validator,
                         deps.UserState);
 
-                    await LoadGroupsAsync(_addFriendCts.Token);
                     await ShowAddFriend.Handle((vm, _addFriendCts.Token));
+
+                    await LoadGroupsAsync(_addFriendCts.Token);
                 }
                 finally
                 {
@@ -72,22 +74,48 @@ namespace Cryptie.Client.Features.Groups.ViewModels
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(_ => _addFriendCts?.Cancel())
                 .DisposeWith(_disposables);
-
             connectionMonitor.Start();
 
             this.WhenAnyValue(vm => vm.SelectedGroup)
                 .Where(name => !string.IsNullOrWhiteSpace(name))
-                .Subscribe(name =>
+                .Subscribe(async void (name) =>
                 {
-                    groupState.SelectedGroupName = name!;
-                    var idx = Groups.IndexOf(name!);
-                    if (idx >= 0 && idx < _groupIds.Count)
-                        groupState.SelectedGroupId = _groupIds[idx];
+                    try
+                    {
+                        groupState1.SelectedGroupName = name!;
+                        var idx = Groups.IndexOf(name!);
+                        if (idx < 0 || idx >= _groupIds.Count)
+                        {
+                            return;
+                        }
+
+                        var id = _groupIds[idx];
+                        groupState1.SelectedGroupId = id;
+
+                        try
+                        {
+                            var isPrivate = await _groupService.IsGroupPrivateAsync(
+                                new IsGroupPrivateRequestDto { GroupId = id });
+                            groupState1.IsGroupPrivate = isPrivate;
+                        }
+                        catch
+                        {
+                            groupState1.IsGroupPrivate = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Swallow exception: do nothing
+                    }
                 })
                 .DisposeWith(_disposables);
 
             _ = LoadGroupsAsync(CancellationToken.None);
         }
+
+        public ObservableCollection<string> Groups { get; } = new();
+
+        public IReadOnlyList<Guid> GroupIds => _groupIds;
 
         public string? SelectedGroup
         {
@@ -96,16 +124,6 @@ namespace Cryptie.Client.Features.Groups.ViewModels
         }
 
         public string IconUri { get; }
-
-        /// <summary>
-        /// Nazwy grup do wyświetlenia.
-        /// </summary>
-        public ObservableCollection<string> Groups { get; } = new();
-
-        /// <summary>
-        /// Id grup w tej samej kolejności co <see cref="Groups"/>.
-        /// </summary>
-        public IReadOnlyList<Guid> GroupIds => _groupIds;
 
         public ReactiveCommand<Unit, Unit> AddFriendCommand { get; }
 
@@ -128,22 +146,19 @@ namespace Cryptie.Client.Features.Groups.ViewModels
             if (!Guid.TryParse(tokenString, out var token))
                 return;
 
-            // Pobranie listy Guid-ów
             var ids = await _groupService.GetUserGroupsAsync(
                 new UserGroupsRequestDto { SessionToken = token },
                 cancellationToken);
-
             _groupIds = ids.ToList();
 
-            // Pobranie nazw (lub fallback)
             var nameTasks = _groupIds
                 .Select(id => _groupService
                     .GetGroupNameAsync(
                         new GetGroupNameRequestDto { GroupId = id },
                         cancellationToken)
-                    .ContinueWith(t => t.Result ?? $"[{id}]", TaskContinuationOptions.ExecuteSynchronously)
+                    .ContinueWith(t => t.Result ?? $"[{id}]",
+                        TaskContinuationOptions.ExecuteSynchronously)
                 );
-
             var names = await Task.WhenAll(nameTasks);
 
             RxApp.MainThreadScheduler.Schedule(names, (_, list) =>
