@@ -1,11 +1,11 @@
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Cryptie.Server.Features.Messages.Services;
+namespace Cryptie.Server.Features.Messages;
 
 public class MessageHub : Hub
 {
-    private static readonly ConcurrentDictionary<string, Guid> _users = new();
+    private static readonly ConcurrentDictionary<string, Guid> Users = new();
 
     public async Task SendMessage(string message)
     {
@@ -14,7 +14,7 @@ public class MessageHub : Hub
 
     public async Task JoinGroup(Guid user, Guid group)
     {
-        _users.TryAdd(Context.ConnectionId, user);
+        Users.TryAdd(Context.ConnectionId, user);
         await Groups.AddToGroupAsync(Context.ConnectionId, group.ToString());
         await Clients.Group(group.ToString()).SendAsync("UserJoinedGroup", user, group);
     }
