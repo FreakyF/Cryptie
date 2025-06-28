@@ -14,6 +14,7 @@ using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Authentication.ViewModels;
 using Cryptie.Client.Features.Chats.ViewModels;
+using Cryptie.Client.Features.ChatSettings.ViewModels;
 using Cryptie.Client.Features.Dashboard.Services;
 using Cryptie.Client.Features.Dashboard.ViewModels;
 using Cryptie.Client.Features.Groups.Services;
@@ -115,6 +116,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<AccountViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<AddFriendViewModel>();
+        services.AddTransient<ChatSettingsViewModel>();
 
         services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
         services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();
