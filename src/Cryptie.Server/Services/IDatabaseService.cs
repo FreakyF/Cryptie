@@ -18,7 +18,7 @@ public interface IDatabaseService
     public void LogLoginAttempt(string user);
     public Guid GenerateUserToken(User user);
     public void AddFriend(User user, User friend);
-    public Group CreateGroup(string name);
+    public Group CreateGroup(string name, bool isPrivate = false);
     public void ChangeUserDisplayName(User user, string name);
     public Group? FindGroupById(Guid id);
     public string GetUserPublicKey(Guid userId);

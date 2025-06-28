@@ -144,11 +144,12 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         appDbContext.SaveChanges();
     }
 
-    public Group CreateGroup(string name)
+    public Group CreateGroup(string name, bool isPrivate = false)
     {
         var group = appDbContext.Groups.Add(new Group
         {
-            Name = name
+            Name = name,
+            IsPrivate = isPrivate
         });
 
         appDbContext.SaveChanges();

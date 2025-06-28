@@ -42,7 +42,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         if (user == null) return BadRequest();
         databaseService.AddFriend(user, friend);
 
-        var group = databaseService.CreateGroup(user.DisplayName + "_" + friend.DisplayName);
+        var group = databaseService.CreateGroup(user.DisplayName + "_" + friend.DisplayName, true);
 
         databaseService.AddUserToGroup(user.Id, group.Id);
         databaseService.AddUserToGroup(friend.Id, group.Id);
