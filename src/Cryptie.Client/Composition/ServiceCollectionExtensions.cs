@@ -17,6 +17,7 @@ using Cryptie.Client.Features.Chats.ViewModels;
 using Cryptie.Client.Features.ChatSettings.ViewModels;
 using Cryptie.Client.Features.Dashboard.Services;
 using Cryptie.Client.Features.Dashboard.ViewModels;
+using Cryptie.Client.Features.Groups.Dependencies;
 using Cryptie.Client.Features.Groups.Services;
 using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Groups.ViewModels;
@@ -134,6 +135,12 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<MessagesService>();
+
+        services.AddSingleton<AddFriendDependencies>(sp => new AddFriendDependencies(
+            sp.GetRequiredService<IFriendsService>(),
+            sp.GetRequiredService<IKeychainManagerService>(),
+            sp.GetRequiredService<IValidator<AddFriendRequestDto>>(),
+            sp.GetRequiredService<IUserState>()));
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

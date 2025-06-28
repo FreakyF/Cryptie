@@ -9,15 +9,13 @@ using System.Threading.Tasks;
 using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Services;
-using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
 using Cryptie.Client.Features.Authentication.Services;
+using Cryptie.Client.Features.Groups.Dependencies;
 using Cryptie.Client.Features.Groups.Services;
 using Cryptie.Client.Features.Groups.State;
-using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Common.Features.UserManagement.DTOs;
-using FluentValidation;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
 
@@ -37,15 +35,12 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         IScreen hostScreen,
         IConnectionMonitor connectionMonitor,
         IOptions<ClientOptions> options,
-        IFriendsService friendsService,
-        IKeychainManagerService keychainManager,
-        IValidator<AddFriendRequestDto> validator,
+        AddFriendDependencies deps,
         IGroupService groupService,
-        IGroupSelectionState groupState,
-        IUserState userState) : base(hostScreen)
+        IGroupSelectionState groupState)
+        : base(hostScreen)
     {
-        var groupState1 = groupState;
-        _keychain = keychainManager;
+        _keychain = deps.KeychainManager;
         _groupService = groupService;
 
         IconUri = options.Value.FontUri;
@@ -56,7 +51,11 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
             try
             {
                 var vm = new AddFriendViewModel(
-                    hostScreen, friendsService, keychainManager, validator, userState);
+                    hostScreen,
+                    deps.FriendsService,
+                    deps.KeychainManager,
+                    deps.Validator,
+                    deps.UserState);
 
                 await LoadGroupsAsync(_addFriendCts.Token);
 
@@ -79,7 +78,7 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
 
         this.WhenAnyValue(vm => vm.SelectedGroup)
             .Where(name => !string.IsNullOrWhiteSpace(name))
-            .Subscribe(name => groupState1.SelectedGroupName = name!)
+            .Subscribe(name => groupState.SelectedGroupName = name!)
             .DisposeWith(_disposables);
 
         _ = LoadGroupsAsync(CancellationToken.None);
