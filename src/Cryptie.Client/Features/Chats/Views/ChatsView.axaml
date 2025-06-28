@@ -103,7 +103,8 @@
                     <Button Grid.Column="2"
                             Width="48" Height="48"
                             Background="Transparent" BorderBrush="Transparent"
-                            HorizontalAlignment="Right" VerticalAlignment="Center">
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            CornerRadius="0">
                         <TextBlock FontFamily="{StaticResource PhosphorRegular}"
                                    Text="&#xE1FE;" FontSize="24" />
                     </Button>
@@ -156,7 +157,16 @@
                          MinHeight="48"
                          MaxHeight="96"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         Padding="10,8" />
+                         Padding="0">
+                    <TextBox.Styles>
+                        <Style Selector="ScrollContentPresenter">
+                            <Setter Property="Margin" Value="10,8,18,8" />
+                        </Style>
+                        <Style Selector="ScrollBar[Orientation=Vertical]">
+                            <Setter Property="Margin" Value="0,5,5,5" />
+                        </Style>
+                    </TextBox.Styles>
+                </TextBox>
                 <Button Grid.Column="1"
                         Classes="SendButton"
                         Width="48" Height="48"
