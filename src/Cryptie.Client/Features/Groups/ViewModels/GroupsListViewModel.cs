@@ -30,6 +30,8 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
     private CancellationTokenSource? _addFriendCts;
     private bool _disposed;
 
+    private string? _selectedGroup;
+
     public GroupsListViewModel(
         IScreen hostScreen,
         IConnectionMonitor connectionMonitor,
@@ -44,12 +46,14 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         _groupService = groupService;
 
         IconUri = options.Value.FontUri;
+
         AddFriendCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             _addFriendCts = new CancellationTokenSource();
             try
             {
-                var vm = new AddFriendViewModel(hostScreen, friendsService, keychainManager, validator, userState);
+                var vm = new AddFriendViewModel(
+                    hostScreen, friendsService, keychainManager, validator, userState);
 
                 await LoadGroupsAsync(_addFriendCts.Token);
 
@@ -71,6 +75,12 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         connectionMonitor.Start();
 
         _ = LoadGroupsAsync(CancellationToken.None);
+    }
+
+    public string? SelectedGroup
+    {
+        get => _selectedGroup;
+        set => this.RaiseAndSetIfChanged(ref _selectedGroup, value);
     }
 
     public string IconUri { get; }
@@ -108,15 +118,18 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
             _groupService.GetGroupNameAsync(
                     new GetGroupNameRequestDto { GroupId = id },
                     cancellationToken)
-                .ContinueWith(t => t.Result ?? $"[{id}]",
-                    TaskContinuationOptions.ExecuteSynchronously));
+                .ContinueWith(t => t.Result ?? $"[{id}]", TaskContinuationOptions.ExecuteSynchronously));
 
         var names = await Task.WhenAll(nameTasks);
 
         RxApp.MainThreadScheduler.Schedule(names, (_, list) =>
         {
             Groups.Clear();
-            foreach (var name in list) Groups.Add(name);
+            foreach (var name in list)
+                Groups.Add(name);
+
+            SelectedGroup = Groups.FirstOrDefault();
+
             return Disposable.Empty;
         });
     }

@@ -11,6 +11,7 @@
              x:Class="Cryptie.Client.Features.Groups.Views.GroupsListView"
              x:DataType="viewModels1:GroupsListViewModel"
              Background="{DynamicResource GroupsListBackground}">
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
@@ -25,16 +26,20 @@
             <converters1:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
+
     <Grid RowDefinitions="Auto,*">
+
         <Grid Row="0"
               VerticalAlignment="Center"
               ColumnDefinitions="*,Auto">
+
             <TextBlock Grid.Column="0"
                        Text="Friends"
                        Theme="{StaticResource TitleTextBlock}"
                        Classes="H4"
                        VerticalAlignment="Center"
                        Margin="5,0,0,0" />
+
             <Button Grid.Column="1"
                     Command="{Binding AddFriendCommand}"
                     Background="Transparent"
@@ -50,9 +55,11 @@
 
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding Groups}"
+                 SelectedItem="{Binding SelectedGroup, Mode=TwoWay}"
                  BorderThickness="0"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  ScrollViewer.AllowAutoHide="False">
+
             <ListBox.Styles>
                 <Style Selector="ListBoxItem">
                     <Setter Property="Padding" Value="8,12" />
@@ -67,8 +74,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="x:String">
                     <Grid ColumnDefinitions="Auto,*"
-                          VerticalAlignment="Center"
-                          Margin="0">
+                          VerticalAlignment="Center">
 
                         <Grid Grid.Column="0"
                               Width="32" Height="32"
