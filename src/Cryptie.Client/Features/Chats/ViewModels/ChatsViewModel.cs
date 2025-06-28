@@ -41,7 +41,8 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
             .ToProperty(this, vm => vm.CurrentGroupName);
 
         var canSend = this
-            .WhenAnyValue(vm => vm.MessageText, txt => !string.IsNullOrWhiteSpace(txt));
+            .WhenAnyValue(vm => vm.MessageText,
+                txt => !string.IsNullOrWhiteSpace(txt) && txt.Length <= 2000);
 
         SendMessageCommand = ReactiveCommand.CreateFromTask(async () =>
         {

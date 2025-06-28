@@ -21,8 +21,6 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-
-            <!-- Light / Dark theme for friend-bubbles -->
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
                     <SolidColorBrush x:Key="TopBarBackground" Color="#F5F5F5" />
@@ -40,13 +38,11 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <!-- Your converters -->
             <converters:InitialConverter x:Key="InitialConverter" />
             <converters:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
             <converters1:WidthFractionConverter x:Key="BubbleWidthConv" Fraction="0.4" />
             <converters2:BoolToInvertConverter x:Key="InvertBoolConverter" />
 
-            <!-- Own‐message brushes -->
             <SolidColorBrush x:Key="OwnBubbleBackground" Color="#0064FA" />
             <SolidColorBrush x:Key="OwnBubbleForeground" Color="#FFFFFF" />
 
@@ -101,7 +97,6 @@
             <SplitView.Content>
                 <Grid RowDefinitions="48,*,Auto">
 
-                    <!-- Top Bar -->
                     <Border Grid.Row="0"
                             Background="{DynamicResource TopBarBackground}"
                             BorderThickness="0,0,0,1"
@@ -142,13 +137,11 @@
                         </Grid>
                     </Border>
 
-                    <!-- Messages -->
-                    <ScrollViewer Grid.Row="1">
+                    <ScrollViewer x:Name="MessagesScrollViewer" Grid.Row="1">
                         <ItemsControl ItemsSource="{Binding Messages}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="viewModels1:ChatMessageViewModel">
                                     <Grid ColumnDefinitions="Auto,*" Margin="8">
-                                        <!-- avatar / initial for friend only -->
                                         <Grid Grid.Column="0"
                                               Width="32" Height="32"
                                               Margin="0,0,8,0"
@@ -162,13 +155,11 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center" />
                                         </Grid>
-                                        <!-- spacer for own -->
                                         <Rectangle Grid.Column="0"
                                                    Width="32" Height="32"
                                                    Fill="Transparent"
                                                    Margin="0,0,8,0"
                                                    IsVisible="{Binding IsOwn}" />
-                                        <!-- friend bubble -->
                                         <Border Grid.Column="1"
                                                 Padding="12" CornerRadius="10"
                                                 HorizontalAlignment="Left"
@@ -179,7 +170,6 @@
                                                        TextWrapping="Wrap"
                                                        Foreground="{DynamicResource FriendBubbleForeground}" />
                                         </Border>
-                                        <!-- own bubble -->
                                         <Border Grid.Column="1"
                                                 Padding="12" CornerRadius="10"
                                                 HorizontalAlignment="Right"
@@ -197,7 +187,6 @@
                         </ItemsControl>
                     </ScrollViewer>
 
-                    <!-- Input -->
                     <Grid Grid.Row="2" Margin="12,8" ColumnDefinitions="*,Auto">
                         <TextBox Grid.Column="0"
                                  Watermark="Type a message…"
@@ -205,6 +194,7 @@
                                  TextWrapping="Wrap"
                                  MinHeight="48"
                                  MaxHeight="96"
+                                 MaxLength="2000"
                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                                  Padding="0"
                                  Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
