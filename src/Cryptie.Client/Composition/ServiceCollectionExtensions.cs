@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Reflection;
 using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Factories;
@@ -13,9 +14,10 @@ using Cryptie.Client.Features.AddFriend.ViewModels;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Authentication.ViewModels;
+using Cryptie.Client.Features.Chats.Dependencies;
+using Cryptie.Client.Features.Chats.Services;
 using Cryptie.Client.Features.Chats.ViewModels;
 using Cryptie.Client.Features.ChatSettings.ViewModels;
-using Cryptie.Client.Features.Dashboard.Services;
 using Cryptie.Client.Features.Dashboard.ViewModels;
 using Cryptie.Client.Features.Groups.Dependencies;
 using Cryptie.Client.Features.Groups.Services;
@@ -37,6 +39,7 @@ using Cryptie.Common.Features.UserManagement.Validators;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -93,6 +96,24 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
 
+        services.AddSingleton<HubConnection>(sp =>
+        {
+            var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+            var hubUri = new Uri(new Uri(opts.BaseUri), "messages");
+
+            return new HubConnectionBuilder()
+                .WithUrl(hubUri, httpOpts =>
+                {
+                    httpOpts.HttpMessageHandlerFactory = _ => new HttpClientHandler
+                    {
+                        // no custom ServerCertificateCustomValidationCallback means
+                        // the default (strict) validation is used
+                    };
+                })
+                .WithAutomaticReconnect()
+                .Build();
+        });
+
         var cfg = TypeAdapterConfig.GlobalSettings;
         cfg.Scan(Assembly.GetExecutingAssembly());
 
@@ -134,13 +155,23 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
         services.AddSingleton<IThemeService, ThemeService>();
-        services.AddSingleton<MessagesService>();
+        services.AddSingleton<IMessagesService, MessagesService>();
 
         services.AddSingleton<AddFriendDependencies>(sp => new AddFriendDependencies(
             sp.GetRequiredService<IFriendsService>(),
             sp.GetRequiredService<IKeychainManagerService>(),
             sp.GetRequiredService<IValidator<AddFriendRequestDto>>(),
             sp.GetRequiredService<IUserState>()));
+
+        services.AddTransient<ChatsViewModelDependencies>(sp => new ChatsViewModelDependencies(
+            sp.GetRequiredService<IOptions<ClientOptions>>(),
+            sp.GetRequiredService<AddFriendDependencies>(),
+            sp.GetRequiredService<IGroupService>(),
+            sp.GetRequiredService<IGroupSelectionState>(),
+            sp.GetRequiredService<IKeychainManagerService>(),
+            sp.GetRequiredService<IMessagesService>(),
+            sp.GetRequiredService<ChatSettingsViewModel>()
+        ));
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddTransient<MainWindow>();

@@ -11,8 +11,9 @@
     xmlns:viewModels3="clr-namespace:Cryptie.Client.Features.ChatSettings.ViewModels"
     xmlns:views1="clr-namespace:Cryptie.Client.Features.Groups.Views"
     xmlns:settings="clr-namespace:Cryptie.Client.Features.ChatSettings.Views"
-    xmlns:converters1="clr-namespace:Cryptie.Client.Core.Converters"
-    xmlns:converters="clr-namespace:Cryptie.Client.Features.Chats.Converters"
+    xmlns:converters="clr-namespace:Cryptie.Client.Core.Converters"
+    xmlns:converters1="clr-namespace:Cryptie.Client.Features.Chats.Converters"
+    xmlns:converters2="clr-namespace:Cryptie.Client.Features.Messages.Converters"
     mc:Ignorable="d"
     x:Class="Cryptie.Client.Features.Chats.Views.ChatsView"
     x:DataType="viewModels1:ChatsViewModel"
@@ -25,17 +26,26 @@
                     <SolidColorBrush x:Key="TopBarBackground" Color="#F5F5F5" />
                     <SolidColorBrush x:Key="FriendBubbleBackground" Color="#E6E6E8" />
                     <SolidColorBrush x:Key="FriendBubbleForeground" Color="#000000" />
+                    <SolidColorBrush x:Key="DisabledButtonBackground" Color="#F5F5F6" />
+                    <SolidColorBrush x:Key="DisabledButtonForeground" Color="#BBC6C9" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="TopBarBackground" Color="#1E1E22" />
                     <SolidColorBrush x:Key="FriendBubbleBackground" Color="#2B2B30" />
                     <SolidColorBrush x:Key="FriendBubbleForeground" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="DisabledButtonBackground" Color="#313135" />
+                    <SolidColorBrush x:Key="DisabledButtonForeground" Color="#636D75" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <converters1:InitialConverter x:Key="InitialConverter" />
-            <converters1:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
-            <converters:WidthFractionConverter x:Key="BubbleWidthConv" Fraction="0.4" />
+            <converters:InitialConverter x:Key="InitialConverter" />
+            <converters:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
+            <converters1:WidthFractionConverter x:Key="BubbleWidthConv" Fraction="0.4" />
+            <converters2:BoolToInvertConverter x:Key="InvertBoolConverter" />
+
+            <SolidColorBrush x:Key="OwnBubbleBackground" Color="#0064FA" />
+            <SolidColorBrush x:Key="OwnBubbleForeground" Color="#FFFFFF" />
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -45,11 +55,16 @@
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Foreground" Value="White" />
         </Style>
-        <Style Selector="Button.SendButton:pointerover">
+        <Style Selector="Button.SendButton:pointerover /template/ContentPresenter">
             <Setter Property="Background" Value="#0075FF" />
         </Style>
-        <Style Selector="Button.SendButton:pressed">
+        <Style Selector="Button.SendButton:pressed /template/ContentPresenter">
             <Setter Property="Background" Value="#004FB3" />
+        </Style>
+        <Style Selector="Button.SendButton:disabled /template/ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource DisabledButtonBackground}" />
+            <Setter Property="Foreground" Value="{DynamicResource DisabledButtonForeground}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
         </Style>
     </UserControl.Styles>
 
@@ -60,6 +75,55 @@
         <DataTemplate DataType="viewModels3:ChatSettingsViewModel">
             <settings:ChatSettingsView />
         </DataTemplate>
+
+        <DataTemplate DataType="viewModels1:ChatMessageViewModel">
+            <Grid ColumnDefinitions="Auto,*" Margin="8">
+                <Grid Grid.Column="0"
+                      Width="32" Height="32"
+                      Margin="0,0,8,0"
+                      IsVisible="{Binding IsOwn, Converter={StaticResource InvertBoolConverter}}">
+                    <Ellipse
+                        Fill="{Binding GroupName, Converter={StaticResource InitialBackgroundConverter}}" />
+                    <TextBlock
+                        Text="{Binding GroupName, Converter={StaticResource InitialConverter}}"
+                        Foreground="White"
+                        FontSize="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+                </Grid>
+                <Rectangle Grid.Column="0"
+                           Width="32" Height="32"
+                           Fill="Transparent"
+                           Margin="0,0,8,0"
+                           IsVisible="{Binding IsOwn}" />
+
+                <Border Grid.Column="1"
+                        Padding="12"
+                        CornerRadius="10"
+                        HorizontalAlignment="Left"
+                        MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Bounds.Width, Converter={StaticResource BubbleWidthConv}}"
+                        Background="{DynamicResource FriendBubbleBackground}"
+                        IsVisible="{Binding IsOwn, Converter={StaticResource InvertBoolConverter}}"
+                        Margin="12,0,0,0">
+                    <TextBlock Text="{Binding Message}"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource FriendBubbleForeground}" />
+                </Border>
+
+                <Border Grid.Column="1"
+                        Padding="12"
+                        CornerRadius="10"
+                        HorizontalAlignment="Right"
+                        MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Bounds.Width, Converter={StaticResource BubbleWidthConv}}"
+                        Background="{StaticResource OwnBubbleBackground}"
+                        IsVisible="{Binding IsOwn}"
+                        Margin="0,0,17,0">
+                    <TextBlock Text="{Binding Message}"
+                               TextWrapping="Wrap"
+                               Foreground="{StaticResource OwnBubbleForeground}" />
+                </Border>
+            </Grid>
+        </DataTemplate>
     </UserControl.DataTemplates>
 
     <Grid ColumnDefinitions="250,*">
@@ -68,6 +132,7 @@
                 BorderThickness="0,0,1,0">
             <ContentControl Content="{Binding GroupsPanel}" />
         </Border>
+
         <SplitView Grid.Column="1"
                    PanePlacement="Right"
                    DisplayMode="Inline"
@@ -121,50 +186,17 @@
                         </Grid>
                     </Border>
 
-                    <ScrollViewer Grid.Row="1">
-                        <StackPanel>
+                    <ScrollViewer x:Name="MessagesScrollViewer" Grid.Row="1">
+                        <ScrollViewer.Styles>
+                            <Style Selector="ScrollBar[Orientation=Vertical]">
+                                <Setter Property="Margin" Value="0,0,5,0" />
+                            </Style>
+                        </ScrollViewer.Styles>
 
-                            <Grid ColumnDefinitions="Auto,*" Margin="12,8,8,8">
-                                <Grid Width="32" Height="32" Margin="0,0,8,0">
-                                    <Ellipse
-                                        Fill="{Binding CurrentGroupName, Converter={StaticResource InitialBackgroundConverter}}" />
-                                    <TextBlock
-                                        Text="{Binding CurrentGroupName, Converter={StaticResource InitialConverter}}"
-                                        Foreground="White"
-                                        FontSize="16"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center" />
-                                </Grid>
-                                <Border Grid.Column="1"
-                                        Background="{DynamicResource FriendBubbleBackground}"
-                                        CornerRadius="10"
-                                        Padding="12"
-                                        HorizontalAlignment="Left"
-                                        MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window},
-                                           Path=Bounds.Width,
-                                           Converter={StaticResource BubbleWidthConv}}">
-                                    <TextBlock Text="Hey! How are you doing?"
-                                               Foreground="{DynamicResource FriendBubbleForeground}"
-                                               TextWrapping="Wrap" />
-                                </Border>
-                            </Grid>
-
-                            <Grid ColumnDefinitions="Auto,*" Margin="8,8,12,8" HorizontalAlignment="Right">
-                                <Rectangle Width="32" Height="32" Fill="Transparent" Margin="0,0,8,0" />
-                                <Border Grid.Column="1"
-                                        Background="#0064FA"
-                                        CornerRadius="10"
-                                        Padding="12"
-                                        MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window},
-                                           Path=Bounds.Width,
-                                           Converter={StaticResource BubbleWidthConv}}">
-                                    <TextBlock Text="I'm doing great, thanks! What about you?"
-                                               Foreground="White"
-                                               TextWrapping="Wrap" />
-                                </Border>
-                            </Grid>
-
-                        </StackPanel>
+                        <ItemsControl ItemsSource="{Binding Messages}">
+                            <ItemsControl.ItemTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </ScrollViewer>
 
                     <Grid Grid.Row="2" Margin="12,8" ColumnDefinitions="*,Auto">
@@ -174,8 +206,14 @@
                                  TextWrapping="Wrap"
                                  MinHeight="48"
                                  MaxHeight="96"
+                                 MaxLength="2000"
                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                 Padding="0">
+                                 Padding="0"
+                                 Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter"
+                                            Command="{Binding SendMessageCommand}" />
+                            </TextBox.KeyBindings>
                             <TextBox.Styles>
                                 <Style Selector="ScrollContentPresenter">
                                     <Setter Property="Margin" Value="10,8,20,8" />
@@ -190,7 +228,8 @@
                                 Classes="SendButton"
                                 Width="48" Height="48"
                                 VerticalAlignment="Bottom"
-                                Margin="8,0,0,0">
+                                Margin="8,0,0,0"
+                                Command="{Binding SendMessageCommand}">
                             <TextBlock FontFamily="{StaticResource PhosphorLight}"
                                        Text="&#xE398;"
                                        FontSize="20" />

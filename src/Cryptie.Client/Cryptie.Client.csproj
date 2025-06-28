@@ -106,4 +106,8 @@
     <ItemGroup>
         <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Features\Dashboard\Services\"/>
+    </ItemGroup>
 </Project>
