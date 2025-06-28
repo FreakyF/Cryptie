@@ -22,6 +22,8 @@ namespace Cryptie.Client.Features.Authentication.ViewModels;
 
 public class RegisterViewModel : RoutableViewModelBase
 {
+    private const string MockPrivateKey = "MOCK_PRIVATE_KEY_ABC123";
+    private const string MockPublicKey = "MOCK_PUBLIC_KEY_DEF456";
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
     private readonly IMapper _mapper;
@@ -120,6 +122,8 @@ public class RegisterViewModel : RoutableViewModelBase
     private ValidationResult ValidateDto()
     {
         var dto = _mapper.Map<RegisterRequestDto>(Model);
+        dto.PrivateKey = MockPrivateKey;
+        dto.PublicKey = MockPublicKey;
         return _validator.Validate(dto);
     }
 
@@ -127,7 +131,8 @@ public class RegisterViewModel : RoutableViewModelBase
     private async Task RegisterAsync(CancellationToken cancellationToken)
     {
         var dto = _mapper.Map<RegisterRequestDto>(Model);
-
+        dto.PrivateKey = MockPrivateKey;
+        dto.PublicKey = MockPublicKey;
         await _validator.ValidateAsync(dto, cancellationToken);
 
         var result = await _authentication.RegisterAsync(dto, cancellationToken);

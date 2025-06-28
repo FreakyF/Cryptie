@@ -73,10 +73,11 @@
         <SplitView Grid.Column="1"
                    PanePlacement="Right"
                    DisplayMode="Inline"
+                   OpenPaneLength="220"
                    IsPaneOpen="{Binding IsChatSettingsOpen}">
 
             <SplitView.Pane>
-                <settings:ChatSettingsView Width="280" />
+                <settings:ChatSettingsView Width="220" />
             </SplitView.Pane>
 
             <SplitView.Content>

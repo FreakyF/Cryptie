@@ -14,17 +14,10 @@ using ReactiveUI;
 
 namespace Cryptie.Client.Features.Chats.ViewModels;
 
-/// <summary>
-/// Root VM dla ekranu czatu.  Zawiera:
-/// • panel listy grup (po lewej)  
-/// • flagę otwarcia prawego panelu ustawień  
-/// • komendę przełączającą panel ustawień.
-/// </summary>
 public sealed class ChatsViewModel : RoutableViewModelBase
 {
     private bool _isChatSettingsOpen;
 
-    // -------- ctor --------
     public ChatsViewModel(
         IScreen hostScreen,
         IConnectionMonitor connectionMonitor,

@@ -1,8 +1,69 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Cryptie.Client.Features.ChatSettings.Views.ChatSettingsView">
-    ChatSettings
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<!-- ReSharper disable Xaml.RedundantResource -->
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    x:Class="Cryptie.Client.Features.ChatSettings.Views.ChatSettingsView"
+    d:DesignWidth="220" d:DesignHeight="450">
+
+    <StackPanel Spacing="4">
+
+        <!-- Nagłówek -->
+        <TextBlock Text="Alice"
+                   Theme="{StaticResource TitleTextBlock}" Classes="H4"
+                   Margin="17,12,16,20"
+                   HorizontalAlignment="Left"
+                   TextTrimming="CharacterEllipsis" />
+
+        <!-- Edit group name -->
+        <Button Theme="{StaticResource BorderlessButton}"
+                Classes="Primary"
+                Width="196"
+                Margin="12,0,12,0"
+                Padding="5,6,12,6"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left">
+            <DockPanel LastChildFill="True"
+                       HorizontalAlignment="Stretch">
+                <!-- ikonka -->
+                <TextBlock DockPanel.Dock="Left"
+                           FontFamily="{StaticResource PhosphorRegular}"
+                           Text="&#xE3B4;"
+                           FontSize="20"
+                           Width="28"
+                           VerticalAlignment="Center" />
+                <!-- tekst -->
+                <TextBlock Text="Edit group name"
+                           VerticalAlignment="Center"
+                           Margin="8,0,0,0" />
+            </DockPanel>
+        </Button>
+
+        <!-- Add users -->
+        <Button Theme="{StaticResource BorderlessButton}"
+                Classes="Primary"
+                Width="196"
+                Margin="12,0,12,0"
+                Padding="5,6,12,6"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Left">
+            <DockPanel LastChildFill="True"
+                       HorizontalAlignment="Stretch">
+                <!-- ikonka -->
+                <TextBlock DockPanel.Dock="Left"
+                           FontFamily="{StaticResource PhosphorRegular}"
+                           Text="&#xE4D0;"
+                           FontSize="20"
+                           Width="28"
+                           VerticalAlignment="Center" />
+                <!-- tekst -->
+                <TextBlock Text="Add users"
+                           VerticalAlignment="Center"
+                           Margin="8,0,0,0" />
+            </DockPanel>
+        </Button>
+
+    </StackPanel>
 </UserControl>
