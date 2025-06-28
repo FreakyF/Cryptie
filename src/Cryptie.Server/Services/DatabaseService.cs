@@ -32,8 +32,8 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
     public Group? FindGroupById(Guid id)
     {
-        var user = appDbContext.Groups.Find(id);
-        return user;
+        var group = appDbContext.Groups.Find(id);
+        return group;
     }
 
     public Group? CreateNewGroup(User user, string name)
@@ -163,7 +163,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         appDbContext.SaveChanges();
     }
 
-    public string GetUserPublicKey(Guid userId) 
+    public string GetUserPublicKey(Guid userId)
     {
         var user = appDbContext.Users
             .AsTracking()
@@ -172,7 +172,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
         return user.PublicKey;
     }
-    
+
     public void SaveUserKeys(User user, string privateKey, string publicKey)
     {
         user.PrivateKey = privateKey;
