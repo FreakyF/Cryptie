@@ -117,7 +117,7 @@
                                     CornerRadius="0"
                                     Command="{Binding ToggleChatSettingsCommand}">
                                 <TextBlock FontFamily="{StaticResource PhosphorRegular}"
-                                           Text="&#xE1FE;" FontSize="24" />
+                                           Text="&#xE1FE;" FontSize="20" />
                             </Button>
                         </Grid>
                     </Border>
@@ -178,7 +178,7 @@
                                 Width="48" Height="48"
                                 VerticalAlignment="Bottom" Margin="8,0,0,0">
                             <TextBlock FontFamily="{StaticResource PhosphorLight}"
-                                       Text="&#xE398;" FontSize="24" />
+                                       Text="&#xE398;" FontSize="20" />
                         </Button>
                     </Grid>
                 </Grid>
