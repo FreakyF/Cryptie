@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Reflection;
 using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Factories;
@@ -38,6 +39,7 @@ using Cryptie.Common.Features.UserManagement.Validators;
 using FluentValidation;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -93,6 +95,24 @@ public static class ServiceCollectionExtensions
                 var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
+
+        services.AddSingleton<HubConnection>(sp =>
+        {
+            var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+            var hubUri = new Uri(new Uri(opts.BaseUri), "messages");
+
+            return new HubConnectionBuilder()
+                .WithUrl(hubUri, httpOpts =>
+                {
+                    httpOpts.HttpMessageHandlerFactory = _ => new HttpClientHandler
+                    {
+                        // no custom ServerCertificateCustomValidationCallback means
+                        // the default (strict) validation is used
+                    };
+                })
+                .WithAutomaticReconnect()
+                .Build();
+        });
 
         var cfg = TypeAdapterConfig.GlobalSettings;
         cfg.Scan(Assembly.GetExecutingAssembly());

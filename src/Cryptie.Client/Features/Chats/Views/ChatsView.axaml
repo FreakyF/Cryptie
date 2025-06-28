@@ -75,6 +75,55 @@
         <DataTemplate DataType="viewModels3:ChatSettingsViewModel">
             <settings:ChatSettingsView />
         </DataTemplate>
+
+        <DataTemplate DataType="viewModels1:ChatMessageViewModel">
+            <Grid ColumnDefinitions="Auto,*" Margin="8">
+                <Grid Grid.Column="0"
+                      Width="32" Height="32"
+                      Margin="0,0,8,0"
+                      IsVisible="{Binding IsOwn, Converter={StaticResource InvertBoolConverter}}">
+                    <Ellipse
+                        Fill="{Binding GroupName, Converter={StaticResource InitialBackgroundConverter}}" />
+                    <TextBlock
+                        Text="{Binding GroupName, Converter={StaticResource InitialConverter}}"
+                        Foreground="White"
+                        FontSize="16"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+                </Grid>
+                <Rectangle Grid.Column="0"
+                           Width="32" Height="32"
+                           Fill="Transparent"
+                           Margin="0,0,8,0"
+                           IsVisible="{Binding IsOwn}" />
+
+                <Border Grid.Column="1"
+                        Padding="12"
+                        CornerRadius="10"
+                        HorizontalAlignment="Left"
+                        MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Bounds.Width, Converter={StaticResource BubbleWidthConv}}"
+                        Background="{DynamicResource FriendBubbleBackground}"
+                        IsVisible="{Binding IsOwn, Converter={StaticResource InvertBoolConverter}}"
+                        Margin="12,0,0,0">
+                    <TextBlock Text="{Binding Message}"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource FriendBubbleForeground}" />
+                </Border>
+
+                <Border Grid.Column="1"
+                        Padding="12"
+                        CornerRadius="10"
+                        HorizontalAlignment="Right"
+                        MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Bounds.Width, Converter={StaticResource BubbleWidthConv}}"
+                        Background="{StaticResource OwnBubbleBackground}"
+                        IsVisible="{Binding IsOwn}"
+                        Margin="0,0,17,0">
+                    <TextBlock Text="{Binding Message}"
+                               TextWrapping="Wrap"
+                               Foreground="{StaticResource OwnBubbleForeground}" />
+                </Border>
+            </Grid>
+        </DataTemplate>
     </UserControl.DataTemplates>
 
     <Grid ColumnDefinitions="250,*">
@@ -138,51 +187,14 @@
                     </Border>
 
                     <ScrollViewer x:Name="MessagesScrollViewer" Grid.Row="1">
+                        <ScrollViewer.Styles>
+                            <Style Selector="ScrollBar[Orientation=Vertical]">
+                                <Setter Property="Margin" Value="0,0,5,0" />
+                            </Style>
+                        </ScrollViewer.Styles>
+
                         <ItemsControl ItemsSource="{Binding Messages}">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="viewModels1:ChatMessageViewModel">
-                                    <Grid ColumnDefinitions="Auto,*" Margin="8">
-                                        <Grid Grid.Column="0"
-                                              Width="32" Height="32"
-                                              Margin="0,0,8,0"
-                                              IsVisible="{Binding IsOwn, Converter={StaticResource InvertBoolConverter}}">
-                                            <Ellipse
-                                                Fill="{Binding GroupName, Converter={StaticResource InitialBackgroundConverter}}" />
-                                            <TextBlock
-                                                Text="{Binding GroupName, Converter={StaticResource InitialConverter}}"
-                                                Foreground="White"
-                                                FontSize="16"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center" />
-                                        </Grid>
-                                        <Rectangle Grid.Column="0"
-                                                   Width="32" Height="32"
-                                                   Fill="Transparent"
-                                                   Margin="0,0,8,0"
-                                                   IsVisible="{Binding IsOwn}" />
-                                        <Border Grid.Column="1"
-                                                Padding="12" CornerRadius="10"
-                                                HorizontalAlignment="Left"
-                                                MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Bounds.Width, Converter={StaticResource BubbleWidthConv}}"
-                                                Background="{DynamicResource FriendBubbleBackground}"
-                                                IsVisible="{Binding IsOwn, Converter={StaticResource InvertBoolConverter}}">
-                                            <TextBlock Text="{Binding Message}"
-                                                       TextWrapping="Wrap"
-                                                       Foreground="{DynamicResource FriendBubbleForeground}" />
-                                        </Border>
-                                        <Border Grid.Column="1"
-                                                Padding="12" CornerRadius="10"
-                                                HorizontalAlignment="Right"
-                                                MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Bounds.Width, Converter={StaticResource BubbleWidthConv}}"
-                                                Background="{StaticResource OwnBubbleBackground}"
-                                                IsVisible="{Binding IsOwn}">
-                                            <TextBlock Text="{Binding Message}"
-                                                       TextWrapping="Wrap"
-                                                       Foreground="{StaticResource OwnBubbleForeground}" />
-                                        </Border>
-                                    </Grid>
-                                </DataTemplate>
-
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>

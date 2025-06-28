@@ -1,71 +1,63 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Cryptie.Client.Features.Chats.Entities;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace Cryptie.Client.Features.Chats.Services
+namespace Cryptie.Client.Features.Chats.Services;
+
+public class MessagesService : IMessagesService
 {
-    public class MessagesService : IMessagesService
+    private readonly HubConnection _hubConnection;
+    private readonly Subject<SignalRMessage> _messageSubject = new();
+
+    public MessagesService(HubConnection hubConnection)
     {
-        private readonly Subject<SignalRMessage> _messageSubject = new();
-        private HubConnection _hubConnection;
+        _hubConnection = hubConnection
+                         ?? throw new ArgumentNullException(nameof(hubConnection));
 
-        public ConcurrentQueue<SignalRJoined> GroupJoined { get; } = new();
-        public ConcurrentQueue<SignalRMessage> GroupMessages { get; } = new();
+        _hubConnection.On<Guid, Guid>("UserJoinedGroup", (uid, gid) =>
+            GroupJoined.Enqueue(new SignalRJoined(gid, uid)));
 
-        public IObservable<SignalRMessage> MessageReceived => _messageSubject;
-
-        public async Task ConnectAsync(Guid userId, IEnumerable<Guid> groupIds)
+        _hubConnection.On<string, Guid>("ReceiveGroupMessage", (msg, gid) =>
         {
-            _hubConnection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7161/messages", options =>
-                {
-                    options.HttpMessageHandlerFactory = _ => new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback =
-                            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                    };
-                })
-                .WithAutomaticReconnect()
-                .Build();
+            var signal = new SignalRMessage(gid, msg);
+            GroupMessages.Enqueue(signal);
+            _messageSubject.OnNext(signal);
+        });
+    }
 
-            _hubConnection.On<Guid, Guid>("UserJoinedGroup", (joinedUserId, groupId) =>
-                GroupJoined.Enqueue(new SignalRJoined(groupId, joinedUserId)));
+    public ConcurrentQueue<SignalRJoined> GroupJoined { get; } = new();
+    public ConcurrentQueue<SignalRMessage> GroupMessages { get; } = new();
 
-            _hubConnection.On<string, Guid>("ReceiveGroupMessage", (message, groupId) =>
-            {
-                var signal = new SignalRMessage(groupId, message);
-                GroupMessages.Enqueue(signal);
-                _messageSubject.OnNext(signal);
-            });
+    public IObservable<SignalRMessage> MessageReceived => _messageSubject;
 
-            await _hubConnection.StartAsync();
-            foreach (var gid in groupIds)
-                await _hubConnection.InvokeAsync("JoinGroup", userId, gid);
-        }
+    public async Task ConnectAsync(Guid userId, IEnumerable<Guid> groupIds)
+    {
+        await _hubConnection.StartAsync();
 
-        public async Task SendMessageToGroupAsync(Guid groupId, string message)
-        {
-            if (_hubConnection is null)
-                throw new InvalidOperationException("Najpierw wywołaj ConnectAsync(...)");
+        foreach (var gid in groupIds)
+            await _hubConnection.InvokeAsync("JoinGroup", userId, gid);
+    }
 
-            await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
-        }
+    public async Task SendMessageToGroupAsync(Guid groupId, string message)
+    {
+        if (_hubConnection.State != HubConnectionState.Connected)
+            throw new InvalidOperationException("SignalR hub is not connected.");
 
-        public async ValueTask DisposeAsync()
-        {
-            if (_hubConnection != null)
-            {
-                await _hubConnection.StopAsync();
-                await _hubConnection.DisposeAsync();
-                _hubConnection = null;
-            }
+        await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
+    }
 
-            _messageSubject.Dispose();
-        }
+    public async ValueTask DisposeAsync()
+    {
+        _messageSubject.Dispose();
+
+        if (_hubConnection.State == HubConnectionState.Connected)
+            await _hubConnection.StopAsync();
+
+        await _hubConnection.DisposeAsync();
+        GC.SuppressFinalize(this);
     }
 }

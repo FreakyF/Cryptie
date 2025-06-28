@@ -4,6 +4,7 @@ using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.Validators;
 using Cryptie.Server.Features.Authentication.Services;
+using Cryptie.Server.Features.GroupManagement;
 using Cryptie.Server.Features.Messages;
 using Cryptie.Server.Persistence.DatabaseContext;
 using Cryptie.Server.Services;
