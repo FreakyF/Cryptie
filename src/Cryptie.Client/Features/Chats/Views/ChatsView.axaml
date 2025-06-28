@@ -1,29 +1,61 @@
-﻿<!-- ReSharper disable Xaml.RedundantResource -->
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<!-- ReSharper disable Xaml.RedundantResource -->
 <UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
     xmlns:viewModels1="clr-namespace:Cryptie.Client.Features.Chats.ViewModels"
     xmlns:viewModels2="clr-namespace:Cryptie.Client.Features.Groups.ViewModels"
     xmlns:views1="clr-namespace:Cryptie.Client.Features.Groups.Views"
+    xmlns:converters1="clr-namespace:Cryptie.Client.Core.Converters"
+    xmlns:converters="clr-namespace:Cryptie.Client.Features.Chats.Converters"
     mc:Ignorable="d"
     x:Class="Cryptie.Client.Features.Chats.Views.ChatsView"
     x:DataType="viewModels1:ChatsViewModel"
     d:DataContext="{d:DesignInstance Type=viewModels1:ChatsViewModel, IsDesignTimeCreatable=True}"
     Background="{DynamicResource ChatsViewBackground}">
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="ChatsViewBackground" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="TopBarBackground" Color="#F5F5F5" />
+                    <SolidColorBrush x:Key="FriendBubbleBackground" Color="#E6E6E8" />
+                    <SolidColorBrush x:Key="FriendBubbleForeground" Color="#000000" />
                 </ResourceDictionary>
+
                 <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="ChatsViewBackground" Color="#1E1E22" />
+                    <SolidColorBrush x:Key="TopBarBackground" Color="#1E1E22" />
+                    <SolidColorBrush x:Key="FriendBubbleBackground" Color="#2B2B30" />
+                    <SolidColorBrush x:Key="FriendBubbleForeground" Color="#FFFFFF" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
+
+            <converters1:InitialConverter x:Key="InitialConverter" />
+            <converters1:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
+            <converters:WidthFractionConverter x:Key="BubbleWidthConv" Fraction="0.4" />
+
+            <x:String x:Key="FriendName">Alice</x:String>
         </ResourceDictionary>
     </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="Button.SendButton">
+            <Setter Property="Background" Value="#0064FA" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style Selector="Button.SendButton:pointerover">
+            <Setter Property="Background" Value="#0075FF" />
+        </Style>
+        <Style Selector="Button.SendButton:pressed">
+            <Setter Property="Background" Value="#004FB3" />
+        </Style>
+    </UserControl.Styles>
+
     <UserControl.DataTemplates>
         <DataTemplate DataType="viewModels2:GroupsListViewModel">
             <views1:GroupsListView />
@@ -31,16 +63,109 @@
     </UserControl.DataTemplates>
 
     <Grid ColumnDefinitions="250,*">
+
         <Border Grid.Column="0"
                 BorderBrush="{DynamicResource SplitViewSeparatorBackground}"
                 BorderThickness="0,0,1,0">
             <ContentControl Content="{Binding GroupsPanel}" />
         </Border>
 
-        <TextBlock Grid.Column="1" Text="CHAT"
-                   FontSize="32"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center" />
+        <Grid Grid.Column="1" RowDefinitions="48,* ,Auto">
+
+            <Border Height="48"
+                    Background="{DynamicResource TopBarBackground}"
+                    BorderThickness="0,0,0,1"
+                    BorderBrush="{DynamicResource SplitViewSeparatorBackground}">
+                <Grid ColumnDefinitions="Auto,* ,Auto"
+                      VerticalAlignment="Center"
+                      Margin="12,0,0,0">
+
+                    <Grid x:DataType="sys:String"
+                          DataContext="{StaticResource FriendName}"
+                          Width="32" Height="32"
+                          Margin="0,0,8,0">
+                        <Ellipse Fill="{Binding Converter={StaticResource InitialBackgroundConverter}}" />
+                        <TextBlock Text="{Binding Converter={StaticResource InitialConverter}}"
+                                   Foreground="White"
+                                   FontSize="16"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+
+                    <TextBlock Grid.Column="1"
+                               Text="{StaticResource FriendName}"
+                               Theme="{StaticResource TitleTextBlock}"
+                               Classes="H4"
+                               VerticalAlignment="Center"
+                               TextWrapping="NoWrap"
+                               TextTrimming="CharacterEllipsis" />
+
+                    <Button Grid.Column="2"
+                            Width="48" Height="48"
+                            Background="Transparent" BorderBrush="Transparent"
+                            HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                                   Text="&#xE1FE;" FontSize="24" />
+                    </Button>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1">
+                <StackPanel>
+
+                    <Grid ColumnDefinitions="Auto,*" Margin="12,8,8,8">
+                        <Grid x:DataType="sys:String" DataContext="{StaticResource FriendName}"
+                              Width="32" Height="32" Margin="0,0,8,0">
+                            <Ellipse Fill="{Binding Converter={StaticResource InitialBackgroundConverter}}" />
+                            <TextBlock Text="{Binding Converter={StaticResource InitialConverter}}"
+                                       Foreground="White" FontSize="16"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                        <Border Grid.Column="1"
+                                Background="{DynamicResource FriendBubbleBackground}"
+                                CornerRadius="10" Padding="12"
+                                HorizontalAlignment="Left"
+                                MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window},
+                                                   Path=Bounds.Width,
+                                                   Converter={StaticResource BubbleWidthConv}}">
+                            <TextBlock Text="Hey! How are you doing?"
+                                       Foreground="{DynamicResource FriendBubbleForeground}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto,*" Margin="8,8,12,8" HorizontalAlignment="Right">
+                        <Rectangle Width="40" Fill="Transparent" />
+                        <Border Grid.Column="1"
+                                Background="#0064FA" CornerRadius="10" Padding="12"
+                                MaxWidth="{Binding RelativeSource={RelativeSource AncestorType=Window},
+                                                   Path=Bounds.Width,
+                                                   Converter={StaticResource BubbleWidthConv}}">
+                            <TextBlock Text="I'm doing great, thanks! What about you?"
+                                       Foreground="White" TextWrapping="Wrap" />
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Grid Grid.Row="2" Margin="12,8" ColumnDefinitions="*,Auto">
+                <TextBox Grid.Column="0"
+                         Watermark="Type a message…"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         MinHeight="48"
+                         MaxHeight="96"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         Padding="10,8" />
+                <Button Grid.Column="1"
+                        Classes="SendButton"
+                        Width="48" Height="48"
+                        VerticalAlignment="Bottom"
+                        Margin="8,0,0,0">
+                    <TextBlock FontFamily="{StaticResource PhosphorLight}"
+                               Text="&#xE398;" FontSize="24" />
+                </Button>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
