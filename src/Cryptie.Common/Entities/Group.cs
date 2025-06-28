@@ -10,6 +10,7 @@ public class Group
 
     [Required, Column("name")] public string Name { get; set; } = default!;
 
+    [Required, Column("is_private")] public bool IsPrivate { get; set; }
 
     public ICollection<User> Members { get; set; } = new HashSet<User>();
 

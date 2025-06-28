@@ -86,4 +86,12 @@ public class GroupManagementController(
 
         return Ok();
     }
+
+    [HttpPost("isPrivate", Name = "IsGroupPrivate")]
+    public IActionResult IsGroupPrivate([FromBody] IsGroupPrivateRequestDto request)
+    {
+        var group = databaseService.FindGroupById(request.GroupId);
+        if (group == null) return NotFound();
+        return Ok(new IsGroupPrivateResponseDto { IsPrivate = group.IsPrivate });
+    }
 }
