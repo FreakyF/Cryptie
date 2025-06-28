@@ -21,6 +21,6 @@ public interface IDatabaseService
     public Group CreateGroup(string name);
     public void ChangeUserDisplayName(User user, string name);
     public Group? FindGroupById(Guid id);
-    public X509Certificate2 GetUserPublicKey(Guid userId);
-    public void SaveUserKeys(User user, X509Certificate2 privateKey, X509Certificate2 publicKey);
+    public string GetUserPublicKey(Guid userId);
+    public void SaveUserKeys(User user, string privateKey, string publicKey);
 }

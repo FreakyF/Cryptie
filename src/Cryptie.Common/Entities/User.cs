@@ -15,8 +15,8 @@ public class User
 
     [Required, Column("email")] public string Email { get; set; } = default!;
 
-    [Required, Column("private_key")] public X509Certificate2 PrivateKey { get; set; } = default!;
-    [Required, Column("public_key")] public X509Certificate2 PublicKey { get; set; } = default!;
+    [Required, Column("private_key")] public string PrivateKey { get; set; } = default!;
+    [Required, Column("public_key")] public string PublicKey { get; set; } = default!;
 
 
     [Required, Column("password_id")] public Guid PasswordId { get; set; }

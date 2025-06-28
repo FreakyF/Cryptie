@@ -163,7 +163,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         appDbContext.SaveChanges();
     }
 
-    public X509Certificate2 GetUserPublicKey(Guid userId) 
+    public string GetUserPublicKey(Guid userId) 
     {
         var user = appDbContext.Users
             .AsTracking()
@@ -173,7 +173,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         return user.PublicKey;
     }
     
-    public void SaveUserKeys(User user, X509Certificate2 privateKey, X509Certificate2 publicKey)
+    public void SaveUserKeys(User user, string privateKey, string publicKey)
     {
         user.PrivateKey = privateKey;
         user.PublicKey = publicKey;
