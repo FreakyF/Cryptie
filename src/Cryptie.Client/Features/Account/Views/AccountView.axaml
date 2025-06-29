@@ -9,6 +9,11 @@
              x:Class="Cryptie.Client.Features.Account.Views.AccountView"
              x:DataType="viewModels1:AccountViewModel">
 
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Enter"
+                    Command="{Binding ChangeNameCommand}" />
+    </UserControl.KeyBindings>
+
     <Border Padding="24">
         <StackPanel Spacing="24">
 

@@ -8,6 +8,12 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Cryptie.Client.Features.AddFriend.Views.AddFriendView"
              x:DataType="viewModels:AddFriendViewModel">
+
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Enter"
+                    Command="{Binding SendFriendRequest}" />
+    </UserControl.KeyBindings>
+
     <Grid RowDefinitions="Auto,*,Auto">
         <TextBlock Grid.Row="0"
                    Theme="{StaticResource TitleTextBlock}"

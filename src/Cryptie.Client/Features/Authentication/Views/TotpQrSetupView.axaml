@@ -8,6 +8,12 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Cryptie.Client.Features.Authentication.Views.TotpQrSetupView"
              x:DataType="viewModels:TotpQrSetupViewModel">
+
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Enter"
+                    Command="{Binding VerifyCommand}" />
+    </UserControl.KeyBindings>
+
     <Grid>
         <Border Theme="{StaticResource CardBorder}"
                 Classes="Shadow Hover"
