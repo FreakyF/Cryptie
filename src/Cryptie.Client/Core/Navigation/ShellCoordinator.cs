@@ -3,12 +3,12 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Cryptie.Client.Core.Base;
+using Cryptie.Client.Core.Dependencies;
 using Cryptie.Client.Core.Factories;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.ViewModels;
 using Cryptie.Client.Features.Dashboard.ViewModels;
-using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using ReactiveUI;
 
@@ -19,8 +19,8 @@ public class ShellCoordinator(
     IKeychainManagerService keychain,
     IUserDetailsService userDetailsService,
     IConnectionMonitor connectionMonitor,
-    IUserState userState)
-    : IShellCoordinator
+    ShellStateDependencies stateDeps
+) : IShellCoordinator
 {
     public RoutingState Router { get; } = new();
 
@@ -29,7 +29,7 @@ public class ShellCoordinator(
         if (keychain.TryGetSessionToken(out var token, out _)
             && Guid.TryParse(token, out var sessionToken))
         {
-            userState.SessionToken = token;
+            stateDeps.UserState.SessionToken = token;
             var isConnected = await connectionMonitor.IsBackendAliveAsync();
             if (!isConnected)
                 return;
@@ -46,6 +46,15 @@ public class ShellCoordinator(
                 }
 
                 keychain.TryClearSessionToken(out _);
+                stateDeps.UserState.SessionToken = null;
+                stateDeps.UserState.Username = null;
+
+                stateDeps.GroupSelectionState.SelectedGroupId = Guid.Empty;
+                stateDeps.GroupSelectionState.SelectedGroupName = null;
+                stateDeps.GroupSelectionState.IsGroupPrivate = false;
+
+                stateDeps.LoginState.LastResponse = null;
+                stateDeps.RegistrationState.LastResponse = null;
                 ShowLogin();
                 return;
             }
@@ -54,6 +63,15 @@ public class ShellCoordinator(
                           or HttpStatusCode.BadRequest)
             {
                 keychain.TryClearSessionToken(out _);
+                stateDeps.UserState.SessionToken = null;
+                stateDeps.UserState.Username = null;
+
+                stateDeps.GroupSelectionState.SelectedGroupId = Guid.Empty;
+                stateDeps.GroupSelectionState.SelectedGroupName = null;
+                stateDeps.GroupSelectionState.IsGroupPrivate = false;
+
+                stateDeps.LoginState.LastResponse = null;
+                stateDeps.RegistrationState.LastResponse = null;
                 ShowLogin();
                 return;
             }

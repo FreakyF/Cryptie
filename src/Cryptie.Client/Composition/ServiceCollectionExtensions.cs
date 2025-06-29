@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Reflection;
 using Cryptie.Client.Configuration;
+using Cryptie.Client.Core.Dependencies;
 using Cryptie.Client.Core.Factories;
 using Cryptie.Client.Core.Locators;
 using Cryptie.Client.Core.Mapping;
@@ -173,6 +174,13 @@ public static class ServiceCollectionExtensions
         ));
 
         services.AddSingleton<AccountDependencies>(sp => new AccountDependencies(
+            sp.GetRequiredService<IUserState>(),
+            sp.GetRequiredService<IGroupSelectionState>(),
+            sp.GetRequiredService<ILoginState>(),
+            sp.GetRequiredService<IRegistrationState>()
+        ));
+
+        services.AddSingleton<ShellStateDependencies>(sp => new ShellStateDependencies(
             sp.GetRequiredService<IUserState>(),
             sp.GetRequiredService<IGroupSelectionState>(),
             sp.GetRequiredService<ILoginState>(),
