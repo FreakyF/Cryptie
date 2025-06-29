@@ -17,5 +17,7 @@ public interface IGroupService
         GetGroupNameRequestDto request,
         CancellationToken cancellationToken = default);
 
-    Task<bool> IsGroupPrivateAsync(IsGroupPrivateRequestDto request, CancellationToken cancellationToken = default);
+    Task<Dictionary<Guid, bool>> GetGroupsPrivacyAsync(
+        IsGroupsPrivateRequestDto request,
+        CancellationToken cancellationToken = default);
 }
