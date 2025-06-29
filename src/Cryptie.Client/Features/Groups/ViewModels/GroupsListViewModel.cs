@@ -27,6 +27,7 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
 {
     private readonly CompositeDisposable _disposables = new();
     private readonly IGroupService _groupService;
+    private readonly IGroupSelectionState _groupState;
     private readonly IMessagesService _messagesService;
     private readonly IUserState _userState;
     private CancellationTokenSource? _addFriendCts;
@@ -49,28 +50,13 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         _groupService = groupService;
         _messagesService = messagesService;
         _userState = deps.UserState;
+        _groupState = groupState;
         IconUri = options.Value.FontUri;
 
         MessageBus.Current
             .Listen<ConversationBumped>()
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(evt =>
-            {
-                var idx = _groupIds.IndexOf(evt.GroupId);
-                if (idx <= 0 || idx >= Groups.Count) return;
-
-                var isCurrent = groupState.SelectedGroupId == evt.GroupId;
-                var id = _groupIds[idx];
-                var name = Groups[idx];
-
-                _groupIds.RemoveAt(idx);
-                Groups.RemoveAt(idx);
-                _groupIds.Insert(0, id);
-                Groups.Insert(0, name);
-
-                if (isCurrent)
-                    SelectedGroup = name;
-            })
+            .Subscribe(OnConversationBumped)
             .DisposeWith(_disposables);
 
         AddFriendCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -114,9 +100,9 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
                 if (idx < 0 || idx >= _groupIds.Count) return;
 
                 var id = _groupIds[idx];
-                groupState.SelectedGroupName = name!;
-                groupState.SelectedGroupId = id;
-                groupState.IsGroupPrivate =
+                _groupState.SelectedGroupName = name!;
+                _groupState.SelectedGroupId = id;
+                _groupState.IsGroupPrivate =
                     !_groupPrivacyCache.TryGetValue(id, out var isPriv) || isPriv;
             })
             .DisposeWith(_disposables);
@@ -146,6 +132,24 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         _disposed = true;
     }
 
+    private void OnConversationBumped(ConversationBumped evt)
+    {
+        var idx = _groupIds.IndexOf(evt.GroupId);
+        if (idx <= 0 || idx >= Groups.Count) return;
+
+        var isCurrent = _groupState.SelectedGroupId == evt.GroupId;
+        var id = _groupIds[idx];
+        var name = Groups[idx];
+
+        _groupIds.RemoveAt(idx);
+        Groups.RemoveAt(idx);
+        _groupIds.Insert(0, id);
+        Groups.Insert(0, name);
+
+        if (isCurrent)
+            SelectedGroup = name;
+    }
+
     private async Task LoadGroupsSafeAsync(CancellationToken ct)
     {
         try
@@ -154,16 +158,18 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         }
         catch
         {
-            // swallow
+            /* swallow */
         }
     }
 
     private async Task LoadGroupsAsync(CancellationToken cancellationToken)
     {
         var tokenString = _userState.SessionToken;
-        if (string.IsNullOrWhiteSpace(tokenString)
-            || !Guid.TryParse(tokenString, out var sessionToken))
+        if (string.IsNullOrWhiteSpace(tokenString) ||
+            !Guid.TryParse(tokenString, out var sessionToken))
             return;
+
+        var oldIds = _groupIds.ToList();
 
         var namesMap = await _groupService.GetGroupsNamesAsync(
             new GetGroupsNamesRequestDto { SessionToken = sessionToken },
@@ -179,23 +185,28 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
 
         var lastInfos = await Task.WhenAll(_groupIds.Select(async gid =>
         {
-            var history = await _messagesService
+            var hist = await _messagesService
                 .GetGroupMessagesAsync(sessionToken, gid)
                 .ConfigureAwait(false);
-            var last = history.Any()
-                ? history.Max(m => m.DateTime)
-                : DateTime.MinValue;
+            var last = hist.Any() ? hist.Max(m => m.DateTime) : DateTime.MinValue;
             return (GroupId: gid, Last: last);
         }));
 
-        var previously = SelectedGroup;
-        var sorted = lastInfos
+        var sortedByTime = lastInfos
             .OrderByDescending(x => x.Last)
             .Select(x => x.GroupId)
             .ToList();
 
-        _groupIds = sorted;
-        var sortedNames = sorted
+        var newId = _groupIds.Except(oldIds).FirstOrDefault();
+
+        if (newId == Guid.Empty)
+            return;
+
+        var finalOrder = new List<Guid> { newId };
+        finalOrder.AddRange(sortedByTime.Where(id => id != newId));
+        _groupIds = finalOrder;
+
+        var sortedNames = _groupIds
             .Select(gid => namesMap.TryGetValue(gid, out var nm) ? nm : $"[{gid}]")
             .ToList();
 
@@ -205,10 +216,8 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
             foreach (var nm in list)
                 Groups.Add(nm);
 
-            if (!string.IsNullOrEmpty(previously) && Groups.Contains(previously))
-                SelectedGroup = previously;
-            else
-                SelectedGroup = Groups.FirstOrDefault();
+            if (namesMap.TryGetValue(newId, out var newName))
+                SelectedGroup = newName;
 
             return Disposable.Empty;
         });
