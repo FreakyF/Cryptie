@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reactive.Subjects;
+using System.Threading;
 using System.Threading.Tasks;
 using Cryptie.Client.Features.Chats.Entities;
 using Cryptie.Common.Features.Messages.DTOs;
@@ -17,6 +18,7 @@ public class MessagesService : IMessagesService
     private readonly HttpClient _httpClient;
     private readonly HubConnection _hubConnection;
     private readonly Subject<SignalRMessage> _messageSubject = new();
+    private readonly SemaphoreSlim _startSemaphore = new(1, 1);
 
     public MessagesService(HubConnection hubConnection, HttpClient httpClient)
     {
@@ -44,9 +46,17 @@ public class MessagesService : IMessagesService
 
     public async Task ConnectAsync(Guid userId, IEnumerable<Guid> groupIds)
     {
-        if (_hubConnection.State == HubConnectionState.Disconnected)
+        await _startSemaphore.WaitAsync();
+        try
         {
-            await _hubConnection.StartAsync();
+            if (_hubConnection.State == HubConnectionState.Disconnected)
+            {
+                await _hubConnection.StartAsync();
+            }
+        }
+        finally
+        {
+            _startSemaphore.Release();
         }
 
         foreach (var gid in groupIds)
