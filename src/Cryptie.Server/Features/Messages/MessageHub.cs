@@ -25,4 +25,11 @@ public class MessageHub : Hub, IMessageHub
             .OthersInGroup(group.ToString())
             .SendAsync("ReceiveGroupMessage", message, group);
     }
+
+    public async Task SendMessageToGroup(Guid group, Guid senderId, string message)
+    {
+        await Clients
+            .Group(group.ToString())
+            .SendAsync("ReceiveGroupMessage", senderId, message, group);
+    }
 }

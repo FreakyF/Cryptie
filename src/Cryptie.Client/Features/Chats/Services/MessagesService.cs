@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reactive.Subjects;
 using System.Threading;
@@ -16,10 +16,8 @@ public class MessagesService : IMessagesService
 {
     private readonly HttpClient _httpClient;
     private readonly HubConnection _hubConnection;
-
     private readonly Subject<SignalRJoined> _joinedSubject = new();
     private readonly Subject<SignalRMessage> _messageSubject = new();
-
     private readonly SemaphoreSlim _startLock = new(1, 1);
 
     public MessagesService(HubConnection hubConnection, HttpClient httpClient)
@@ -28,10 +26,13 @@ public class MessagesService : IMessagesService
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
         _hubConnection.On<Guid, Guid>("UserJoinedGroup",
-            (userId, groupId) => { _joinedSubject.OnNext(new SignalRJoined(groupId, userId)); });
+            (userId, groupId) =>
+                _joinedSubject.OnNext(new SignalRJoined(groupId, userId)));
 
-        _hubConnection.On<string, Guid>("ReceiveGroupMessage",
-            (text, groupId) => { _messageSubject.OnNext(new SignalRMessage(groupId, text)); });
+        _hubConnection.On<Guid, string, Guid>(
+            "ReceiveGroupMessage",
+            (senderId, text, groupId) =>
+                _messageSubject.OnNext(new SignalRMessage(groupId, text, senderId)));
 
         _hubConnection.Closed += _ => Task.CompletedTask;
     }
@@ -44,7 +45,6 @@ public class MessagesService : IMessagesService
         try
         {
             var isReady = false;
-
             while (!isReady)
             {
                 switch (_hubConnection.State)
@@ -57,20 +57,17 @@ public class MessagesService : IMessagesService
                         }
                         catch (InvalidOperationException)
                         {
-                            // Another thread raced us; loop around and re-check state
+                            /* retry */
                         }
 
                         break;
-
                     case HubConnectionState.Connecting:
                     case HubConnectionState.Reconnecting:
                         await Task.Delay(50);
                         break;
-
                     case HubConnectionState.Connected:
                         isReady = true;
                         break;
-
                     default:
                         await Task.Delay(50);
                         break;
@@ -82,39 +79,85 @@ public class MessagesService : IMessagesService
             _startLock.Release();
         }
 
-        foreach (var groupId in groupIds)
-        {
-            await _hubConnection.InvokeAsync("JoinGroup", userId, groupId);
-        }
+        foreach (var gid in groupIds)
+            await _hubConnection.InvokeAsync("JoinGroup", userId, gid);
     }
 
     public async Task<IList<GetGroupMessagesResponseDto.MessageDto>> GetGroupMessagesAsync(
         Guid userToken,
         Guid groupId)
     {
-        var dto = new GetGroupMessagesRequestDto
+        var getAllDto = new GetGroupMessagesRequestDto
         {
             UserToken = userToken,
             GroupId = groupId
         };
 
-        using var request = new HttpRequestMessage(HttpMethod.Get, "/messages/get-all");
-        request.Content = JsonContent.Create(dto);
-        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        // Spróbuj najpierw GET /messages/get-all z body
+        try
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, "/messages/get-all")
+            {
+                Content = JsonContent.Create(getAllDto)
+            };
+            var resp = await _httpClient.SendAsync(req);
+            if (resp.IsSuccessStatusCode)
+            {
+                var wrapper = await resp.Content
+                    .ReadFromJsonAsync<GetGroupMessagesResponseDto>();
+                if (wrapper?.Messages != null)
+                    return wrapper.Messages;
+            }
+        }
+        catch (HttpRequestException)
+        {
+            /* serwer nie obsługuje GET z body → fallback */
+        }
 
-        var response = await _httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
+        // Fallback: POST /messages/get-all-since z Since = MinValue
+        var sinceDto = new GetGroupMessagesSinceRequestDto
+        {
+            UserToken = userToken,
+            GroupId = groupId,
+            Since = DateTime.MinValue
+        };
 
-        var wrapper = await response.Content
-            .ReadFromJsonAsync<GetGroupMessagesResponseDto>();
+        var resp2 = await _httpClient.PostAsJsonAsync("/messages/get-all-since", sinceDto);
+        if (!resp2.IsSuccessStatusCode)
+            return Array.Empty<GetGroupMessagesResponseDto.MessageDto>();
 
-        return wrapper?.Messages ?? [];
+        var wrapper2 = await resp2.Content
+            .ReadFromJsonAsync<GetGroupMessagesSinceResponseDto>();
+
+        return wrapper2?.Messages
+                   .Select(m => new GetGroupMessagesResponseDto.MessageDto
+                   {
+                       MessageId = m.MessageId,
+                       GroupId = m.GroupId,
+                       SenderId = m.SenderId,
+                       Message = m.Message,
+                       DateTime = m.DateTime
+                   })
+                   .ToList()
+               ?? [];
+    }
+
+    public async Task SendMessageToGroupViaHttpAsync(Guid senderToken, Guid groupId, string message)
+    {
+        var dto = new SendMessageRequestDto
+        {
+            SenderToken = senderToken,
+            GroupId = groupId,
+            Message = message
+        };
+        var resp = await _httpClient.PostAsJsonAsync("/messages/send", dto);
+        resp.EnsureSuccessStatusCode();
     }
 
     public async Task SendMessageToGroupAsync(Guid groupId, string message)
     {
         if (_hubConnection.State != HubConnectionState.Connected)
-            throw new InvalidOperationException("Cannot send message: hub is not connected.");
+            throw new InvalidOperationException("Cannot send: hub not connected.");
 
         await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
     }

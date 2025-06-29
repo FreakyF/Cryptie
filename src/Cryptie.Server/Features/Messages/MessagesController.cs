@@ -43,7 +43,7 @@ public class MessagesController : ControllerBase
         }
 
         var message = databaseService.SendGroupMessage(group, user, sendMessageRequest.Message);
-        messageHubService.SendMessageToGroup(group.Id, message.Id.ToString());
+        messageHubService.SendMessageToGroup(group.Id, user.Id, message.Message);
         return Ok();
     }
 
@@ -78,7 +78,7 @@ public class MessagesController : ControllerBase
             DateTime = message.DateTime
         });
     }
-    
+
     [HttpGet("get-all", Name = "GetGroupMessages")]
     public IActionResult GetGroupMessages([FromBody] GetGroupMessagesRequestDto request)
     {
@@ -113,7 +113,7 @@ public class MessagesController : ControllerBase
         };
         return Ok(response);
     }
-    
+
     [HttpPost("get-all-since", Name = "GetGroupMessagesSince")]
     public IActionResult GetGroupMessagesSince([FromBody] GetGroupMessagesSinceRequestDto request)
     {
