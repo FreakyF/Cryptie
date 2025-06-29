@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Features.Groups.State;
 using ReactiveUI;
@@ -23,7 +22,6 @@ public sealed class ChatSettingsViewModel : RoutableViewModelBase
 
         groupState
             .WhenAnyValue(gs => gs.IsGroupPrivate)
-            .Do(isPriv => { Console.WriteLine($"[Debug] IsGroupPrivate = {isPriv}"); })
             .ObserveOn(RxApp.MainThreadScheduler)
             .ToProperty(this, vm => vm.IsGroupPrivate, out _isGroupPrivate);
     }

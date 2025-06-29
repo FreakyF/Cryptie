@@ -1,22 +1,30 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Cryptie.Client.Features.Chats.Entities;
+using Cryptie.Common.Features.Messages.DTOs;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Cryptie.Client.Features.Chats.Services;
 
 public class MessagesService : IMessagesService
 {
+    private readonly HttpClient _httpClient;
     private readonly HubConnection _hubConnection;
     private readonly Subject<SignalRMessage> _messageSubject = new();
 
-    public MessagesService(HubConnection hubConnection)
+    public MessagesService(HubConnection hubConnection, HttpClient httpClient)
     {
         _hubConnection = hubConnection
                          ?? throw new ArgumentNullException(nameof(hubConnection));
+
+        _httpClient = httpClient
+                      ?? throw new ArgumentNullException(nameof(httpClient));
 
         _hubConnection.On<Guid, Guid>("UserJoinedGroup", (uid, gid) =>
             GroupJoined.Enqueue(new SignalRJoined(gid, uid)));
@@ -36,18 +44,74 @@ public class MessagesService : IMessagesService
 
     public async Task ConnectAsync(Guid userId, IEnumerable<Guid> groupIds)
     {
-        await _hubConnection.StartAsync();
+        if (_hubConnection.State == HubConnectionState.Disconnected)
+        {
+            await _hubConnection.StartAsync();
+        }
 
         foreach (var gid in groupIds)
             await _hubConnection.InvokeAsync("JoinGroup", userId, gid);
     }
 
-    public async Task SendMessageToGroupAsync(Guid groupId, string message)
+    public async Task<IList<GetGroupMessagesResponseDto.MessageDto>> GetGroupMessagesAsync(
+        Guid userToken,
+        Guid groupId)
     {
-        if (_hubConnection.State != HubConnectionState.Connected)
-            throw new InvalidOperationException("SignalR hub is not connected.");
+        var dto = new GetGroupMessagesRequestDto
+        {
+            UserToken = userToken,
+            GroupId = groupId
+        };
 
-        await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/messages/get-all");
+        request.Content = JsonContent.Create(dto);
+        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        var wrapper = await response.Content.ReadFromJsonAsync<GetGroupMessagesResponseDto>();
+        return wrapper?.Messages ?? [];
+    }
+
+    public async Task SendMessageToGroupViaHttpAsync(Guid senderToken, Guid groupId, string message)
+    {
+        var dto = new SendMessageRequestDto
+        {
+            SenderToken = senderToken,
+            GroupId = groupId,
+            Message = message
+        };
+
+        var response = await _httpClient.PostAsJsonAsync("messages/send", dto);
+
+        response.EnsureSuccessStatusCode();
+    }
+
+    public async Task<GetMessageResponseDto> GetMessageFromGroupViaHttpAsync(
+        Guid userToken,
+        Guid groupId,
+        Guid messageId)
+    {
+        var dto = new GetMessageRequestDto
+        {
+            UserToken = userToken,
+            GroupId = groupId,
+            MessageId = messageId
+        };
+
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/messages/get");
+        request.Content = JsonContent.Create(dto);
+        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content.ReadFromJsonAsync<GetMessageResponseDto>();
+        if (result is null)
+            throw new InvalidOperationException("Failed to deserialize GetMessageResponseDto.");
+
+        return result;
     }
 
     public async ValueTask DisposeAsync()
@@ -59,5 +123,31 @@ public class MessagesService : IMessagesService
 
         await _hubConnection.DisposeAsync();
         GC.SuppressFinalize(this);
+    }
+
+    public async Task SendMessageToGroupAsync(Guid groupId, string message)
+    {
+        if (_hubConnection.State != HubConnectionState.Connected)
+            throw new InvalidOperationException("SignalR hub is not connected.");
+
+        await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
+    }
+
+    public async Task<IList<GetGroupMessagesSinceResponseDto.MessageDto>> GetGroupMessagesSinceAsync(
+        Guid userToken,
+        Guid groupId,
+        DateTime since)
+    {
+        var dto = new GetGroupMessagesSinceRequestDto
+        {
+            UserToken = userToken,
+            GroupId = groupId,
+            Since = since
+        };
+        var response = await _httpClient.PostAsJsonAsync("/messages/get-all-since", dto);
+        response.EnsureSuccessStatusCode();
+        var wrapper = await response.Content
+            .ReadFromJsonAsync<GetGroupMessagesSinceResponseDto>();
+        return wrapper?.Messages ?? [];
     }
 }

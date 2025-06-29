@@ -28,8 +28,16 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
         IUserState userState)
         : base(hostScreen)
     {
-        SettingsPanel = deps.SettingsPanel;
+        if (!Guid.TryParse(userState.SessionToken, out var sessionUserId))
+            sessionUserId = Guid.Empty;
 
+        if (!Guid.TryParse(userState.UserId?.ToString(), out var userId))
+        {
+            userId = Guid.Empty;
+        }
+
+        Messages = [];
+        SettingsPanel = deps.SettingsPanel;
         GroupsPanel = new GroupsListViewModel(
             hostScreen,
             connectionMonitor,
@@ -37,81 +45,105 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
             deps.AddFriendDependencies,
             deps.GroupService,
             deps.GroupState);
-
         GroupsPanel.Groups.CollectionChanged += OnGroupsChanged;
-
-        Messages = [];
 
         _currentGroupName = deps.GroupState
             .WhenAnyValue(gs => gs.SelectedGroupName)
             .ObserveOn(RxApp.MainThreadScheduler)
             .ToProperty(this, vm => vm.CurrentGroupName);
 
+        ToggleChatSettingsCommand = ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; })
+            .DisposeWith(_disposables);
+
+        deps.GroupState
+            .WhenAnyValue(gs => gs.SelectedGroupId)
+            .DistinctUntilChanged()
+            .Where(gid => gid != Guid.Empty)
+            .SelectMany(async gid => await deps.MessagesService.GetGroupMessagesAsync(
+                userToken: sessionUserId,
+                groupId: gid))
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(history =>
+            {
+                Messages.Clear();
+                var groupName = deps.GroupState.SelectedGroupName ?? string.Empty;
+                foreach (var m in history)
+                {
+                    var isOwn = m.SenderId == userId;
+                    Messages.Add(new ChatMessageViewModel(
+                        message: m.Message,
+                        isOwn: isOwn,
+                        groupName: groupName));
+                }
+            })
+            .DisposeWith(_disposables);
+
         var canSend = this
             .WhenAnyValue(vm => vm.MessageText,
                 txt => !string.IsNullOrWhiteSpace(txt) && txt.Length <= 2000);
 
         SendMessageCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var gid = deps.GroupState.SelectedGroupId;
-            if (gid == Guid.Empty || string.IsNullOrWhiteSpace(MessageText))
-                return;
+            {
+                var gid = deps.GroupState.SelectedGroupId;
+                if (gid == Guid.Empty) return;
 
-            var trimmedMessage = MessageText!.Trim();
+                var trimmed = MessageText!.Trim();
+                if (string.IsNullOrEmpty(trimmed)) return;
 
-            await deps.MessagesService.SendMessageToGroupAsync(gid, trimmedMessage);
+                await deps.MessagesService.SendMessageToGroupViaHttpAsync(
+                    senderToken: sessionUserId,
+                    groupId: gid,
+                    message: trimmed);
 
-            Messages.Add(new ChatMessageViewModel(
-                message: trimmedMessage,
-                isOwn: true,
-                groupName: deps.GroupState.SelectedGroupName ?? string.Empty));
-
-            MessageText = string.Empty;
-        }, canSend);
-
-        SendMessageCommand
-            .ThrownExceptions
-            .Subscribe()
+                MessageText = string.Empty;
+            }, canSend)
             .DisposeWith(_disposables);
 
         deps.MessagesService.MessageReceived
             .Where(m => m.GroupId == deps.GroupState.SelectedGroupId)
+            .SelectMany(async signal =>
+            {
+                if (!Guid.TryParse(signal.Message, out var msgId))
+                    return null;
+                return await deps.MessagesService.GetMessageFromGroupViaHttpAsync(
+                    userToken: sessionUserId,
+                    groupId: signal.GroupId,
+                    messageId: msgId);
+            })
+            .Where(dto => dto != null)
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(m =>
+            .Subscribe(dto =>
+            {
+                var isOwn = dto!.SenderId == userId;
                 Messages.Add(new ChatMessageViewModel(
-                    message: m.Message.Trim(),
-                    isOwn: false,
-                    groupName: deps.GroupState.SelectedGroupName ?? string.Empty)))
+                    message: dto.Message,
+                    isOwn: isOwn,
+                    groupName: deps.GroupState.SelectedGroupName ?? string.Empty));
+            })
             .DisposeWith(_disposables);
 
-        ToggleChatSettingsCommand = ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; });
-
-        var tokenString = userState.SessionToken;
-        if (!string.IsNullOrWhiteSpace(tokenString)
-            && Guid.TryParse(tokenString, out var userId))
-        {
-            deps.GroupState
-                .WhenAnyValue(gs => gs.SelectedGroupId)
-                .Where(id => id != Guid.Empty)
-                .Take(1)
-                .ObserveOn(RxApp.TaskpoolScheduler)
-                .Subscribe(async void (_) =>
+        deps.GroupState
+            .WhenAnyValue(gs => gs.SelectedGroupId)
+            .Where(id => id != Guid.Empty)
+            .Take(1)
+            .ObserveOn(RxApp.TaskpoolScheduler)
+            .Subscribe(async void (_) =>
+            {
+                try
                 {
-                    try
-                    {
-                        await deps.MessagesService.ConnectAsync(userId, GroupsPanel.GroupIds);
-                    }
-                    catch (Exception)
-                    {
-                        // Swallow exception: do nothing
-                    }
-                })
-                .DisposeWith(_disposables);
-        }
+                    await deps.MessagesService.ConnectAsync(
+                        sessionUserId,
+                        GroupsPanel.GroupIds);
+                }
+                catch (Exception)
+                {
+                    // Swallow exception: do nothing
+                }
+            })
+            .DisposeWith(_disposables);
     }
 
     public GroupsListViewModel GroupsPanel { get; }
-
     public ObservableCollection<ChatMessageViewModel> Messages { get; }
 
     public string? MessageText
@@ -121,9 +153,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     }
 
     public string? CurrentGroupName => _currentGroupName.Value;
-
     public ChatSettingsViewModel SettingsPanel { get; }
-
     public ReactiveCommand<Unit, Unit> SendMessageCommand { get; }
     public ReactiveCommand<Unit, Unit> ToggleChatSettingsCommand { get; }
 
@@ -134,7 +164,6 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     }
 
     public bool HasGroups => GroupsPanel.Groups.Count > 0;
-
     public bool HasNoGroups => !HasGroups;
 
     public void Dispose() => _disposables.Dispose();
