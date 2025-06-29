@@ -18,4 +18,5 @@ public interface IGroupManagementService
     public IActionResult removeUserFromGroup(RemoveUserFromGroupRequestDto removeUserFromGroupRequest);
 
     public IActionResult IsGroupPrivate(IsGroupPrivateRequestDto isGroupPrivateRequest);
+    public IActionResult IsGroupsPrivate(IsGroupsPrivateRequestDto isGroupsPrivateRequest);
 }
