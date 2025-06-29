@@ -4,13 +4,20 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Chats.Dependencies;
+using Cryptie.Client.Features.Chats.Events;
+using Cryptie.Client.Features.Chats.Services;
 using Cryptie.Client.Features.ChatSettings.ViewModels;
+using Cryptie.Client.Features.Groups.Dependencies;
+using Cryptie.Client.Features.Groups.Services;
+using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Groups.ViewModels;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.Messages.DTOs;
+using Microsoft.Extensions.Options;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Chats.ViewModels;
@@ -36,7 +43,15 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
         Messages = [];
         SettingsPanel = deps.SettingsPanel;
 
-        GroupsPanel = CreateGroupsPanel(hostScreen, connectionMonitor, deps);
+        GroupsPanel = CreateGroupsPanel(
+            hostScreen,
+            connectionMonitor,
+            deps.Options,
+            deps.AddFriendDependencies,
+            deps.GroupService,
+            deps.MessagesService,
+            deps.GroupState);
+
         _currentGroupName = CreateCurrentGroupNameProperty(deps).DisposeWith(_disposables);
 
         ToggleChatSettingsCommand = CreateToggleSettingsCommand().DisposeWith(_disposables);
@@ -77,15 +92,20 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     private GroupsListViewModel CreateGroupsPanel(
         IScreen hostScreen,
         IConnectionMonitor monitor,
-        ChatsViewModelDependencies deps)
+        IOptions<ClientOptions> options,
+        AddFriendDependencies addFriendDeps,
+        IGroupService groupService,
+        IMessagesService messagesService,
+        IGroupSelectionState groupState)
     {
         var panel = new GroupsListViewModel(
             hostScreen,
             monitor,
-            deps.Options,
-            deps.AddFriendDependencies,
-            deps.GroupService,
-            deps.GroupState);
+            options,
+            addFriendDeps,
+            groupService,
+            messagesService,
+            groupState);
 
         panel.Groups.CollectionChanged += (_, _) =>
         {
@@ -127,7 +147,10 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
 
             var now = DateTime.UtcNow;
             if (now > _lastMessageTimestamp)
+            {
                 _lastMessageTimestamp = now;
+                MessageBus.Current.SendMessage(new ConversationBumped(gid, now));
+            }
         }, canSend);
     }
 
@@ -155,9 +178,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
                 Messages.Clear();
                 var groupName = deps.GroupState.SelectedGroupName ?? "";
                 foreach (var m in history)
-                {
                     Messages.Add(new ChatMessageViewModel(m.Message, m.SenderId == userId, groupName));
-                }
             })
             .DisposeWith(_disposables);
     }
@@ -207,6 +228,9 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
                     if (m.DateTime > _lastMessageTimestamp)
                         _lastMessageTimestamp = m.DateTime;
                 }
+
+                var currentGid = deps.GroupState.SelectedGroupId;
+                MessageBus.Current.SendMessage(new ConversationBumped(currentGid, _lastMessageTimestamp));
             })
             .DisposeWith(_disposables);
     }
