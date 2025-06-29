@@ -1,0 +1,63 @@
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<!-- ReSharper disable Xaml.RedundantResource -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Features.AddUserToGroup.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Cryptie.Client.Features.AddUserToGroup.Views.AddUserToGroupView"
+             x:DataType="viewModels:AddUserToGroupViewModel">
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Enter"
+                    Command="{Binding AddUserToGroupCommand}" />
+    </UserControl.KeyBindings>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <TextBlock Grid.Row="0"
+                   Theme="{StaticResource TitleTextBlock}"
+                   Classes="H4"
+                   HorizontalAlignment="Center"
+                   Margin="0,16,0,0">
+            Add users to group
+        </TextBlock>
+
+        <StackPanel Grid.Row="1"
+                    Width="300"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="4">
+            <Grid Height="48">
+                <TextBox Name="FriendInput"
+                         Watermark="Username"
+                         Height="40"
+                         Padding="8,0,46,0"
+                         VerticalAlignment="Center" />
+                <Button Name="SendButton"
+                        Width="40"
+                        Height="40"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Padding="0"
+                        Focusable="False"
+                        Command="{Binding AddUserToGroupCommand}">
+                    <TextBlock FontFamily="{StaticResource PhosphorRegular}"
+                               Text="&#xE4D0;"
+                               FontSize="20"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Button>
+            </Grid>
+            <Grid>
+                <TextBlock x:Name="ErrorMessageTextBlock"
+                           Classes="Danger"
+                           HorizontalAlignment="Center" />
+
+                <TextBlock x:Name="ConfirmationMessageTextBlock"
+                           Classes="Success"
+                           HorizontalAlignment="Center" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

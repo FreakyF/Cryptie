@@ -5,8 +5,10 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Cryptie.Client.Features.ChatSettings.ViewModels"
     xmlns:chatSettings="clr-namespace:Cryptie.Client.Features.ChatSettings"
+    mc:Ignorable="d"
     x:Class="Cryptie.Client.Features.ChatSettings.Views.ChatSettingsView"
     x:DataType="viewModels:ChatSettingsViewModel"
     d:DesignWidth="220" d:DesignHeight="450"
@@ -14,7 +16,6 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-
             <chatSettings:InverseBooleanConverter x:Key="InverseBool" />
 
             <ResourceDictionary.ThemeDictionaries>
@@ -25,7 +26,6 @@
                     <SolidColorBrush x:Key="SplitViewMenuBackground" Color="#18181C" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
-
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -47,8 +47,8 @@
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Left"
             IsVisible="{Binding IsGroupPrivate,
-                      Converter={StaticResource InverseBool},
-                      Mode=OneWay}">
+                    Converter={StaticResource InverseBool},
+                    Mode=OneWay}">
             <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
                 <TextBlock
                     DockPanel.Dock="Left"
@@ -71,7 +71,8 @@
             Margin="12,0,12,0"
             Padding="5,6,12,6"
             HorizontalAlignment="Left"
-            HorizontalContentAlignment="Left">
+            HorizontalContentAlignment="Left"
+            Command="{Binding AddUsersCommand}">
             <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
                 <TextBlock
                     DockPanel.Dock="Left"
