@@ -18,7 +18,6 @@ using Cryptie.Client.Features.Groups.Services;
 using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.GroupManagement;
-using Cryptie.Common.Features.UserManagement.DTOs;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
 
@@ -32,6 +31,7 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
     private readonly IUserState _userState;
     private CancellationTokenSource? _addFriendCts;
     private bool _disposed;
+
     private List<Guid> _groupIds = [];
     private Dictionary<Guid, bool> _groupPrivacyCache = new();
     private string? _selectedGroup;
@@ -48,7 +48,6 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
     {
         _groupService = groupService;
         _messagesService = messagesService;
-        var groupState1 = groupState;
         _userState = deps.UserState;
         IconUri = options.Value.FontUri;
 
@@ -60,8 +59,7 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
                 var idx = _groupIds.IndexOf(evt.GroupId);
                 if (idx <= 0 || idx >= Groups.Count) return;
 
-                var isCurrent = groupState1.SelectedGroupId == evt.GroupId;
-
+                var isCurrent = groupState.SelectedGroupId == evt.GroupId;
                 var id = _groupIds[idx];
                 var name = Groups[idx];
 
@@ -116,9 +114,9 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
                 if (idx < 0 || idx >= _groupIds.Count) return;
 
                 var id = _groupIds[idx];
-                groupState1.SelectedGroupName = name!;
-                groupState1.SelectedGroupId = id;
-                groupState1.IsGroupPrivate =
+                groupState.SelectedGroupName = name!;
+                groupState.SelectedGroupId = id;
+                groupState.IsGroupPrivate =
                     !_groupPrivacyCache.TryGetValue(id, out var isPriv) || isPriv;
             })
             .DisposeWith(_disposables);
@@ -126,7 +124,7 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         _ = LoadGroupsSafeAsync(CancellationToken.None);
     }
 
-    public ObservableCollection<string> Groups { get; } = [];
+    public ObservableCollection<string> Groups { get; } = new();
 
     public string? SelectedGroup
     {
@@ -156,7 +154,7 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         }
         catch
         {
-            /* swallow */
+            // swallow
         }
     }
 
@@ -167,53 +165,39 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
             || !Guid.TryParse(tokenString, out var sessionToken))
             return;
 
-        var ids = await _groupService.GetUserGroupsAsync(
-            new UserGroupsRequestDto { SessionToken = sessionToken },
+        var namesMap = await _groupService.GetGroupsNamesAsync(
+            new GetGroupsNamesRequestDto { SessionToken = sessionToken },
             cancellationToken);
-        _groupIds = ids.ToList();
 
-        var nameTasks = _groupIds
-            .Select(id => _groupService
-                .GetGroupNameAsync(
-                    new GetGroupNameRequestDto { GroupId = id },
-                    cancellationToken)
-                .ContinueWith(t => t.Result ?? $"[{id}]",
-                    TaskContinuationOptions.ExecuteSynchronously));
-        var names = await Task.WhenAll(nameTasks);
+        _groupIds = namesMap.Keys.ToList();
 
-        var statuses = await _groupService
+        _groupPrivacyCache = await _groupService
             .GetGroupsPrivacyAsync(
                 new IsGroupsPrivateRequestDto { GroupIds = _groupIds },
                 cancellationToken)
             .ConfigureAwait(false);
-        _groupPrivacyCache = statuses;
 
-        var lastMsgTasks = _groupIds.Select(async id =>
+        var lastInfos = await Task.WhenAll(_groupIds.Select(async gid =>
         {
             var history = await _messagesService
-                .GetGroupMessagesAsync(sessionToken, id);
-            return (GroupId: id,
-                Last: history.Any()
-                    ? history.Max(m => m.DateTime)
-                    : DateTime.MinValue);
-        });
-        var lastInfos = await Task.WhenAll(lastMsgTasks);
+                .GetGroupMessagesAsync(sessionToken, gid)
+                .ConfigureAwait(false);
+            var last = history.Any()
+                ? history.Max(m => m.DateTime)
+                : DateTime.MinValue;
+            return (GroupId: gid, Last: last);
+        }));
 
         var previously = SelectedGroup;
-
-        var sorted = _groupIds
-            .Zip(names, (gid, nm) => new { gid, nm })
-            .Join(
-                lastInfos,
-                g => g.gid,
-                info => info.GroupId,
-                (g, info) => new { g.gid, g.nm, info.Last }
-            )
+        var sorted = lastInfos
             .OrderByDescending(x => x.Last)
+            .Select(x => x.GroupId)
             .ToList();
 
-        _groupIds = sorted.Select(x => x.gid).ToList();
-        var sortedNames = sorted.Select(x => x.nm).ToList();
+        _groupIds = sorted;
+        var sortedNames = sorted
+            .Select(gid => namesMap.TryGetValue(gid, out var nm) ? nm : $"[{gid}]")
+            .ToList();
 
         RxApp.MainThreadScheduler.Schedule(sortedNames, (_, list) =>
         {

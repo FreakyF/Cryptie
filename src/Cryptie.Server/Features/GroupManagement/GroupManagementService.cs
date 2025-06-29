@@ -105,13 +105,41 @@ public class GroupManagementService(
         return Ok(new IsGroupsPrivateResponseDto { GroupStatuses = result });
     }
 
-    public IActionResult GetGroupsNames(GetGroupsNamesRequestDto getGroupsNamesRequest)
+    public IActionResult GetGroupsNames([FromBody] GetGroupsNamesRequestDto getGroupsNamesRequest)
     {
         var user = databaseService.GetUserFromToken(getGroupsNamesRequest.SessionToken);
-        if (user == null) return Unauthorized();
+        if (user == null)
+            return Unauthorized();
 
-        var result = user.Groups.ToDictionary(group => group.Id,
-            group => group.IsPrivate ? group.Members.FirstOrDefault(m => m.Id != user.Id).DisplayName : group.Name);
+        var result = new Dictionary<Guid, string>();
+
+        foreach (var g in user.Groups)
+        {
+            var fullGroup = databaseService.FindGroupById(g.Id);
+            if (fullGroup == null)
+                continue;
+
+            if (!fullGroup.IsPrivate)
+            {
+                result[fullGroup.Id] = fullGroup.Name;
+            }
+            else
+            {
+                var otherMember = fullGroup.Members
+                    .FirstOrDefault(m => m.Id != user.Id);
+
+                if (otherMember != null)
+                {
+                    var otherUser = databaseService.FindUserById(otherMember.Id);
+                    result[fullGroup.Id] = otherUser?.DisplayName
+                                           ?? otherMember.DisplayName;
+                }
+                else
+                {
+                    result[fullGroup.Id] = fullGroup.Name;
+                }
+            }
+        }
 
         return Ok(new GetGroupsNamesResponseDto
         {

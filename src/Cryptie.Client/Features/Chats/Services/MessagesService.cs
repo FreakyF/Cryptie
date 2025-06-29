@@ -154,12 +154,17 @@ public class MessagesService : IMessagesService
         resp.EnsureSuccessStatusCode();
     }
 
-    public async Task SendMessageToGroupAsync(Guid groupId, string message)
+    public async Task SendMessageToGroupAsync(Guid senderId, Guid groupId, string message)
     {
         if (_hubConnection.State != HubConnectionState.Connected)
             throw new InvalidOperationException("Cannot send: hub not connected.");
 
-        await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
+        await _hubConnection.InvokeAsync(
+            "SendMessageToGroup",
+            groupId,
+            senderId,
+            message
+        );
     }
 
     public async ValueTask DisposeAsync()

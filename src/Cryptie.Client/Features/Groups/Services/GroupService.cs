@@ -59,4 +59,21 @@ public class GroupService(HttpClient httpClient) : IGroupService
 
         return result.GroupStatuses;
     }
+
+    public async Task<Dictionary<Guid, string>> GetGroupsNamesAsync(
+        GetGroupsNamesRequestDto request,
+        CancellationToken cancellationToken = default)
+    {
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Post, "group/groupsNames");
+        httpRequest.Content = JsonContent.Create(request);
+
+        using var response = await httpClient.SendAsync(httpRequest, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content
+            .ReadFromJsonAsync<GetGroupsNamesResponseDto>(cancellationToken: cancellationToken);
+
+        return result?.GroupsNames
+               ?? new Dictionary<Guid, string>();
+    }
 }

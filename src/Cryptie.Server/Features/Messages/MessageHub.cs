@@ -19,13 +19,6 @@ public class MessageHub : Hub, IMessageHub
         await Clients.Group(group.ToString()).SendAsync("UserJoinedGroup", user, group);
     }
 
-    public async Task SendMessageToGroup(Guid group, string message)
-    {
-        await Clients
-            .OthersInGroup(group.ToString())
-            .SendAsync("ReceiveGroupMessage", message, group);
-    }
-
     public async Task SendMessageToGroup(Guid group, Guid senderId, string message)
     {
         await Clients

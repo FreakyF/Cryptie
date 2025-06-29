@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using Cryptie.Common.Entities;
 using Cryptie.Server.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -32,8 +31,9 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
     public Group? FindGroupById(Guid id)
     {
-        var group = appDbContext.Groups.Find(id);
-        return group;
+        return appDbContext.Groups
+            .Include(g => g.Members)
+            .SingleOrDefault(g => g.Id == id);
     }
 
     public Group? CreateNewGroup(User user, string name)

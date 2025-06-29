@@ -16,6 +16,6 @@ public interface IMessagesService : IAsyncDisposable
         Guid userToken,
         Guid groupId);
 
-    Task SendMessageToGroupAsync(Guid groupId, string message);
+    Task SendMessageToGroupAsync(Guid senderId, Guid groupId, string message);
     Task SendMessageToGroupViaHttpAsync(Guid senderToken, Guid groupId, string message);
 }
