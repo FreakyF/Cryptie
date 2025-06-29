@@ -78,4 +78,74 @@ public class MessagesController : ControllerBase
             DateTime = message.DateTime
         });
     }
+    
+    [HttpGet("get-all", Name = "GetGroupMessages")]
+    public IActionResult GetGroupMessages([FromBody] GetGroupMessagesRequestDto request)
+    {
+        var user = databaseService.GetUserFromToken(request.UserToken);
+        if (user == null)
+        {
+            return Unauthorized();
+        }
+
+        var group = databaseService.FindGroupById(request.GroupId);
+        if (group == null)
+        {
+            return NotFound();
+        }
+
+        if (!group.Members.Any(m => m.Id == user.Id))
+        {
+            return BadRequest("User is not a member of the group.");
+        }
+
+        var messages = databaseService.GetGroupMessages(request.GroupId);
+        var response = new GetGroupMessagesResponseDto
+        {
+            Messages = messages.Select(m => new GetGroupMessagesResponseDto.MessageDto
+            {
+                MessageId = m.Id,
+                GroupId = m.GroupId,
+                SenderId = m.SenderId,
+                Message = m.Message,
+                DateTime = m.DateTime
+            }).ToList()
+        };
+        return Ok(response);
+    }
+    
+    [HttpPost("get-all-since", Name = "GetGroupMessagesSince")]
+    public IActionResult GetGroupMessagesSince([FromBody] GetGroupMessagesSinceRequestDto request)
+    {
+        var user = databaseService.GetUserFromToken(request.UserToken);
+        if (user == null)
+        {
+            return Unauthorized();
+        }
+
+        var group = databaseService.FindGroupById(request.GroupId);
+        if (group == null)
+        {
+            return NotFound();
+        }
+
+        if (!group.Members.Any(m => m.Id == user.Id))
+        {
+            return BadRequest("User is not a member of the group.");
+        }
+
+        var messages = databaseService.GetGroupMessagesSince(request.GroupId, request.Since);
+        var response = new GetGroupMessagesSinceResponseDto
+        {
+            Messages = messages.Select(m => new GetGroupMessagesSinceResponseDto.MessageDto
+            {
+                MessageId = m.Id,
+                GroupId = m.GroupId,
+                SenderId = m.SenderId,
+                Message = m.Message,
+                DateTime = m.DateTime
+            }).ToList()
+        };
+        return Ok(response);
+    }
 }

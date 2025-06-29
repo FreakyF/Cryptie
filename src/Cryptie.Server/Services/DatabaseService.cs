@@ -207,4 +207,22 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
             .Include(m => m.Sender)
             .FirstOrDefault(m => m.Id == messageId && m.GroupId == groupId);
     }
+
+    public List<GroupMessage> GetGroupMessages(Guid groupId)
+    {
+        return appDbContext.GroupMessages
+            .AsNoTracking()
+            .Where(m => m.GroupId == groupId)
+            .OrderBy(m => m.DateTime)
+            .ToList();
+    }
+
+    public List<GroupMessage> GetGroupMessagesSince(Guid groupId, DateTime since)
+    {
+        return appDbContext.GroupMessages
+            .AsNoTracking()
+            .Where(m => m.GroupId == groupId && m.DateTime > since)
+            .OrderBy(m => m.DateTime)
+            .ToList();
+    }
 }

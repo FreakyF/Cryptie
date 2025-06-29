@@ -25,4 +25,6 @@ public interface IDatabaseService
     public void SaveUserKeys(User user, string privateKey, string publicKey);
     public GroupMessage SendGroupMessage(Group group, User sender, string message);
     public GroupMessage? GetGroupMessage(Guid messageId, Guid groupId);
+    public List<GroupMessage> GetGroupMessages(Guid groupId);
+    public List<GroupMessage> GetGroupMessagesSince(Guid groupId, DateTime since);
 }
