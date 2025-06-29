@@ -15,4 +15,10 @@ public class MessageHubService : IMessageHubService
     {
         _hubContext.Clients.Group(group.ToString()).SendAsync("ReceiveGroupMessage", message, group);
     }
+
+    public void SendMessageToGroup(Guid group, Guid senderId, string message)
+    {
+        _hubContext.Clients.Group(group.ToString())
+            .SendAsync("ReceiveGroupMessage", senderId, message, group);
+    }
 }

@@ -42,9 +42,12 @@ public partial class ChatsView : ReactiveUserControl<ChatsViewModel>
 
     private void Messages_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        if (e.Action == NotifyCollectionChangedAction.Add)
+        if (e.Action is NotifyCollectionChangedAction.Add or NotifyCollectionChangedAction.Reset)
         {
-            Dispatcher.UIThread.Post(() => { _scrollViewer?.ScrollToEnd(); }, DispatcherPriority.Background);
+            Dispatcher.UIThread.Post(
+                () => _scrollViewer?.ScrollToEnd(),
+                DispatcherPriority.Render
+            );
         }
     }
 }

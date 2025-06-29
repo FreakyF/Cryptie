@@ -2,4 +2,7 @@
 
 namespace Cryptie.Client.Features.Chats.Entities;
 
-public record SignalRMessage(Guid GroupId, string Message);
+public record SignalRMessage(
+    Guid GroupId,
+    string Message,
+    Guid SenderId);
