@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cryptie.Server.Features.Messages;
 
+[ApiController]
 [Route("messages")]
 public class MessagesController : ControllerBase
 {
