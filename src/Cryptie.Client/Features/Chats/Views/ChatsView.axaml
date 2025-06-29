@@ -108,9 +108,9 @@
                         Background="{DynamicResource FriendBubbleBackground}"
                         IsVisible="{Binding IsOwn, Converter={StaticResource InvertBoolConverter}}"
                         Margin="12,0,0,0">
-                    <TextBlock Text="{Binding Message}"
-                               TextWrapping="Wrap"
-                               Foreground="{DynamicResource FriendBubbleForeground}" />
+                    <SelectableTextBlock Text="{Binding Message}"
+                                         TextWrapping="Wrap"
+                                         Foreground="{DynamicResource FriendBubbleForeground}" />
                 </Border>
 
                 <Border Grid.Column="1"
@@ -121,9 +121,9 @@
                         Background="{StaticResource OwnBubbleBackground}"
                         IsVisible="{Binding IsOwn}"
                         Margin="0,0,17,0">
-                    <TextBlock Text="{Binding Message}"
-                               TextWrapping="Wrap"
-                               Foreground="{StaticResource OwnBubbleForeground}" />
+                    <SelectableTextBlock Text="{Binding Message}"
+                                         TextWrapping="Wrap"
+                                         Foreground="{StaticResource OwnBubbleForeground}" />
                 </Border>
             </Grid>
         </DataTemplate>
