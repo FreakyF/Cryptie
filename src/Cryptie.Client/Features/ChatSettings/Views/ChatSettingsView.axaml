@@ -1,7 +1,4 @@
-﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
-<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
-<!-- ReSharper disable Xaml.RedundantResource -->
-<UserControl
+﻿<UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,11 +6,29 @@
     xmlns:chatSettings="clr-namespace:Cryptie.Client.Features.ChatSettings"
     x:Class="Cryptie.Client.Features.ChatSettings.Views.ChatSettingsView"
     x:DataType="viewModels:ChatSettingsViewModel"
-    d:DesignWidth="220" d:DesignHeight="450">
+    d:DesignWidth="220" d:DesignHeight="450"
+    Background="{DynamicResource SplitViewMenuBackground}">
 
     <UserControl.Resources>
-        <chatSettings:InverseBooleanConverter x:Key="InverseBool" />
+        <!-- Cały ResourceDictionary jako jeden element -->
+        <ResourceDictionary>
+
+            <!-- Twój konwerter -->
+            <chatSettings:InverseBooleanConverter x:Key="InverseBool" />
+
+            <!-- Theme-dictionaries we właściwym miejscu -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="SplitViewMenuBackground" Color="#F9F9F9" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="SplitViewMenuBackground" Color="#18181C" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+        </ResourceDictionary>
     </UserControl.Resources>
+
     <StackPanel Spacing="4">
         <TextBlock
             Text="{Binding CurrentGroupName}"
@@ -32,8 +47,8 @@
             HorizontalAlignment="Left"
             HorizontalContentAlignment="Left"
             IsVisible="{Binding IsGroupPrivate,
-                          Converter={StaticResource InverseBool},
-                          Mode=OneWay}">
+                      Converter={StaticResource InverseBool},
+                      Mode=OneWay}">
             <DockPanel LastChildFill="True" HorizontalAlignment="Stretch">
                 <TextBlock
                     DockPanel.Dock="Left"
