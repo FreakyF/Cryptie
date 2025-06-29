@@ -39,15 +39,21 @@ public class ShellCoordinator(
                 var result = await userDetailsService.GetUserGuidFromTokenAsync(
                     new UserGuidFromTokenRequestDto { SessionToken = sessionToken });
 
-                if (result?.Guid != Guid.Empty)
+                if (result != null)
                 {
-                    ShowDashboard();
-                    return;
+                    var userGuid = result.Guid;
+                    if (userGuid != Guid.Empty)
+                    {
+                        stateDeps.UserState.UserId = userGuid;
+                        ShowDashboard();
+                        return;
+                    }
                 }
 
                 keychain.TryClearSessionToken(out _);
                 stateDeps.UserState.SessionToken = null;
                 stateDeps.UserState.Username = null;
+                stateDeps.UserState.UserId = null;
 
                 stateDeps.GroupSelectionState.SelectedGroupId = Guid.Empty;
                 stateDeps.GroupSelectionState.SelectedGroupName = null;
@@ -65,6 +71,7 @@ public class ShellCoordinator(
                 keychain.TryClearSessionToken(out _);
                 stateDeps.UserState.SessionToken = null;
                 stateDeps.UserState.Username = null;
+                stateDeps.UserState.UserId = null;
 
                 stateDeps.GroupSelectionState.SelectedGroupId = Guid.Empty;
                 stateDeps.GroupSelectionState.SelectedGroupName = null;

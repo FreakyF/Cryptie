@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -10,6 +10,7 @@ using Cryptie.Client.Features.Chats.Dependencies;
 using Cryptie.Client.Features.ChatSettings.ViewModels;
 using Cryptie.Client.Features.Groups.ViewModels;
 using Cryptie.Client.Features.Menu.State;
+using Cryptie.Common.Features.Messages.DTOs;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Chats.ViewModels;
@@ -19,6 +20,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     private readonly ObservableAsPropertyHelper<string?> _currentGroupName;
     private readonly CompositeDisposable _disposables = new();
     private bool _isChatSettingsOpen;
+    private DateTime _lastMessageTimestamp = DateTime.MinValue;
     private string? _messageText;
 
     public ChatsViewModel(
@@ -28,90 +30,23 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
         IUserState userState)
         : base(hostScreen)
     {
-        SettingsPanel = deps.SettingsPanel;
-
-        GroupsPanel = new GroupsListViewModel(
-            hostScreen,
-            connectionMonitor,
-            deps.Options,
-            deps.AddFriendDependencies,
-            deps.GroupService,
-            deps.GroupState);
-
-        GroupsPanel.Groups.CollectionChanged += OnGroupsChanged;
+        var sessionUserId = TryParseGuid(userState.SessionToken);
+        var userId = TryParseGuid(userState.UserId?.ToString());
 
         Messages = [];
+        SettingsPanel = deps.SettingsPanel;
 
-        _currentGroupName = deps.GroupState
-            .WhenAnyValue(gs => gs.SelectedGroupName)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .ToProperty(this, vm => vm.CurrentGroupName);
+        GroupsPanel = CreateGroupsPanel(hostScreen, connectionMonitor, deps);
+        _currentGroupName = CreateCurrentGroupNameProperty(deps).DisposeWith(_disposables);
 
-        var canSend = this
-            .WhenAnyValue(vm => vm.MessageText,
-                txt => !string.IsNullOrWhiteSpace(txt) && txt.Length <= 2000);
+        ToggleChatSettingsCommand = CreateToggleSettingsCommand().DisposeWith(_disposables);
+        SendMessageCommand = CreateSendMessageCommand(deps, sessionUserId).DisposeWith(_disposables);
 
-        SendMessageCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var gid = deps.GroupState.SelectedGroupId;
-            if (gid == Guid.Empty || string.IsNullOrWhiteSpace(MessageText))
-                return;
-
-            var trimmedMessage = MessageText!.Trim();
-
-            await deps.MessagesService.SendMessageToGroupAsync(gid, trimmedMessage);
-
-            Messages.Add(new ChatMessageViewModel(
-                message: trimmedMessage,
-                isOwn: true,
-                groupName: deps.GroupState.SelectedGroupName ?? string.Empty));
-
-            MessageText = string.Empty;
-        }, canSend);
-
-        SendMessageCommand
-            .ThrownExceptions
-            .Subscribe()
-            .DisposeWith(_disposables);
-
-        deps.MessagesService.MessageReceived
-            .Where(m => m.GroupId == deps.GroupState.SelectedGroupId)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(m =>
-                Messages.Add(new ChatMessageViewModel(
-                    message: m.Message.Trim(),
-                    isOwn: false,
-                    groupName: deps.GroupState.SelectedGroupName ?? string.Empty)))
-            .DisposeWith(_disposables);
-
-        ToggleChatSettingsCommand = ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; });
-
-        var tokenString = userState.SessionToken;
-        if (!string.IsNullOrWhiteSpace(tokenString)
-            && Guid.TryParse(tokenString, out var userId))
-        {
-            deps.GroupState
-                .WhenAnyValue(gs => gs.SelectedGroupId)
-                .Where(id => id != Guid.Empty)
-                .Take(1)
-                .ObserveOn(RxApp.TaskpoolScheduler)
-                .Subscribe(async void (_) =>
-                {
-                    try
-                    {
-                        await deps.MessagesService.ConnectAsync(userId, GroupsPanel.GroupIds);
-                    }
-                    catch (Exception)
-                    {
-                        // Swallow exception: do nothing
-                    }
-                })
-                .DisposeWith(_disposables);
-        }
+        WatchGroupSelection(deps, sessionUserId, userId);
+        WatchIncomingMessages(deps, sessionUserId, userId);
     }
 
     public GroupsListViewModel GroupsPanel { get; }
-
     public ObservableCollection<ChatMessageViewModel> Messages { get; }
 
     public string? MessageText
@@ -121,9 +56,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     }
 
     public string? CurrentGroupName => _currentGroupName.Value;
-
     public ChatSettingsViewModel SettingsPanel { get; }
-
     public ReactiveCommand<Unit, Unit> SendMessageCommand { get; }
     public ReactiveCommand<Unit, Unit> ToggleChatSettingsCommand { get; }
 
@@ -134,14 +67,147 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     }
 
     public bool HasGroups => GroupsPanel.Groups.Count > 0;
-
     public bool HasNoGroups => !HasGroups;
 
     public void Dispose() => _disposables.Dispose();
 
-    private void OnGroupsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private static Guid TryParseGuid(string? str) =>
+        Guid.TryParse(str, out var g) ? g : Guid.Empty;
+
+    private GroupsListViewModel CreateGroupsPanel(
+        IScreen hostScreen,
+        IConnectionMonitor monitor,
+        ChatsViewModelDependencies deps)
     {
-        this.RaisePropertyChanged(nameof(HasGroups));
-        this.RaisePropertyChanged(nameof(HasNoGroups));
+        var panel = new GroupsListViewModel(
+            hostScreen,
+            monitor,
+            deps.Options,
+            deps.AddFriendDependencies,
+            deps.GroupService,
+            deps.GroupState);
+
+        panel.Groups.CollectionChanged += (_, _) =>
+        {
+            this.RaisePropertyChanged(nameof(HasGroups));
+            this.RaisePropertyChanged(nameof(HasNoGroups));
+        };
+
+        return panel;
+    }
+
+    private ObservableAsPropertyHelper<string?> CreateCurrentGroupNameProperty(ChatsViewModelDependencies deps) =>
+        deps.GroupState
+            .WhenAnyValue(gs => gs.SelectedGroupName)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .ToProperty(this, vm => vm.CurrentGroupName);
+
+    private ReactiveCommand<Unit, Unit> CreateToggleSettingsCommand() =>
+        ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; });
+
+    private ReactiveCommand<Unit, Unit> CreateSendMessageCommand(
+        ChatsViewModelDependencies deps,
+        Guid sessionUserId)
+    {
+        var canSend = this
+            .WhenAnyValue(vm => vm.MessageText,
+                txt => !string.IsNullOrWhiteSpace(txt) && txt.Length <= 2000);
+
+        return ReactiveCommand.CreateFromTask(async () =>
+        {
+            var gid = deps.GroupState.SelectedGroupId;
+            var msg = MessageText?.Trim();
+            if (gid == Guid.Empty || string.IsNullOrEmpty(msg))
+                return;
+
+            await deps.MessagesService.SendMessageToGroupViaHttpAsync(sessionUserId, gid, msg);
+
+            Messages.Add(new ChatMessageViewModel(msg, isOwn: true, deps.GroupState.SelectedGroupName ?? ""));
+            MessageText = string.Empty;
+
+            var now = DateTime.UtcNow;
+            if (now > _lastMessageTimestamp)
+                _lastMessageTimestamp = now;
+        }, canSend);
+    }
+
+    private void WatchGroupSelection(
+        ChatsViewModelDependencies deps,
+        Guid sessionUserId,
+        Guid userId)
+    {
+        deps.GroupState
+            .WhenAnyValue(gs => gs.SelectedGroupId)
+            .Where(gid => gid != Guid.Empty)
+            .DistinctUntilChanged()
+            .ObserveOn(RxApp.TaskpoolScheduler)
+            .SelectMany(async gid =>
+            {
+                _lastMessageTimestamp = DateTime.MinValue;
+                var all = await deps.MessagesService.GetGroupMessagesAsync(sessionUserId, gid);
+                if (all.Any())
+                    _lastMessageTimestamp = all.Max(m => m.DateTime);
+                return all;
+            })
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(history =>
+            {
+                Messages.Clear();
+                var groupName = deps.GroupState.SelectedGroupName ?? "";
+                foreach (var m in history)
+                {
+                    Messages.Add(new ChatMessageViewModel(m.Message, m.SenderId == userId, groupName));
+                }
+            })
+            .DisposeWith(_disposables);
+    }
+
+    private void WatchIncomingMessages(
+        ChatsViewModelDependencies deps,
+        Guid sessionUserId,
+        Guid userId)
+    {
+        deps.MessagesService.MessageReceived
+            .Where(_ => deps.GroupState.SelectedGroupId != Guid.Empty)
+            .Throttle(TimeSpan.FromSeconds(1))
+            .ObserveOn(RxApp.TaskpoolScheduler)
+            .SelectMany(async _ =>
+            {
+                var gid = deps.GroupState.SelectedGroupId;
+                if (_lastMessageTimestamp == DateTime.MinValue)
+                {
+                    var all = await deps.MessagesService.GetGroupMessagesAsync(sessionUserId, gid);
+                    var projected = all
+                        .Select(m => new GetGroupMessagesSinceResponseDto.MessageDto
+                        {
+                            MessageId = m.MessageId,
+                            GroupId = m.GroupId,
+                            SenderId = m.SenderId,
+                            Message = m.Message,
+                            DateTime = m.DateTime
+                        })
+                        .ToList();
+                    return (Msgs: projected, IsFullReload: true);
+                }
+
+                var newer = await deps.MessagesService
+                    .GetGroupMessagesSinceAsync(sessionUserId, gid, _lastMessageTimestamp);
+                return (Msgs: newer.ToList(), IsFullReload: false);
+            })
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(tuple =>
+            {
+                if (tuple.IsFullReload)
+                    Messages.Clear();
+
+                var groupName = deps.GroupState.SelectedGroupName ?? "";
+                foreach (var m in tuple.Msgs)
+                {
+                    Messages.Add(new ChatMessageViewModel(m.Message, m.SenderId == userId, groupName));
+                    if (m.DateTime > _lastMessageTimestamp)
+                        _lastMessageTimestamp = m.DateTime;
+                }
+            })
+            .DisposeWith(_disposables);
     }
 }

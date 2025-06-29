@@ -142,6 +142,7 @@ public class AccountViewModel : RoutableViewModelBase
 
         _userState.Username = null;
         _userState.SessionToken = null;
+        _userState.UserId = null;
 
         _groupSelectionState.SelectedGroupId = Guid.Empty;
         _groupSelectionState.SelectedGroupName = null;

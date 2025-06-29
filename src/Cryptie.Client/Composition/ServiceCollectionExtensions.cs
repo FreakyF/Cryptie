@@ -99,6 +99,13 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
 
+        services.AddHttpClient<IMessagesService, MessagesService>()
+            .ConfigureHttpClient((sp, client) =>
+            {
+                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+                client.BaseAddress = new Uri(opts.BaseUri);
+            });
+
         services.AddSingleton<HubConnection>(sp =>
         {
             var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
@@ -158,7 +165,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
         services.AddSingleton<IThemeService, ThemeService>();
-        services.AddSingleton<IMessagesService, MessagesService>();
 
         services.AddSingleton<AddFriendDependencies>(sp => new AddFriendDependencies(
             sp.GetRequiredService<IFriendsService>(),
