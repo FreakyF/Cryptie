@@ -16,7 +16,6 @@ using Cryptie.Client.Features.Groups.Services;
 using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Groups.ViewModels;
 using Cryptie.Client.Features.Menu.State;
-using Cryptie.Common.Features.Messages.DTOs;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
 
@@ -58,7 +57,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
         SendMessageCommand = CreateSendMessageCommand(deps, sessionUserId).DisposeWith(_disposables);
 
         WatchGroupSelection(deps, sessionUserId, userId);
-        WatchIncomingMessages(deps, sessionUserId, userId);
+        WatchIncomingMessages(deps);
     }
 
     public GroupsListViewModel GroupsPanel { get; }
@@ -140,7 +139,8 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
             if (gid == Guid.Empty || string.IsNullOrEmpty(msg))
                 return;
 
-            await deps.MessagesService.SendMessageToGroupViaHttpAsync(sessionUserId, gid, msg);
+            await deps.MessagesService.ConnectAsync(sessionUserId, [gid]);
+            await deps.MessagesService.SendMessageToGroupAsync(gid, msg);
 
             Messages.Add(new ChatMessageViewModel(msg, isOwn: true, deps.GroupState.SelectedGroupName ?? ""));
             MessageText = string.Empty;
@@ -166,6 +166,8 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
             .ObserveOn(RxApp.TaskpoolScheduler)
             .SelectMany(async gid =>
             {
+                await deps.MessagesService.ConnectAsync(sessionUserId, [gid]);
+
                 _lastMessageTimestamp = DateTime.MinValue;
                 var all = await deps.MessagesService.GetGroupMessagesAsync(sessionUserId, gid);
                 if (all.Any())
@@ -184,53 +186,23 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     }
 
     private void WatchIncomingMessages(
-        ChatsViewModelDependencies deps,
-        Guid sessionUserId,
-        Guid userId)
+        ChatsViewModelDependencies deps)
     {
         deps.MessagesService.MessageReceived
-            .Where(_ => deps.GroupState.SelectedGroupId != Guid.Empty)
-            .Throttle(TimeSpan.FromSeconds(1))
-            .ObserveOn(RxApp.TaskpoolScheduler)
-            .SelectMany(async _ =>
-            {
-                var gid = deps.GroupState.SelectedGroupId;
-                if (_lastMessageTimestamp == DateTime.MinValue)
-                {
-                    var all = await deps.MessagesService.GetGroupMessagesAsync(sessionUserId, gid);
-                    var projected = all
-                        .Select(m => new GetGroupMessagesSinceResponseDto.MessageDto
-                        {
-                            MessageId = m.MessageId,
-                            GroupId = m.GroupId,
-                            SenderId = m.SenderId,
-                            Message = m.Message,
-                            DateTime = m.DateTime
-                        })
-                        .ToList();
-                    return (Msgs: projected, IsFullReload: true);
-                }
-
-                var newer = await deps.MessagesService
-                    .GetGroupMessagesSinceAsync(sessionUserId, gid, _lastMessageTimestamp);
-                return (Msgs: newer.ToList(), IsFullReload: false);
-            })
+            .Where(signal => signal.GroupId == deps.GroupState.SelectedGroupId)
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(tuple =>
+            .Subscribe(signal =>
             {
-                if (tuple.IsFullReload)
-                    Messages.Clear();
-
                 var groupName = deps.GroupState.SelectedGroupName ?? "";
-                foreach (var m in tuple.Msgs)
-                {
-                    Messages.Add(new ChatMessageViewModel(m.Message, m.SenderId == userId, groupName));
-                    if (m.DateTime > _lastMessageTimestamp)
-                        _lastMessageTimestamp = m.DateTime;
-                }
 
-                var currentGid = deps.GroupState.SelectedGroupId;
-                MessageBus.Current.SendMessage(new ConversationBumped(currentGid, _lastMessageTimestamp));
+                Messages.Add(new ChatMessageViewModel(
+                    signal.Message,
+                    isOwn: false,
+                    groupName));
+
+                var now = DateTime.UtcNow;
+                _lastMessageTimestamp = now;
+                MessageBus.Current.SendMessage(new ConversationBumped(signal.GroupId, now));
             })
             .DisposeWith(_disposables);
     }

@@ -16,11 +16,5 @@ public interface IMessagesService : IAsyncDisposable
         Guid userToken,
         Guid groupId);
 
-    Task SendMessageToGroupViaHttpAsync(Guid senderToken, Guid groupId, string message);
-
-    Task<GetMessageResponseDto> GetMessageFromGroupViaHttpAsync(
-        Guid userToken, Guid groupId, Guid messageId);
-
-    Task<IList<GetGroupMessagesSinceResponseDto.MessageDto>> GetGroupMessagesSinceAsync(
-        Guid userToken, Guid groupId, DateTime since);
+    Task SendMessageToGroupAsync(Guid groupId, string message);
 }

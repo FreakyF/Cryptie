@@ -70,44 +70,12 @@ public class MessagesService : IMessagesService
                ?? [];
     }
 
-    public async Task SendMessageToGroupViaHttpAsync(Guid senderToken, Guid groupId, string message)
+    public async Task SendMessageToGroupAsync(Guid groupId, string message)
     {
-        var dto = new SendMessageRequestDto
-        {
-            SenderToken = senderToken,
-            GroupId = groupId,
-            Message = message
-        };
+        if (_hubConnection.State != HubConnectionState.Connected)
+            throw new InvalidOperationException("SignalR hub is not connected.");
 
-        var response = await _httpClient.PostAsJsonAsync("messages/send", dto);
-
-        response.EnsureSuccessStatusCode();
-    }
-
-    public async Task<GetMessageResponseDto> GetMessageFromGroupViaHttpAsync(
-        Guid userToken,
-        Guid groupId,
-        Guid messageId)
-    {
-        var dto = new GetMessageRequestDto
-        {
-            UserToken = userToken,
-            GroupId = groupId,
-            MessageId = messageId
-        };
-
-        using var request = new HttpRequestMessage(HttpMethod.Get, "/messages/get");
-        request.Content = JsonContent.Create(dto);
-        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-        var response = await _httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
-
-        var result = await response.Content.ReadFromJsonAsync<GetMessageResponseDto>();
-        if (result is null)
-            throw new InvalidOperationException("Failed to deserialize GetMessageResponseDto.");
-
-        return result;
+        await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
     }
 
     public async ValueTask DisposeAsync()
@@ -119,23 +87,5 @@ public class MessagesService : IMessagesService
 
         await _hubConnection.DisposeAsync();
         GC.SuppressFinalize(this);
-    }
-
-    public async Task<IList<GetGroupMessagesSinceResponseDto.MessageDto>> GetGroupMessagesSinceAsync(
-        Guid userToken, Guid groupId, DateTime since)
-    {
-        var dto = new GetGroupMessagesSinceRequestDto { UserToken = userToken, GroupId = groupId, Since = since };
-        var resp = await _httpClient.PostAsJsonAsync("/messages/get-all-since", dto);
-        resp.EnsureSuccessStatusCode();
-        var wrapper = await resp.Content.ReadFromJsonAsync<GetGroupMessagesSinceResponseDto>();
-        return wrapper?.Messages ?? new List<GetGroupMessagesSinceResponseDto.MessageDto>();
-    }
-
-    public async Task SendMessageToGroupAsync(Guid groupId, string message)
-    {
-        if (_hubConnection.State != HubConnectionState.Connected)
-            throw new InvalidOperationException("SignalR hub is not connected.");
-
-        await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
     }
 }
