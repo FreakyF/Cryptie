@@ -13,6 +13,7 @@ using Cryptie.Client.Features.Account.services;
 using Cryptie.Client.Features.Account.ViewModels;
 using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
+using Cryptie.Client.Features.Authentication.Dependencies;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Client.Features.Authentication.ViewModels;
@@ -171,6 +172,15 @@ public static class ServiceCollectionExtensions
             sp.GetRequiredService<IGroupSelectionState>(),
             sp.GetRequiredService<IMessagesService>(),
             sp.GetRequiredService<ChatSettingsViewModel>()
+        ));
+
+        services.AddSingleton<TotpDependencies>(sp => new TotpDependencies(
+            sp.GetRequiredService<IValidator<TotpRequestDto>>(),
+            sp.GetRequiredService<IExceptionMessageMapper>(),
+            sp.GetRequiredService<ILoginState>(),
+            sp.GetRequiredService<IMapper>(),
+            sp.GetRequiredService<IKeychainManagerService>(),
+            sp.GetRequiredService<IUserState>()
         ));
 
         services.AddSingleton<AccountDependencies>(sp => new AccountDependencies(

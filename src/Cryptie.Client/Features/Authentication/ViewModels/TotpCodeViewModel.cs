@@ -4,14 +4,11 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cryptie.Client.Core.Base;
-using Cryptie.Client.Core.Mapping;
 using Cryptie.Client.Core.Navigation;
+using Cryptie.Client.Features.Authentication.Dependencies;
 using Cryptie.Client.Features.Authentication.Models;
 using Cryptie.Client.Features.Authentication.Services;
-using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Common.Features.Authentication.DTOs;
-using FluentValidation;
-using MapsterMapper;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Authentication.ViewModels;
@@ -20,34 +17,26 @@ public class TotpCodeViewModel : RoutableViewModelBase
 {
     private readonly IAuthenticationService _authentication;
     private readonly IShellCoordinator _coordinator;
-    private readonly IKeychainManagerService _keychain;
-    private readonly IMapper _mapper;
-    private readonly IValidator<TotpRequestDto> _validator;
+    private readonly TotpDependencies _deps;
 
     public TotpCodeViewModel(
         IAuthenticationService authentication,
         IScreen hostScreen,
         IShellCoordinator coordinator,
-        IValidator<TotpRequestDto> validator,
-        IExceptionMessageMapper exceptionMapper,
-        ILoginState loginState,
-        IMapper mapper,
-        IKeychainManagerService keychain)
+        TotpDependencies deps)
         : base(hostScreen)
     {
         _authentication = authentication;
         _coordinator = coordinator;
-        _validator = validator;
-        _mapper = mapper;
-        _keychain = keychain;
+        _deps = deps;
 
-        var loginResponse = loginState.LastResponse!;
+        var loginResponse = _deps.LoginState.LastResponse!;
         Model.TotpToken = loginResponse.TotpToken;
 
         VerifyCommand = ReactiveCommand.CreateFromTask(TotpAuthAsync);
 
         VerifyCommand.ThrownExceptions
-            .Select(exceptionMapper.Map)
+            .Select(_deps.ExceptionMapper.Map)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(msg => ErrorMessage = msg);
     }
@@ -57,9 +46,9 @@ public class TotpCodeViewModel : RoutableViewModelBase
 
     private async Task TotpAuthAsync(CancellationToken cancellationToken)
     {
-        var dto = _mapper.Map<TotpRequestDto>(Model);
+        var dto = _deps.Mapper.Map<TotpRequestDto>(Model);
 
-        await _validator.ValidateAsync(dto, cancellationToken);
+        await _deps.Validator.ValidateAsync(dto, cancellationToken);
 
         var result = await _authentication.TotpAsync(dto, cancellationToken);
         if (result == null)
@@ -68,8 +57,8 @@ public class TotpCodeViewModel : RoutableViewModelBase
             return;
         }
 
-        if (!_keychain.TrySaveSessionToken(result.Token.ToString(), out var err)) ErrorMessage = err;
-
+        if (!_deps.Keychain.TrySaveSessionToken(result.Token.ToString(), out var err)) ErrorMessage = err;
+        _deps.UserState.SessionToken = result.Token.ToString();
         if (cancellationToken.IsCancellationRequested) _coordinator.ShowLogin();
 
         _coordinator.ShowDashboard();
