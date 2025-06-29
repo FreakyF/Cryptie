@@ -12,7 +12,11 @@ public class GroupMessage
 
     [Required, Column("datetime")] public DateTime DateTime { get; set; }
 
-    [Column("group_id")] public Guid? GroupId { get; set; }
+    [Required, Column("group_id")] public Guid GroupId { get; set; }
 
-    [ForeignKey(nameof(GroupId))] public Group? Group { get; set; }
+    [ForeignKey(nameof(GroupId))] public Group Group { get; set; }
+
+    [Required, Column("sender_id")] public Guid SenderId { get; set; }
+
+    [ForeignKey(nameof(SenderId))] public User Sender { get; set; } = default!;
 }
