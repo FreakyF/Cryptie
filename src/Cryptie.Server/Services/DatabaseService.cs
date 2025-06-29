@@ -181,4 +181,30 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
 
         appDbContext.SaveChanges();
     }
+
+    public GroupMessage SendGroupMessage(Group group, User sender, string message)
+    {
+        var groupMessage = new GroupMessage
+        {
+            Id = Guid.Empty,
+            Message = message,
+            DateTime = DateTime.UtcNow,
+            Group = group,
+            Sender = sender
+        };
+
+        appDbContext.GroupMessages.Add(groupMessage);
+        appDbContext.SaveChanges();
+
+        return groupMessage;
+    }
+
+    public GroupMessage? GetGroupMessage(Guid messageId, Guid groupId)
+    {
+        return appDbContext.GroupMessages
+            .AsTracking()
+            .Include(m => m.Group)
+            .Include(m => m.Sender)
+            .FirstOrDefault(m => m.Id == messageId && m.GroupId == groupId);
+    }
 }

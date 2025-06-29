@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Cryptie.Server.Features.Messages;
 
-public class MessageHub : Hub
+public class MessageHub : Hub, IMessageHub
 {
     private static readonly ConcurrentDictionary<string, Guid> Users = new();
 

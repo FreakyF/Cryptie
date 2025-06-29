@@ -23,4 +23,6 @@ public interface IDatabaseService
     public Group? FindGroupById(Guid id);
     public string GetUserPublicKey(Guid userId);
     public void SaveUserKeys(User user, string privateKey, string publicKey);
+    public GroupMessage SendGroupMessage(Group group, User sender, string message);
+    public GroupMessage? GetGroupMessage(Guid messageId, Guid groupId);
 }
