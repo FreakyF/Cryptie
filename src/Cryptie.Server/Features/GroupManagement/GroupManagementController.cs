@@ -57,4 +57,10 @@ public class GroupManagementController(
     {
         return groupManagementService.IsGroupsPrivate(isGroupsPrivateRequest);
     }
+
+    [HttpPost("groupsNames", Name = "GetGroupsNames")]
+    public IActionResult IsGroupsPrivate([FromBody] GetGroupsNamesRequestDto getGroupsNamesRequest)
+    {
+        return groupManagementService.GetGroupsNames(getGroupsNamesRequest);
+    }
 }

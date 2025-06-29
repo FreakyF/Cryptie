@@ -104,4 +104,21 @@ public class GroupManagementService(
         if (result.Count == 0) return NotFound();
         return Ok(new IsGroupsPrivateResponseDto { GroupStatuses = result });
     }
+
+    public IActionResult GetGroupsNames(GetGroupsNamesRequestDto getGroupsNamesRequest)
+    {
+        var user = databaseService.GetUserFromToken(getGroupsNamesRequest.SessionToken);
+        if (user == null) return Unauthorized();
+
+        var result = user.Groups.Select(group => new GetGroupsNamesResponseDto.GroupNameDto
+        {
+            GroupId = group.Id,
+            Name = (group.IsPrivate) ? group.Members.FirstOrDefault(m => m.Id != user.Id).DisplayName : group.Name
+        }).ToList();
+
+        return Ok(new GetGroupsNamesResponseDto
+        {
+            Groups = result
+        });
+    }
 }

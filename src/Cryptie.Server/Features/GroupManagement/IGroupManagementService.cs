@@ -19,4 +19,5 @@ public interface IGroupManagementService
 
     public IActionResult IsGroupPrivate(IsGroupPrivateRequestDto isGroupPrivateRequest);
     public IActionResult IsGroupsPrivate(IsGroupsPrivateRequestDto isGroupsPrivateRequest);
+    public IActionResult GetGroupsNames(GetGroupsNamesRequestDto getGroupsNamesRequest);
 }
