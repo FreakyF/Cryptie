@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -17,79 +16,112 @@ public class MessagesService : IMessagesService
 {
     private readonly HttpClient _httpClient;
     private readonly HubConnection _hubConnection;
+
+    private readonly Subject<SignalRJoined> _joinedSubject = new();
     private readonly Subject<SignalRMessage> _messageSubject = new();
-    private readonly SemaphoreSlim _startSemaphore = new(1, 1);
+
+    private readonly SemaphoreSlim _startLock = new(1, 1);
 
     public MessagesService(HubConnection hubConnection, HttpClient httpClient)
     {
-        _hubConnection = hubConnection
-                         ?? throw new ArgumentNullException(nameof(hubConnection));
+        _hubConnection = hubConnection ?? throw new ArgumentNullException(nameof(hubConnection));
+        _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
 
-        _httpClient = httpClient
-                      ?? throw new ArgumentNullException(nameof(httpClient));
+        _hubConnection.On<Guid, Guid>("UserJoinedGroup",
+            (userId, groupId) => { _joinedSubject.OnNext(new SignalRJoined(groupId, userId)); });
 
-        _hubConnection.On<Guid, Guid>("UserJoinedGroup", (uid, gid) =>
-            GroupJoined.Enqueue(new SignalRJoined(gid, uid)));
+        _hubConnection.On<string, Guid>("ReceiveGroupMessage",
+            (text, groupId) => { _messageSubject.OnNext(new SignalRMessage(groupId, text)); });
 
-        _hubConnection.On<string, Guid>("ReceiveGroupMessage", (msg, gid) =>
-        {
-            var signal = new SignalRMessage(gid, msg);
-            GroupMessages.Enqueue(signal);
-            _messageSubject.OnNext(signal);
-        });
+        _hubConnection.Closed += _ => Task.CompletedTask;
     }
-
-    public ConcurrentQueue<SignalRJoined> GroupJoined { get; } = new();
-    public ConcurrentQueue<SignalRMessage> GroupMessages { get; } = new();
 
     public IObservable<SignalRMessage> MessageReceived => _messageSubject;
 
     public async Task ConnectAsync(Guid userId, IEnumerable<Guid> groupIds)
     {
-        await _startSemaphore.WaitAsync();
+        await _startLock.WaitAsync();
         try
         {
-            if (_hubConnection.State == HubConnectionState.Disconnected)
+            var isReady = false;
+
+            while (!isReady)
             {
-                await _hubConnection.StartAsync();
+                switch (_hubConnection.State)
+                {
+                    case HubConnectionState.Disconnected:
+                        try
+                        {
+                            await _hubConnection.StartAsync();
+                            isReady = true;
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // Another thread raced us; loop around and re-check state
+                        }
+
+                        break;
+
+                    case HubConnectionState.Connecting:
+                    case HubConnectionState.Reconnecting:
+                        await Task.Delay(50);
+                        break;
+
+                    case HubConnectionState.Connected:
+                        isReady = true;
+                        break;
+
+                    default:
+                        await Task.Delay(50);
+                        break;
+                }
             }
         }
         finally
         {
-            _startSemaphore.Release();
+            _startLock.Release();
         }
 
-        foreach (var gid in groupIds)
-            await _hubConnection.InvokeAsync("JoinGroup", userId, gid);
+        foreach (var groupId in groupIds)
+        {
+            await _hubConnection.InvokeAsync("JoinGroup", userId, groupId);
+        }
     }
 
     public async Task<IList<GetGroupMessagesResponseDto.MessageDto>> GetGroupMessagesAsync(
-        Guid userToken, Guid groupId)
+        Guid userToken,
+        Guid groupId)
     {
-        var dto = new GetGroupMessagesRequestDto { UserToken = userToken, GroupId = groupId };
+        var dto = new GetGroupMessagesRequestDto
+        {
+            UserToken = userToken,
+            GroupId = groupId
+        };
 
-        using var req = new HttpRequestMessage(HttpMethod.Get, "/messages/get-all");
-        req.Content = JsonContent.Create(dto);
-        req.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/messages/get-all");
+        request.Content = JsonContent.Create(dto);
+        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-        var resp = await _httpClient.SendAsync(req);
-        resp.EnsureSuccessStatusCode();
+        var response = await _httpClient.SendAsync(request);
+        response.EnsureSuccessStatusCode();
 
-        var wrapper = await resp.Content.ReadFromJsonAsync<GetGroupMessagesResponseDto>();
-        return wrapper?.Messages
-               ?? [];
+        var wrapper = await response.Content
+            .ReadFromJsonAsync<GetGroupMessagesResponseDto>();
+
+        return wrapper?.Messages ?? [];
     }
 
     public async Task SendMessageToGroupAsync(Guid groupId, string message)
     {
         if (_hubConnection.State != HubConnectionState.Connected)
-            throw new InvalidOperationException("SignalR hub is not connected.");
+            throw new InvalidOperationException("Cannot send message: hub is not connected.");
 
         await _hubConnection.InvokeAsync("SendMessageToGroup", groupId, message);
     }
 
     public async ValueTask DisposeAsync()
     {
+        _joinedSubject.Dispose();
         _messageSubject.Dispose();
 
         if (_hubConnection.State == HubConnectionState.Connected)
