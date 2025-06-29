@@ -88,4 +88,20 @@ public class GroupManagementService(
         if (group == null) return NotFound();
         return Ok(new IsGroupPrivateResponseDto { IsPrivate = group.IsPrivate });
     }
+
+    public IActionResult IsGroupsPrivate(IsGroupsPrivateRequestDto isGroupsPrivateRequest)
+    {
+        var result = new Dictionary<Guid, bool>();
+        foreach (var groupId in isGroupsPrivateRequest.GroupIds)
+        {
+            var group = databaseService.FindGroupById(groupId);
+            if (group != null)
+            {
+                result[groupId] = group.IsPrivate;
+            }
+        }
+
+        if (result.Count == 0) return NotFound();
+        return Ok(new IsGroupsPrivateResponseDto { GroupStatuses = result });
+    }
 }
