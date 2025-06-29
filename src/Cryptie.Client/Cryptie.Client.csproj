@@ -27,6 +27,7 @@
         <PackageReference Include="Avalonia.Skia" Version="11.3.0"/>
         <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0"/>
         <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2024.3.0"/>
         <PackageReference Include="KeySharp" Version="1.0.5"/>
         <PackageReference Include="Mapster" Version="7.4.0"/>
         <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1"/>

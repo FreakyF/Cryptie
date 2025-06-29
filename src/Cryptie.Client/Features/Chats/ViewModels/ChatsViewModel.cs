@@ -1,6 +1,4 @@
-﻿// ChatsViewModel.cs
-
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reactive;
@@ -11,6 +9,7 @@ using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Chats.Dependencies;
 using Cryptie.Client.Features.ChatSettings.ViewModels;
 using Cryptie.Client.Features.Groups.ViewModels;
+using Cryptie.Client.Features.Menu.State;
 using ReactiveUI;
 
 namespace Cryptie.Client.Features.Chats.ViewModels;
@@ -25,7 +24,8 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     public ChatsViewModel(
         IScreen hostScreen,
         IConnectionMonitor connectionMonitor,
-        ChatsViewModelDependencies deps)
+        ChatsViewModelDependencies deps,
+        IUserState userState)
         : base(hostScreen)
     {
         SettingsPanel = deps.SettingsPanel;
@@ -86,8 +86,9 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
 
         ToggleChatSettingsCommand = ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; });
 
-        if (deps.KeychainManagerService.TryGetSessionToken(out var tok, out _)
-            && Guid.TryParse(tok, out var userId))
+        var tokenString = userState.SessionToken;
+        if (!string.IsNullOrWhiteSpace(tokenString)
+            && Guid.TryParse(tokenString, out var userId))
         {
             deps.GroupState
                 .WhenAnyValue(gs => gs.SelectedGroupId)

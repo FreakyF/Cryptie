@@ -11,10 +11,10 @@ using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
-using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Groups.Dependencies;
 using Cryptie.Client.Features.Groups.Services;
 using Cryptie.Client.Features.Groups.State;
+using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Microsoft.Extensions.Options;
@@ -26,7 +26,7 @@ namespace Cryptie.Client.Features.Groups.ViewModels
     {
         private readonly CompositeDisposable _disposables = new();
         private readonly IGroupService _groupService;
-        private readonly IKeychainManagerService _keychain;
+        private readonly IUserState _userState;
         private CancellationTokenSource? _addFriendCts;
         private bool _disposed;
         private List<Guid> _groupIds = [];
@@ -41,9 +41,8 @@ namespace Cryptie.Client.Features.Groups.ViewModels
             IGroupSelectionState groupState)
             : base(hostScreen)
         {
-            _keychain = deps.KeychainManager;
             _groupService = groupService;
-            var groupState1 = groupState;
+            _userState = deps.UserState;
             IconUri = options.Value.FontUri;
 
             AddFriendCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -54,7 +53,6 @@ namespace Cryptie.Client.Features.Groups.ViewModels
                     var vm = new AddFriendViewModel(
                         hostScreen,
                         deps.FriendsService,
-                        deps.KeychainManager,
                         deps.Validator,
                         deps.UserState);
 
@@ -82,7 +80,7 @@ namespace Cryptie.Client.Features.Groups.ViewModels
                 {
                     try
                     {
-                        groupState1.SelectedGroupName = name!;
+                        groupState.SelectedGroupName = name!;
                         var idx = Groups.IndexOf(name!);
                         if (idx < 0 || idx >= _groupIds.Count)
                         {
@@ -90,17 +88,17 @@ namespace Cryptie.Client.Features.Groups.ViewModels
                         }
 
                         var id = _groupIds[idx];
-                        groupState1.SelectedGroupId = id;
+                        groupState.SelectedGroupId = id;
 
                         try
                         {
                             var isPrivate = await _groupService.IsGroupPrivateAsync(
                                 new IsGroupPrivateRequestDto { GroupId = id });
-                            groupState1.IsGroupPrivate = isPrivate;
+                            groupState.IsGroupPrivate = isPrivate;
                         }
                         catch
                         {
-                            groupState1.IsGroupPrivate = true;
+                            groupState.IsGroupPrivate = true;
                         }
                     }
                     catch (Exception)
@@ -141,10 +139,11 @@ namespace Cryptie.Client.Features.Groups.ViewModels
 
         private async Task LoadGroupsAsync(CancellationToken cancellationToken)
         {
-            if (!_keychain.TryGetSessionToken(out var tokenString, out _))
+            var tokenString = _userState.SessionToken;
+            if (string.IsNullOrWhiteSpace(tokenString)
+                || !Guid.TryParse(tokenString, out var token))
                 return;
-            if (!Guid.TryParse(tokenString, out var token))
-                return;
+
 
             var ids = await _groupService.GetUserGroupsAsync(
                 new UserGroupsRequestDto { SessionToken = token },

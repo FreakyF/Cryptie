@@ -3,4 +3,5 @@
 public interface IUserState
 {
     string? Username { get; set; }
+    string? SessionToken { get; set; }
 }

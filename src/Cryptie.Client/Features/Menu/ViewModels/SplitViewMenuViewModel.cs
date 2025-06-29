@@ -8,7 +8,6 @@ using Avalonia.ReactiveUI;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
-using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Menu.Models;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.UserManagement.DTOs;
@@ -19,7 +18,6 @@ namespace Cryptie.Client.Features.Menu.ViewModels;
 public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
 {
     private readonly IDisposable _connSub;
-    private readonly IKeychainManagerService _keychainManager;
     private readonly IUserDetailsService _userDetails;
     private readonly IDisposable _userNameSub;
     private readonly IUserState _userState;
@@ -29,13 +27,11 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
 
     public SplitViewMenuViewModel(
         IUserDetailsService userDetails,
-        IKeychainManagerService keychainManager,
         IConnectionMonitor connectionMonitor,
         IUserState userState)
     {
         _userState = userState;
         _userDetails = userDetails;
-        _keychainManager = keychainManager;
 
         Items =
         [
@@ -105,10 +101,12 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
     {
         try
         {
-            if (!_keychainManager.TryGetSessionToken(out var tokenStr, out _))
+            var tokenString = _userState.SessionToken;
+            if (string.IsNullOrWhiteSpace(tokenString) ||
+                !Guid.TryParse(tokenString, out var sessionToken))
+            {
                 return;
-            if (!Guid.TryParse(tokenStr, out var sessionToken))
-                return;
+            }
 
             var guidResp = await _userDetails.GetUserGuidFromTokenAsync(
                 new UserGuidFromTokenRequestDto { SessionToken = sessionToken });

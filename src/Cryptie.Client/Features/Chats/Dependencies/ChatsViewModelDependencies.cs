@@ -1,5 +1,4 @@
 ﻿using Cryptie.Client.Configuration;
-using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Chats.Services;
 using Cryptie.Client.Features.ChatSettings.ViewModels;
 using Cryptie.Client.Features.Groups.Dependencies;
@@ -14,6 +13,5 @@ public sealed record ChatsViewModelDependencies(
     AddFriendDependencies AddFriendDependencies,
     IGroupService GroupService,
     IGroupSelectionState GroupState,
-    IKeychainManagerService KeychainManagerService,
     IMessagesService MessagesService,
     ChatSettingsViewModel SettingsPanel);

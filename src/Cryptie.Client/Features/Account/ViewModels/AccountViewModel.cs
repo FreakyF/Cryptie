@@ -37,7 +37,7 @@ public class AccountViewModel : RoutableViewModelBase
         IShellCoordinator shell,
         IAccountService accountService,
         IValidator<UserDisplayNameRequestDto> validator,
-        AccountState state)
+        AccountDependencies dependencies)
         : base(hostScreen)
     {
         _keychain = keychain;
@@ -45,10 +45,10 @@ public class AccountViewModel : RoutableViewModelBase
         _account = accountService;
         _validator = validator;
 
-        _userState = state.UserState;
-        _groupSelectionState = state.GroupSelectionState;
-        _loginState = state.LoginState;
-        _registrationState = state.RegistrationState;
+        _userState = dependencies.UserState;
+        _groupSelectionState = dependencies.GroupSelectionState;
+        _loginState = dependencies.LoginState;
+        _registrationState = dependencies.RegistrationState;
 
         _username = _userState.Username;
 
@@ -111,12 +111,16 @@ public class AccountViewModel : RoutableViewModelBase
     {
         try
         {
-            if (!_keychain.TryGetSessionToken(out var token, out _))
+            var tokenString = _userState.SessionToken;
+            if (string.IsNullOrWhiteSpace(tokenString)
+                || !Guid.TryParse(tokenString, out var token))
+            {
                 return;
+            }
 
             var dto = new UserDisplayNameRequestDto
             {
-                Token = Guid.Parse(token),
+                Token = token,
                 Name = Username!
             };
 
@@ -137,6 +141,7 @@ public class AccountViewModel : RoutableViewModelBase
         _keychain.TryClearSessionToken(out _);
 
         _userState.Username = null;
+        _userState.SessionToken = null;
 
         _groupSelectionState.SelectedGroupId = Guid.Empty;
         _groupSelectionState.SelectedGroupName = null;

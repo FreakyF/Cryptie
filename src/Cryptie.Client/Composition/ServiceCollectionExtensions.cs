@@ -7,6 +7,7 @@ using Cryptie.Client.Core.Locators;
 using Cryptie.Client.Core.Mapping;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
+using Cryptie.Client.Features.Account.Dependencies;
 using Cryptie.Client.Features.Account.services;
 using Cryptie.Client.Features.Account.ViewModels;
 using Cryptie.Client.Features.AddFriend.Services;
@@ -159,7 +160,6 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<AddFriendDependencies>(sp => new AddFriendDependencies(
             sp.GetRequiredService<IFriendsService>(),
-            sp.GetRequiredService<IKeychainManagerService>(),
             sp.GetRequiredService<IValidator<AddFriendRequestDto>>(),
             sp.GetRequiredService<IUserState>()));
 
@@ -168,9 +168,15 @@ public static class ServiceCollectionExtensions
             sp.GetRequiredService<AddFriendDependencies>(),
             sp.GetRequiredService<IGroupService>(),
             sp.GetRequiredService<IGroupSelectionState>(),
-            sp.GetRequiredService<IKeychainManagerService>(),
             sp.GetRequiredService<IMessagesService>(),
             sp.GetRequiredService<ChatSettingsViewModel>()
+        ));
+
+        services.AddSingleton<AccountDependencies>(sp => new AccountDependencies(
+            sp.GetRequiredService<IUserState>(),
+            sp.GetRequiredService<IGroupSelectionState>(),
+            sp.GetRequiredService<ILoginState>(),
+            sp.GetRequiredService<IRegistrationState>()
         ));
 
         services.AddSingleton<MainWindowViewModel>();

@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Features.AddFriend.Services;
-using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using FluentValidation;
@@ -18,7 +17,6 @@ namespace Cryptie.Client.Features.AddFriend.ViewModels;
 public class AddFriendViewModel : RoutableViewModelBase
 {
     private readonly IFriendsService _friendsService;
-    private readonly IKeychainManagerService _keychainService;
     private readonly IUserState _userState;
     private readonly IValidator<AddFriendRequestDto> _validator;
     private string _confirmationMessage = string.Empty;
@@ -28,13 +26,11 @@ public class AddFriendViewModel : RoutableViewModelBase
     public AddFriendViewModel(
         IScreen hostScreen,
         IFriendsService friendsService,
-        IKeychainManagerService keychainService,
         IValidator<AddFriendRequestDto> validator,
         IUserState userState)
         : base(hostScreen)
     {
         _friendsService = friendsService;
-        _keychainService = keychainService;
         _validator = validator;
         _userState = userState;
 
@@ -71,9 +67,9 @@ public class AddFriendViewModel : RoutableViewModelBase
         ErrorMessage = string.Empty;
         ConfirmationMessage = string.Empty;
 
-        if (!_keychainService.TryGetSessionToken(out var tokenStr, out _) ||
-            string.IsNullOrWhiteSpace(tokenStr) ||
-            !Guid.TryParse(tokenStr, out var sessionToken))
+        var tokenString = _userState.SessionToken;
+        if (string.IsNullOrWhiteSpace(tokenString)
+            || !Guid.TryParse(tokenString, out var token))
         {
             ErrorMessage = "An error occurred. Please try again.";
             return;
@@ -90,7 +86,7 @@ public class AddFriendViewModel : RoutableViewModelBase
 
         var dto = new AddFriendRequestDto
         {
-            SessionToken = sessionToken,
+            SessionToken = token,
             Friend = friendName
         };
 
