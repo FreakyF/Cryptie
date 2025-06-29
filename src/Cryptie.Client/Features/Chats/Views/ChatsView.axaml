@@ -108,9 +108,9 @@
                         Background="{DynamicResource FriendBubbleBackground}"
                         IsVisible="{Binding IsOwn, Converter={StaticResource InvertBoolConverter}}"
                         Margin="12,0,0,0">
-                    <TextBlock Text="{Binding Message}"
-                               TextWrapping="Wrap"
-                               Foreground="{DynamicResource FriendBubbleForeground}" />
+                    <SelectableTextBlock Text="{Binding Message}"
+                                         TextWrapping="Wrap"
+                                         Foreground="{DynamicResource FriendBubbleForeground}" />
                 </Border>
 
                 <Border Grid.Column="1"
@@ -121,9 +121,9 @@
                         Background="{StaticResource OwnBubbleBackground}"
                         IsVisible="{Binding IsOwn}"
                         Margin="0,0,17,0">
-                    <TextBlock Text="{Binding Message}"
-                               TextWrapping="Wrap"
-                               Foreground="{StaticResource OwnBubbleForeground}" />
+                    <SelectableTextBlock Text="{Binding Message}"
+                                         TextWrapping="Wrap"
+                                         Foreground="{StaticResource OwnBubbleForeground}" />
                 </Border>
             </Grid>
         </DataTemplate>
@@ -139,9 +139,9 @@
 
         <Grid Grid.Column="1">
 
-            <TextBlock
+            <SelectableTextBlock
                 Text="No friends? Add one!"
-                Theme="{StaticResource TitleTextBlock}"
+                Theme="{StaticResource TitleSelectableTextBlock}"
                 Classes="H1"
                 Foreground="{DynamicResource NoFriendsTextBrush}"
                 HorizontalAlignment="Center"
@@ -180,13 +180,13 @@
                                         VerticalAlignment="Center" />
                                 </Grid>
 
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding CurrentGroupName}"
-                                           Theme="{StaticResource TitleTextBlock}"
-                                           Classes="H4"
-                                           VerticalAlignment="Center"
-                                           TextWrapping="NoWrap"
-                                           TextTrimming="CharacterEllipsis" />
+                                <SelectableTextBlock Grid.Column="1"
+                                                     Text="{Binding CurrentGroupName}"
+                                                     Theme="{StaticResource TitleSelectableTextBlock}"
+                                                     Classes="H4"
+                                                     VerticalAlignment="Center"
+                                                     TextWrapping="NoWrap"
+                                                     TextTrimming="CharacterEllipsis" />
 
                                 <Button Grid.Column="2"
                                         Width="48" Height="48"
