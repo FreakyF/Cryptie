@@ -110,15 +110,12 @@ public class GroupManagementService(
         var user = databaseService.GetUserFromToken(getGroupsNamesRequest.SessionToken);
         if (user == null) return Unauthorized();
 
-        var result = user.Groups.Select(group => new GetGroupsNamesResponseDto.GroupNameDto
-        {
-            GroupId = group.Id,
-            Name = (group.IsPrivate) ? group.Members.FirstOrDefault(m => m.Id != user.Id).DisplayName : group.Name
-        }).ToList();
+        var result = user.Groups.ToDictionary(group => group.Id,
+            group => group.IsPrivate ? group.Members.FirstOrDefault(m => m.Id != user.Id).DisplayName : group.Name);
 
         return Ok(new GetGroupsNamesResponseDto
         {
-            Groups = result
+            GroupsNames = result
         });
     }
 }
