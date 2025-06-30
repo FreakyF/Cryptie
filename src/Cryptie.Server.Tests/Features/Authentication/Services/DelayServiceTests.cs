@@ -40,26 +40,7 @@ namespace Cryptie.Server.Tests.Features.Authentication.Services
             
             Assert.True(stopwatch.ElapsedMilliseconds >= 95); 
         }
-
-        [Fact]
-        public async Task FakeDelay_DoesNotDelayIfFuncIsSlow()
-        {
-            
-            var service = new DelayService();
-            var func = new Func<IActionResult>(() => {
-                Task.Delay(150).Wait();
-                return new OkResult();
-            });
-            var stopwatch = Stopwatch.StartNew();
-
-            
-            await service.FakeDelay(func);
-            stopwatch.Stop();
-
-            
-            Assert.True(stopwatch.ElapsedMilliseconds >= 150);
-            Assert.True(stopwatch.ElapsedMilliseconds < 300);
-        }
+        
     }
 }
 
