@@ -146,4 +146,36 @@ public class GroupManagementService(
             GroupsNames = result
         });
     }
+
+    public IActionResult CreateGroupFromPrivateChat(
+        CreateGroupFromPrivateChatRequestDto createGroupFromPrivateChatRequest)
+    {
+        var user = databaseService.GetUserFromToken(createGroupFromPrivateChatRequest.SessionToken);
+        if (user == null) return Unauthorized();
+
+        var privateChat = databaseService.FindGroupById(createGroupFromPrivateChatRequest.PrivateChatId);
+        if (privateChat is not { IsPrivate: true })
+            return BadRequest();
+
+        if (privateChat.Members.All(m => m.Id != user.Id))
+            return Unauthorized();
+
+        var newMember = databaseService.FindUserByLogin(createGroupFromPrivateChatRequest.NewMember);
+        if (newMember == null)
+            return NotFound();
+
+        if (privateChat.Members.All(m => m.Id != newMember.Id))
+            return BadRequest();
+
+        var newGroup = databaseService.CreateNewGroup(user, privateChat.Name + "_" + newMember.DisplayName);
+        if (newGroup == null) return BadRequest();
+
+        databaseService.AddUserToGroup(privateChat.Members.SingleOrDefault(m => m.Id != user.Id)!.Id, newGroup.Id);
+        databaseService.AddUserToGroup(newMember.Id, newGroup.Id);
+
+        return Ok(new CreateGroupResponseDto
+        {
+            Group = newGroup.Id
+        });
+    }
 }

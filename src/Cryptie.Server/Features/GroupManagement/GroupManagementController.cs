@@ -28,7 +28,7 @@ public class GroupManagementController(
         return groupManagementService.deleteGroup(deleteGroupRequest);
     }
 
-    [HttpPost("name", Name = "ChangeGroupName")]
+    [HttpPost("changeGroupName", Name = "ChangeGroupName")]
     public IActionResult changeGroupName([FromBody] ChangeGroupNameRequestDto changeGroupNameRequest)
     {
         return groupManagementService.changeGroupName(changeGroupNameRequest);
@@ -62,5 +62,12 @@ public class GroupManagementController(
     public IActionResult IsGroupsPrivate([FromBody] GetGroupsNamesRequestDto getGroupsNamesRequest)
     {
         return groupManagementService.GetGroupsNames(getGroupsNamesRequest);
+    }
+
+    [HttpPost("createGroupFromPrivateChat", Name = "CreateGroupFromPrivateChat")]
+    public IActionResult CreateGroupFromPrivateChat(
+        [FromBody] CreateGroupFromPrivateChatRequestDto createGroupFromPrivateChatRequest)
+    {
+        return groupManagementService.CreateGroupFromPrivateChat(createGroupFromPrivateChatRequest);
     }
 }
