@@ -5,4 +5,5 @@ public class AddUserToGroupRequestDto
     public Guid SessionToken { get; set; }
     public Guid GroupGuid { get; set; }
     public Guid UserToAdd { get; set; }
+    public string EncryptionKey { get; set; }
 }

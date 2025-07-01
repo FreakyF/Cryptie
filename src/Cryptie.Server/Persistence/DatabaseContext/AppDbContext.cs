@@ -16,6 +16,7 @@ public class AppDbContext(DbContextOptions dbContextOptions) : DbContext(dbConte
     public DbSet<HoneypotLoginAttempt> HoneypotLoginAttempts { get; set; }
     public DbSet<UserAccountLock> UserAccountLocks { get; set; }
     public DbSet<HoneypotAccountLock> HoneypotAccountLocks { get; set; }
+    public DbSet<GroupEncryptionKey> GroupEncryptionKeys { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

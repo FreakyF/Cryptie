@@ -27,21 +27,21 @@ public class GroupService(HttpClient httpClient) : IGroupService
         return result?.Groups ?? [];
     }
 
-    public async Task<string?> GetGroupNameAsync(
-        GetGroupNameRequestDto request,
-        CancellationToken cancellationToken = default)
-    {
-        using var httpRequest = new HttpRequestMessage(HttpMethod.Get, "group/getName");
-        httpRequest.Content = JsonContent.Create(request);
-
-        using var response = await httpClient.SendAsync(httpRequest, cancellationToken);
-        response.EnsureSuccessStatusCode();
-
-        var result = await response.Content
-            .ReadFromJsonAsync<GetGroupNameResponseDto>(cancellationToken: cancellationToken);
-
-        return result?.name;
-    }
+    // public async Task<string?> GetGroupNameAsync(
+    //     GetGroupNameRequestDto request,
+    //     CancellationToken cancellationToken = default)
+    // {
+    //     using var httpRequest = new HttpRequestMessage(HttpMethod.Get, "group/getName");
+    //     httpRequest.Content = JsonContent.Create(request);
+    //
+    //     using var response = await httpClient.SendAsync(httpRequest, cancellationToken);
+    //     response.EnsureSuccessStatusCode();
+    //
+    //     var result = await response.Content
+    //         .ReadFromJsonAsync<GetGroupNameResponseDto>(cancellationToken: cancellationToken);
+    //
+    //     return result?.name;
+    // }
 
     public async Task<Dictionary<Guid, bool>> GetGroupsPrivacyAsync(
         IsGroupsPrivateRequestDto request,

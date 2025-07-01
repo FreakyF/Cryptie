@@ -27,4 +27,5 @@ public interface IDatabaseService
     public GroupMessage? GetGroupMessage(Guid messageId, Guid groupId);
     public List<GroupMessage> GetGroupMessages(Guid groupId);
     public List<GroupMessage> GetGroupMessagesSince(Guid groupId, DateTime since);
+    public void AddGroupEncryptionKey(Guid userId, Guid groupId, string key);
 }

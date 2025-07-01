@@ -40,5 +40,5 @@ public class User
     public ICollection<TotpToken> TotpTokens { get; set; } = new HashSet<TotpToken>();
     public ICollection<UserAccountLock> AccountLocks { get; set; } = new HashSet<UserAccountLock>();
     public ICollection<UserLoginAttempt> LoginAttempts { get; set; } = new HashSet<UserLoginAttempt>();
-    public ICollection<UserGroupKey> GroupKeys { get; set; } = new HashSet<UserGroupKey>();
+    public ICollection<GroupEncryptionKey> GroupEncryptionKeys { get; set; } = new HashSet<GroupEncryptionKey>();
 }

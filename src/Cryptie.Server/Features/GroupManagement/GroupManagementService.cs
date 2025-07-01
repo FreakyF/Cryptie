@@ -8,43 +8,6 @@ public class GroupManagementService(
     IDatabaseService databaseService
 ) : ControllerBase, IGroupManagementService
 {
-    public IActionResult getName(GetGroupNameRequestDto getGroupNameRequest)
-    {
-        var group = databaseService.FindGroupById(getGroupNameRequest.GroupId);
-        if (group == null) return NotFound();
-
-        return Ok(new GetGroupNameResponseDto
-        {
-            name = group.Name
-        });
-    }
-
-    public IActionResult createGroup(CreateGroupRequestDto createGroupRequest)
-    {
-        var user = databaseService.GetUserFromToken(createGroupRequest.SessionToken);
-        if (user == null) return BadRequest();
-
-        var group = databaseService.CreateNewGroup(user, createGroupRequest.Name);
-
-        if (group == null) return BadRequest();
-
-        return Ok(new CreateGroupResponseDto
-        {
-            Group = group.Id
-        });
-    }
-
-    public IActionResult deleteGroup(DeleteGroupRequestDto deleteGroupRequest)
-    {
-        var user = databaseService.GetUserFromToken(deleteGroupRequest.SessionToken);
-        if (user == null) return BadRequest();
-        if (user.Groups.All(g => g.Id != deleteGroupRequest.GroupGuid)) return BadRequest();
-
-        databaseService.DeleteGroup(deleteGroupRequest.GroupGuid);
-
-        return Ok();
-    }
-
     public IActionResult changeGroupName(ChangeGroupNameRequestDto changeGroupNameRequest)
     {
         var user = databaseService.GetUserFromToken(changeGroupNameRequest.SessionToken);
@@ -63,30 +26,19 @@ public class GroupManagementService(
     {
         var user = databaseService.GetUserFromToken(addUserToGroupRequest.SessionToken);
         if (user == null) return BadRequest();
+
+        var userToAdd = databaseService.FindUserById(addUserToGroupRequest.UserToAdd);
+        if (userToAdd == null) return NotFound();
+
+        var group = databaseService.FindGroupById(addUserToGroupRequest.GroupGuid);
+        if (group == null) return NotFound();
+
         if (user.Groups.All(g => g.Id != addUserToGroupRequest.GroupGuid)) return BadRequest();
 
         databaseService.AddUserToGroup(addUserToGroupRequest.UserToAdd, addUserToGroupRequest.GroupGuid);
+        databaseService.AddGroupEncryptionKey(userToAdd.Id, group.Id, addUserToGroupRequest.EncryptionKey);
 
         return Ok();
-    }
-
-    public IActionResult removeUserFromGroup(RemoveUserFromGroupRequestDto removeUserFromGroupRequest)
-    {
-        var user = databaseService.GetUserFromToken(removeUserFromGroupRequest.SessionToken);
-        if (user == null) return BadRequest();
-        if (user.Groups.All(g => g.Id != removeUserFromGroupRequest.GroupGuid)) return BadRequest();
-
-        databaseService.RemoveUserFromGroup(removeUserFromGroupRequest.UserToRemove,
-            removeUserFromGroupRequest.GroupGuid);
-
-        return Ok();
-    }
-
-    public IActionResult IsGroupPrivate(IsGroupPrivateRequestDto isGroupPrivateRequest)
-    {
-        var group = databaseService.FindGroupById(isGroupPrivateRequest.GroupId);
-        if (group == null) return NotFound();
-        return Ok(new IsGroupPrivateResponseDto { IsPrivate = group.IsPrivate });
     }
 
     public IActionResult IsGroupsPrivate(IsGroupsPrivateRequestDto isGroupsPrivateRequest)
@@ -167,15 +119,28 @@ public class GroupManagementService(
         if (privateChat.Members.All(m => m.Id != newMember.Id))
             return BadRequest();
 
+        var newGroupMembers = privateChat.Members.Select(m => m.Id).ToList();
+        newGroupMembers.Add(newMember.Id);
+
+        if (createGroupFromPrivateChatRequest.EncryptionKeys.Any(keyValuePair =>
+                !newGroupMembers.Contains(keyValuePair.Key)))
+        {
+            return BadRequest();
+        }
+
         var newGroup = databaseService.CreateNewGroup(user, privateChat.Name + "_" + newMember.DisplayName);
         if (newGroup == null) return BadRequest();
 
-        databaseService.AddUserToGroup(privateChat.Members.SingleOrDefault(m => m.Id != user.Id)!.Id, newGroup.Id);
-        databaseService.AddUserToGroup(newMember.Id, newGroup.Id);
-
-        return Ok(new CreateGroupResponseDto
+        foreach (var memberId in newGroupMembers)
         {
-            Group = newGroup.Id
+            databaseService.AddUserToGroup(memberId, newGroup.Id);
+            databaseService.AddGroupEncryptionKey(memberId, newGroup.Id,
+                createGroupFromPrivateChatRequest.EncryptionKeys[memberId]);
+        }
+
+        return Ok(new CreateGroupFromPrivateChatResponseDto
+        {
+            GroupId = newGroup.Id
         });
     }
 }

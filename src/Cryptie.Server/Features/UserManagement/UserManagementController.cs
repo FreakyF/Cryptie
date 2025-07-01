@@ -40,12 +40,25 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         if (friend == null) return NotFound();
         var user = databaseService.GetUserFromToken(addFriendRequest.SessionToken);
         if (user == null) return BadRequest();
+
+        var newGroupMembers = new List<Guid> { user.Id, friend.Id };
+
+        if (addFriendRequest.EncryptionKeys.Any(keyValuePair =>
+                !newGroupMembers.Contains(keyValuePair.Key)))
+        {
+            return BadRequest();
+        }
+
         databaseService.AddFriend(user, friend);
 
-        var group = databaseService.CreateGroup(user.DisplayName + "_" + friend.DisplayName, true);
+        var newGroup = databaseService.CreateGroup(user.DisplayName + "_" + friend.DisplayName, true);
 
-        databaseService.AddUserToGroup(user.Id, group.Id);
-        databaseService.AddUserToGroup(friend.Id, group.Id);
+        foreach (var memberId in newGroupMembers)
+        {
+            databaseService.AddUserToGroup(memberId, newGroup.Id);
+            databaseService.AddGroupEncryptionKey(memberId, newGroup.Id,
+                addFriendRequest.EncryptionKeys[memberId]);
+        }
 
         return Ok();
     }

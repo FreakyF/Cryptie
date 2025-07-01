@@ -15,5 +15,5 @@ public class Group
     public ICollection<User> Members { get; set; } = new HashSet<User>();
 
     public ICollection<GroupMessage> Messages { get; set; } = new HashSet<GroupMessage>();
-    public ICollection<UserGroupKey> UserKeys { get; set; } = new HashSet<UserGroupKey>();
+    public ICollection<GroupEncryptionKey> GroupEncryptionKeys { get; set; } = new HashSet<GroupEncryptionKey>();
 }

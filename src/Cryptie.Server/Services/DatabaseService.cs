@@ -225,4 +225,29 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
             .OrderBy(m => m.DateTime)
             .ToList();
     }
+
+    public void AddGroupEncryptionKey(Guid userId, Guid groupId, string key)
+    {
+        var user = appDbContext.Users
+            .Include(u => u.GroupEncryptionKeys)
+            .FirstOrDefault(u => u.Id == userId);
+
+        if (user == null) return;
+
+        var group = appDbContext.Groups
+            .FirstOrDefault(g => g.Id == groupId);
+
+        if (group == null) return;
+
+        var newKey = new GroupEncryptionKey
+        {
+            Id = Guid.Empty,
+            User = user,
+            Group = group,
+            AesKey = key
+        };
+
+        appDbContext.GroupEncryptionKeys.Add(newKey);
+        appDbContext.SaveChanges();
+    }
 }

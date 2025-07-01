@@ -18,36 +18,6 @@ public class GroupManagementControllerTest
     }
 
     [Fact]
-    public void GetName_ReturnsServiceResult()
-    {
-        var dto = new GetGroupNameRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.getName(dto)).Returns(expected);
-        var result = _controller.getName(dto);
-        Assert.Equal(expected, result);
-    }
-
-    [Fact]
-    public void CreateGroup_ReturnsServiceResult()
-    {
-        var dto = new CreateGroupRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.createGroup(dto)).Returns(expected);
-        var result = _controller.createGroup(dto);
-        Assert.Equal(expected, result);
-    }
-
-    [Fact]
-    public void DeleteGroup_ReturnsServiceResult()
-    {
-        var dto = new DeleteGroupRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.deleteGroup(dto)).Returns(expected);
-        var result = _controller.deleteGroup(dto);
-        Assert.Equal(expected, result);
-    }
-
-    [Fact]
     public void ChangeGroupName_ReturnsServiceResult()
     {
         var dto = new ChangeGroupNameRequestDto();
@@ -64,26 +34,6 @@ public class GroupManagementControllerTest
         var expected = new OkResult();
         _serviceMock.Setup(s => s.addUserToGroup(dto)).Returns(expected);
         var result = _controller.addUserToGroup(dto);
-        Assert.Equal(expected, result);
-    }
-
-    [Fact]
-    public void RemoveUserFromGroup_ReturnsServiceResult()
-    {
-        var dto = new RemoveUserFromGroupRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.removeUserFromGroup(dto)).Returns(expected);
-        var result = _controller.removeUserFromGroup(dto);
-        Assert.Equal(expected, result);
-    }
-
-    [Fact]
-    public void IsGroupPrivate_ReturnsServiceResult()
-    {
-        var dto = new IsGroupPrivateRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.IsGroupPrivate(dto)).Returns(expected);
-        var result = _controller.IsGroupPrivate(dto);
         Assert.Equal(expected, result);
     }
 }
