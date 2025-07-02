@@ -111,7 +111,8 @@ public class AuthenticationService(
             Password = password.Entity,
             Totp = totp.Entity,
             PublicKey = registerRequest.PublicKey,
-            PrivateKey = registerRequest.PrivateKey
+            PrivateKey = registerRequest.PrivateKey,
+            ControlId = registerRequest.ControlId
         });
 
         var totpToken = databaseService.CreateTotpToken(user.Entity);
