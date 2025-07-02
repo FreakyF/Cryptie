@@ -143,9 +143,9 @@ public class RegisterViewModel : RoutableViewModelBase
 
         var aesKeyBase64 = DeriveAesKeyFromPin(Model.PinCode);
 
-        var encryptedPrivate = DataEncryption.EncryptDataAes(privateBase64, aesKeyBase64);
+        var encryptedPrivate = AesDataEncryption.Encrypt(privateBase64, aesKeyBase64);
 
-        var encryptedLogin = DataEncryption.EncryptDataAes(Model.Username, aesKeyBase64);
+        var encryptedLogin = AesDataEncryption.Encrypt(Model.Username, aesKeyBase64);
 
         var dto = _mapper.Map<RegisterRequestDto>(Model);
         dto.PrivateKey = encryptedPrivate;

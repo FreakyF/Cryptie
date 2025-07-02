@@ -106,7 +106,7 @@ public class PinCodeViewModel : RoutableViewModelBase, IActivatableViewModel
         string? decryptedControl;
         try
         {
-            decryptedControl = DataEncryption.DecryptDataAes(
+            decryptedControl = AesDataEncryption.Decrypt(
                 _backendResponse.ControlValue,
                 aesKeyBase64);
         }
@@ -124,7 +124,7 @@ public class PinCodeViewModel : RoutableViewModelBase, IActivatableViewModel
         string decryptedPrivateKey;
         try
         {
-            decryptedPrivateKey = DataEncryption.DecryptDataAes(
+            decryptedPrivateKey = AesDataEncryption.Decrypt(
                 _backendResponse.PrivateKey,
                 aesKeyBase64);
         }

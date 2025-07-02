@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Cryptie.Client.Encryption;
 
-public static class MessageEncryption
+public static class RsaDataEncryption
 {
-    public static string EncryptMessage(string message, X509Certificate2 publicKey)
+    public static string Encrypt(string message, X509Certificate2 publicKey)
     {
         var messageBytes = Encoding.UTF8.GetBytes(message);
         var contentInfo = new ContentInfo(messageBytes);
@@ -19,7 +19,7 @@ public static class MessageEncryption
         return Convert.ToBase64String(envelopedCms.Encode());
     }
 
-    public static string DecryptMessage(string message, X509Certificate2 privateKey)
+    public static string Decrypt(string message, X509Certificate2 privateKey)
     {
         var messageBytes = Convert.FromBase64String(message);
         var envelopedCms = new EnvelopedCms();

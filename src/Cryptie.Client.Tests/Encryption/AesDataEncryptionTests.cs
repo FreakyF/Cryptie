@@ -3,7 +3,7 @@ using Cryptie.Client.Encryption;
 
 namespace Cryptie.Client.Tests.Encryption
 {
-    public class DataEncryptionTests
+    public class AesDataEncryptionTests
     {
         private static string GenerateAesKey()
         {
@@ -19,8 +19,8 @@ namespace Cryptie.Client.Tests.Encryption
             var originalData = "Test data for encryption!";
 
 
-            var encrypted = DataEncryption.EncryptDataAes(originalData, key);
-            var decrypted = DataEncryption.DecryptDataAes(encrypted, key);
+            var encrypted = AesDataEncryption.Encrypt(originalData, key);
+            var decrypted = AesDataEncryption.Decrypt(encrypted, key);
 
 
             Assert.NotNull(encrypted);
@@ -35,10 +35,10 @@ namespace Cryptie.Client.Tests.Encryption
             var key = GenerateAesKey();
             var wrongKey = GenerateAesKey();
             var originalData = "Sensitive data";
-            var encrypted = DataEncryption.EncryptDataAes(originalData, key);
+            var encrypted = AesDataEncryption.Encrypt(originalData, key);
 
 
-            Assert.ThrowsAny<Exception>(() => DataEncryption.DecryptDataAes(encrypted, wrongKey));
+            Assert.ThrowsAny<Exception>(() => AesDataEncryption.Decrypt(encrypted, wrongKey));
         }
 
         [Fact]
@@ -48,8 +48,8 @@ namespace Cryptie.Client.Tests.Encryption
             string? data = null;
 
 
-            var encrypted = DataEncryption.EncryptDataAes(data, key);
-            var decrypted = DataEncryption.DecryptDataAes(encrypted, key);
+            var encrypted = AesDataEncryption.Encrypt(data, key);
+            var decrypted = AesDataEncryption.Decrypt(encrypted, key);
 
 
             Assert.Equal("", decrypted);

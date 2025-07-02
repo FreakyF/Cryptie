@@ -4,9 +4,9 @@ using System.Security.Cryptography;
 
 namespace Cryptie.Client.Encryption;
 
-public static class DataEncryption
+public static class AesDataEncryption
 {
-    public static string EncryptDataAes(string data, string key)
+    public static string Encrypt(string data, string key)
     {
         using var aes = Aes.Create();
         aes.Key = Convert.FromBase64String(key);
@@ -26,7 +26,7 @@ public static class DataEncryption
         return Convert.ToBase64String(ms.ToArray());
     }
 
-    public static string DecryptDataAes(string encryptedData, string key)
+    public static string Decrypt(string encryptedData, string key)
     {
         var fullCipher = Convert.FromBase64String(encryptedData);
         using var aes = Aes.Create();
