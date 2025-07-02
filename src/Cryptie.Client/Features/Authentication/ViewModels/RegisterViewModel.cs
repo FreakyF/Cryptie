@@ -116,7 +116,9 @@ public class RegisterViewModel : RoutableViewModelBase
     }
 
     private IObservable<bool> IsTouched<T>(Expression<Func<RegisterViewModel, T>> prop)
-        => this.WhenAnyValue(prop).Skip(1).Select(_ => true).StartWith(false);
+    {
+        return this.WhenAnyValue(prop).Skip(1).Select(_ => true).StartWith(false);
+    }
 
     private ValidationResult ValidateDto()
     {
@@ -161,7 +163,9 @@ public class RegisterViewModel : RoutableViewModelBase
         }
 
         if (cancellationToken.IsCancellationRequested)
+        {
             _coordinator.ShowRegister();
+        }
 
         _registrationState.LastResponse = result;
         _coordinator.ShowQrSetup();

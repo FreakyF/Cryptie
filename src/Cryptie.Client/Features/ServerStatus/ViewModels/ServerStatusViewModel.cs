@@ -28,7 +28,11 @@ public sealed class ServerStatusViewModel : RoutableViewModelBase, INotifyProper
         get => _isLoading;
         private set
         {
-            if (_isLoading == value) return;
+            if (_isLoading == value)
+            {
+                return;
+            }
+
             _isLoading = value;
             OnPropertyChanged();
         }
@@ -37,7 +41,10 @@ public sealed class ServerStatusViewModel : RoutableViewModelBase, INotifyProper
     public void Dispose()
     {
         if (!_cts.IsCancellationRequested)
+        {
             _cts.Cancel();
+        }
+
         _cts.Dispose();
     }
 

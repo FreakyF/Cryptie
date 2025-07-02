@@ -1,7 +1,5 @@
-﻿using System;
-using System.Globalization;
-using Cryptie.Client.Features.Messages.Converters;
-using Xunit;
+﻿using System.Globalization;
+using Cryptie.Client.Features.Dashboard.Converters;
 
 namespace Cryptie.Client.Tests.Features.Dashboard.Converters;
 
@@ -27,4 +25,3 @@ public class BottomToColumnSpanConverterTests
             _converter.ConvertBack(1, typeof(bool), null, CultureInfo.InvariantCulture));
     }
 }
-

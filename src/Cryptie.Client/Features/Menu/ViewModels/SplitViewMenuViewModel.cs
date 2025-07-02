@@ -36,8 +36,8 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
         Items =
         [
             new NavigationItem("Chats", "\uE168", c => c.ShowChats()),
-            new NavigationItem("Account", "\uE4C2", c => c.ShowAccount(), IsBottom: true, IsLast: true),
-            new NavigationItem("Settings", "\uE272", c => c.ShowSettings(), IsBottom: true),
+            new NavigationItem("Account", "\uE4C2", c => c.ShowAccount(), true, true),
+            new NavigationItem("Settings", "\uE272", c => c.ShowSettings(), true)
         ];
         _selectedItem = Items[0];
 
@@ -83,7 +83,11 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
 
     public void Dispose()
     {
-        if (_disposed) return;
+        if (_disposed)
+        {
+            return;
+        }
+
         _connSub.Dispose();
         _userNameSub.Dispose();
         _disposed = true;
@@ -110,12 +114,19 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
 
             var guidResp = await _userDetails.GetUserGuidFromTokenAsync(
                 new UserGuidFromTokenRequestDto { SessionToken = sessionToken });
-            if (guidResp is null) return;
+            if (guidResp is null)
+            {
+                return;
+            }
 
             var nameResp = await _userDetails.GetUsernameFromGuidAsync(
                 new NameFromGuidRequestDto { Id = guidResp.Guid });
             var userName = nameResp?.Name;
-            if (string.IsNullOrWhiteSpace(userName)) return;
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                return;
+            }
+
             _userState.Username = userName;
             ReplaceAccountItem(userName);
         }
@@ -128,10 +139,16 @@ public sealed class SplitViewMenuViewModel : ViewModelBase, IDisposable
     private void ReplaceAccountItem(string userName)
     {
         var oldItem = Items.FirstOrDefault(i => i.IconGlyph == "\uE4C2");
-        if (oldItem is null) return;
+        if (oldItem is null)
+        {
+            return;
+        }
 
         var idx = Items.IndexOf(oldItem);
-        if (idx < 0) return;
+        if (idx < 0)
+        {
+            return;
+        }
 
         Items[idx] = oldItem with { FullLabel = userName };
     }

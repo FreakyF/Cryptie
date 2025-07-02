@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace Cryptie.Client.Features.Messages.Converters;
+namespace Cryptie.Client.Features.Dashboard.Converters;
 
 public class AccountInitialVisibilityConverter : IMultiValueConverter
 {

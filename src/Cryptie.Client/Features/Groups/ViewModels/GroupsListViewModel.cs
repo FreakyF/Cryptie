@@ -112,7 +112,10 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
             .Subscribe(name =>
             {
                 var idx = Groups.IndexOf(name!);
-                if (idx < 0 || idx >= _groupIds.Count) return;
+                if (idx < 0 || idx >= _groupIds.Count)
+                {
+                    return;
+                }
 
                 var id = _groupIds[idx];
                 _groupState.SelectedGroupName = name!;
@@ -146,7 +149,11 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
 
     public void Dispose()
     {
-        if (_disposed) return;
+        if (_disposed)
+        {
+            return;
+        }
+
         _disposables.Dispose();
         _addFriendCts?.Dispose();
         _disposed = true;
@@ -155,7 +162,10 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
     private void OnConversationBumped(ConversationBumped evt)
     {
         var idx = _groupIds.IndexOf(evt.GroupId);
-        if (idx <= 0 || idx >= Groups.Count) return;
+        if (idx <= 0 || idx >= Groups.Count)
+        {
+            return;
+        }
 
         var isCurrent = _groupState.SelectedGroupId == evt.GroupId;
         var id = _groupIds[idx];
@@ -167,7 +177,9 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         Groups.Insert(0, name);
 
         if (isCurrent)
+        {
             SelectedGroup = name;
+        }
     }
 
     private async Task LoadGroupsSafeAsync(CancellationToken ct)
@@ -187,7 +199,9 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         var tokenString = _userState.SessionToken;
         if (string.IsNullOrWhiteSpace(tokenString) ||
             !Guid.TryParse(tokenString, out var sessionToken))
+        {
             return;
+        }
 
         var oldIds = _groupIds.ToList();
 
@@ -250,7 +264,9 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
 
         var newId = _groupIds.Except(oldIds).FirstOrDefault();
         if (newId == Guid.Empty)
+        {
             return;
+        }
 
         var finalOrder = new List<Guid> { newId };
         finalOrder.AddRange(sortedByTime.Where(id => id != newId));
@@ -264,10 +280,14 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         {
             Groups.Clear();
             foreach (var nm in list)
+            {
                 Groups.Add(nm);
+            }
 
             if (namesMap.TryGetValue(newId, out var newName))
+            {
                 SelectedGroup = newName;
+            }
 
             return Disposable.Empty;
         });

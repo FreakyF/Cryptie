@@ -3,36 +3,37 @@ using Cryptie.Client.Core.Base;
 using Cryptie.Client.Features.Settings.Services;
 using ReactiveUI;
 
-namespace Cryptie.Client.Features.Settings.ViewModels
+namespace Cryptie.Client.Features.Settings.ViewModels;
+
+public class SettingsViewModel : RoutableViewModelBase
 {
-    public class SettingsViewModel : RoutableViewModelBase
+    private readonly IThemeService _themeService;
+
+    private string _selectedTheme;
+
+    public SettingsViewModel(IScreen hostScreen, IThemeService themeService)
+        : base(hostScreen)
     {
-        private readonly IThemeService _themeService;
+        _themeService = themeService;
+        _selectedTheme = _themeService.CurrentTheme;
+        AvailableThemes = new List<string>(_themeService.AvailableThemes);
+    }
 
-        private string _selectedTheme;
+    public List<string> AvailableThemes { get; }
 
-        public SettingsViewModel(IScreen hostScreen, IThemeService themeService)
-            : base(hostScreen)
+    public string SelectedTheme
+    {
+        get => _selectedTheme;
+        set
         {
-            _themeService = themeService;
-            _selectedTheme = _themeService.CurrentTheme;
-            AvailableThemes = new List<string>(_themeService.AvailableThemes);
-        }
-
-        public List<string> AvailableThemes { get; }
-
-        public string SelectedTheme
-        {
-            get => _selectedTheme;
-            set
+            if (value == _selectedTheme)
             {
-                if (value == _selectedTheme)
-                    return;
-
-                this.RaiseAndSetIfChanged(ref _selectedTheme, value);
-
-                _themeService.CurrentTheme = value;
+                return;
             }
+
+            this.RaiseAndSetIfChanged(ref _selectedTheme, value);
+
+            _themeService.CurrentTheme = value;
         }
     }
 }

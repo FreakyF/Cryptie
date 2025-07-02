@@ -30,7 +30,10 @@ public class InitialBackgroundConverter : IValueConverter
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value == null) return Brushes[0];
+        if (value == null)
+        {
+            return Brushes[0];
+        }
 
         var key = value.ToString() ?? string.Empty;
         var hash = key.Aggregate(0, (h, c) => h * 31 + c);
@@ -39,5 +42,7 @@ public class InitialBackgroundConverter : IValueConverter
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => throw new NotSupportedException();
+    {
+        throw new NotSupportedException();
+    }
 }

@@ -80,7 +80,9 @@ public class MessagesService : IMessagesService
         }
 
         foreach (var gid in groupIds)
+        {
             await _hubConnection.InvokeAsync("JoinGroup", userId, gid);
+        }
     }
 
     public async Task<IList<GetGroupMessagesResponseDto.MessageDto>> GetGroupMessagesAsync(
@@ -106,7 +108,9 @@ public class MessagesService : IMessagesService
                 var wrapper = await resp.Content
                     .ReadFromJsonAsync<GetGroupMessagesResponseDto>();
                 if (wrapper?.Messages != null)
+                {
                     return wrapper.Messages;
+                }
             }
         }
         catch (HttpRequestException)
@@ -124,7 +128,9 @@ public class MessagesService : IMessagesService
 
         var resp2 = await _httpClient.PostAsJsonAsync("/messages/get-all-since", sinceDto);
         if (!resp2.IsSuccessStatusCode)
+        {
             return Array.Empty<GetGroupMessagesResponseDto.MessageDto>();
+        }
 
         var wrapper2 = await resp2.Content
             .ReadFromJsonAsync<GetGroupMessagesSinceResponseDto>();
@@ -157,7 +163,9 @@ public class MessagesService : IMessagesService
     public async Task SendMessageToGroupAsync(Guid senderId, Guid groupId, string message)
     {
         if (_hubConnection.State != HubConnectionState.Connected)
+        {
             throw new InvalidOperationException("Cannot send: hub not connected.");
+        }
 
         await _hubConnection.InvokeAsync(
             "SendMessageToGroup",
@@ -173,7 +181,9 @@ public class MessagesService : IMessagesService
         _messageSubject.Dispose();
 
         if (_hubConnection.State == HubConnectionState.Connected)
+        {
             await _hubConnection.StopAsync();
+        }
 
         await _hubConnection.DisposeAsync();
         GC.SuppressFinalize(this);

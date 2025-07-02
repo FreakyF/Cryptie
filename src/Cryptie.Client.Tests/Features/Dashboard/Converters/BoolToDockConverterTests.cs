@@ -1,8 +1,6 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Avalonia.Controls;
-using Cryptie.Client.Features.Messages.Converters;
-using Xunit;
+using Cryptie.Client.Features.Dashboard.Converters;
 
 namespace Cryptie.Client.Tests.Features.Dashboard.Converters;
 
@@ -32,4 +30,3 @@ public class BoolToDockConverterTests
         Assert.Equal(expected, result);
     }
 }
-

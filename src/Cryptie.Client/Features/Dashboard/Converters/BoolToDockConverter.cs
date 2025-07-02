@@ -3,7 +3,7 @@ using System.Globalization;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
 
-namespace Cryptie.Client.Features.Messages.Converters;
+namespace Cryptie.Client.Features.Dashboard.Converters;
 
 public sealed class BoolToDockConverter : IValueConverter
 {

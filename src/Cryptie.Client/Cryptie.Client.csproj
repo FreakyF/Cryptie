@@ -14,7 +14,7 @@
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
     <ItemGroup>
-        <InternalsVisibleTo Include="Cryptie.Client.Tests" />
+        <InternalsVisibleTo Include="Cryptie.Client.Tests"/>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.0"/>
@@ -107,7 +107,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj" />
+        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

@@ -2,7 +2,7 @@
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace Cryptie.Client.Features.Messages.Converters;
+namespace Cryptie.Client.Features.Dashboard.Converters;
 
 public class BottomToColumnSpanConverter : IValueConverter
 {
@@ -12,5 +12,7 @@ public class BottomToColumnSpanConverter : IValueConverter
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => throw new NotSupportedException();
+    {
+        throw new NotSupportedException();
+    }
 }

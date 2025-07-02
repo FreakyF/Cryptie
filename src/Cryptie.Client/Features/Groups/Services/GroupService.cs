@@ -12,22 +12,6 @@ namespace Cryptie.Client.Features.Groups.Services;
 
 public class GroupService(HttpClient httpClient) : IGroupService
 {
-    public async Task<IReadOnlyList<Guid>> GetUserGroupsAsync(
-        UserGroupsRequestDto request,
-        CancellationToken cancellationToken = default)
-    {
-        using var httpRequest = new HttpRequestMessage(HttpMethod.Get, "user/usergroups");
-        httpRequest.Content = JsonContent.Create(request);
-
-        using var response = await httpClient.SendAsync(httpRequest, cancellationToken);
-        response.EnsureSuccessStatusCode();
-
-        var result = await response.Content
-            .ReadFromJsonAsync<UserGroupsResponseDto>(cancellationToken: cancellationToken);
-
-        return result?.Groups ?? [];
-    }
-
     public async Task<Dictionary<Guid, bool>> GetGroupsPrivacyAsync(
         IsGroupsPrivateRequestDto request,
         CancellationToken cancellationToken = default)
@@ -39,7 +23,7 @@ public class GroupService(HttpClient httpClient) : IGroupService
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content
-                         .ReadFromJsonAsync<IsGroupsPrivateResponseDto>(cancellationToken: cancellationToken)
+                         .ReadFromJsonAsync<IsGroupsPrivateResponseDto>(cancellationToken)
                      ?? throw new InvalidOperationException("No data from server");
 
         return result.GroupStatuses;
@@ -56,9 +40,25 @@ public class GroupService(HttpClient httpClient) : IGroupService
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content
-            .ReadFromJsonAsync<GetGroupsNamesResponseDto>(cancellationToken: cancellationToken);
+            .ReadFromJsonAsync<GetGroupsNamesResponseDto>(cancellationToken);
 
         return result?.GroupsNames
                ?? new Dictionary<Guid, string>();
+    }
+
+    public async Task<IReadOnlyList<Guid>> GetUserGroupsAsync(
+        UserGroupsRequestDto request,
+        CancellationToken cancellationToken = default)
+    {
+        using var httpRequest = new HttpRequestMessage(HttpMethod.Get, "user/usergroups");
+        httpRequest.Content = JsonContent.Create(request);
+
+        using var response = await httpClient.SendAsync(httpRequest, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content
+            .ReadFromJsonAsync<UserGroupsResponseDto>(cancellationToken);
+
+        return result?.Groups ?? [];
     }
 }

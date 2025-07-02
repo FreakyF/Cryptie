@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Avalonia.Data.Converters;
+﻿using System.Globalization;
 using Avalonia;
-using Cryptie.Client.Features.Messages.Converters;
-using Xunit;
+using Cryptie.Client.Features.Dashboard.Converters;
 
 namespace Cryptie.Client.Tests.Features.Dashboard.Converters;
 
@@ -29,7 +25,8 @@ public class BottomPaneMarginConverterTests
     [InlineData(null, true, true, 0, 0, 0, 0)]
     [InlineData(true, null, true, 0, 0, 0, 0)]
     [InlineData(true, true, null, 0, 0, 0, 0)]
-    public void Convert_ReturnsExpectedThickness(object? isBottom, object? isOpenPane, object? isLast, double left, double top, double right, double bottom)
+    public void Convert_ReturnsExpectedThickness(object? isBottom, object? isOpenPane, object? isLast, double left,
+        double top, double right, double bottom)
     {
         var values = new List<object?> { isBottom, isOpenPane, isLast };
         var expected = new Thickness(left, top, right, bottom);
@@ -37,4 +34,3 @@ public class BottomPaneMarginConverterTests
         Assert.Equal(expected, result);
     }
 }
-

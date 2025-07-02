@@ -61,7 +61,11 @@ internal class ThemeService : IThemeService
         get => _model.SelectedTheme;
         set
         {
-            if (value == _model.SelectedTheme) return;
+            if (value == _model.SelectedTheme)
+            {
+                return;
+            }
+
             _model.SelectedTheme = value;
             ApplyTheme(value);
             Save();
@@ -90,7 +94,10 @@ internal class ThemeService : IThemeService
         var hash = SHA256.HashData(bytes);
         var sb = new StringBuilder(hash.Length * 2);
         foreach (var b in hash)
+        {
             sb.Append(b.ToString("x2"));
+        }
+
         return sb.ToString();
     }
 }

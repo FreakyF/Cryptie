@@ -1,7 +1,5 @@
-﻿using System;
-using System.Globalization;
-using Cryptie.Client.Features.Messages.Converters;
-using Xunit;
+﻿using System.Globalization;
+using Cryptie.Client.Features.Dashboard.Converters;
 
 namespace Cryptie.Client.Tests.Features.Dashboard.Converters;
 
@@ -31,4 +29,3 @@ public class BoolToInvertConverterTests
         Assert.Equal(expected, result);
     }
 }
-

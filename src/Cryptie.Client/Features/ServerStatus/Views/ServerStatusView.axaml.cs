@@ -7,6 +7,7 @@ using Cryptie.Client.Features.ServerStatus.ViewModels;
 
 namespace Cryptie.Client.Features.ServerStatus.Views;
 
+// ReSharper disable once UnusedType.Global
 public partial class ServerStatusView : ReactiveUserControl<ServerStatusViewModel>
 {
     private CancellationTokenSource? _dotAnimationCts;

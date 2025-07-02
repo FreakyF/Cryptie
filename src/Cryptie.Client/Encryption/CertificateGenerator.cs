@@ -23,11 +23,6 @@ public static class CertificateGenerator
             DateTimeOffset.Now.AddYears(1));
     }
 
-    public static X509Certificate2 ExtractPrivateKey(X509Certificate2 certificate)
-    {
-        return X509CertificateLoader.LoadCertificate(certificate.Export(X509ContentType.Pfx));
-    }
-
     public static X509Certificate2 ExtractPublicKey(X509Certificate2 certificate)
     {
         return X509CertificateLoader.LoadCertificate(certificate.Export(X509ContentType.Cert));

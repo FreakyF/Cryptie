@@ -18,11 +18,15 @@ public class WidthFractionConverter : IValueConverter
         var f = Fraction;
 
         if (parameter is string s && double.TryParse(s, out var p))
+        {
             f = p;
+        }
 
         return w * f;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => throw new NotSupportedException();
+    {
+        throw new NotSupportedException();
+    }
 }

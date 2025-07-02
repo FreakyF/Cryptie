@@ -32,7 +32,11 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
     {
         ThrowIfDisposed();
 
-        if (_cts != null) return;
+        if (_cts != null)
+        {
+            return;
+        }
+
         _cts = CreateLinkedTokenSource(token);
 
         _ = Task.Run(async () =>
@@ -43,7 +47,9 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
                 var ok = await CheckServerAsync(_cts.Token);
 
                 if (last == null || ok != last.Value)
+                {
                     _subject.OnNext(ok);
+                }
 
                 last = ok;
                 await Task.Delay(_interval, _cts.Token);
@@ -53,7 +59,11 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
 
     public void Dispose()
     {
-        if (_disposed) return;
+        if (_disposed)
+        {
+            return;
+        }
+
         Stop();
         _subject.Dispose();
         _disposed = true;
@@ -78,7 +88,11 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
 
     private void Stop()
     {
-        if (_cts == null) return;
+        if (_cts == null)
+        {
+            return;
+        }
+
         _cts.Cancel();
         _cts.Dispose();
         _cts = null;

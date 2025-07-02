@@ -4,7 +4,7 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Data.Converters;
 
-namespace Cryptie.Client.Features.Messages.Converters;
+namespace Cryptie.Client.Features.Dashboard.Converters;
 
 public class BottomPaneMarginConverter : IMultiValueConverter
 {
@@ -13,7 +13,10 @@ public class BottomPaneMarginConverter : IMultiValueConverter
 
     public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (values.Count < 3) return Zero;
+        if (values.Count < 3)
+        {
+            return Zero;
+        }
 
         var isBottom = values[0] as bool? == true;
         var isOpenPane = values[1] as bool? == true;
