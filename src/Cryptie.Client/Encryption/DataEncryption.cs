@@ -1,33 +1,35 @@
 using System;
+using System.IO;
+using System.Security.Cryptography;
 
 namespace Cryptie.Client.Encryption;
 
-public class DataEncryption
+public static class DataEncryption
 {
-    public string EncryptDataAES(string data, string key)
+    public static string EncryptDataAes(string data, string key)
     {
-        using var aes = System.Security.Cryptography.Aes.Create();
+        using var aes = Aes.Create();
         aes.Key = Convert.FromBase64String(key);
         aes.GenerateIV();
 
         using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-        using var ms = new System.IO.MemoryStream();
+        using var ms = new MemoryStream();
         ms.Write(aes.IV, 0, aes.IV.Length);
 
-        using (var cs = new System.Security.Cryptography.CryptoStream(ms, encryptor,
-                   System.Security.Cryptography.CryptoStreamMode.Write))
+        using (var cs = new CryptoStream(ms, encryptor,
+                   CryptoStreamMode.Write))
         {
-            using var sw = new System.IO.StreamWriter(cs);
+            using var sw = new StreamWriter(cs);
             sw.Write(data);
         }
 
         return Convert.ToBase64String(ms.ToArray());
     }
 
-    public string DecryptDataAES(string encryptedData, string key)
+    public static string DecryptDataAes(string encryptedData, string key)
     {
         var fullCipher = Convert.FromBase64String(encryptedData);
-        using var aes = System.Security.Cryptography.Aes.Create();
+        using var aes = Aes.Create();
         aes.Key = Convert.FromBase64String(key);
 
         var iv = new byte[aes.IV.Length];
@@ -35,10 +37,10 @@ public class DataEncryption
         aes.IV = iv;
 
         using var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-        using var ms = new System.IO.MemoryStream(fullCipher, iv.Length, fullCipher.Length - iv.Length);
-        using var cs = new System.Security.Cryptography.CryptoStream(ms, decryptor,
-            System.Security.Cryptography.CryptoStreamMode.Read);
-        using var sr = new System.IO.StreamReader(cs);
+        using var ms = new MemoryStream(fullCipher, iv.Length, fullCipher.Length - iv.Length);
+        using var cs = new CryptoStream(ms, decryptor,
+            CryptoStreamMode.Read);
+        using var sr = new StreamReader(cs);
 
         return sr.ReadToEnd();
     }

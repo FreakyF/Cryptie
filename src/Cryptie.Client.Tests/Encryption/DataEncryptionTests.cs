@@ -1,16 +1,13 @@
-using System;
+using System.Security.Cryptography;
 using Cryptie.Client.Encryption;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Encryption
 {
     public class DataEncryptionTests
     {
-        private readonly DataEncryption _dataEncryption = new DataEncryption();
-
         private static string GenerateAesKey()
         {
-            using var aes = System.Security.Cryptography.Aes.Create();
+            using var aes = Aes.Create();
             aes.GenerateKey();
             return Convert.ToBase64String(aes.Key);
         }
@@ -22,8 +19,8 @@ namespace Cryptie.Client.Tests.Encryption
             var originalData = "Test data for encryption!";
 
 
-            var encrypted = _dataEncryption.EncryptDataAES(originalData, key);
-            var decrypted = _dataEncryption.DecryptDataAES(encrypted, key);
+            var encrypted = DataEncryption.EncryptDataAes(originalData, key);
+            var decrypted = DataEncryption.DecryptDataAes(encrypted, key);
 
 
             Assert.NotNull(encrypted);
@@ -38,10 +35,10 @@ namespace Cryptie.Client.Tests.Encryption
             var key = GenerateAesKey();
             var wrongKey = GenerateAesKey();
             var originalData = "Sensitive data";
-            var encrypted = _dataEncryption.EncryptDataAES(originalData, key);
+            var encrypted = DataEncryption.EncryptDataAes(originalData, key);
 
 
-            Assert.ThrowsAny<Exception>(() => _dataEncryption.DecryptDataAES(encrypted, wrongKey));
+            Assert.ThrowsAny<Exception>(() => DataEncryption.DecryptDataAes(encrypted, wrongKey));
         }
 
         [Fact]
@@ -51,8 +48,8 @@ namespace Cryptie.Client.Tests.Encryption
             string? data = null;
 
 
-            var encrypted = _dataEncryption.EncryptDataAES(data, key);
-            var decrypted = _dataEncryption.DecryptDataAES(encrypted, key);
+            var encrypted = DataEncryption.EncryptDataAes(data, key);
+            var decrypted = DataEncryption.DecryptDataAes(encrypted, key);
 
 
             Assert.Equal("", decrypted);
