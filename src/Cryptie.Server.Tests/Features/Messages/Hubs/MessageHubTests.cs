@@ -33,7 +33,12 @@ public class MessageHubTests
         var message = "test message";
         await _hub.SendMessage(message);
         _clientsMock.Verify(x => x.All, Times.Once);
-        _clientProxyMock.Verify(x => x.SendAsync("ReceiveMessage", message, It.IsAny<CancellationToken>()), Times.Once);
+        Assert.Single(_clientProxyMock.Invocations);
+        var invocation = _clientProxyMock.Invocations[0];
+        Assert.Equal("SendCoreAsync", invocation.Method.Name);
+        Assert.Equal("ReceiveMessage", invocation.Arguments[0]);
+        var msgArgs = Assert.IsType<object[]>(invocation.Arguments[1]);
+        Assert.Equal(message, msgArgs[0]);
     }
 
     [Fact]
@@ -50,7 +55,12 @@ public class MessageHubTests
 
         _groupsMock.Verify(x => x.AddToGroupAsync(connectionId, groupId.ToString(), default), Times.Once);
         _clientsMock.Verify(x => x.Group(groupId.ToString()), Times.Once);
-        _clientProxyMock.Verify(x => x.SendAsync("UserJoinedGroup", userId, groupId, It.IsAny<CancellationToken>()), Times.Once);
+        Assert.Single(_clientProxyMock.Invocations);
+        var invocation = _clientProxyMock.Invocations[0];
+        Assert.Equal("SendCoreAsync", invocation.Method.Name);
+        Assert.Equal("UserJoinedGroup", invocation.Arguments[0]);
+        var args = Assert.IsType<object[]>(invocation.Arguments[1]);
+        Assert.Equal(new object[] { userId, groupId }, args);
     }
 
     [Fact]
@@ -64,7 +74,13 @@ public class MessageHubTests
         await _hub.SendMessageToGroup(groupId, senderId, message);
 
         _clientsMock.Verify(x => x.Group(groupId.ToString()), Times.Once);
-        _clientProxyMock.Verify(x => x.SendAsync("ReceiveGroupMessage", senderId, message, groupId, It.IsAny<CancellationToken>()), Times.Once);
+        Assert.Single(_clientProxyMock.Invocations);
+        var invocation = _clientProxyMock.Invocations[0];
+        Assert.Equal("SendCoreAsync", invocation.Method.Name);
+        Assert.Equal("ReceiveGroupMessage", invocation.Arguments[0]);
+        var groupArgs = Assert.IsType<object[]>(invocation.Arguments[1]);
+        Assert.Equal(senderId, groupArgs[0]);
+        Assert.Equal(message, groupArgs[1]);
+        Assert.Equal(groupId, groupArgs[2]);
     }
 }
-
