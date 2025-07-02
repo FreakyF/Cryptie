@@ -1,7 +1,5 @@
-using System.Security.Cryptography.X509Certificates;
 using Cryptie.Common.Entities;
 using Cryptie.Common.Features.Authentication.DTOs;
-using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Server.Persistence.DatabaseContext;
 using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -88,10 +86,7 @@ public class AuthenticationService(
 
     public IActionResult RegisterHandler(RegisterRequestDto registerRequest)
     {
-        if (databaseService.FindUserByLogin(registerRequest.Login) != null)
-        {
-            return BadRequest();
-        }
+        if (databaseService.FindUserByLogin(registerRequest.Login) != null) return BadRequest();
 
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerRequest.Password);
 

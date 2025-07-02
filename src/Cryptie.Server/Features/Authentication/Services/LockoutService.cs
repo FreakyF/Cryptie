@@ -1,5 +1,4 @@
 using Cryptie.Common.Entities;
-using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Server.Persistence.DatabaseContext;
 
 namespace Cryptie.Server.Features.Authentication.Services;

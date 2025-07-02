@@ -1,11 +1,16 @@
 using System.Globalization;
 using System.Threading.RateLimiting;
 using Cryptie.Common.Features.Authentication.DTOs;
-using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Common.Features.Authentication.Validators;
 using Cryptie.Server.Features.Authentication.Services;
 using Cryptie.Server.Features.GroupManagement;
+using Cryptie.Server.Features.GroupManagement.Services;
+using Cryptie.Server.Features.KeysManagement.Services;
 using Cryptie.Server.Features.Messages;
+using Cryptie.Server.Features.Messages.Hubs;
+using Cryptie.Server.Features.Messages.Services;
+using Cryptie.Server.Features.ServerStatus.Services;
+using Cryptie.Server.Features.UserManagement.Services;
 using Cryptie.Server.Persistence.DatabaseContext;
 using Cryptie.Server.Services;
 using FluentValidation;
@@ -79,6 +84,10 @@ public class Program
         builder.Services.AddScoped<IDelayService, DelayService>();
         builder.Services.AddScoped<IGroupManagementService, GroupManagementService>();
         builder.Services.AddScoped<IMessageHubService, MessageHubService>();
+        builder.Services.AddScoped<IKeysManagementService, KeysManagementService>();
+        builder.Services.AddScoped<IMessagesService, MessagesService>();
+        builder.Services.AddScoped<IServerStatusService, ServerStatusService>();
+        builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 
         builder.Services.AddScoped<IValidator<LoginRequestDto>, LoginRequestValidator>();
         builder.Services.AddScoped<IValidator<LogoutRequestDto>, LogoutRequestValidator>();

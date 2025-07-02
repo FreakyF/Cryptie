@@ -1,8 +1,9 @@
 using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Common.Features.GroupManagement.DTOs;
+using Cryptie.Server.Features.GroupManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.GroupManagement;
+namespace Cryptie.Server.Features.GroupManagement.Controllers;
 
 [ApiController]
 [Route("group")]

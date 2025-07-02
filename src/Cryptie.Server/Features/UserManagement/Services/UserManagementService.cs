@@ -1,15 +1,11 @@
-using Cryptie.Common.Entities;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.UserManagement;
+namespace Cryptie.Server.Features.UserManagement.Services;
 
-[ApiController]
-[Route("user")]
-public class UserManagementController(IDatabaseService databaseService) : ControllerBase
+public class UserManagementService(IDatabaseService databaseService) : ControllerBase, IUserManagementService
 {
-    [HttpGet("guid", Name = "GetUserGuidFromToken")]
     public IActionResult UserGuidFromToken([FromBody] UserGuidFromTokenRequestDto userGuidFromTokenRequest)
     {
         var user = databaseService.GetUserFromToken(userGuidFromTokenRequest.SessionToken);
@@ -21,7 +17,6 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         });
     }
 
-    [HttpGet("login", Name = "GetUserLoginFromToken")]
     public IActionResult UserLoginFromToken([FromBody] UserLoginFromTokenRequestDto userLoginFromTokenRequest)
     {
         var user = databaseService.GetUserFromToken(userLoginFromTokenRequest.SessionToken);
@@ -33,7 +28,6 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         });
     }
 
-    [HttpPost("addfriend", Name = "PostAddFriend")]
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
     {
         var friend = databaseService.FindUserByLogin(addFriendRequest.Friend);
@@ -45,9 +39,7 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
 
         if (addFriendRequest.EncryptionKeys.Any(keyValuePair =>
                 !newGroupMembers.Contains(keyValuePair.Key)))
-        {
             return BadRequest();
-        }
 
         databaseService.AddFriend(user, friend);
 
@@ -63,7 +55,6 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         return Ok();
     }
 
-    [HttpGet("friendlist", Name = "GetFriendList")]
     public IActionResult FriendList([FromBody] FriendListRequestDto friendListRequest)
     {
         var user = databaseService.GetUserFromToken(friendListRequest.SessionToken);
@@ -77,7 +68,6 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         });
     }
 
-    [HttpGet("namefromguid", Name = "GetNameFromGuid")]
     public IActionResult NameFromGuid([FromBody] NameFromGuidRequestDto nameFromGuidRequest)
     {
         var user = databaseService.FindUserById(nameFromGuidRequest.Id);
@@ -89,7 +79,6 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         });
     }
 
-    [HttpGet("usergroups", Name = "GetUserGroups")]
     public IActionResult UserGroups([FromBody] UserGroupsRequestDto userGroupsRequest)
     {
         var user = databaseService.GetUserFromToken(userGroupsRequest.SessionToken);
@@ -103,7 +92,6 @@ public class UserManagementController(IDatabaseService databaseService) : Contro
         });
     }
 
-    [HttpPost("userdisplayname", Name = "ChangeUserDisplayName")]
     public IActionResult UserDisplayName([FromBody] UserDisplayNameRequestDto userDisplayNameRequest)
     {
         var user = databaseService.GetUserFromToken(userDisplayNameRequest.Token);

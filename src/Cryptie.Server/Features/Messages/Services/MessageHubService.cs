@@ -1,6 +1,7 @@
+using Cryptie.Server.Features.Messages.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Cryptie.Server.Features.Messages;
+namespace Cryptie.Server.Features.Messages.Services;
 
 public class MessageHubService : IMessageHubService
 {

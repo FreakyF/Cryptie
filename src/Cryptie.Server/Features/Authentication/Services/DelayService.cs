@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using Cryptie.Common.Features.Authentication.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cryptie.Server.Features.Authentication.Services;

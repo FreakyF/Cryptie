@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Cryptie.Server.Features.Messages;
+namespace Cryptie.Server.Features.Messages.Hubs;
 
 public class MessageHub : Hub, IMessageHub
 {

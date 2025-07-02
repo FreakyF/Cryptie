@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Common.Features.Authentication.Services;
+namespace Cryptie.Server.Features.Authentication.Services;
 
 public interface IDelayService
 {

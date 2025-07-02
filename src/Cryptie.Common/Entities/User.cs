@@ -9,14 +9,14 @@ public class User
 {
     [Key, Column("id")] public Guid Id { get; set; }
 
-    [Required, Column("login")] public string Login { get; set; } = default!;
+    [Required, Column("login")] public string Login { get; set; } = string.Empty;
 
-    [Required, Column("display_name")] public string DisplayName { get; set; } = default!;
+    [Required, Column("display_name")] public string DisplayName { get; set; } = string.Empty;
 
-    [Required, Column("email")] public string Email { get; set; } = default!;
+    [Required, Column("email")] public string Email { get; set; } = string.Empty;
 
-    [Required, Column("private_key")] public string PrivateKey { get; set; } = default!;
-    [Required, Column("public_key")] public string PublicKey { get; set; } = default!;
+    [Required, Column("private_key")] public string PrivateKey { get; set; } = string.Empty;
+    [Required, Column("public_key")] public string PublicKey { get; set; } = string.Empty;
 
 
     [Required, Column("password_id")] public Guid PasswordId { get; set; }
