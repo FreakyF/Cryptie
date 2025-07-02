@@ -113,4 +113,15 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
             ControlValue = user.ControlValue
         });
     }
+
+    public IActionResult GuidFromLogin([FromBody] GuidFromLoginRequestDto guidFromLoginRequest)
+    {
+        var user = databaseService.FindUserByLogin(guidFromLoginRequest.Login);
+        if (user == null) return NotFound();
+        
+        return Ok(new GuidFromLoginResponseDto
+        {
+            UserId = user.Id
+        });
+    }
 }

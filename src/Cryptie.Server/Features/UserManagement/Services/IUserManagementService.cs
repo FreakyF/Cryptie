@@ -19,4 +19,5 @@ public interface IUserManagementService
 
     public IActionResult UserDisplayName([FromBody] UserDisplayNameRequestDto userDisplayNameRequest);
     public IActionResult UserPrivateKey([FromBody] UserPrivateKeyRequestDto userPrivateKeyRequest);
+    public IActionResult GuidFromLogin([FromBody] GuidFromLoginRequestDto guidFromLoginRequest);
 }

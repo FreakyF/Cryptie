@@ -38,6 +38,12 @@ public class UserManagementController(IUserManagementService userManagementServi
     {
         return userManagementService.NameFromGuid(nameFromGuidRequest);
     }
+    
+    [HttpGet("guidfromlogin", Name = "GetGuidFromLogin")]
+    public IActionResult GuidFromLogin([FromBody] GuidFromLoginRequestDto guidFromLoginRequest)
+    {
+        return userManagementService.GuidFromLogin(guidFromLoginRequest);
+    }
 
     [HttpGet("usergroups", Name = "GetUserGroups")]
     public IActionResult UserGroups([FromBody] UserGroupsRequestDto userGroupsRequest)
