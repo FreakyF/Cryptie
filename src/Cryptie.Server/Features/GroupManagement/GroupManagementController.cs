@@ -1,5 +1,5 @@
 using Cryptie.Common.Features.GroupManagement;
-using Cryptie.Server.Services;
+using Cryptie.Common.Features.GroupManagement.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cryptie.Server.Features.GroupManagement;

@@ -5,6 +5,7 @@ using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Cryptie.Common.Features.GroupManagement;
+using Cryptie.Common.Features.GroupManagement.DTOs;
 using Cryptie.Common.Features.UserManagement.DTOs;
 
 namespace Cryptie.Client.Features.Groups.Services;

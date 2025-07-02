@@ -12,7 +12,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
             .AsTracking()
             .Where(t => t.Id == guid)
             .Include(t => t.User)
-            .ThenInclude(u => u!.Groups)
+            .ThenInclude(u => u.Groups)
             .FirstOrDefault()?
             .User;
     }
@@ -36,7 +36,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
             .SingleOrDefault(g => g.Id == id);
     }
 
-    public Group? CreateNewGroup(User user, string name)
+    public Group CreateNewGroup(User user, string name)
     {
         var newGroup = new Group
         {
@@ -171,7 +171,7 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
             .Include(u => u.PublicKey)
             .FirstOrDefault(u => u.Id == userId);
 
-        return user.PublicKey;
+        return user?.PublicKey ?? string.Empty;
     }
 
     public void SaveUserKeys(User user, string privateKey, string publicKey)
