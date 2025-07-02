@@ -101,4 +101,16 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
 
         return Ok();
     }
+
+    public IActionResult UserPrivateKey([FromBody] UserPrivateKeyRequestDto userPrivateKeyRequest)
+    {
+        var user = databaseService.GetUserFromToken(userPrivateKeyRequest.SessionToken);
+        if (user == null) return Unauthorized();
+
+        return Ok(new UserPrivateKeyResponseDto
+        {
+            PrivateKey = user.PrivateKey,
+            ControlValue = user.ControlValue
+        });
+    }
 }

@@ -18,4 +18,5 @@ public interface IUserManagementService
     public IActionResult UserGroups([FromBody] UserGroupsRequestDto userGroupsRequest);
 
     public IActionResult UserDisplayName([FromBody] UserDisplayNameRequestDto userDisplayNameRequest);
+    public IActionResult UserPrivateKey([FromBody] UserPrivateKeyRequestDto userPrivateKeyRequest);
 }
