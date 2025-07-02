@@ -29,4 +29,14 @@ public static class RsaDataEncryption
 
         return Encoding.UTF8.GetString(envelopedCms.ContentInfo.Content);
     }
+
+    public static X509Certificate2 LoadCertificateFromBase64(string base64, X509ContentType contentType,
+        string? password = null)
+    {
+        var bytes = Convert.FromBase64String(base64);
+        if (contentType == X509ContentType.Pfx && !string.IsNullOrEmpty(password))
+            return new X509Certificate2(bytes, password, X509KeyStorageFlags.Exportable);
+        
+        return new X509Certificate2(bytes);
+    }
 }
