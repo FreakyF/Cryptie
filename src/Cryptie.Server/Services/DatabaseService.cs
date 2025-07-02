@@ -168,7 +168,6 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
     {
         var user = appDbContext.Users
             .AsTracking()
-            .Include(u => u.PublicKey)
             .FirstOrDefault(u => u.Id == userId);
 
         return user?.PublicKey ?? string.Empty;

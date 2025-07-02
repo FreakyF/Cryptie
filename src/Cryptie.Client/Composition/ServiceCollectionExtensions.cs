@@ -108,6 +108,13 @@ public static class ServiceCollectionExtensions
                 client.BaseAddress = new Uri(opts.BaseUri);
             });
 
+
+        services.AddHttpClient<IKeyService, KeyService>()
+            .ConfigureHttpClient((sp, client) =>
+            {
+                var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
+                client.BaseAddress = new Uri(opts.BaseUri);
+            });
         services.AddSingleton<HubConnection>(sp =>
         {
             var opts = sp.GetRequiredService<IOptions<ClientOptions>>().Value;
@@ -174,7 +181,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<AddFriendDependencies>(sp => new AddFriendDependencies(
             sp.GetRequiredService<IFriendsService>(),
             sp.GetRequiredService<IValidator<AddFriendRequestDto>>(),
-            sp.GetRequiredService<IUserState>()));
+            sp.GetRequiredService<IUserState>(),
+            sp.GetRequiredService<IUserDetailsService>(),
+            sp.GetRequiredService<IKeyService>()));
 
         services.AddTransient<ChatsViewModelDependencies>(sp => new ChatsViewModelDependencies(
             sp.GetRequiredService<IOptions<ClientOptions>>(),

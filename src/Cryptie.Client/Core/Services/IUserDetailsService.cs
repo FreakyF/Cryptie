@@ -16,4 +16,8 @@ public interface IUserDetailsService
     Task<UserPrivateKeyResponseDto?> GetUserPrivateKeyAsync(
         UserPrivateKeyRequestDto userPrivateKeyRequest,
         CancellationToken cancellationToken = default);
+
+    Task<GuidFromLoginResponseDto?> GetGuidFromLoginAsync(
+        GuidFromLoginRequestDto guidFromLoginRequest,
+        CancellationToken cancellationToken = default);
 }
