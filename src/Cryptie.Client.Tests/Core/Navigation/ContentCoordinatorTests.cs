@@ -49,6 +49,7 @@ public class ContentCoordinatorTests
     private readonly Mock<FluentValidation.IValidator<AddFriendRequestDto>> _addFriendValidatorMock = new();
     private readonly Mock<ILoginState> _loginStateMock = new();
     private readonly Mock<IRegistrationState> _registrationStateMock = new();
+    private readonly Mock<IKeyService> _keyServiceMock = new();
 
     private readonly AddUserToGroupViewModel _addUserToGroupVm;
     private readonly ChatSettingsViewModel _chatSettingsVm;
@@ -69,7 +70,7 @@ public class ContentCoordinatorTests
         _addUserToGroupVm = new AddUserToGroupViewModel(_screenMock.Object);
         _chatSettingsVm = new ChatSettingsViewModel(_screenMock.Object, _groupSelectionStateMock.Object, _optionsMock.Object, _addUserToGroupVm);
 
-        _addFriendDeps = new AddFriendDependencies(_friendsServiceMock.Object, _addFriendValidatorMock.Object, _userStateMock.Object);
+        _addFriendDeps = new AddFriendDependencies(_friendsServiceMock.Object, _addFriendValidatorMock.Object, _userStateMock.Object, _userDetailsServiceMock.Object, _keyServiceMock.Object);
 
         _chatsDeps = new ChatsViewModelDependencies(
             _optionsMock.Object,

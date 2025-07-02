@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
 using Cryptie.Client.Features.Menu.State;
@@ -24,9 +25,13 @@ namespace Cryptie.Client.Tests.Features.AddFriend.ViewModels
         private readonly Mock<IUserState> _userStateMock = new();
         private readonly Mock<IValidator<AddFriendRequestDto>> _validatorMock = new();
         private readonly Mock<IScreen> _screenMock = new();
+        private readonly Mock<IUserDetailsService> _userDetailsServiceMock = new();
+        private readonly Mock<IKeyService> _keyServiceMock = new();
         private AddFriendViewModel CreateVm() => new(
             _screenMock.Object,
             _friendsServiceMock.Object,
+            _userDetailsServiceMock.Object,
+            _keyServiceMock.Object,
             _validatorMock.Object,
             _userStateMock.Object);
 
