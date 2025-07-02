@@ -9,6 +9,7 @@ using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.ViewModels;
 using Cryptie.Client.Features.Dashboard.ViewModels;
+using Cryptie.Client.Features.PinCode.ViewModels;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using ReactiveUI;
 
@@ -124,6 +125,11 @@ public class ShellCoordinator(
     public void ShowDashboard()
     {
         NavigateTo<DashboardViewModel>();
+    }
+
+    public void ShowPinSetup()
+    {
+        NavigateTo<PinCodeViewModel>();
     }
 
     private void NavigateTo<TViewModel>() where TViewModel : RoutableViewModelBase

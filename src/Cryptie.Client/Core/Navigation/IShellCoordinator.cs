@@ -12,4 +12,5 @@ public interface IShellCoordinator : IScreen
     void ShowQrSetup();
     void ShowTotpCode();
     void ShowDashboard();
+    void ShowPinSetup();
 }

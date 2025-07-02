@@ -76,6 +76,6 @@ public class TotpCodeViewModel : RoutableViewModelBase
 
         if (cancellationToken.IsCancellationRequested) _coordinator.ShowLogin();
 
-        _coordinator.ShowDashboard();
+        _coordinator.ShowPinSetup();
     }
 }
