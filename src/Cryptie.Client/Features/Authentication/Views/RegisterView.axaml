@@ -38,8 +38,9 @@
                 <TextBox x:Name="EmailTextBox"
                          Watermark="Email"
                          Text="{Binding Model.Email, Mode=TwoWay}" />
-                <TextBox x:Name="PinTextBox"
+                <TextBox x:Name="PinCodeTextBox"
                          Watermark="PIN Code"
+                         MaxLength="6"
                          Text="{Binding Model.PinCode, Mode=TwoWay}" />
                 <TextBox x:Name="PasswordTextBox"
                          Classes="RevealPasswordButton"

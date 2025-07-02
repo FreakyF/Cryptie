@@ -4,21 +4,23 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Cryptie.Client.Encryption;
 
-public class CertificateGenerator : IDisposable
+public static class CertificateGenerator
 {
-    private readonly CertificateRequest _request;
-    private readonly RSA _rsa;
-
-    public CertificateGenerator()
+    public static X509Certificate2 GenerateCertificate()
     {
-        _rsa = RSA.Create(2048);
-        _request = new CertificateRequest("CN=Cryptie", _rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-        _request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyEncipherment, true));
-    }
+        using var rsa = RSA.Create(2048);
+        var request = new CertificateRequest(
+            "CN=Cryptie",
+            rsa,
+            HashAlgorithmName.SHA256,
+            RSASignaturePadding.Pkcs1);
 
-    public X509Certificate2 GenerateCertificate()
-    {
-        return _request.CreateSelfSigned(DateTimeOffset.Now, DateTimeOffset.Now.AddYears(1));
+        request.CertificateExtensions
+            .Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyEncipherment, true));
+
+        return request.CreateSelfSigned(
+            DateTimeOffset.Now,
+            DateTimeOffset.Now.AddYears(1));
     }
 
     public static X509Certificate2 ExtractPrivateKey(X509Certificate2 certificate)
@@ -29,10 +31,5 @@ public class CertificateGenerator : IDisposable
     public static X509Certificate2 ExtractPublicKey(X509Certificate2 certificate)
     {
         return X509CertificateLoader.LoadCertificate(certificate.Export(X509ContentType.Cert));
-    }
-
-    public void Dispose()
-    {
-        _rsa?.Dispose();
     }
 }
