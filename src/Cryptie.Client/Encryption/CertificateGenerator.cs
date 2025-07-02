@@ -4,14 +4,15 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Cryptie.Client.Encryption;
 
-public class CertificateGenerator
+public class CertificateGenerator : IDisposable
 {
     private readonly CertificateRequest _request;
+    private readonly RSA _rsa;
 
     public CertificateGenerator()
     {
-        using var rsa = RSA.Create(2048);
-        _request = new CertificateRequest("CN=Cryptie", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        _rsa = RSA.Create(2048);
+        _request = new CertificateRequest("CN=Cryptie", _rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
         _request.CertificateExtensions.Add(new X509KeyUsageExtension(X509KeyUsageFlags.KeyEncipherment, true));
     }
 
@@ -28,5 +29,10 @@ public class CertificateGenerator
     public static X509Certificate2 ExtractPublicKey(X509Certificate2 certificate)
     {
         return X509CertificateLoader.LoadCertificate(certificate.Export(X509ContentType.Cert));
+    }
+
+    public void Dispose()
+    {
+        _rsa?.Dispose();
     }
 }
