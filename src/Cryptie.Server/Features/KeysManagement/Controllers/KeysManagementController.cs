@@ -14,9 +14,9 @@ public class KeysManagementController(IKeysManagementService keysManagementServi
         return keysManagementService.getUserKey(getUserKeyRequest);
     }
     
-    [HttpGet("groupKey", Name = "GetGroupKey")]
-    public IActionResult getGroupKey([FromBody] GetGroupKeyRequestDto getGroupKeyRequest)
+    [HttpGet("groupsKey", Name = "GetGroupKey")]
+    public IActionResult getGroupKey([FromBody] GetGroupsKeyRequestDto getGroupsKeyRequest)
     {
-        return keysManagementService.getGroupKey(getGroupKeyRequest);
+        return keysManagementService.getGroupsKey(getGroupsKeyRequest);
     }
 }

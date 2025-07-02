@@ -15,27 +15,29 @@ public class KeysManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
-    public IActionResult getGroupKey([FromBody] GetGroupKeyRequestDto getGroupKeyRequest)
+    public IActionResult getGroupsKey([FromBody] GetGroupsKeyRequestDto getGroupsKeyRequest)
     {
-        var user = databaseService.GetUserFromToken(getGroupKeyRequest.SessionToken);
+        var user = databaseService.GetUserFromToken(getGroupsKeyRequest.SessionToken);
         if (user == null)
         {
             return Unauthorized();
         }
 
-        var group = databaseService.FindGroupById(getGroupKeyRequest.GroupId);
-        if (group == null)
+        var result = new Dictionary<Guid, string>();
+
+        foreach (var g in user.Groups)
         {
-            return NotFound();
+            var fullGroup = databaseService.FindGroupById(g.Id);
+
+            if (fullGroup == null)
+                continue;
+
+            result[fullGroup.Id] = databaseService.getGroupEncryptionKey(user.Id, fullGroup.Id);
         }
 
-        if (user.Groups.All(g => g.Id != getGroupKeyRequest.GroupId)) return BadRequest();
-
-        var key = databaseService.getGroupEncryptionKey(user.Id, group.Id);
-
-        return Ok(new GetGroupKeyResponseDto
+        return Ok(new GetGroupsKeyResponseDto
         {
-            AesKey = key
+            Keys = result
         });
     }
 }
