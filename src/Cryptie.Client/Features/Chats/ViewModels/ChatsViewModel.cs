@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Services;
+using Cryptie.Client.Encryption;
 using Cryptie.Client.Features.Chats.Dependencies;
 using Cryptie.Client.Features.Chats.Events;
 using Cryptie.Client.Features.Chats.Services;
@@ -23,9 +24,10 @@ using ReactiveUI;
 
 namespace Cryptie.Client.Features.Chats.ViewModels;
 
-public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
+public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewModel, IDisposable
 {
     private readonly ObservableAsPropertyHelper<string?> _currentGroupName;
+    private readonly ChatsViewModelDependencies _deps;
     private readonly CompositeDisposable _disposables = new();
     private readonly Guid _sessionToken;
     private readonly Guid _userId;
@@ -40,36 +42,39 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
         IUserState userState)
         : base(hostScreen)
     {
+        Activator = new ViewModelActivator();
+        _deps = deps;
+
         _sessionToken = TryParseGuid(userState.SessionToken);
         _userId = userState.UserId ?? Guid.Empty;
 
         Messages = [];
-        SettingsPanel = deps.SettingsPanel;
+        SettingsPanel = _deps.SettingsPanel;
 
         GroupsPanel = CreateGroupsPanel(
             hostScreen,
             connectionMonitor,
-            deps.Options,
-            deps.AddFriendDependencies,
-            deps.GroupService,
-            deps.MessagesService,
-            deps.GroupState);
+            _deps.Options,
+            _deps.AddFriendDependencies,
+            _deps.GroupService,
+            _deps.MessagesService,
+            _deps.GroupState);
 
-        _currentGroupName = CreateCurrentGroupNameProperty(deps)
+        _currentGroupName = CreateCurrentGroupNameProperty()
             .DisposeWith(_disposables);
 
         ToggleChatSettingsCommand = CreateToggleSettingsCommand()
             .DisposeWith(_disposables);
 
-        SendMessageCommand = CreateSendMessageCommand(deps)
+        SendMessageCommand = CreateSendMessageCommand()
             .DisposeWith(_disposables);
 
         SendMessageCommand.ThrownExceptions
             .Subscribe(_ => { })
             .DisposeWith(_disposables);
 
-        WatchGroupSelection(deps);
-        WatchIncomingMessages(deps);
+        WatchGroupSelection();
+        WatchIncomingMessages();
     }
 
     public GroupsListViewModel GroupsPanel { get; }
@@ -95,6 +100,8 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     public bool HasGroups => GroupsPanel.Groups.Count > 0;
     public bool HasNoGroups => !HasGroups;
 
+    public ViewModelActivator Activator { get; }
+
     public void Dispose() => _disposables.Dispose();
 
     private static Guid TryParseGuid(string? str) =>
@@ -116,7 +123,8 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
             addFriendDeps,
             groupService,
             messagesService,
-            groupState);
+            groupState,
+            addFriendDeps.KeyService);
 
         panel.Groups.CollectionChanged += (_, _) =>
         {
@@ -127,9 +135,8 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
         return panel;
     }
 
-    private ObservableAsPropertyHelper<string?> CreateCurrentGroupNameProperty(
-        ChatsViewModelDependencies deps) =>
-        deps.GroupState
+    private ObservableAsPropertyHelper<string?> CreateCurrentGroupNameProperty() =>
+        _deps.GroupState
             .WhenAnyValue(gs => gs.SelectedGroupName)
             .ObserveOn(RxApp.MainThreadScheduler)
             .ToProperty(this, vm => vm.CurrentGroupName);
@@ -137,8 +144,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
     private ReactiveCommand<Unit, Unit> CreateToggleSettingsCommand() =>
         ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; });
 
-    private ReactiveCommand<Unit, Unit> CreateSendMessageCommand(
-        ChatsViewModelDependencies deps)
+    private ReactiveCommand<Unit, Unit> CreateSendMessageCommand()
     {
         var canSend = this
             .WhenAnyValue(vm => vm.MessageText,
@@ -146,20 +152,25 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
 
         return ReactiveCommand.CreateFromTask(async () =>
         {
-            var gid = deps.GroupState.SelectedGroupId;
+            var gid = _deps.GroupState.SelectedGroupId;
             var msg = MessageText?.Trim();
             if (gid == Guid.Empty || string.IsNullOrEmpty(msg))
                 return;
 
+            if (!GroupsPanel.GroupKeyCache.TryGetValue(gid, out var groupKey))
+                throw new InvalidOperationException("User's private key is missing");
+
+            var encryptedMsg = AesDataEncryption.Encrypt(msg, groupKey);
+
             try
             {
-                await deps.MessagesService
-                    .SendMessageToGroupViaHttpAsync(_sessionToken, gid, msg);
+                await _deps.MessagesService
+                    .SendMessageToGroupViaHttpAsync(_sessionToken, gid, encryptedMsg);
 
-                await deps.MessagesService
+                await _deps.MessagesService
                     .ConnectAsync(_sessionToken, [gid]);
-                await deps.MessagesService
-                    .SendMessageToGroupAsync(_sessionToken, gid, msg);
+                await _deps.MessagesService
+                    .SendMessageToGroupAsync(_sessionToken, gid, encryptedMsg);
 
                 MessageText = string.Empty;
 
@@ -171,33 +182,47 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
                         new ConversationBumped(gid, now));
                 }
             }
-            catch (Exception)
+            catch
             {
-                // Swallow exception: do nothing
+                // Swallow exception
             }
         }, canSend);
     }
 
-    private void WatchGroupSelection(ChatsViewModelDependencies deps)
+    private void DecryptMessages(IEnumerable<GetGroupMessagesResponseDto.MessageDto> messages, Guid groupId)
     {
-        deps.GroupState
+        if (!GroupsPanel.GroupKeyCache.TryGetValue(groupId, out var key))
+        {
+            return;
+        }
+
+        foreach (var message in messages)
+        {
+            message.Message = AesDataEncryption.Decrypt(message.Message, key);
+        }
+    }
+
+    private void WatchGroupSelection()
+    {
+        _deps.GroupState
             .WhenAnyValue(gs => gs.SelectedGroupId)
             .Where(gid => gid != Guid.Empty)
-            .DistinctUntilChanged()
-            .ObserveOn(RxApp.TaskpoolScheduler)
+            .StartWith(_deps.GroupState.SelectedGroupId)
             .SelectMany(gid =>
                 Observable.FromAsync(async () =>
                 {
                     try
                     {
-                        await deps.MessagesService
-                            .ConnectAsync(_sessionToken, [gid]);
+                        await GroupsPanel.KeysLoaded;
 
+                        await _deps.MessagesService.ConnectAsync(_sessionToken, [gid]);
                         _lastMessageTimestamp = DateTime.MinValue;
-                        var all = await deps.MessagesService
-                            .GetGroupMessagesAsync(_sessionToken, gid);
+                        var all = await _deps.MessagesService.GetGroupMessagesAsync(_sessionToken, gid);
+
                         if (all.Any())
                             _lastMessageTimestamp = all.Max(m => m.DateTime);
+
+                        DecryptMessages(all, gid);
 
                         return all;
                     }
@@ -210,7 +235,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
             .Subscribe(history =>
             {
                 Messages.Clear();
-                var groupName = deps.GroupState.SelectedGroupName ?? "";
+                var groupName = _deps.GroupState.SelectedGroupName ?? "";
                 foreach (var m in history)
                     Messages.Add(new ChatMessageViewModel(
                         m.Message,
@@ -220,20 +245,24 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IDisposable
             .DisposeWith(_disposables);
     }
 
-    private void WatchIncomingMessages(ChatsViewModelDependencies deps)
+    private void WatchIncomingMessages()
     {
-        deps.MessagesService.MessageReceived
+        _deps.MessagesService.MessageReceived
             .Where(signal =>
-                signal.GroupId == deps.GroupState.SelectedGroupId
+                signal.GroupId == _deps.GroupState.SelectedGroupId
                 && signal.SenderId != _userId)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(signal =>
             {
-                var groupName = deps.GroupState.SelectedGroupName ?? "";
+                var decrypted = GroupsPanel.GroupKeyCache.TryGetValue(signal.GroupId, out var key)
+                    ? AesDataEncryption.Decrypt(signal.Message, key)
+                    : signal.Message;
+
+                var groupName = _deps.GroupState.SelectedGroupName ?? "";
 
                 Messages.Add(new ChatMessageViewModel(
-                    signal.Message,
-                    isOwn: signal.SenderId != _userId,
+                    decrypted,
+                    isOwn: true,
                     groupName));
 
                 var now = DateTime.UtcNow;

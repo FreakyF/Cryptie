@@ -9,4 +9,8 @@ public interface IKeyService
     Task<GetUserKeyResponseDto?> GetUserKeyAsync(
         GetUserKeyRequestDto getUserKeyRequest,
         CancellationToken cancellationToken = default);
+
+    Task<GetGroupsKeyResponseDto?> GetGroupsKeyAsync(
+        GetGroupsKeyRequestDto getGroupsKeyRequest,
+        CancellationToken cancellationToken = default);
 }

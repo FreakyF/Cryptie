@@ -21,4 +21,18 @@ public class KeyService(HttpClient httpClient) : IKeyService
         return await response.Content
             .ReadFromJsonAsync<GetUserKeyResponseDto>(cancellationToken);
     }
+
+    public async Task<GetGroupsKeyResponseDto?> GetGroupsKeyAsync(
+        GetGroupsKeyRequestDto getGroupsKeyRequest,
+        CancellationToken cancellationToken = default)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, "keys/groupsKey");
+        request.Content = JsonContent.Create(getGroupsKeyRequest);
+
+        using var response = await httpClient.SendAsync(request, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content
+            .ReadFromJsonAsync<GetGroupsKeyResponseDto>(cancellationToken);
+    }
 }

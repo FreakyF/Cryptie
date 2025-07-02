@@ -5,11 +5,13 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using Cryptie.Client.Configuration;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Services;
+using Cryptie.Client.Encryption;
 using Cryptie.Client.Features.AddFriend.ViewModels;
 using Cryptie.Client.Features.Chats.Events;
 using Cryptie.Client.Features.Chats.Services;
@@ -19,6 +21,7 @@ using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Common.Features.GroupManagement.DTOs;
+using Cryptie.Common.Features.KeysManagement.DTOs;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
 
@@ -29,13 +32,19 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
     private readonly CompositeDisposable _disposables = new();
     private readonly IGroupService _groupService;
     private readonly IGroupSelectionState _groupState;
+    private readonly IKeyService _keyService;
+    private readonly TaskCompletionSource<bool> _keysLoadedTcs = new();
     private readonly IMessagesService _messagesService;
     private readonly IUserState _userState;
+
     private CancellationTokenSource? _addFriendCts;
     private bool _disposed;
 
     private List<Guid> _groupIds = [];
+    private Dictionary<Guid, string> _groupKeyCache = new();
+
     private Dictionary<Guid, bool> _groupPrivacyCache = new();
+
     private string? _selectedGroup;
 
     public GroupsListViewModel(
@@ -45,13 +54,15 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         AddFriendDependencies deps,
         IGroupService groupService,
         IMessagesService messagesService,
-        IGroupSelectionState groupState)
-        : base(hostScreen)
+        IGroupSelectionState groupState,
+        IKeyService keyService
+    ) : base(hostScreen)
     {
         _groupService = groupService;
         _messagesService = messagesService;
         _userState = deps.UserState;
         _groupState = groupState;
+        _keyService = keyService;
         IconUri = options.Value.FontUri;
 
         MessageBus.Current
@@ -114,7 +125,9 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         _ = LoadGroupsSafeAsync(CancellationToken.None);
     }
 
-    public ObservableCollection<string> Groups { get; } = new();
+    public Task KeysLoaded => _keysLoadedTcs.Task;
+
+    public ObservableCollection<string> Groups { get; } = [];
 
     public string? SelectedGroup
     {
@@ -123,10 +136,13 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
     }
 
     public string IconUri { get; }
+
     public ReactiveCommand<Unit, Unit> AddFriendCommand { get; }
 
     public Interaction<(AddFriendViewModel, CancellationToken), Unit> ShowAddFriend { get; }
         = new();
+
+    public IReadOnlyDictionary<Guid, string> GroupKeyCache => _groupKeyCache;
 
     public void Dispose()
     {
@@ -187,6 +203,37 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
                 cancellationToken)
             .ConfigureAwait(false);
 
+        try
+        {
+            var keysResponse = await _keyService
+                .GetGroupsKeyAsync(
+                    new GetGroupsKeyRequestDto { SessionToken = sessionToken },
+                    cancellationToken)
+                .ConfigureAwait(false);
+
+            if (keysResponse?.Keys != null)
+            {
+                var privKey = _userState.PrivateKey
+                              ?? throw new InvalidOperationException("User's private key is missing");
+                _groupKeyCache = keysResponse.Keys.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => RsaDataEncryption.Decrypt(kvp.Value,
+                        RsaDataEncryption.LoadCertificateFromBase64(privKey, X509ContentType.Pfx))
+                );
+            }
+            else
+            {
+                _groupKeyCache = new Dictionary<Guid, string>();
+            }
+
+            _keysLoadedTcs.TrySetResult(true);
+        }
+        catch (Exception ex)
+        {
+            _keysLoadedTcs.TrySetException(ex);
+            throw;
+        }
+
         var lastInfos = await Task.WhenAll(_groupIds.Select(async gid =>
         {
             var hist = await _messagesService
@@ -202,7 +249,6 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
             .ToList();
 
         var newId = _groupIds.Except(oldIds).FirstOrDefault();
-
         if (newId == Guid.Empty)
             return;
 

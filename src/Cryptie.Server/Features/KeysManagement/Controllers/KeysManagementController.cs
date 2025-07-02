@@ -13,8 +13,8 @@ public class KeysManagementController(IKeysManagementService keysManagementServi
     {
         return keysManagementService.getUserKey(getUserKeyRequest);
     }
-    
-    [HttpGet("groupKey", Name = "GetGroupKey")]
+
+    [HttpGet("groupsKey", Name = "GetGroupsKey")]
     public IActionResult getGroupKey([FromBody] GetGroupsKeyRequestDto getGroupsKeyRequest)
     {
         return keysManagementService.getGroupsKey(getGroupsKeyRequest);
