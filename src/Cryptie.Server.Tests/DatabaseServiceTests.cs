@@ -592,13 +592,9 @@ public class DatabaseServiceTests
             modelBuilder.Entity<GroupEncryptionKey>();
         }
     }
-
-    // ... analogiczne testy dla CreateTotpToken,
-    // LogLoginAttempt(User), LogLoginAttempt(string), GenerateUserToken, AddFriend, CreateGroup, ChangeUserDisplayName,
-    // GetUserPublicKey, SaveUserKeys, SendGroupMessage
+    
 }
 
-// Pomocnicza klasa do mockowania DbSet<T> z IQueryable
 public static class DbSetMockingExtensions
 {
     public static Mock<DbSet<T>> BuildMockDbSet<T>(this IQueryable<T> data) where T : class

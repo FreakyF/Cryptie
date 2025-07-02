@@ -83,7 +83,7 @@ public class TotpCodeViewModelTests
         _userState.SetupProperty(x => x.UserId);
 
         await vm.VerifyCommand.Execute().ToTask();
-        _coordinatorMock.Verify(x => x.ShowDashboard(), Times.Once);
+        _coordinatorMock.Verify(x => x.ShowPinSetup(), Times.Once);
         Assert.Equal(token.ToString(), _userState.Object.SessionToken);
         Assert.NotEqual(Guid.Empty, _userState.Object.UserId);
     }
