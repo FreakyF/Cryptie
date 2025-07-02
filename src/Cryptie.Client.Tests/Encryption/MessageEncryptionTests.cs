@@ -1,19 +1,17 @@
-using System;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Cryptie.Client.Encryption;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Encryption
 {
     public class MessageEncryptionTests
     {
-        private readonly X509Certificate2 _publicCert;
         private readonly X509Certificate2 _privateCert;
+        private readonly X509Certificate2 _publicCert;
 
         public MessageEncryptionTests()
         {
-            var generator = new CertificateGenerator();
-            var cert = generator.GenerateCertificate();
+            var cert = CertificateGenerator.GenerateCertificate();
             _privateCert = cert;
             _publicCert = CertificateGenerator.ExtractPublicKey(cert);
         }
@@ -42,9 +40,9 @@ namespace Cryptie.Client.Tests.Encryption
         {
             var message = "test message";
             var encrypted = MessageEncryption.EncryptMessage(message, _publicCert);
-            using var rsa = System.Security.Cryptography.RSA.Create(2048);
-            var req = new CertificateRequest("CN=Other", rsa, System.Security.Cryptography.HashAlgorithmName.SHA256,
-                System.Security.Cryptography.RSASignaturePadding.Pkcs1);
+            using var rsa = RSA.Create(2048);
+            var req = new CertificateRequest("CN=Other", rsa, HashAlgorithmName.SHA256,
+                RSASignaturePadding.Pkcs1);
             var otherCert = req.CreateSelfSigned(DateTimeOffset.Now.AddDays(-1), DateTimeOffset.Now.AddDays(1));
             var wrongPrivate = new X509Certificate2(otherCert.Export(X509ContentType.Pfx));
             Assert.ThrowsAny<Exception>(() => MessageEncryption.DecryptMessage(encrypted, wrongPrivate));
