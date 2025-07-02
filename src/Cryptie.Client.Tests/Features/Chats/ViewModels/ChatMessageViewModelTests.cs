@@ -23,15 +23,20 @@ public class ChatMessageViewModelTests
     }
 
     [Theory]
-    [InlineData("msg1", true, "g1")]
-    [InlineData("msg2", false, "g2")]
-    [InlineData("", false, "")] // test pustych wartości
-    public void Properties_AreImmutable(string message, bool isOwn, string groupName)
+    [InlineData("msg1", false, "G1")]
+    [InlineData("", true, "")] // test pustych wartości
+    [InlineData(null, false, null)] // test nulli
+    public void Properties_AreSetCorrectly(string? message, bool isOwn, string? groupName)
     {
         var vm = new ChatMessageViewModel(message, isOwn, groupName);
         Assert.Equal(message, vm.Message);
         Assert.Equal(isOwn, vm.IsOwn);
         Assert.Equal(groupName, vm.GroupName);
     }
-}
 
+    [Fact]
+    public void ChatMessageViewModel_IsSealed()
+    {
+        Assert.True(typeof(ChatMessageViewModel).IsSealed);
+    }
+}
