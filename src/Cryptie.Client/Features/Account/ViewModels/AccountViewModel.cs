@@ -139,8 +139,11 @@ public class AccountViewModel : RoutableViewModelBase
     private void ExecuteLogout()
     {
         _keychain.TryClearSessionToken(out _);
+        _keychain.TryClearPrivateKey(out _);
 
         _userState.Username = null;
+        _userState.Login = null;
+        _userState.PrivateKey = null;
         _userState.SessionToken = null;
         _userState.UserId = null;
 

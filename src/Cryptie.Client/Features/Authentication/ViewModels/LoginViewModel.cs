@@ -9,6 +9,7 @@ using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Features.Authentication.Models;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
+using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.Authentication.DTOs;
 using FluentValidation;
 using MapsterMapper;
@@ -22,6 +23,7 @@ public class LoginViewModel : RoutableViewModelBase
     private readonly IShellCoordinator _coordinator;
     private readonly ILoginState _loginState;
     private readonly IMapper _mapper;
+    private readonly IUserState _userState;
     private readonly IValidator<LoginRequestDto> _validator;
 
     public LoginViewModel(
@@ -29,6 +31,7 @@ public class LoginViewModel : RoutableViewModelBase
         IShellCoordinator coordinator,
         IValidator<LoginRequestDto> validator,
         IExceptionMessageMapper exceptionMapper,
+        IUserState userState,
         IMapper mapper,
         ILoginState loginState)
         : base(coordinator)
@@ -36,6 +39,7 @@ public class LoginViewModel : RoutableViewModelBase
         _authentication = authentication;
         _coordinator = coordinator;
         _validator = validator;
+        _userState = userState;
         _mapper = mapper;
         _loginState = loginState;
 
@@ -75,6 +79,7 @@ public class LoginViewModel : RoutableViewModelBase
         if (cancellationToken.IsCancellationRequested) _coordinator.ShowLogin();
 
         _loginState.LastResponse = result;
+        _userState.Login = Model.Username;
         _coordinator.ShowTotpCode();
     }
 }

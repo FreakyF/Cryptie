@@ -33,4 +33,17 @@ public class UserDetailsService(HttpClient httpClient) : IUserDetailsService
 
         return await response.Content.ReadFromJsonAsync<UserGuidFromTokenResponseDto>(cancellationToken);
     }
+
+    public async Task<UserPrivateKeyResponseDto?> GetUserPrivateKeyAsync(
+        UserPrivateKeyRequestDto userPrivateKeyRequest,
+        CancellationToken cancellationToken = default)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, "user/privateKey");
+        request.Content = JsonContent.Create(userPrivateKeyRequest);
+
+        using var response = await httpClient.SendAsync(request, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadFromJsonAsync<UserPrivateKeyResponseDto>(cancellationToken);
+    }
 }
