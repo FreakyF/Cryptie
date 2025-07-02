@@ -29,6 +29,7 @@ using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Groups.ViewModels;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Client.Features.Menu.ViewModels;
+using Cryptie.Client.Features.PinCode.ViewModels;
 using Cryptie.Client.Features.ServerStatus.Services;
 using Cryptie.Client.Features.ServerStatus.ViewModels;
 using Cryptie.Client.Features.Settings.Services;
@@ -152,6 +153,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<AddFriendViewModel>();
         services.AddTransient<ChatSettingsViewModel>();
         services.AddTransient<AddUserToGroupViewModel>();
+        services.AddTransient<PinCodeViewModel>();
 
         services.AddTransient<IValidator<RegisterRequestDto>, RegisterRequestValidator>();
         services.AddTransient<IValidator<LoginRequestDto>, LoginRequestValidator>();
