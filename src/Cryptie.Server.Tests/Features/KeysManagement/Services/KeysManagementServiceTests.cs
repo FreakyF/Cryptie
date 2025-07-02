@@ -32,29 +32,5 @@ public class KeysManagementServiceTests
         Assert.Equal(expectedKey, response.PublicKey);
         _dbMock.Verify(x => x.GetUserPublicKey(userId), Times.Once);
     }
-
-    [Fact]
-    public void saveUserKeys_Unauthorized_WhenUserIsNull()
-    {
-        var req = new SaveUserKeysRequestDto { userToken = Guid.NewGuid(), privateKey = "priv", publicKey = "pub" };
-        _dbMock.Setup(x => x.GetUserFromToken(req.userToken)).Returns((User?)null);
-
-        var result = _service.saveUserKeys(req);
-        Assert.IsType<UnauthorizedResult>(result);
-        _dbMock.Verify(x => x.GetUserFromToken(req.userToken), Times.Once);
-        _dbMock.Verify(x => x.SaveUserKeys(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
-    }
-
-    [Fact]
-    public void saveUserKeys_SavesKeysAndReturnsOk()
-    {
-        var req = new SaveUserKeysRequestDto { userToken = Guid.NewGuid(), privateKey = "priv", publicKey = "pub" };
-        var user = new User { Id = Guid.NewGuid() };
-        _dbMock.Setup(x => x.GetUserFromToken(req.userToken)).Returns(user);
-
-        var result = _service.saveUserKeys(req);
-        Assert.IsType<OkResult>(result);
-        _dbMock.Verify(x => x.GetUserFromToken(req.userToken), Times.Once);
-        _dbMock.Verify(x => x.SaveUserKeys(user, req.privateKey, req.publicKey), Times.Once);
-    }
+    
 }
