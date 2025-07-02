@@ -8,7 +8,7 @@ public class Group
 {
     [Key, Column("id")] public Guid Id { get; set; }
 
-    [Required, Column("name")] public string Name { get; set; } = default!;
+    [Required, Column("name")] public string Name { get; set; } = string.Empty;
 
     [Required, Column("is_private")] public bool IsPrivate { get; set; }
 

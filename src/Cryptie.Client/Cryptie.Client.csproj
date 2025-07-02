@@ -107,7 +107,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj"/>
+        <ProjectReference Include="..\Cryptie.Common\Cryptie.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>

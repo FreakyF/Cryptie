@@ -8,7 +8,7 @@ public class GroupMessage
 {
     [Key, Column("id")] public Guid Id { get; set; }
 
-    [Required, Column("message")] public string Message { get; set; } = default!;
+    [Required, Column("message")] public string Message { get; set; } = string.Empty;
 
     [Required, Column("datetime")] public DateTime DateTime { get; set; }
 
@@ -18,5 +18,5 @@ public class GroupMessage
 
     [Required, Column("sender_id")] public Guid SenderId { get; set; }
 
-    [ForeignKey(nameof(SenderId))] public User Sender { get; set; } = default!;
+    [ForeignKey(nameof(SenderId))] public User Sender { get; set; } = new User();
 }

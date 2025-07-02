@@ -8,7 +8,7 @@ public class HoneypotLoginAttempt
 {
     [Key, Column("id")] public Guid Id { get; set; }
 
-    [Required, Column("username")] public string Username { get; set; } = default!;
+    [Required, Column("username")] public string Username { get; set; } = string.Empty;
 
     [Required, Column("timestamp")] public DateTime Timestamp { get; set; }
 }
