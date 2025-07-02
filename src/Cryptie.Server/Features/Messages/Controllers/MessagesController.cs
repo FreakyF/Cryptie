@@ -1,8 +1,8 @@
 using Cryptie.Common.Features.Messages.DTOs;
-using Cryptie.Server.Services;
+using Cryptie.Server.Features.Messages.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.Messages;
+namespace Cryptie.Server.Features.Messages.Controllers;
 
 [ApiController]
 [Route("messages")]

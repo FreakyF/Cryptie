@@ -2,7 +2,7 @@ using Cryptie.Common.Features.UserManagement.DTOs;
 using Cryptie.Server.Features.UserManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.UserManagement;
+namespace Cryptie.Server.Features.UserManagement.Controllers;
 
 [ApiController]
 [Route("user")]

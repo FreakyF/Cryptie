@@ -1,6 +1,6 @@
 using Cryptie.Common.Entities;
 
-namespace Cryptie.Common.Features.Authentication.Services;
+namespace Cryptie.Server.Features.Authentication.Services;
 
 public interface ILockoutService
 {

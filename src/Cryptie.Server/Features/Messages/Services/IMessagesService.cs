@@ -1,7 +1,7 @@
 using Cryptie.Common.Features.Messages.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.Messages;
+namespace Cryptie.Server.Features.Messages.Services;
 
 public interface IMessagesService
 {

@@ -1,8 +1,7 @@
 using Cryptie.Common.Features.GroupManagement;
-using Cryptie.Common.Features.GroupManagement.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.GroupManagement;
+namespace Cryptie.Server.Features.GroupManagement.Services;
 
 public interface IGroupManagementService
 {

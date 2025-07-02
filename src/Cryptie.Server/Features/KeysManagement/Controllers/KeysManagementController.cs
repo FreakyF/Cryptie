@@ -1,9 +1,8 @@
 using Cryptie.Common.Features.KeysManagement.DTOs;
 using Cryptie.Server.Features.KeysManagement.Services;
-using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.KeysManagement;
+namespace Cryptie.Server.Features.KeysManagement.Controllers;
 
 [ApiController]
 [Route("keys")]

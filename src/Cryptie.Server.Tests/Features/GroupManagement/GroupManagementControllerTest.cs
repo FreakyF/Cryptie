@@ -1,5 +1,7 @@
 ﻿using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Server.Features.GroupManagement;
+using Cryptie.Server.Features.GroupManagement.Controllers;
+using Cryptie.Server.Features.GroupManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;

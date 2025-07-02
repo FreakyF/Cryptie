@@ -14,14 +14,11 @@ public class KeysManagementService(IDatabaseService databaseService) : Controlle
             PublicKey = key
         });
     }
-    
+
     public IActionResult saveUserKeys([FromBody] SaveUserKeysRequestDto saveUserKeysRequest)
     {
         var user = databaseService.GetUserFromToken(saveUserKeysRequest.userToken);
-        if (user == null)
-        {
-            return Unauthorized();
-        }
+        if (user == null) return Unauthorized();
 
         databaseService.SaveUserKeys(user, saveUserKeysRequest.privateKey, saveUserKeysRequest.publicKey);
 

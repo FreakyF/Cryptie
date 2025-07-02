@@ -1,7 +1,7 @@
 using Cryptie.Server.Features.ServerStatus.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.ServerStatus;
+namespace Cryptie.Server.Features.ServerStatus.Controllers;
 
 [ApiController]
 [Route("status")]

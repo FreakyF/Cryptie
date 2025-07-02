@@ -1,4 +1,4 @@
-namespace Cryptie.Server.Features.Messages;
+namespace Cryptie.Server.Features.Messages.Services;
 
 public interface IMessageHubService
 {

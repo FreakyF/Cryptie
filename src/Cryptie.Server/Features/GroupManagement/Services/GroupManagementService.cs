@@ -1,9 +1,8 @@
 using Cryptie.Common.Features.GroupManagement;
-using Cryptie.Common.Features.GroupManagement.DTOs;
 using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Server.Features.GroupManagement;
+namespace Cryptie.Server.Features.GroupManagement.Services;
 
 public class GroupManagementService(
     IDatabaseService databaseService
@@ -48,10 +47,7 @@ public class GroupManagementService(
         foreach (var groupId in isGroupsPrivateRequest.GroupIds)
         {
             var group = databaseService.FindGroupById(groupId);
-            if (group != null)
-            {
-                result[groupId] = group.IsPrivate;
-            }
+            if (group != null) result[groupId] = group.IsPrivate;
         }
 
         if (result.Count == 0) return NotFound();
@@ -125,9 +121,7 @@ public class GroupManagementService(
 
         if (createGroupFromPrivateChatRequest.EncryptionKeys.Any(keyValuePair =>
                 !newGroupMembers.Contains(keyValuePair.Key)))
-        {
             return BadRequest();
-        }
 
         var newGroup = databaseService.CreateNewGroup(user, privateChat.Name + "_" + newMember.DisplayName);
         if (newGroup == null) return BadRequest();

@@ -39,9 +39,7 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
 
         if (addFriendRequest.EncryptionKeys.Any(keyValuePair =>
                 !newGroupMembers.Contains(keyValuePair.Key)))
-        {
             return BadRequest();
-        }
 
         databaseService.AddFriend(user, friend);
 

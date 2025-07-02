@@ -1,6 +1,7 @@
 using Cryptie.Common.Features.Authentication.DTOs;
-using Cryptie.Common.Features.Authentication.Services;
 using Cryptie.Server.Features.Authentication;
+using Cryptie.Server.Features.Authentication.Controllers;
+using Cryptie.Server.Features.Authentication.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

@@ -1,7 +1,7 @@
 using Cryptie.Common.Features.Authentication.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cryptie.Common.Features.Authentication.Services;
+namespace Cryptie.Server.Features.Authentication.Services;
 
 public interface IAuthenticationService
 {
