@@ -8,7 +8,7 @@ public class Totp
 {
     [Key, Column("id")] public Guid Id { get; set; }
 
-    [Required, Column("secret")] public byte[] Secret { get; set; } = default!;
+    [Required, Column("secret")] public byte[] Secret { get; set; } = Array.Empty<byte>();
 
 
     public ICollection<User> Users { get; set; } = new HashSet<User>();

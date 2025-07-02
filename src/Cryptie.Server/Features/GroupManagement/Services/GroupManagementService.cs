@@ -1,4 +1,5 @@
 using Cryptie.Common.Features.GroupManagement;
+using Cryptie.Common.Features.GroupManagement.DTOs;
 using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,0 +1,48 @@
+﻿<!-- ReSharper disable Xaml.StyleClassNotFound -->
+<!-- ReSharper disable Xaml.StaticResourceNotResolved -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Cryptie.Client.Features.PinCode.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Cryptie.Client.Features.PinCode.Views.PinCodeView"
+             x:DataType="viewModels:PinCodeViewModel">
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Enter"
+                    Command="{Binding VerifyCommand}" />
+    </UserControl.KeyBindings>
+
+    <Grid>
+        <Border Theme="{StaticResource CardBorder}"
+                Classes="Shadow Hover"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="400">
+            <StackPanel Spacing="16">
+                <TextBlock Theme="{StaticResource TitleTextBlock}"
+                           Classes="H1"
+                           HorizontalAlignment="Center">
+                    Cryptie
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Center">
+                    Enter your PIN code
+                </TextBlock>
+                <TextBox x:Name="PinCodeTextBox"
+                         Watermark="PIN Code"
+                         MaxLength="6"
+                         Text="{Binding PinCode, Mode=TwoWay}" />
+
+                <TextBlock x:Name="ErrorMessageTextBlock"
+                           Classes="Danger"
+                           HorizontalAlignment="Center"
+                           Text="{Binding ErrorMessage, Mode=TwoWay}" />
+
+                <Button x:Name="VerifyButton"
+                        Theme="{StaticResource SolidButton}"
+                        Content="Verify"
+                        Command="{Binding VerifyCommand}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

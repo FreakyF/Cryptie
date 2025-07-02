@@ -18,6 +18,7 @@ using Cryptie.Client.Features.Groups.Services;
 using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Menu.State;
 using Cryptie.Common.Features.GroupManagement;
+using Cryptie.Common.Features.GroupManagement.DTOs;
 using Microsoft.Extensions.Options;
 using ReactiveUI;
 

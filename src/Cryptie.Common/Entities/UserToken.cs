@@ -11,4 +11,9 @@ public class UserToken
     [Required, Column("user_id")] public Guid UserId { get; set; }
 
     [ForeignKey(nameof(UserId))] public User User { get; set; } = default!;
+
+    public UserToken()
+    {
+        User = new User();
+    }
 }
