@@ -142,11 +142,15 @@ public class RegisterViewModel : RoutableViewModelBase
         var publicBase64 = Convert.ToBase64String(cerBytes);
 
         var aesKeyBase64 = DeriveAesKeyFromPin(Model.PinCode);
+
         var encryptedPrivate = DataEncryption.EncryptDataAes(privateBase64, aesKeyBase64);
+
+        var encryptedLogin = DataEncryption.EncryptDataAes(Model.Username, aesKeyBase64);
 
         var dto = _mapper.Map<RegisterRequestDto>(Model);
         dto.PrivateKey = encryptedPrivate;
         dto.PublicKey = publicBase64;
+        dto.ControlValue = encryptedLogin;
 
         await _validator.ValidateAsync(dto, cancellationToken);
         var result = await _authentication.RegisterAsync(dto, cancellationToken);
