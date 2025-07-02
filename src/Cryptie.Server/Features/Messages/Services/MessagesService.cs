@@ -4,20 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cryptie.Server.Features.Messages;
 
-[ApiController]
-[Route("messages")]
-public class MessagesController : ControllerBase
+public class MessagesService(IDatabaseService databaseService, IMessageHubService messageHubService) : ControllerBase, IMessagesService
 {
-    private readonly IDatabaseService databaseService;
-    private readonly IMessageHubService messageHubService;
-
-    public MessagesController(IDatabaseService databaseService, IMessageHubService messageHubService)
-    {
-        this.databaseService = databaseService;
-        this.messageHubService = messageHubService;
-    }
-
-    [HttpPost("send", Name = "PostSendMessage")]
     public IActionResult SendMessage([FromBody] SendMessageRequestDto sendMessageRequest)
     {
         var user = databaseService.GetUserFromToken(sendMessageRequest.SenderToken);
@@ -46,8 +34,7 @@ public class MessagesController : ControllerBase
         messageHubService.SendMessageToGroup(group.Id, user.Id, message.Message);
         return Ok();
     }
-
-    [HttpGet("get", Name = "GetMessage")]
+    
     public IActionResult GetMessage([FromBody] GetMessageRequestDto getMessageRequest)
     {
         var user = databaseService.GetUserFromToken(getMessageRequest.UserToken);
@@ -78,8 +65,7 @@ public class MessagesController : ControllerBase
             DateTime = message.DateTime
         });
     }
-
-    [HttpGet("get-all", Name = "GetGroupMessages")]
+    
     public IActionResult GetGroupMessages([FromBody] GetGroupMessagesRequestDto request)
     {
         var user = databaseService.GetUserFromToken(request.UserToken);
@@ -113,8 +99,7 @@ public class MessagesController : ControllerBase
         };
         return Ok(response);
     }
-
-    [HttpPost("get-all-since", Name = "GetGroupMessagesSince")]
+    
     public IActionResult GetGroupMessagesSince([FromBody] GetGroupMessagesSinceRequestDto request)
     {
         var user = databaseService.GetUserFromToken(request.UserToken);
