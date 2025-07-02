@@ -68,8 +68,11 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
                 var vm = new AddFriendViewModel(
                     hostScreen,
                     deps.FriendsService,
+                    deps.UserDetailsService,
+                    deps.KeyService,
                     deps.Validator,
-                    deps.UserState);
+                    deps.UserState
+                );
 
                 await ShowAddFriend.Handle((vm, _addFriendCts.Token));
                 await LoadGroupsAsync(_addFriendCts.Token);
@@ -159,7 +162,7 @@ public sealed class GroupsListViewModel : RoutableViewModelBase, IDisposable
         }
         catch
         {
-            /* swallow */
+            // Swallow exception: do nothing
         }
     }
 
