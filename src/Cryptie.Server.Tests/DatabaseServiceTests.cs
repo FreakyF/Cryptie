@@ -397,7 +397,8 @@ public class DatabaseServiceTests
         var group = new Group();
         var sender = new User();
         var dbSetMock = new Mock<DbSet<GroupMessage>>();
-        var message = new GroupMessage { Id = Guid.NewGuid(), Group = group, Sender = sender, Message = "msg", DateTime = DateTime.UtcNow };
+        var message = new GroupMessage
+            { Id = Guid.NewGuid(), Group = group, Sender = sender, Message = "msg", DateTime = DateTime.UtcNow };
         var entityEntry = CreateEntityEntry(message);
         dbSetMock.Setup(x => x.Add(It.IsAny<GroupMessage>())).Returns(entityEntry);
         _dbContextMock.SetupGet(x => x.GroupMessages).Returns(dbSetMock.Object);
@@ -475,8 +476,10 @@ public class DatabaseServiceTests
         var groupId = Guid.NewGuid();
         var group = new Group { Id = groupId };
         var since = DateTime.UtcNow.AddHours(-1);
-        var message1 = new GroupMessage { Id = Guid.NewGuid(), Group = group, GroupId = groupId, DateTime = since.AddMinutes(1) };
-        var message2 = new GroupMessage { Id = Guid.NewGuid(), Group = group, GroupId = groupId, DateTime = since.AddMinutes(-1) };
+        var message1 = new GroupMessage
+            { Id = Guid.NewGuid(), Group = group, GroupId = groupId, DateTime = since.AddMinutes(1) };
+        var message2 = new GroupMessage
+            { Id = Guid.NewGuid(), Group = group, GroupId = groupId, DateTime = since.AddMinutes(-1) };
         var messages = new List<GroupMessage> { message1, message2 }.AsQueryable();
         var dbSetMock = messages.BuildMockDbSet();
         _dbContextMock.SetupGet(x => x.GroupMessages).Returns(dbSetMock.Object);
@@ -486,36 +489,78 @@ public class DatabaseServiceTests
         Assert.DoesNotContain(message2, result);
     }
 
-    // [Fact]
-    // public void AddGroupEncryptionKey_AddsKeyAndSavesChanges()
-    // {
-    //     var userId = Guid.NewGuid();
-    //     var groupId = Guid.NewGuid();
-    //     var user = new User { Id = userId };
-    //     var group = new Group { Id = groupId };
-    //     var key = "encryption-key";
-    //     var dbSetMock = new Mock<DbSet<GroupEncryptionKey>>();
-    //     GroupEncryptionKey? addedKey = null;
-    //     dbSetMock.Setup(x => x.Add(It.IsAny<GroupEncryptionKey>()))
-    //         .Callback<GroupEncryptionKey>(k => addedKey = k);
-    //     _dbContextMock.SetupGet(x => x.GroupEncryptionKeys).Returns(dbSetMock.Object);
-    //     _dbContextMock.Setup(x => x.SaveChanges()).Verifiable();
-    //
-    //     // Dodaj mockowanie użytkownika i grupy, aby Include/FirstOrDefault nie zwracało null
-    //     var users = new List<User> { user }.AsQueryable();
-    //     var groups = new List<Group> { group }.AsQueryable();
-    //     var usersDbSet = users.BuildMockDbSet();
-    //     var groupsDbSet = groups.BuildMockDbSet();
-    //     _dbContextMock.SetupGet(x => x.Users).Returns(usersDbSet.Object);
-    //     _dbContextMock.SetupGet(x => x.Groups).Returns(groupsDbSet.Object);
-    //
-    //     _service.AddGroupEncryptionKey(userId, groupId, key);
-    //     Assert.NotNull(addedKey);
-    //     Assert.Equal(userId, addedKey.UserId);
-    //     Assert.Equal(groupId, addedKey.GroupId);
-    //     Assert.Equal(key, addedKey.AesKey);
-    //     _dbContextMock.Verify(x => x.SaveChanges(), Times.Once);
-    // }
+    [Fact]
+    public void AddGroupEncryptionKey_AddsKeyAndSavesChanges_WhenUserAndGroupExist()
+    {
+        var userId = Guid.NewGuid();
+        var groupId = Guid.NewGuid();
+        var user = new User { Id = userId, GroupEncryptionKeys = new List<GroupEncryptionKey>() };
+        var group = new Group { Id = groupId };
+        var key = "encryption-key";
+        var dbSetMock = new Mock<DbSet<GroupEncryptionKey>>();
+        GroupEncryptionKey? addedKey = null;
+        dbSetMock.Setup(x => x.Add(It.IsAny<GroupEncryptionKey>()))
+            .Callback<GroupEncryptionKey>(k => addedKey = k);
+        _dbContextMock.SetupGet(x => x.GroupEncryptionKeys).Returns(dbSetMock.Object);
+        _dbContextMock.Setup(x => x.SaveChanges()).Verifiable();
+
+        var users = new List<User> { user }.AsQueryable();
+        var groups = new List<Group> { group }.AsQueryable();
+        var usersDbSet = users.BuildMockDbSet();
+        var groupsDbSet = groups.BuildMockDbSet();
+        _dbContextMock.SetupGet(x => x.Users).Returns(usersDbSet.Object);
+        _dbContextMock.SetupGet(x => x.Groups).Returns(groupsDbSet.Object);
+
+        _service.AddGroupEncryptionKey(userId, groupId, key);
+        Assert.NotNull(addedKey);
+        Assert.Equal(user, addedKey.User);
+        Assert.Equal(group, addedKey.Group);
+        Assert.Equal(key, addedKey.AesKey);
+        _dbContextMock.Verify(x => x.SaveChanges(), Times.Once);
+    }
+
+    [Fact]
+    public void AddGroupEncryptionKey_DoesNothing_WhenUserDoesNotExist()
+    {
+        var userId = Guid.NewGuid();
+        var groupId = Guid.NewGuid();
+        var key = "encryption-key";
+        var users = new List<User>().AsQueryable();
+        var groups = new List<Group> { new Group { Id = groupId } }.AsQueryable();
+        var usersDbSet = users.BuildMockDbSet();
+        var groupsDbSet = groups.BuildMockDbSet();
+        _dbContextMock.SetupGet(x => x.Users).Returns(usersDbSet.Object);
+        _dbContextMock.SetupGet(x => x.Groups).Returns(groupsDbSet.Object);
+
+        var dbSetMock = new Mock<DbSet<GroupEncryptionKey>>();
+        _dbContextMock.SetupGet(x => x.GroupEncryptionKeys).Returns(dbSetMock.Object);
+
+        _service.AddGroupEncryptionKey(userId, groupId, key);
+        dbSetMock.Verify(x => x.Add(It.IsAny<GroupEncryptionKey>()), Times.Never);
+        _dbContextMock.Verify(x => x.SaveChanges(), Times.Never);
+    }
+
+    [Fact]
+    public void AddGroupEncryptionKey_DoesNothing_WhenGroupDoesNotExist()
+    {
+        var userId = Guid.NewGuid();
+        var groupId = Guid.NewGuid();
+        var user = new User { Id = userId, GroupEncryptionKeys = new List<GroupEncryptionKey>() };
+        var key = "encryption-key";
+        var users = new List<User> { user }.AsQueryable();
+        var groups = new List<Group>().AsQueryable();
+        var usersDbSet = users.BuildMockDbSet();
+        var groupsDbSet = groups.BuildMockDbSet();
+        _dbContextMock.SetupGet(x => x.Users).Returns(usersDbSet.Object);
+        _dbContextMock.SetupGet(x => x.Groups).Returns(groupsDbSet.Object);
+
+        var dbSetMock = new Mock<DbSet<GroupEncryptionKey>>();
+        _dbContextMock.SetupGet(x => x.GroupEncryptionKeys).Returns(dbSetMock.Object);
+
+        _service.AddGroupEncryptionKey(userId, groupId, key);
+        dbSetMock.Verify(x => x.Add(It.IsAny<GroupEncryptionKey>()), Times.Never);
+        _dbContextMock.Verify(x => x.SaveChanges(), Times.Never);
+    }
 
     private static EntityEntry<T> CreateEntityEntry<T>(T entity) where T : class
     {
@@ -526,7 +571,10 @@ public class DatabaseServiceTests
 
     private class FakeContext : DbContext
     {
-        public FakeContext(DbContextOptions<FakeContext> options) : base(options) { }
+        public FakeContext(DbContextOptions<FakeContext> options) : base(options)
+        {
+        }
+
         public DbSet<Group> Groups { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }
@@ -535,6 +583,7 @@ public class DatabaseServiceTests
         public DbSet<HoneypotLoginAttempt> HoneypotLoginAttempts { get; set; }
         public DbSet<GroupMessage> GroupMessages { get; set; }
         public DbSet<GroupEncryptionKey> GroupEncryptionKeys { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Group>();
