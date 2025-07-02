@@ -46,4 +46,19 @@ public class UserDetailsService(HttpClient httpClient) : IUserDetailsService
 
         return await response.Content.ReadFromJsonAsync<UserPrivateKeyResponseDto>(cancellationToken);
     }
+
+
+    public async Task<GuidFromLoginResponseDto?> GetGuidFromLoginAsync(
+        GuidFromLoginRequestDto guidFromLoginRequest,
+        CancellationToken cancellationToken = default)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, "user/guidfromlogin");
+        request.Content = JsonContent.Create(guidFromLoginRequest);
+
+        using var response = await httpClient.SendAsync(request, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content
+            .ReadFromJsonAsync<GuidFromLoginResponseDto>(cancellationToken);
+    }
 }

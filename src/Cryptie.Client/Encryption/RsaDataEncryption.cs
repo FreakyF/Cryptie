@@ -34,9 +34,9 @@ public static class RsaDataEncryption
         string? password = null)
     {
         var bytes = Convert.FromBase64String(base64);
-        if (contentType == X509ContentType.Pfx && !string.IsNullOrEmpty(password))
-            return new X509Certificate2(bytes, password, X509KeyStorageFlags.Exportable);
-        
-        return new X509Certificate2(bytes);
+
+        return contentType == X509ContentType.Pfx
+            ? X509CertificateLoader.LoadPkcs12(bytes, password, X509KeyStorageFlags.Exportable)
+            : X509CertificateLoader.LoadCertificate(bytes);
     }
 }

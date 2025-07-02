@@ -45,10 +45,7 @@ public class PinCodeViewModel : RoutableViewModelBase, IActivatableViewModel
 
         this.WhenActivated(disposables =>
         {
-            if (!_keychainManagerService.TryClearPrivateKey(out _))
-            {
-                return;
-            }
+            _keychainManagerService.TryClearPrivateKey(out _);
 
             LoadBackendDataAsync()
                 .ToObservable()
