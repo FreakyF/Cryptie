@@ -7,6 +7,7 @@ public class RegisterModel : ReactiveObject
     private string _displayName = string.Empty;
     private string _email = string.Empty;
     private string _password = string.Empty;
+    private string _pinCode = string.Empty;
     private string _username = string.Empty;
 
     public string Username
@@ -31,5 +32,11 @@ public class RegisterModel : ReactiveObject
     {
         get => _password;
         set => this.RaiseAndSetIfChanged(ref _password, value);
+    }
+
+    public string PinCode
+    {
+        get => _pinCode;
+        set => this.RaiseAndSetIfChanged(ref _pinCode, value);
     }
 }
