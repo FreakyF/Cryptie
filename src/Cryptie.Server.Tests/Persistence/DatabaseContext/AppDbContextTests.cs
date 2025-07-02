@@ -65,7 +65,8 @@ namespace Cryptie.Server.Tests.Persistence.DatabaseContext
                     PasswordId = Guid.NewGuid(),
                     TotpId = Guid.NewGuid(),
                     Password = new Password { Id = Guid.NewGuid(), Secret = "hash" },
-                    Totp = new Totp { Id = Guid.NewGuid(), Secret = "secret"u8.ToArray() }
+                    Totp = new Totp { Id = Guid.NewGuid(), Secret = "secret"u8.ToArray() },
+                    ControlValue = "test"
                 };
                 context.Users.Add(user);
                 context.SaveChanges();
