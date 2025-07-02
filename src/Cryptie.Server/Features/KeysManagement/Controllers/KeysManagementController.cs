@@ -13,10 +13,10 @@ public class KeysManagementController(IKeysManagementService keysManagementServi
     {
         return keysManagementService.getUserKey(getUserKeyRequest);
     }
-
-    [HttpPost("keys")]
-    public IActionResult saveUserKeys([FromBody] SaveUserKeysRequestDto saveUserKeysRequest)
+    
+    [HttpGet("groupKey", Name = "GetGroupKey")]
+    public IActionResult getGroupKey([FromBody] GetGroupKeyRequestDto getGroupKeyRequest)
     {
-        return keysManagementService.saveUserKeys(saveUserKeysRequest);
+        return keysManagementService.getGroupKey(getGroupKeyRequest);
     }
 }

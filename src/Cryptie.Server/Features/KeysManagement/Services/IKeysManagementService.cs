@@ -6,5 +6,5 @@ namespace Cryptie.Server.Features.KeysManagement.Services;
 public interface IKeysManagementService
 {
     public IActionResult getUserKey([FromBody] GetUserKeyRequestDto getUserKeyRequest);
-    public IActionResult saveUserKeys([FromBody] SaveUserKeysRequestDto saveUserKeysRequest);
+    public IActionResult getGroupKey([FromBody] GetGroupKeyRequestDto getGroupKeyRequest);
 }

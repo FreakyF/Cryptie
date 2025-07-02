@@ -250,4 +250,12 @@ public class DatabaseService(IAppDbContext appDbContext) : IDatabaseService
         appDbContext.GroupEncryptionKeys.Add(newKey);
         appDbContext.SaveChanges();
     }
+
+    public string getGroupEncryptionKey(Guid userId, Guid groupId)
+    {
+        var key = appDbContext.GroupEncryptionKeys
+            .FirstOrDefault(ge => ge.UserId == userId && ge.GroupId == groupId);
+
+        return key?.AesKey ?? string.Empty;
+    }
 }
