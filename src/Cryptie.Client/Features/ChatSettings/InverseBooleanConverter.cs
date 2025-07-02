@@ -7,8 +7,12 @@ namespace Cryptie.Client.Features.ChatSettings;
 public class InverseBooleanConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is false;
+    {
+        return value is false;
+    }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is false;
+    {
+        return value is false;
+    }
 }

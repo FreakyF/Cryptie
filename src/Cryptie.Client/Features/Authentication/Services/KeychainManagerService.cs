@@ -48,7 +48,10 @@ public class KeychainManagerService : IKeychainManagerService
         try
         {
             token = Keyring.GetPassword(ProductName, ServiceNameSession, AccountSession);
-            if (!string.IsNullOrEmpty(token)) return true;
+            if (!string.IsNullOrEmpty(token))
+            {
+                return true;
+            }
 
             errorMessage = "No session token found.";
             return false;
@@ -60,19 +63,17 @@ public class KeychainManagerService : IKeychainManagerService
         }
     }
 
-    public bool TryClearSessionToken([NotNullWhen(false)] out string? errorMessage)
+    public void TryClearSessionToken([NotNullWhen(false)] out string? errorMessage)
     {
         errorMessage = null;
 
         try
         {
             Keyring.DeletePassword(ProductName, ServiceNameSession, AccountSession);
-            return true;
         }
         catch (KeyringException ex)
         {
             errorMessage = $"Failed to clear session token: {ex.Message}";
-            return false;
         }
     }
 
@@ -183,7 +184,7 @@ public class KeychainManagerService : IKeychainManagerService
         return true;
     }
 
-    public bool TryClearPrivateKey([NotNullWhen(false)] out string? errorMessage)
+    public void TryClearPrivateKey([NotNullWhen(false)] out string? errorMessage)
     {
         errorMessage = null;
 
@@ -232,9 +233,6 @@ public class KeychainManagerService : IKeychainManagerService
         catch (KeyringException ex)
         {
             errorMessage = $"Failed to clear private key metadata: {ex.Message}";
-            return false;
         }
-
-        return true;
     }
 }

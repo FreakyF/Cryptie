@@ -1,10 +1,10 @@
 ﻿<!-- ReSharper disable Xaml.RedundantResource -->
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:conv="clr-namespace:Cryptie.Client.Features.Messages.Converters"
              xmlns:viewModels="clr-namespace:Cryptie.Client.Features.Menu.ViewModels"
              xmlns:models1="clr-namespace:Cryptie.Client.Features.Menu.Models"
              xmlns:converters="clr-namespace:Cryptie.Client.Core.Converters"
+             xmlns:converters1="clr-namespace:Cryptie.Client.Features.Dashboard.Converters"
              x:Class="Cryptie.Client.Features.Menu.Views.SplitViewMenuView"
              x:DataType="viewModels:SplitViewMenuViewModel"
              Background="{DynamicResource SplitViewMenuBackground}">
@@ -20,15 +20,15 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <conv:BoolToDockConverter x:Key="BoolDock" />
-            <conv:BottomToColumnSpanConverter x:Key="ColSpan" />
-            <conv:BottomPaneMarginConverter x:Key="PaneMargin" />
-            <conv:BoolToInvertConverter x:Key="InvertBool" />
+            <converters1:BoolToDockConverter x:Key="BoolDock" />
+            <converters1:BottomToColumnSpanConverter x:Key="ColSpan" />
+            <converters1:BottomPaneMarginConverter x:Key="PaneMargin" />
+            <converters1:BoolToInvertConverter x:Key="InvertBool" />
 
             <converters:InitialConverter x:Key="InitialConverter" />
             <converters:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
-            <conv:AccountInitialVisibilityConverter x:Key="AccountInitialVisible" />
-            <conv:AccountGlyphVisibilityConverter x:Key="AccountGlyphVisible" />
+            <converters1:AccountInitialVisibilityConverter x:Key="AccountInitialVisible" />
+            <converters1:AccountGlyphVisibilityConverter x:Key="AccountGlyphVisible" />
 
             <DataTemplate x:Key="NavItemTemplate"
                           x:DataType="models1:NavigationItem">

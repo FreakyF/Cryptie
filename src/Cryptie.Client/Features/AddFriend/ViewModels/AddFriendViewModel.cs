@@ -164,7 +164,9 @@ public class AddFriendViewModel : RoutableViewModelBase
         };
 
         if (!await TryAddFriend(addFriendDto, ct))
+        {
             return;
+        }
 
         FriendInput = string.Empty;
         ConfirmationMessage = "Friend added successfully!";
@@ -177,11 +179,15 @@ public class AddFriendViewModel : RoutableViewModelBase
         return !string.IsNullOrWhiteSpace(token) && Guid.TryParse(token, out sessionToken);
     }
 
-    private static bool IsAddingSelf(string user, string friend) =>
-        string.Equals(user, friend, StringComparison.OrdinalIgnoreCase);
+    private static bool IsAddingSelf(string user, string friend)
+    {
+        return string.Equals(user, friend, StringComparison.OrdinalIgnoreCase);
+    }
 
-    private async Task<bool> IsValidFriendRequest(AddFriendRequestDto dto, CancellationToken ct) =>
-        (await _validator.ValidateAsync(dto, ct)).IsValid;
+    private async Task<bool> IsValidFriendRequest(AddFriendRequestDto dto, CancellationToken ct)
+    {
+        return (await _validator.ValidateAsync(dto, ct)).IsValid;
+    }
 
     private async Task<Guid?> GetUserGuidByName(string friendName, CancellationToken ct)
     {
@@ -221,7 +227,9 @@ public class AddFriendViewModel : RoutableViewModelBase
         {
             var keyResp = await _keyService.GetUserKeyAsync(new GetUserKeyRequestDto { UserId = userGuid }, ct);
             if (keyResp?.PublicKey is { Length: > 0 })
+            {
                 return RsaDataEncryption.LoadCertificateFromBase64(keyResp.PublicKey, X509ContentType.Cert);
+            }
         }
         catch
         {
@@ -257,5 +265,8 @@ public class AddFriendViewModel : RoutableViewModelBase
         return false;
     }
 
-    private void SetGenericError() => ErrorMessage = "An error occurred. Please try again.";
+    private void SetGenericError()
+    {
+        ErrorMessage = "An error occurred. Please try again.";
+    }
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Avalonia.Data.Converters;
-using Cryptie.Client.Features.Messages.Converters;
-using Xunit;
+﻿using System.Globalization;
+using Cryptie.Client.Features.Dashboard.Converters;
 
 namespace Cryptie.Client.Tests.Features.Dashboard.Converters;
 
@@ -42,4 +38,3 @@ public class AccountGlyphVisibilityConverterTests
             _converter.Convert(values, typeof(bool), null, CultureInfo.InvariantCulture));
     }
 }
-

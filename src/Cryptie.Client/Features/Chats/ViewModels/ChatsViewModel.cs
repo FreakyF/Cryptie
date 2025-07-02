@@ -102,10 +102,15 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
 
     public ViewModelActivator Activator { get; }
 
-    public void Dispose() => _disposables.Dispose();
+    public void Dispose()
+    {
+        _disposables.Dispose();
+    }
 
-    private static Guid TryParseGuid(string? str) =>
-        Guid.TryParse(str, out var g) ? g : Guid.Empty;
+    private static Guid TryParseGuid(string? str)
+    {
+        return Guid.TryParse(str, out var g) ? g : Guid.Empty;
+    }
 
     private GroupsListViewModel CreateGroupsPanel(
         IScreen hostScreen,
@@ -135,14 +140,18 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
         return panel;
     }
 
-    private ObservableAsPropertyHelper<string?> CreateCurrentGroupNameProperty() =>
-        _deps.GroupState
+    private ObservableAsPropertyHelper<string?> CreateCurrentGroupNameProperty()
+    {
+        return _deps.GroupState
             .WhenAnyValue(gs => gs.SelectedGroupName)
             .ObserveOn(RxApp.MainThreadScheduler)
             .ToProperty(this, vm => vm.CurrentGroupName);
+    }
 
-    private ReactiveCommand<Unit, Unit> CreateToggleSettingsCommand() =>
-        ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; });
+    private ReactiveCommand<Unit, Unit> CreateToggleSettingsCommand()
+    {
+        return ReactiveCommand.Create(() => { IsChatSettingsOpen = !IsChatSettingsOpen; });
+    }
 
     private ReactiveCommand<Unit, Unit> CreateSendMessageCommand()
     {
@@ -155,10 +164,14 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
             var gid = _deps.GroupState.SelectedGroupId;
             var msg = MessageText?.Trim();
             if (gid == Guid.Empty || string.IsNullOrEmpty(msg))
+            {
                 return;
+            }
 
             if (!GroupsPanel.GroupKeyCache.TryGetValue(gid, out var groupKey))
+            {
                 throw new InvalidOperationException("User's private key is missing");
+            }
 
             var encryptedMsg = AesDataEncryption.Encrypt(msg, groupKey);
 
@@ -220,7 +233,9 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
                         var all = await _deps.MessagesService.GetGroupMessagesAsync(_sessionToken, gid);
 
                         if (all.Any())
+                        {
                             _lastMessageTimestamp = all.Max(m => m.DateTime);
+                        }
 
                         DecryptMessages(all, gid);
 
@@ -237,10 +252,12 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
                 Messages.Clear();
                 var groupName = _deps.GroupState.SelectedGroupName ?? "";
                 foreach (var m in history)
+                {
                     Messages.Add(new ChatMessageViewModel(
                         m.Message,
                         m.SenderId == _userId,
                         groupName));
+                }
             })
             .DisposeWith(_disposables);
     }
@@ -262,7 +279,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
 
                 Messages.Add(new ChatMessageViewModel(
                     decrypted,
-                    isOwn: true,
+                    true,
                     groupName));
 
                 var now = DateTime.UtcNow;

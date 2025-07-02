@@ -8,44 +8,45 @@ using Cryptie.Client.Features.AddUserToGroup.Views;
 using Cryptie.Client.Features.ChatSettings.ViewModels;
 using ReactiveUI;
 
-namespace Cryptie.Client.Features.ChatSettings.Views
+namespace Cryptie.Client.Features.ChatSettings.Views;
+
+public partial class ChatSettingsView : ReactiveUserControl<ChatSettingsViewModel>
 {
-    public partial class ChatSettingsView : ReactiveUserControl<ChatSettingsViewModel>
+    public ChatSettingsView()
     {
-        public ChatSettingsView()
+        InitializeComponent();
+
+        this.WhenActivated(disposables =>
         {
-            InitializeComponent();
+            ViewModel!
+                .ShowAddUserToGroup
+                .RegisterHandler(async interaction =>
+                {
+                    var (addUserVm, cancellationToken) = interaction.Input;
 
-            this.WhenActivated(disposables =>
-            {
-                ViewModel!
-                    .ShowAddUserToGroup
-                    .RegisterHandler(async interaction =>
+                    var dlg = new Window
                     {
-                        var (addUserVm, cancellationToken) = interaction.Input;
-
-                        var dlg = new Window
+                        Title = "Add users to group",
+                        Icon = new WindowIcon(
+                            AssetLoader.Open(new Uri(ViewModel.IconUri))
+                        ),
+                        Content = new AddUserToGroupView
                         {
-                            Title = "Add users to group",
-                            Icon = new WindowIcon(
-                                AssetLoader.Open(new Uri(ViewModel.IconUri))
-                            ),
-                            Content = new AddUserToGroupView
-                            {
-                                DataContext = addUserVm
-                            },
-                            Width = 400,
-                            Height = 150,
-                            WindowStartupLocation = WindowStartupLocation.CenterOwner
-                        };
+                            DataContext = addUserVm
+                        },
+                        Width = 400,
+                        Height = 150,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    };
 
-                        await using (cancellationToken.Register(dlg.Close))
-                            await dlg.ShowDialog((Window)VisualRoot!);
+                    await using (cancellationToken.Register(dlg.Close))
+                    {
+                        await dlg.ShowDialog((Window)VisualRoot!);
+                    }
 
-                        interaction.SetOutput(Unit.Default);
-                    })
-                    .DisposeWith(disposables);
-            });
-        }
+                    interaction.SetOutput(Unit.Default);
+                })
+                .DisposeWith(disposables);
+        });
     }
 }

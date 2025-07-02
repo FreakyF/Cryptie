@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 
 namespace Cryptie.Client.Encryption;
 
-public class EncryptionKeyGenerator
+public static class EncryptionKeyGenerator
 {
     public static byte[] GenerateAesKey(int keySize = 256)
     {

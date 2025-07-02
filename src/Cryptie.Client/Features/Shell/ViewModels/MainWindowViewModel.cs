@@ -38,8 +38,14 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
             .ObserveOn(AvaloniaScheduler.Instance)
             .Subscribe(ok =>
             {
-                if (ok) OnConnectionRestored();
-                else OnConnectionLost();
+                if (ok)
+                {
+                    OnConnectionRestored();
+                }
+                else
+                {
+                    OnConnectionLost();
+                }
             });
 
         _connectionMonitor.Start();
@@ -47,7 +53,11 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
 
     public void Dispose()
     {
-        if (_disposed) return;
+        if (_disposed)
+        {
+            return;
+        }
+
         Stop();
         _disposed = true;
     }
@@ -58,7 +68,11 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
     {
         ThrowIfDisposed();
 
-        if (_isShowingStatus) return;
+        if (_isShowingStatus)
+        {
+            return;
+        }
+
         _isShowingStatus = true;
 
         var statusVm = _factory.Create<ServerStatusViewModel>(this);
@@ -84,7 +98,11 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
     {
         try
         {
-            if (!_isShowingStatus) return;
+            if (!_isShowingStatus)
+            {
+                return;
+            }
+
             _isShowingStatus = false;
 
             _statusVmIsLoadingSub?.Dispose();
@@ -102,7 +120,9 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
     {
         _connectionSubscription.Dispose();
         if (_connectionMonitor is IDisposable d)
+        {
             d.Dispose();
+        }
     }
 
     private void ThrowIfDisposed()

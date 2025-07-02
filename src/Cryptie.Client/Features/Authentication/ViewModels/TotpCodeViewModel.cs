@@ -62,7 +62,11 @@ public class TotpCodeViewModel : RoutableViewModelBase
             return;
         }
 
-        if (!_deps.Keychain.TrySaveSessionToken(result.Token.ToString(), out var err)) ErrorMessage = err;
+        if (!_deps.Keychain.TrySaveSessionToken(result.Token.ToString(), out var err))
+        {
+            ErrorMessage = err;
+        }
+
         _deps.UserState.SessionToken = result.Token.ToString();
 
         var tokenGuid = result.Token;
@@ -74,7 +78,10 @@ public class TotpCodeViewModel : RoutableViewModelBase
             _deps.UserState.UserId = userGuidDto.Guid;
         }
 
-        if (cancellationToken.IsCancellationRequested) _coordinator.ShowLogin();
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _coordinator.ShowLogin();
+        }
 
         _coordinator.ShowPinSetup();
     }

@@ -13,7 +13,7 @@
     xmlns:settings="clr-namespace:Cryptie.Client.Features.ChatSettings.Views"
     xmlns:converters="clr-namespace:Cryptie.Client.Core.Converters"
     xmlns:converters1="clr-namespace:Cryptie.Client.Features.Chats.Converters"
-    xmlns:converters2="clr-namespace:Cryptie.Client.Features.Messages.Converters"
+    xmlns:converters3="clr-namespace:Cryptie.Client.Features.Dashboard.Converters"
     mc:Ignorable="d"
     x:Class="Cryptie.Client.Features.Chats.Views.ChatsView"
     x:DataType="viewModels1:ChatsViewModel"
@@ -43,7 +43,7 @@
             <converters:InitialConverter x:Key="InitialConverter" />
             <converters:InitialBackgroundConverter x:Key="InitialBackgroundConverter" />
             <converters1:WidthFractionConverter x:Key="BubbleWidthConv" Fraction="0.4" />
-            <converters2:BoolToInvertConverter x:Key="InvertBoolConverter" />
+            <converters3:BoolToInvertConverter x:Key="InvertBoolConverter" />
 
             <SolidColorBrush x:Key="OwnBubbleBackground" Color="#0064FA" />
             <SolidColorBrush x:Key="OwnBubbleForeground" Color="#FFFFFF" />
@@ -208,8 +208,7 @@
                                 </Style>
                             </ScrollViewer.Styles>
 
-                            <ItemsControl ItemsSource="{Binding Messages}">
-                            </ItemsControl>
+                            <ItemsControl ItemsSource="{Binding Messages}" />
                         </ScrollViewer>
 
                         <Grid Grid.Row="2" Margin="12,8" ColumnDefinitions="*,Auto">

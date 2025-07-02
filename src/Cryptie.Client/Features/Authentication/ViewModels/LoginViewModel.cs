@@ -76,7 +76,10 @@ public class LoginViewModel : RoutableViewModelBase
             return;
         }
 
-        if (cancellationToken.IsCancellationRequested) _coordinator.ShowLogin();
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _coordinator.ShowLogin();
+        }
 
         _loginState.LastResponse = result;
         _userState.Login = Model.Username;

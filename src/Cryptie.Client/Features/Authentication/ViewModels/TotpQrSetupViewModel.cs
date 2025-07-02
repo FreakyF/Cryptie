@@ -71,7 +71,10 @@ public class TotpQrSetupViewModel : RoutableViewModelBase
             return;
         }
 
-        if (cancellationToken.IsCancellationRequested) _coordinator.ShowQrSetup();
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _coordinator.ShowQrSetup();
+        }
 
         _coordinator.ShowLogin();
     }

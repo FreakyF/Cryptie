@@ -129,7 +129,9 @@ public class ShellCoordinator(
         stateDeps.UserState.UserId = userGuid;
 
         if (!keychain.TryGetPrivateKey(out var privateKey, out _))
+        {
             return false;
+        }
 
         stateDeps.UserState.PrivateKey = privateKey;
         return true;
@@ -154,10 +156,12 @@ public class ShellCoordinator(
         stateDeps.RegistrationState.LastResponse = null;
     }
 
-    private static bool IsAuthError(HttpRequestException ex) =>
-        ex.StatusCode is HttpStatusCode.Unauthorized
+    private static bool IsAuthError(HttpRequestException ex)
+    {
+        return ex.StatusCode is HttpStatusCode.Unauthorized
             or HttpStatusCode.Forbidden
             or HttpStatusCode.BadRequest;
+    }
 
     private void NavigateTo<TViewModel>() where TViewModel : RoutableViewModelBase
     {
