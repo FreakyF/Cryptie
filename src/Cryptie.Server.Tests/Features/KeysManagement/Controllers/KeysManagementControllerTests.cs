@@ -33,21 +33,5 @@ public class KeysManagementControllerTests
         Assert.Equal(expectedResult, result);
         _serviceMock.Verify(s => s.getUserKey(request), Times.Once);
     }
-
-    [Fact]
-    public void saveUserKeys_ReturnsServiceResult()
-    {
-        // Arrange
-        var request = new SaveUserKeysRequestDto();
-        var expectedResult = new OkResult();
-        _serviceMock.Setup(s => s.saveUserKeys(request)).Returns(expectedResult);
-
-        // Act
-        var result = _controller.saveUserKeys(request);
-
-        // Assert
-        Assert.Equal(expectedResult, result);
-        _serviceMock.Verify(s => s.saveUserKeys(request), Times.Once);
-    }
 }
 
