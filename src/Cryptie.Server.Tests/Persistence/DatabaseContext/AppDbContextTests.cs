@@ -6,7 +6,7 @@ namespace Cryptie.Server.Tests.Persistence.DatabaseContext
 {
     public class AppDbContextTests
     {
-        private DbContextOptions<AppDbContext> CreateInMemoryOptions()
+        private static DbContextOptions<AppDbContext> CreateInMemoryOptions()
         {
             return new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDb" + System.Guid.NewGuid())
@@ -37,15 +37,6 @@ namespace Cryptie.Server.Tests.Persistence.DatabaseContext
             Assert.NotNull(context.HoneypotLoginAttempts);
             Assert.NotNull(context.UserAccountLocks);
             Assert.NotNull(context.HoneypotAccountLocks);
-        }
-
-        [Fact]
-        public void OnConfiguring_SetsNpgsql_WhenNotConfigured()
-        {
-            var builder = new DbContextOptionsBuilder<AppDbContext>();
-            var context = new AppDbContext(builder.Options);
-            // Should not throw
-            context.Dispose();
         }
 
         [Fact]

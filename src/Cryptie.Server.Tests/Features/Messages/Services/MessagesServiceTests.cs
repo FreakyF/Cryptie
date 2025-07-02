@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Cryptie.Common.Entities;
+﻿using Cryptie.Common.Entities;
 using Cryptie.Common.Features.Messages.DTOs;
 using Cryptie.Server.Features.Messages.Services;
 using Cryptie.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Xunit;
+
+namespace Cryptie.Server.Tests.Features.Messages.Services;
 
 public class MessagesServiceTests
 {

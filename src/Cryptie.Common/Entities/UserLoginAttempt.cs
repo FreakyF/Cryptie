@@ -12,10 +12,5 @@ public class UserLoginAttempt
 
     [Required, Column("user_id")] public Guid UserId { get; set; }
 
-    [ForeignKey(nameof(UserId))] public User User { get; set; } = default!;
-
-    public UserLoginAttempt()
-    {
-        User = new User();
-    }
+    [ForeignKey(nameof(UserId))] public User User { get; set; } = new();
 }

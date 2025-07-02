@@ -32,8 +32,8 @@ public class GetGroupMessagesSinceRequestDtoTests
         // Act
         var dto = new GetGroupMessagesSinceRequestDto();
         // Assert
-        Assert.Equal(default(Guid), dto.UserToken);
-        Assert.Equal(default(Guid), dto.GroupId);
+        Assert.Equal(Guid.Empty, dto.UserToken);
+        Assert.Equal(Guid.Empty, dto.GroupId);
         Assert.Equal(default(DateTime), dto.Since);
     }
 }

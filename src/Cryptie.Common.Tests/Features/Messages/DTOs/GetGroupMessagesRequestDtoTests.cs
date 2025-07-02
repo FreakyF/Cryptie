@@ -29,8 +29,8 @@ public class GetGroupMessagesRequestDtoTests
         // Act
         var dto = new GetGroupMessagesRequestDto();
         // Assert
-        Assert.Equal(default(Guid), dto.UserToken);
-        Assert.Equal(default(Guid), dto.GroupId);
+        Assert.Equal(Guid.Empty, dto.UserToken);
+        Assert.Equal(Guid.Empty, dto.GroupId);
     }
 }
 

@@ -15,7 +15,7 @@ public class MessagesService(IDatabaseService databaseService, IMessageHubServic
         var group = databaseService.FindGroupById(sendMessageRequest.GroupId);
         if (group == null) return NotFound();
 
-        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest("User is not a member of the group.");
+        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest();
 
         if (string.IsNullOrWhiteSpace(sendMessageRequest.Message)) return BadRequest("Message cannot be empty.");
 
@@ -32,7 +32,7 @@ public class MessagesService(IDatabaseService databaseService, IMessageHubServic
         var group = databaseService.FindGroupById(getMessageRequest.GroupId);
         if (group == null) return NotFound();
 
-        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest("User is not a member of the group.");
+        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest();
 
         var message = databaseService.GetGroupMessage(getMessageRequest.MessageId, group.Id);
 
@@ -54,7 +54,7 @@ public class MessagesService(IDatabaseService databaseService, IMessageHubServic
         var group = databaseService.FindGroupById(request.GroupId);
         if (group == null) return NotFound();
 
-        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest("User is not a member of the group.");
+        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest();
 
         var messages = databaseService.GetGroupMessages(request.GroupId);
         var response = new GetGroupMessagesResponseDto
@@ -79,7 +79,7 @@ public class MessagesService(IDatabaseService databaseService, IMessageHubServic
         var group = databaseService.FindGroupById(request.GroupId);
         if (group == null) return NotFound();
 
-        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest("User is not a member of the group.");
+        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest();
 
         var messages = databaseService.GetGroupMessagesSince(request.GroupId, request.Since);
         var response = new GetGroupMessagesSinceResponseDto

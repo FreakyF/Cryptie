@@ -12,7 +12,7 @@ public class UserAccountLock
 
     [Required, Column("user_id")] public Guid UserId { get; set; }
 
-    [ForeignKey(nameof(UserId))] public User User { get; set; } = default!;
+    [ForeignKey(nameof(UserId))] public User User { get; set; }
 
     public UserAccountLock()
     {

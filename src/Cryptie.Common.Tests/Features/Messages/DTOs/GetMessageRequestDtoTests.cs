@@ -32,9 +32,9 @@ public class GetMessageRequestDtoTests
         // Act
         var dto = new GetMessageRequestDto();
         // Assert
-        Assert.Equal(default(Guid), dto.UserToken);
-        Assert.Equal(default(Guid), dto.GroupId);
-        Assert.Equal(default(Guid), dto.MessageId);
+        Assert.Equal(Guid.Empty, dto.UserToken);
+        Assert.Equal(Guid.Empty, dto.GroupId);
+        Assert.Equal(Guid.Empty, dto.MessageId);
     }
 }
 

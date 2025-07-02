@@ -24,7 +24,7 @@ internal class RegistrationResponse
 {
     public string TotpToken { get; set; }
     public string Secret { get; set; }
-}
+} //TODO
 
 public class TotpQrSetupViewModelTest : IDisposable
 {

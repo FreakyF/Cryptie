@@ -33,8 +33,8 @@ public class SendMessageRequestDtoTests
         var dto = new SendMessageRequestDto();
         // Assert
         Assert.Null(dto.Message);
-        Assert.Equal(default(Guid), dto.GroupId);
-        Assert.Equal(default(Guid), dto.SenderToken);
+        Assert.Equal(Guid.Empty, dto.GroupId);
+        Assert.Equal(Guid.Empty, dto.SenderToken);
     }
 }
 

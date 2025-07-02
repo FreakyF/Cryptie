@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
+namespace Cryptie.Server.Tests.Features.Authentication.Services;
+
 public class AuthenticationServiceTests
 {
     private readonly Mock<IAppDbContext> _dbContextMock = new();

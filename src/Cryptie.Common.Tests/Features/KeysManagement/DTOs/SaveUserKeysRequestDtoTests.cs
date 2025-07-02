@@ -32,7 +32,7 @@ public class SaveUserKeysRequestDtoTests
         // Act
         var dto = new SaveUserKeysRequestDto();
         // Assert
-        Assert.Equal(default(Guid), dto.userToken);
+        Assert.Equal(Guid.Empty, dto.userToken);
         Assert.Null(dto.privateKey);
         Assert.Null(dto.publicKey);
     }

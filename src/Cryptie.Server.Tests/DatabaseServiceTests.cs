@@ -569,12 +569,8 @@ public class DatabaseServiceTests
         return context.Entry(entity);
     }
 
-    private class FakeContext : DbContext
+    private class FakeContext(DbContextOptions<FakeContext> options) : DbContext(options)
     {
-        public FakeContext(DbContextOptions<FakeContext> options) : base(options)
-        {
-        }
-
         public DbSet<Group> Groups { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }
