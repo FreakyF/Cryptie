@@ -12,4 +12,8 @@ public interface IUserDetailsService
     public Task<UserGuidFromTokenResponseDto?> GetUserGuidFromTokenAsync(
         UserGuidFromTokenRequestDto userGuidFromTokenRequest,
         CancellationToken cancellationToken = default);
+
+    Task<UserPrivateKeyResponseDto?> GetUserPrivateKeyAsync(
+        UserPrivateKeyRequestDto userPrivateKeyRequest,
+        CancellationToken cancellationToken = default);
 }

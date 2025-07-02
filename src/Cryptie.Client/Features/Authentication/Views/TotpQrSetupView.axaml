@@ -32,8 +32,9 @@
                 <Svg Width="200"
                      Height="200"
                      Source="{Binding QrCode}" />
-                <TextBox x:Name="UsernameTextBox"
+                <TextBox x:Name="AuthCodeTextBox"
                          Watermark="Auth Code"
+                         MaxLength="6"
                          Text="{Binding Model.Secret, Mode=TwoWay}" />
 
                 <TextBlock x:Name="ErrorMessageTextBlock"

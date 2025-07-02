@@ -169,6 +169,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILoginState, LoginState>();
         services.AddSingleton<IKeychainManagerService, KeychainManagerService>();
         services.AddSingleton<IThemeService, ThemeService>();
+        services.AddSingleton<IChunkingService, ChunkingService>();
 
         services.AddSingleton<AddFriendDependencies>(sp => new AddFriendDependencies(
             sp.GetRequiredService<IFriendsService>(),

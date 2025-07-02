@@ -90,8 +90,6 @@ public sealed class MainWindowViewModel : ReactiveObject, IScreen, IDisposable
             _statusVmIsLoadingSub?.Dispose();
             _statusVmIsLoadingSub = null;
 
-            await Router.NavigateBack.Execute();
-
             await _shellCoordinator.StartAsync();
         }
         catch (Exception)

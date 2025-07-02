@@ -27,69 +27,40 @@ public class ShellCoordinator(
 
     public async Task StartAsync()
     {
-        if (keychain.TryGetSessionToken(out var token, out _)
-            && Guid.TryParse(token, out var sessionToken))
+        if (!TryInitializeSession(out var sessionToken))
         {
-            stateDeps.UserState.SessionToken = token;
-            var isConnected = await connectionMonitor.IsBackendAliveAsync();
-            if (!isConnected)
-                return;
-
-            try
-            {
-                var result = await userDetailsService.GetUserGuidFromTokenAsync(
-                    new UserGuidFromTokenRequestDto { SessionToken = sessionToken });
-
-                if (result != null)
-                {
-                    var userGuid = result.Guid;
-                    if (userGuid != Guid.Empty)
-                    {
-                        stateDeps.UserState.UserId = userGuid;
-                        ShowDashboard();
-                        return;
-                    }
-                }
-
-                keychain.TryClearSessionToken(out _);
-                stateDeps.UserState.SessionToken = null;
-                stateDeps.UserState.Username = null;
-                stateDeps.UserState.UserId = null;
-
-                stateDeps.GroupSelectionState.SelectedGroupId = Guid.Empty;
-                stateDeps.GroupSelectionState.SelectedGroupName = null;
-                stateDeps.GroupSelectionState.IsGroupPrivate = false;
-
-                stateDeps.LoginState.LastResponse = null;
-                stateDeps.RegistrationState.LastResponse = null;
-                ShowLogin();
-                return;
-            }
-            catch (HttpRequestException httpEx)
-                when (httpEx.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden
-                          or HttpStatusCode.BadRequest)
-            {
-                keychain.TryClearSessionToken(out _);
-                stateDeps.UserState.SessionToken = null;
-                stateDeps.UserState.Username = null;
-                stateDeps.UserState.UserId = null;
-
-                stateDeps.GroupSelectionState.SelectedGroupId = Guid.Empty;
-                stateDeps.GroupSelectionState.SelectedGroupName = null;
-                stateDeps.GroupSelectionState.IsGroupPrivate = false;
-
-                stateDeps.LoginState.LastResponse = null;
-                stateDeps.RegistrationState.LastResponse = null;
-                ShowLogin();
-                return;
-            }
-            catch
-            {
-                return;
-            }
+            ClearUserState();
+            ResetAndShowLogin();
+            return;
         }
 
-        ShowLogin();
+        if (!await connectionMonitor.IsBackendAliveAsync())
+        {
+            ResetAndShowLogin();
+            return;
+        }
+
+        try
+        {
+            var userGuid = await GetUserGuidAsync(sessionToken);
+            if (userGuid == Guid.Empty || !TryInitializeUser(userGuid))
+            {
+                ClearUserState();
+                ResetAndShowLogin();
+                return;
+            }
+
+            ShowDashboard();
+        }
+        catch (HttpRequestException ex) when (IsAuthError(ex))
+        {
+            ClearUserState();
+            ResetAndShowLogin();
+        }
+        catch
+        {
+            // Swallow exception: do nothing
+        }
     }
 
     public void ShowLogin()
@@ -131,6 +102,62 @@ public class ShellCoordinator(
     {
         NavigateTo<PinCodeViewModel>();
     }
+
+    private bool TryInitializeSession(out Guid sessionToken)
+    {
+        sessionToken = Guid.Empty;
+
+        if (!keychain.TryGetSessionToken(out var token, out _)
+            || !Guid.TryParse(token, out sessionToken))
+        {
+            return false;
+        }
+
+        stateDeps.UserState.SessionToken = token;
+        return true;
+    }
+
+    private async Task<Guid> GetUserGuidAsync(Guid sessionToken)
+    {
+        var dto = new UserGuidFromTokenRequestDto { SessionToken = sessionToken };
+        var result = await userDetailsService.GetUserGuidFromTokenAsync(dto);
+        return result?.Guid ?? Guid.Empty;
+    }
+
+    private bool TryInitializeUser(Guid userGuid)
+    {
+        stateDeps.UserState.UserId = userGuid;
+
+        if (!keychain.TryGetPrivateKey(out var privateKey, out _))
+            return false;
+
+        stateDeps.UserState.PrivateKey = privateKey;
+        return true;
+    }
+
+    private void ClearUserState()
+    {
+        keychain.TryClearSessionToken(out _);
+        keychain.TryClearPrivateKey(out _);
+
+        stateDeps.UserState.SessionToken = null;
+        stateDeps.UserState.Login = null;
+        stateDeps.UserState.PrivateKey = null;
+        stateDeps.UserState.Username = null;
+        stateDeps.UserState.UserId = null;
+
+        stateDeps.GroupSelectionState.SelectedGroupId = Guid.Empty;
+        stateDeps.GroupSelectionState.SelectedGroupName = null;
+        stateDeps.GroupSelectionState.IsGroupPrivate = false;
+
+        stateDeps.LoginState.LastResponse = null;
+        stateDeps.RegistrationState.LastResponse = null;
+    }
+
+    private static bool IsAuthError(HttpRequestException ex) =>
+        ex.StatusCode is HttpStatusCode.Unauthorized
+            or HttpStatusCode.Forbidden
+            or HttpStatusCode.BadRequest;
 
     private void NavigateTo<TViewModel>() where TViewModel : RoutableViewModelBase
     {
