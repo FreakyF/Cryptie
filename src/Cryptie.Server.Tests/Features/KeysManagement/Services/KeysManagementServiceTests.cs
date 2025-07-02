@@ -39,7 +39,7 @@ public class KeysManagementServiceTests
         var userId = Guid.NewGuid();
         var groupId1 = Guid.NewGuid();
         var groupId2 = Guid.NewGuid();
-        var sessionToken = "token";
+        var sessionToken = Guid.NewGuid();
         var user = new User
         {
             Id = userId,
@@ -63,8 +63,9 @@ public class KeysManagementServiceTests
     [Fact]
     public void getGroupsKey_ReturnsUnauthorized_WhenUserNotFound()
     {
-        var req = new GetGroupsKeyRequestDto { SessionToken = "invalid" };
-        _dbMock.Setup(x => x.GetUserFromToken("invalid")).Returns((User)null);
+        var sessionToken = Guid.NewGuid();
+        var req = new GetGroupsKeyRequestDto { SessionToken = sessionToken };
+        _dbMock.Setup(x => x.GetUserFromToken(sessionToken)).Returns((User)null!);
 
         var result = _service.getGroupsKey(req);
         Assert.IsType<UnauthorizedResult>(result);
@@ -74,7 +75,7 @@ public class KeysManagementServiceTests
     public void getGroupsKey_ReturnsEmpty_WhenUserHasNoGroups()
     {
         var userId = Guid.NewGuid();
-        var sessionToken = "token";
+        var sessionToken = Guid.NewGuid();
         var user = new User { Id = userId, Groups = new Group[0] };
         var req = new GetGroupsKeyRequestDto { SessionToken = sessionToken };
         _dbMock.Setup(x => x.GetUserFromToken(sessionToken)).Returns(user);
