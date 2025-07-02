@@ -22,7 +22,7 @@ public class User
     [Required, Column("password_id")] public Guid PasswordId { get; set; }
 
     [Required, Column("totp_id")] public Guid TotpId { get; set; }
-    [Required, Column("control_id")] public string ControlId { get; set; }
+    [Required, Column("control_login")] public string ControlValue { get; set; }
 
     [ForeignKey(nameof(PasswordId))] public Password Password { get; set; } = default!;
 
