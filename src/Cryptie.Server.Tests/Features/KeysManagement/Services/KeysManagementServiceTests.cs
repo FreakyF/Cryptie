@@ -34,27 +34,56 @@ public class KeysManagementServiceTests
     }
 
     [Fact]
-    public void saveUserKeys_Unauthorized_WhenUserIsNull()
+    public void getGroupsKey_ReturnsGroupKeys()
     {
-        var req = new SaveUserKeysRequestDto { userToken = Guid.NewGuid(), privateKey = "priv", publicKey = "pub" };
-        _dbMock.Setup(x => x.GetUserFromToken(req.userToken)).Returns((User?)null);
+        var userId = Guid.NewGuid();
+        var groupId1 = Guid.NewGuid();
+        var groupId2 = Guid.NewGuid();
+        var sessionToken = Guid.NewGuid();
+        var user = new User
+        {
+            Id = userId,
+            Groups = new[] { new Group { Id = groupId1 }, new Group { Id = groupId2 } }
+        };
+        var req = new GetGroupsKeyRequestDto { SessionToken = sessionToken };
+        _dbMock.Setup(x => x.GetUserFromToken(sessionToken)).Returns(user);
+        _dbMock.Setup(x => x.FindGroupById(groupId1)).Returns(new Group { Id = groupId1 });
+        _dbMock.Setup(x => x.FindGroupById(groupId2)).Returns(new Group { Id = groupId2 });
+        _dbMock.Setup(x => x.getGroupEncryptionKey(userId, groupId1)).Returns("key1");
+        _dbMock.Setup(x => x.getGroupEncryptionKey(userId, groupId2)).Returns("key2");
 
-        var result = _service.saveUserKeys(req);
-        Assert.IsType<UnauthorizedResult>(result);
-        _dbMock.Verify(x => x.GetUserFromToken(req.userToken), Times.Once);
-        _dbMock.Verify(x => x.SaveUserKeys(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        var result = _service.getGroupsKey(req) as OkObjectResult;
+        Assert.NotNull(result);
+        var response = Assert.IsType<GetGroupsKeyResponseDto>(result.Value);
+        Assert.Equal(2, response.Keys.Count);
+        Assert.Equal("key1", response.Keys[groupId1]);
+        Assert.Equal("key2", response.Keys[groupId2]);
     }
 
     [Fact]
-    public void saveUserKeys_SavesKeysAndReturnsOk()
+    public void getGroupsKey_ReturnsUnauthorized_WhenUserNotFound()
     {
-        var req = new SaveUserKeysRequestDto { userToken = Guid.NewGuid(), privateKey = "priv", publicKey = "pub" };
-        var user = new User { Id = Guid.NewGuid() };
-        _dbMock.Setup(x => x.GetUserFromToken(req.userToken)).Returns(user);
+        var sessionToken = Guid.NewGuid();
+        var req = new GetGroupsKeyRequestDto { SessionToken = sessionToken };
+        _dbMock.Setup(x => x.GetUserFromToken(sessionToken)).Returns((User)null!);
 
-        var result = _service.saveUserKeys(req);
-        Assert.IsType<OkResult>(result);
-        _dbMock.Verify(x => x.GetUserFromToken(req.userToken), Times.Once);
-        _dbMock.Verify(x => x.SaveUserKeys(user, req.privateKey, req.publicKey), Times.Once);
+        var result = _service.getGroupsKey(req);
+        Assert.IsType<UnauthorizedResult>(result);
     }
+
+    [Fact]
+    public void getGroupsKey_ReturnsEmpty_WhenUserHasNoGroups()
+    {
+        var userId = Guid.NewGuid();
+        var sessionToken = Guid.NewGuid();
+        var user = new User { Id = userId, Groups = new Group[0] };
+        var req = new GetGroupsKeyRequestDto { SessionToken = sessionToken };
+        _dbMock.Setup(x => x.GetUserFromToken(sessionToken)).Returns(user);
+
+        var result = _service.getGroupsKey(req) as OkObjectResult;
+        Assert.NotNull(result);
+        var response = Assert.IsType<GetGroupsKeyResponseDto>(result.Value);
+        Assert.Empty(response.Keys);
+    }
+
 }

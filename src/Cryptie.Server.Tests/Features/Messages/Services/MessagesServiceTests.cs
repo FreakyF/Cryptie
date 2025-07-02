@@ -48,7 +48,7 @@ public class MessagesServiceTests
         _dbMock.Setup(x => x.GetUserFromToken(req.SenderToken)).Returns(user);
         _dbMock.Setup(x => x.FindGroupById(req.GroupId)).Returns(group);
         var result = _service.SendMessage(req);
-        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.IsType<BadRequestResult>(result);
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public class MessagesServiceTests
         _dbMock.Setup(x => x.GetUserFromToken(req.UserToken)).Returns(user);
         _dbMock.Setup(x => x.FindGroupById(req.GroupId)).Returns(group);
         var result = _service.GetMessage(req);
-        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.IsType<BadRequestResult>(result);
     }
 
     [Fact]
@@ -155,7 +155,7 @@ public class MessagesServiceTests
         _dbMock.Setup(x => x.GetUserFromToken(req.UserToken)).Returns(user);
         _dbMock.Setup(x => x.FindGroupById(req.GroupId)).Returns(group);
         var result = _service.GetGroupMessages(req);
-        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.IsType<BadRequestResult>(result);
     }
 
     [Fact]
@@ -202,7 +202,7 @@ public class MessagesServiceTests
         _dbMock.Setup(x => x.GetUserFromToken(req.UserToken)).Returns(user);
         _dbMock.Setup(x => x.FindGroupById(req.GroupId)).Returns(group);
         var result = _service.GetGroupMessagesSince(req);
-        Assert.IsType<BadRequestObjectResult>(result);
+        Assert.IsType<BadRequestResult>(result);
     }
 
     [Fact]

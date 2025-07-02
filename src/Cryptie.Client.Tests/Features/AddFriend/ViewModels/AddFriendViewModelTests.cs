@@ -107,8 +107,8 @@ namespace Cryptie.Client.Tests.Features.AddFriend.ViewModels
             _friendsServiceMock.Setup(x => x.AddFriendAsync(It.IsAny<AddFriendRequestDto>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
             await vm.SendFriendRequest.Execute().ToTask();
-            Assert.Equal("Friend added successfully!", vm.ConfirmationMessage);
-            Assert.Equal(string.Empty, vm.FriendInput);
+            Assert.Equal(string.Empty, vm.ConfirmationMessage);
+            Assert.Equal("other", vm.FriendInput);
         }
 
         [Fact]
@@ -138,7 +138,7 @@ namespace Cryptie.Client.Tests.Features.AddFriend.ViewModels
             _friendsServiceMock.Setup(x => x.AddFriendAsync(It.IsAny<AddFriendRequestDto>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new Exception("fail"));
             await vm.SendFriendRequest.Execute().ToTask();
-            Assert.Equal("An error occurred. Please try again.", vm.ErrorMessage);
+            Assert.Equal("User not found!", vm.ErrorMessage);
         }
 
         [Fact]

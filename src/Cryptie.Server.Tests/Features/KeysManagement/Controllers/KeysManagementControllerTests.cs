@@ -19,7 +19,7 @@ public class KeysManagementControllerTests
     }
 
     [Fact]
-    public void getUserKey_ReturnsServiceResult()
+    public void getUserKey_CallsServiceAndReturnsResult()
     {
         // Arrange
         var request = new GetUserKeyRequestDto();
@@ -35,19 +35,19 @@ public class KeysManagementControllerTests
     }
 
     [Fact]
-    public void saveUserKeys_ReturnsServiceResult()
+    public void getGroupsKey_CallsServiceAndReturnsResult()
     {
         // Arrange
-        var request = new SaveUserKeysRequestDto();
+        var request = new GetGroupsKeyRequestDto();
         var expectedResult = new OkResult();
-        _serviceMock.Setup(s => s.saveUserKeys(request)).Returns(expectedResult);
-
+        _serviceMock.Setup(s => s.getGroupsKey(request)).Returns(expectedResult);
+        
         // Act
-        var result = _controller.saveUserKeys(request);
+        var result = _controller.getGroupKey(request);
 
         // Assert
         Assert.Equal(expectedResult, result);
-        _serviceMock.Verify(s => s.saveUserKeys(request), Times.Once);
+        _serviceMock.Verify(s => s.getGroupsKey(request), Times.Once);
     }
 }
 
