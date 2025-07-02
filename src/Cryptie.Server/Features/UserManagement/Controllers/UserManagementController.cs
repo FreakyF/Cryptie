@@ -50,4 +50,10 @@ public class UserManagementController(IUserManagementService userManagementServi
     {
         return userManagementService.UserDisplayName(userDisplayNameRequest);
     }
+    
+    [HttpGet("privateKey", Name = "UserPrivateKey")]
+    public IActionResult UserPrivateKey([FromBody] UserPrivateKeyRequestDto userPrivateKeyRequest)
+    {
+        return userManagementService.UserPrivateKey(userPrivateKeyRequest);
+    }
 }
