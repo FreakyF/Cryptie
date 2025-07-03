@@ -12,33 +12,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Java – potrzebne do działania Sonara
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'zulu'
 
-      # 2) Checkout kodu
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # 3) .NET SDK
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
 
-      # 4) Cache pakietów SonarCloud
+      - name: Install libsecret
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsecret-1-dev libsecret-1-0
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
 
-      # 5) Cache SonarCloud scanner
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v4
@@ -47,14 +47,12 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner-${{ hashFiles('**/sonar-project.properties') }}
           restore-keys: ${{ runner.os }}-sonar-scanner-
 
-      # 6) Instalacja SonarCloud scanner (jeśli nie ma w cache)
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: |
           mkdir -p ./.sonar/scanner
           dotnet tool install dotnet-sonarscanner --version 5.* --tool-path ./.sonar/scanner
 
-      # 7) Begin SonarCloud analysis (bez komentarzy wewnątrz run)
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -67,7 +65,6 @@ jobs:
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
             /d:sonar.verbose=true
 
-      # 8+9) Build + test z XPlat Code Coverage w jednym kroku
       - name: Build and test with coverage
         continue-on-error: true
         run: |
@@ -78,7 +75,6 @@ jobs:
             --results-directory TestResults \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
-      # 10) End SonarCloud analysis – zawsze się odpali
       - name: End SonarCloud analysis
         if: always()
         env:
