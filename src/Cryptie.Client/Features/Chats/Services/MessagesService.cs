@@ -95,7 +95,6 @@ public class MessagesService : IMessagesService
             GroupId = groupId
         };
 
-        // Spróbuj najpierw GET /messages/get-all z body
         try
         {
             var req = new HttpRequestMessage(HttpMethod.Get, "/messages/get-all")
@@ -115,10 +114,9 @@ public class MessagesService : IMessagesService
         }
         catch (HttpRequestException)
         {
-            /* serwer nie obsługuje GET z body → fallback */
+            // Swallow
         }
 
-        // Fallback: POST /messages/get-all-since z Since = MinValue
         var sinceDto = new GetGroupMessagesSinceRequestDto
         {
             UserToken = userToken,
