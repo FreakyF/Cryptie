@@ -224,7 +224,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
                 (gid, _) => gid)
             .Where(gid => gid != Guid.Empty)
             .StartWith(_deps.GroupState.SelectedGroupId)
-            .SelectMany(gid => Observable.FromAsync(async () =>
+            .SelectMany(gid => Observable.FromAsync(async () => 
             {
                 try
                 {
