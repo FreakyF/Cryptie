@@ -28,13 +28,6 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      # only install libsecret on Linux
-      - name: Install libsecret
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libsecret-1-dev libsecret-1-0
-
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
