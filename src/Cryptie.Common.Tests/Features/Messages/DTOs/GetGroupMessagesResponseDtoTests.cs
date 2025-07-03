@@ -81,7 +81,7 @@ public class GetGroupMessagesResponseDtoTests
         // Act
         var response = new GetGroupMessagesResponseDto();
         // Assert
-        Assert.Null(response.Messages);
+        Assert.NotNull(response.Messages);
     }
 }
 
