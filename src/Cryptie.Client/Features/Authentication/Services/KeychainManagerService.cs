@@ -19,6 +19,12 @@ public class KeychainManagerService : IKeychainManagerService
     private const string ChunkAccountPrefix = "CurrentUser_Chunk_";
     private const int ChunkSize = 1024;
 
+    /// <summary>
+    ///     Stores the session token in the operating system keychain.
+    /// </summary>
+    /// <param name="token">Token to persist.</param>
+    /// <param name="errorMessage">Outputs an error message when the operation fails.</param>
+    /// <returns><c>true</c> when the token was saved successfully.</returns>
     public bool TrySaveSessionToken(string token, [NotNullWhen(false)] out string? errorMessage)
     {
         errorMessage = null;
@@ -40,6 +46,9 @@ public class KeychainManagerService : IKeychainManagerService
         }
     }
 
+    /// <summary>
+    ///     Attempts to retrieve the session token from the keychain.
+    /// </summary>
     public bool TryGetSessionToken([NotNullWhen(true)] out string? token, [NotNullWhen(false)] out string? errorMessage)
     {
         token = null;
@@ -63,6 +72,9 @@ public class KeychainManagerService : IKeychainManagerService
         }
     }
 
+    /// <summary>
+    ///     Removes the session token from the keychain.
+    /// </summary>
     public void TryClearSessionToken([NotNullWhen(false)] out string? errorMessage)
     {
         errorMessage = null;
@@ -77,6 +89,9 @@ public class KeychainManagerService : IKeychainManagerService
         }
     }
 
+    /// <summary>
+    ///     Saves the user's private key in the keychain, chunking it if necessary.
+    /// </summary>
     public bool TrySavePrivateKey(string privateKey, [NotNullWhen(false)] out string? errorMessage)
     {
         errorMessage = null;
@@ -129,6 +144,9 @@ public class KeychainManagerService : IKeychainManagerService
         return true;
     }
 
+    /// <summary>
+    ///     Retrieves the private key from the keychain.
+    /// </summary>
     public bool TryGetPrivateKey([NotNullWhen(true)] out string? privateKey,
         [NotNullWhen(false)] out string? errorMessage)
     {
@@ -184,6 +202,9 @@ public class KeychainManagerService : IKeychainManagerService
         return true;
     }
 
+    /// <summary>
+    ///     Removes the stored private key from the keychain.
+    /// </summary>
     public void TryClearPrivateKey([NotNullWhen(false)] out string? errorMessage)
     {
         errorMessage = null;
