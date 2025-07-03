@@ -30,7 +30,7 @@ public class ShellCoordinator(
         if (!TryInitializeSession(out var sessionToken))
         {
             ClearUserState();
-            ResetAndShowLogin();
+            ResetAndShowLogin(); 
             return;
         }
 
