@@ -3,10 +3,8 @@ using System.Threading.RateLimiting;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Cryptie.Common.Features.Authentication.Validators;
 using Cryptie.Server.Features.Authentication.Services;
-using Cryptie.Server.Features.GroupManagement;
 using Cryptie.Server.Features.GroupManagement.Services;
 using Cryptie.Server.Features.KeysManagement.Services;
-using Cryptie.Server.Features.Messages;
 using Cryptie.Server.Features.Messages.Hubs;
 using Cryptie.Server.Features.Messages.Services;
 using Cryptie.Server.Features.ServerStatus.Services;
@@ -18,8 +16,13 @@ using Scalar.AspNetCore;
 
 namespace Cryptie.Server;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class Program
 {
+    protected Program()
+    {
+    }
+
     public static async Task Main(string[] args)
     {
         var dbContainer = new DockerStarter();
