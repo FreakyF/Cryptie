@@ -7,6 +7,13 @@ public class DelayService : IDelayService
 {
     private const int TargetMilliseconds = 100;
 
+    /// <summary>
+    /// Executes the provided action ensuring that the total execution time is at least
+    /// <see cref="TargetMilliseconds"/> milliseconds. This is used to mitigate timing
+    /// attacks on authentication endpoints.
+    /// </summary>
+    /// <param name="func">Action that produces the result.</param>
+    /// <returns>The result of <paramref name="func"/> after the enforced delay.</returns>
     public async Task<IActionResult> FakeDelay(Func<IActionResult> func)
     {
         var stopwatch = Stopwatch.StartNew();
