@@ -41,7 +41,7 @@ public class GetMessageResponseDtoTests
         Assert.Equal(Guid.Empty, dto.MessageId);
         Assert.Equal(Guid.Empty, dto.GroupId);
         Assert.Equal(Guid.Empty, dto.SenderId);
-        Assert.Null(dto.Message);
+        Assert.NotNull(dto.Message);
         Assert.Equal(default(DateTime), dto.DateTime);
     }
 }

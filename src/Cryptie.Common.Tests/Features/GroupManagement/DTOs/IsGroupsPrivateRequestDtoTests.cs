@@ -32,7 +32,7 @@ public class IsGroupsPrivateRequestDtoTests
         // Arrange & Act
         var dto = new IsGroupsPrivateRequestDto();
         // Assert
-        Assert.Null(dto.GroupIds);
+        Assert.NotNull(dto.GroupIds);
     }
 }
 

@@ -9,7 +9,7 @@ on:
 jobs:
   analyze:
     name: Analyze with SonarCloud
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Set up JDK 17
@@ -28,11 +28,6 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Install libsecret
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libsecret-1-dev libsecret-1-0
-
       - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
@@ -50,29 +45,30 @@ jobs:
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: |
-          mkdir -p ./.sonar/scanner
+          mkdir .sonar\scanner
           dotnet tool install dotnet-sonarscanner --version 5.* --tool-path ./.sonar/scanner
 
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin \
-            /k:"FreakyF_Cryptie" \
-            /o:"freakyf" \
-            /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.login="${SONAR_TOKEN}" \
-            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
+          # Use `&` to invoke and backticks for line continuation
+          & .\.sonar\scanner\dotnet-sonarscanner begin `
+            /k:"FreakyF_Cryptie" `
+            /o:"freakyf" `
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.login="$env:SONAR_TOKEN" `
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" `
             /d:sonar.verbose=true
 
       - name: Build and test with coverage
         continue-on-error: true
         run: |
-          dotnet build src/Cryptie.sln --no-incremental
-          dotnet test src/Cryptie.sln \
-            -r linux-x64 \
-            --collect:"XPlat Code Coverage" \
-            --results-directory TestResults \
+          dotnet build src\Cryptie.sln --no-incremental
+          dotnet test src\Cryptie.sln `
+            -r win-x64 `
+            --collect:"XPlat Code Coverage" `
+            --results-directory TestResults `
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
       - name: End SonarCloud analysis
@@ -80,5 +76,5 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner end \
-            /d:sonar.login="${SONAR_TOKEN}"
+          & .\.sonar\scanner\dotnet-sonarscanner end `
+            /d:sonar.login="$env:SONAR_TOKEN"
