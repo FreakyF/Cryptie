@@ -5,6 +5,10 @@ namespace Cryptie.Common.Features.UserManagement.Validators;
 
 public class AddFriendRequestValidator : AbstractValidator<AddFriendRequestDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AddFriendRequestValidator"/> class
+    /// and sets up validation rules for adding a friend.
+    /// </summary>
     public AddFriendRequestValidator()
     {
         RuleFor(x => x.Friend)

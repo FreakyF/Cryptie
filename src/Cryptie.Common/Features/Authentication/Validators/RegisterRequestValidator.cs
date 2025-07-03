@@ -5,6 +5,10 @@ namespace Cryptie.Common.Features.Authentication.Validators;
 
 public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RegisterRequestValidator"/> class
+    /// and specifies validation rules for new account registration.
+    /// </summary>
     public RegisterRequestValidator()
     {
         RuleFor(x => x.Login)
