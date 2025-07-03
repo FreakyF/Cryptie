@@ -10,7 +10,7 @@ using Cryptie.Client.Features.Settings.Models;
 
 namespace Cryptie.Client.Features.Settings.Services;
 
-internal class ThemeService : IThemeService
+public class ThemeService : IThemeService
 {
     private const string FileName = "settings.json";
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
