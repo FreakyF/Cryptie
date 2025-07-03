@@ -5,6 +5,10 @@ namespace Cryptie.Server;
 
 public class DockerStarter
 {
+    /// <summary>
+    ///     Starts a local PostgreSQL container if it is not running.
+    /// </summary>
+    /// <returns>A task representing the asynchronous startup process.</returns>
     public async Task StartPostgresAsync()
     {
         var client = new DockerClientConfiguration().CreateClient();

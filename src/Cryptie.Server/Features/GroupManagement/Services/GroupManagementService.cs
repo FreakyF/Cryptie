@@ -9,6 +9,11 @@ public class GroupManagementService(
     IDatabaseService databaseService
 ) : ControllerBase, IGroupManagementService
 {
+    /// <summary>
+    ///     Determines privacy status for a collection of groups.
+    /// </summary>
+    /// <param name="isGroupsPrivateRequest">List of group identifiers.</param>
+    /// <returns>Dictionary with group ids and their privacy status.</returns>
     public IActionResult IsGroupsPrivate(IsGroupsPrivateRequestDto isGroupsPrivateRequest)
     {
         var result = new Dictionary<Guid, bool>();
@@ -22,6 +27,12 @@ public class GroupManagementService(
         return Ok(new IsGroupsPrivateResponseDto { GroupStatuses = result });
     }
 
+    /// <summary>
+    ///     Returns display names for all groups the user is a member of.
+    ///     Private groups are represented by the other member's display name.
+    /// </summary>
+    /// <param name="getGroupsNamesRequest">Request containing user session token.</param>
+    /// <returns>Mapping of group ids to their display names.</returns>
     public IActionResult GetGroupsNames([FromBody] GetGroupsNamesRequestDto getGroupsNamesRequest)
     {
         var user = databaseService.GetUserFromToken(getGroupsNamesRequest.SessionToken);

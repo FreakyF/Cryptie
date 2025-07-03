@@ -6,6 +6,11 @@ namespace Cryptie.Server.Features.KeysManagement.Services;
 
 public class KeysManagementService(IDatabaseService databaseService) : ControllerBase, IKeysManagementService
 {
+    /// <summary>
+    ///     Retrieves public key of specified user.
+    /// </summary>
+    /// <param name="getUserKeyRequest">Request containing the user identifier.</param>
+    /// <returns>DTO with the public key string.</returns>
     public IActionResult getUserKey([FromBody] GetUserKeyRequestDto getUserKeyRequest)
     {
         var key = databaseService.GetUserPublicKey(getUserKeyRequest.UserId);
@@ -15,6 +20,11 @@ public class KeysManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    ///     Retrieves AES keys for all groups the current user belongs to.
+    /// </summary>
+    /// <param name="getGroupsKeyRequest">Request containing the session token.</param>
+    /// <returns>Dictionary mapping group ids to their AES keys.</returns>
     public IActionResult getGroupsKey([FromBody] GetGroupsKeyRequestDto getGroupsKeyRequest)
     {
         var user = databaseService.GetUserFromToken(getGroupsKeyRequest.SessionToken);

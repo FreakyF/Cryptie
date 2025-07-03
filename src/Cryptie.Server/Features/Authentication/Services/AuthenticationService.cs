@@ -15,6 +15,15 @@ public class AuthenticationService(
     IDatabaseService databaseService)
     : ControllerBase, IAuthenticationService
 {
+    /// <summary>
+    ///     Handles the first phase of login by verifying provided credentials
+    ///     and issuing a temporary TOTP token when successful.
+    /// </summary>
+    /// <param name="loginRequest">Login credentials.</param>
+    /// <returns>
+    ///     <see cref="LoginResponseDto"/> containing a TOTP token when
+    ///     credentials are valid; otherwise an error result.
+    /// </returns>
     public IActionResult LoginHandler(LoginRequestDto loginRequest)
     {
         var user = appDbContext.Users
@@ -40,6 +49,12 @@ public class AuthenticationService(
         return Ok(new LoginResponseDto { TotpToken = totpToken });
     }
 
+    /// <summary>
+    ///     Validates the provided TOTP code and issues a session token when
+    ///     the code is correct.
+    /// </summary>
+    /// <param name="totpRequest">Request containing TOTP code and token.</param>
+    /// <returns>Session token on success or an error result.</returns>
     public IActionResult TotpHandler(TotpRequestDto totpRequest)
     {
         var now = DateTime.UtcNow;
@@ -72,6 +87,12 @@ public class AuthenticationService(
         });
     }
 
+    /// <summary>
+    ///     Registers a new user and returns the initial TOTP configuration
+    ///     along with a TOTP token for verification.
+    /// </summary>
+    /// <param name="registerRequest">Information required to create the user.</param>
+    /// <returns>Registration details including the TOTP secret.</returns>
     public IActionResult RegisterHandler(RegisterRequestDto registerRequest)
     {
         if (databaseService.FindUserByLogin(registerRequest.Login) != null) return BadRequest();

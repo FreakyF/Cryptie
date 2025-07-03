@@ -6,6 +6,11 @@ namespace Cryptie.Server.Features.UserManagement.Services;
 
 public class UserManagementService(IDatabaseService databaseService) : ControllerBase, IUserManagementService
 {
+    /// <summary>
+    ///     Returns user GUID associated with a session token.
+    /// </summary>
+    /// <param name="userGuidFromTokenRequest">Request containing session token.</param>
+    /// <returns>User identifier on success.</returns>
     public IActionResult UserGuidFromToken([FromBody] UserGuidFromTokenRequestDto userGuidFromTokenRequest)
     {
         var user = databaseService.GetUserFromToken(userGuidFromTokenRequest.SessionToken);
@@ -17,6 +22,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    ///     Adds a user to the current user's friend list and creates a private group for them.
+    /// </summary>
+    /// <param name="addFriendRequest">Request containing friend login and encryption keys.</param>
+    /// <returns><see cref="OkResult"/> when the friend was added.</returns>
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
     {
         var friend = databaseService.FindUserByLogin(addFriendRequest.Friend);
@@ -44,6 +54,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         return Ok();
     }
 
+    /// <summary>
+    ///     Retrieves the display name of a user by their GUID.
+    /// </summary>
+    /// <param name="nameFromGuidRequest">Request with the user's id.</param>
+    /// <returns>Display name of the user.</returns>
     public IActionResult NameFromGuid([FromBody] NameFromGuidRequestDto nameFromGuidRequest)
     {
         var user = databaseService.FindUserById(nameFromGuidRequest.Id);
@@ -55,6 +70,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    ///     Returns identifiers of groups the user belongs to.
+    /// </summary>
+    /// <param name="userGroupsRequest">Request containing session token.</param>
+    /// <returns>List of group identifiers.</returns>
     public IActionResult UserGroups([FromBody] UserGroupsRequestDto userGroupsRequest)
     {
         var user = databaseService.GetUserFromToken(userGroupsRequest.SessionToken);
@@ -68,6 +88,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    ///     Changes the display name of the authenticated user.
+    /// </summary>
+    /// <param name="userDisplayNameRequest">Request containing token and new name.</param>
+    /// <returns><see cref="OkResult"/> when the change was applied.</returns>
     public IActionResult UserDisplayName([FromBody] UserDisplayNameRequestDto userDisplayNameRequest)
     {
         var user = databaseService.GetUserFromToken(userDisplayNameRequest.Token);
@@ -78,6 +103,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         return Ok();
     }
 
+    /// <summary>
+    ///     Returns the user's private key used for end-to-end encryption.
+    /// </summary>
+    /// <param name="userPrivateKeyRequest">Request containing session token.</param>
+    /// <returns>Private key and associated control value.</returns>
     public IActionResult UserPrivateKey([FromBody] UserPrivateKeyRequestDto userPrivateKeyRequest)
     {
         var user = databaseService.GetUserFromToken(userPrivateKeyRequest.SessionToken);
@@ -90,6 +120,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    ///     Retrieves the unique identifier of a user from their login name.
+    /// </summary>
+    /// <param name="guidFromLoginRequest">Request containing user login.</param>
+    /// <returns>User identifier when found.</returns>
     public IActionResult GuidFromLogin([FromBody] GuidFromLoginRequestDto guidFromLoginRequest)
     {
         var user = databaseService.FindUserByLogin(guidFromLoginRequest.Login);
