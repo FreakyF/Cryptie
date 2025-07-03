@@ -1,6 +1,5 @@
 ﻿using System;
 using Cryptie.Common.Entities;
-using Xunit;
 
 namespace Cryptie.Common.Tests.Entities;
 
