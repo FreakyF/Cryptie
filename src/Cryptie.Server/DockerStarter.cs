@@ -5,6 +5,12 @@ namespace Cryptie.Server;
 
 public class DockerStarter
 {
+    /// <summary>
+    /// Ensures that a PostgreSQL container is running for the application.
+    /// If an existing container named <c>cryptie-db</c> is found it will be started
+    /// if necessary, otherwise a new one will be created and started.
+    /// </summary>
+    /// <returns>A task representing the asynchronous start operation.</returns>
     public async Task StartPostgresAsync()
     {
         var client = new DockerClientConfiguration().CreateClient();

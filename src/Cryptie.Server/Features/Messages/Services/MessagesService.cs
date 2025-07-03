@@ -7,6 +7,11 @@ namespace Cryptie.Server.Features.Messages.Services;
 public class MessagesService(IDatabaseService databaseService, IMessageHubService messageHubService)
     : ControllerBase, IMessagesService
 {
+    /// <summary>
+    /// Sends a message to a group on behalf of the authenticated user.
+    /// </summary>
+    /// <param name="sendMessageRequest">Request containing the session token, target group and message.</param>
+    /// <returns>Status of the send operation.</returns>
     public IActionResult SendMessage([FromBody] SendMessageRequestDto sendMessageRequest)
     {
         var user = databaseService.GetUserFromToken(sendMessageRequest.SenderToken);
@@ -24,6 +29,11 @@ public class MessagesService(IDatabaseService databaseService, IMessageHubServic
         return Ok();
     }
 
+    /// <summary>
+    /// Retrieves all messages from a specific group.
+    /// </summary>
+    /// <param name="request">Request containing the user token and group id.</param>
+    /// <returns>A list of messages in the group.</returns>
     public IActionResult GetGroupMessages([FromBody] GetGroupMessagesRequestDto request)
     {
         var user = databaseService.GetUserFromToken(request.UserToken);
@@ -49,6 +59,11 @@ public class MessagesService(IDatabaseService databaseService, IMessageHubServic
         return Ok(response);
     }
 
+    /// <summary>
+    /// Retrieves messages from a group posted after the specified timestamp.
+    /// </summary>
+    /// <param name="request">Request containing group id, token and timestamp.</param>
+    /// <returns>List of messages newer than the provided date.</returns>
     public IActionResult GetGroupMessagesSince([FromBody] GetGroupMessagesSinceRequestDto request)
     {
         var user = databaseService.GetUserFromToken(request.UserToken);

@@ -6,6 +6,11 @@ namespace Cryptie.Server.Features.UserManagement.Services;
 
 public class UserManagementService(IDatabaseService databaseService) : ControllerBase, IUserManagementService
 {
+    /// <summary>
+    /// Resolves a user identifier from a valid session token.
+    /// </summary>
+    /// <param name="userGuidFromTokenRequest">Request containing the token.</param>
+    /// <returns>User id when the token is valid.</returns>
     public IActionResult UserGuidFromToken([FromBody] UserGuidFromTokenRequestDto userGuidFromTokenRequest)
     {
         var user = databaseService.GetUserFromToken(userGuidFromTokenRequest.SessionToken);
@@ -17,6 +22,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    /// Creates a private group for two users and stores provided encryption keys.
+    /// </summary>
+    /// <param name="addFriendRequest">Information about the friend and keys.</param>
+    /// <returns>Result of the operation.</returns>
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
     {
         var friend = databaseService.FindUserByLogin(addFriendRequest.Friend);
@@ -44,6 +54,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         return Ok();
     }
 
+    /// <summary>
+    /// Returns the display name of a user identified by GUID.
+    /// </summary>
+    /// <param name="nameFromGuidRequest">Request containing the user id.</param>
+    /// <returns>User display name.</returns>
     public IActionResult NameFromGuid([FromBody] NameFromGuidRequestDto nameFromGuidRequest)
     {
         var user = databaseService.FindUserById(nameFromGuidRequest.Id);
@@ -55,6 +70,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    /// Returns identifiers of groups the user belongs to.
+    /// </summary>
+    /// <param name="userGroupsRequest">Request containing the session token.</param>
+    /// <returns>List of group ids.</returns>
     public IActionResult UserGroups([FromBody] UserGroupsRequestDto userGroupsRequest)
     {
         var user = databaseService.GetUserFromToken(userGroupsRequest.SessionToken);
@@ -68,6 +88,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    /// Changes the display name for the authenticated user.
+    /// </summary>
+    /// <param name="userDisplayNameRequest">Request containing token and new name.</param>
+    /// <returns>HTTP 200 on success.</returns>
     public IActionResult UserDisplayName([FromBody] UserDisplayNameRequestDto userDisplayNameRequest)
     {
         var user = databaseService.GetUserFromToken(userDisplayNameRequest.Token);
@@ -78,6 +103,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         return Ok();
     }
 
+    /// <summary>
+    /// Retrieves the private key and control value of a user.
+    /// </summary>
+    /// <param name="userPrivateKeyRequest">Request containing session token.</param>
+    /// <returns>The private key pair.</returns>
     public IActionResult UserPrivateKey([FromBody] UserPrivateKeyRequestDto userPrivateKeyRequest)
     {
         var user = databaseService.GetUserFromToken(userPrivateKeyRequest.SessionToken);
@@ -90,6 +120,11 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    /// Finds a user identifier by login.
+    /// </summary>
+    /// <param name="guidFromLoginRequest">Request containing the login.</param>
+    /// <returns>User id or 404.</returns>
     public IActionResult GuidFromLogin([FromBody] GuidFromLoginRequestDto guidFromLoginRequest)
     {
         var user = databaseService.FindUserByLogin(guidFromLoginRequest.Login);

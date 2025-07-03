@@ -6,6 +6,11 @@ namespace Cryptie.Server.Features.KeysManagement.Services;
 
 public class KeysManagementService(IDatabaseService databaseService) : ControllerBase, IKeysManagementService
 {
+    /// <summary>
+    /// Retrieves the public key of a specific user.
+    /// </summary>
+    /// <param name="getUserKeyRequest">Request containing the user identifier.</param>
+    /// <returns>The user's public key.</returns>
     public IActionResult getUserKey([FromBody] GetUserKeyRequestDto getUserKeyRequest)
     {
         var key = databaseService.GetUserPublicKey(getUserKeyRequest.UserId);
@@ -15,6 +20,11 @@ public class KeysManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
+    /// <summary>
+    /// Gets encryption keys for all groups the requesting user is part of.
+    /// </summary>
+    /// <param name="getGroupsKeyRequest">Request containing the session token.</param>
+    /// <returns>Dictionary of group ids with their encryption keys.</returns>
     public IActionResult getGroupsKey([FromBody] GetGroupsKeyRequestDto getGroupsKeyRequest)
     {
         var user = databaseService.GetUserFromToken(getGroupsKeyRequest.SessionToken);
