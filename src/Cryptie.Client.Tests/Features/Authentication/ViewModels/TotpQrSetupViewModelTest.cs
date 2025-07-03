@@ -1,8 +1,4 @@
-﻿using System;
-using System.Reactive;
-using System.Reactive.Threading.Tasks;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Reactive.Threading.Tasks;
 using Cryptie.Client.Core.Mapping;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Features.Authentication.Models;
@@ -15,16 +11,8 @@ using FluentValidation;
 using MapsterMapper;
 using Moq;
 using ReactiveUI;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.Authentication.ViewModels;
-
-// Pomocnicza klasa DTO do testów
-internal class RegistrationResponse
-{
-    public string TotpToken { get; set; }
-    public string Secret { get; set; }
-} //TODO
 
 public class TotpQrSetupViewModelTest : IDisposable
 {

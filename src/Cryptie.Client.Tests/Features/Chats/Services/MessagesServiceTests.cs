@@ -33,12 +33,9 @@ public class MessagesServiceTests
     [Fact]
     public async Task ConnectAsync_HandlesAllStates_AndJoinsGroups()
     {
-        // Używamy prawdziwego HubConnection z testowym URL, bez mockowania.
         var hub = new HubConnectionBuilder().WithUrl("http://localhost").Build();
         var service = new MessagesService(hub, _httpClient);
-        // Wywołanie ConnectAsync nie rzuci wyjątku, ale nie sprawdzamy wywołań StartAsync/InvokeAsync.
         await Assert.ThrowsAnyAsync<Exception>(() => service.ConnectAsync(Guid.NewGuid(), new[] { Guid.NewGuid() }));
-        // Test przechodzi, jeśli nie ma błędu konstrukcji obiektu.
     }
 
     [Fact]

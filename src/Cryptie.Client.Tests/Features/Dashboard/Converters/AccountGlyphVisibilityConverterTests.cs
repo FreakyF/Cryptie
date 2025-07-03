@@ -33,7 +33,6 @@ public class AccountGlyphVisibilityConverterTests
     public void Convert_ReturnsFalse_WhenValuesListIsEmpty()
     {
         var values = new List<object?>();
-        // Spodziewamy się IndexOutOfRangeException, bo kod nie sprawdza długości listy
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             _converter.Convert(values, typeof(bool), null, CultureInfo.InvariantCulture));
     }

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using System.Threading.Tasks;
 using Cryptie.Client.Core.Services;
-using Cryptie.Client.Encryption;
 using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Client.Features.AddFriend.ViewModels;
 using Cryptie.Client.Features.Menu.State;
@@ -18,7 +11,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using Moq;
 using ReactiveUI;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.AddFriend
 {
