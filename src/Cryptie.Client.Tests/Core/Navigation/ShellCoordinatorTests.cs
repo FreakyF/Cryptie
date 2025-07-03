@@ -42,7 +42,6 @@ namespace Cryptie.Client.Tests.Core.Navigation
                 _stateDeps
             );
 
-            // --- STUB OUT NAVIGATION SO IT NEVER BOUNCES ON IRoutableViewModel CHECK ---
             var stubNav =
                 ReactiveCommand.CreateFromObservable<IRoutableViewModel, IRoutableViewModel>(vm =>
                     Observable.Return(vm));
