@@ -2,5 +2,5 @@ namespace Cryptie.Common.Features.GroupManagement;
 
 public class IsGroupsPrivateResponseDto
 {
-    public Dictionary<Guid, bool> GroupStatuses { get; set; }
+    public Dictionary<Guid, bool> GroupStatuses { get; set; } = new Dictionary<Guid, bool>();
 }
