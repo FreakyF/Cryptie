@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Client", "src\Cryptie.Client\Cryptie.Client.csproj", "{77A047B4-E2B8-426C-841D-57937357C84C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Client", "Cryptie.Client\Cryptie.Client.csproj", "{77A047B4-E2B8-426C-841D-57937357C84C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Common.Tests", "src\Cryptie.Common.Tests\Cryptie.Common.Tests.csproj", "{09324F05-BE7E-48E6-9DA6-4078D334686A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Common.Tests", "Cryptie.Common.Tests\Cryptie.Common.Tests.csproj", "{09324F05-BE7E-48E6-9DA6-4078D334686A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Common", "src\Cryptie.Common\Cryptie.Common.csproj", "{5D809325-0456-41DE-B721-6FE6049D42C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Common", "Cryptie.Common\Cryptie.Common.csproj", "{5D809325-0456-41DE-B721-6FE6049D42C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Server.Tests", "src\Cryptie.Server.Tests\Cryptie.Server.Tests.csproj", "{BDDC9AF5-DDA2-4C8A-96E3-0EBADFBAB98E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Server.Tests", "Cryptie.Server.Tests\Cryptie.Server.Tests.csproj", "{BDDC9AF5-DDA2-4C8A-96E3-0EBADFBAB98E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Server", "src\Cryptie.Server\Cryptie.Server.csproj", "{A833AF86-7484-421C-8F71-32874377ED85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Server", "Cryptie.Server\Cryptie.Server.csproj", "{A833AF86-7484-421C-8F71-32874377ED85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Client.Tests", "src\Cryptie.Client.Tests\Cryptie.Client.Tests.csproj", "{6D328EC8-562B-4CB7-8733-98FEC2AF2F81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptie.Client.Tests", "Cryptie.Client.Tests\Cryptie.Client.Tests.csproj", "{6D328EC8-562B-4CB7-8733-98FEC2AF2F81}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CFA628FC-316F-4591-A0F7-C01743397CD2}"
 EndProject

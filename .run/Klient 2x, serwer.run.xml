@@ -1,8 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Klient 2x, serwer" type="CompoundRunConfigurationType">
-    <toRun name="Cryptie.Server: https" type="LaunchSettings" />
-    <toRun name="Cryptie.Client" type="DotNetProject" />
-    <toRun name="Cryptie.Client2" type="DotNetProject" />
-    <method v="2" />
-  </configuration>
-</component>
