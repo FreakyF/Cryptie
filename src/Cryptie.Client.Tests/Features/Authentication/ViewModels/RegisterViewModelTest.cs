@@ -161,7 +161,7 @@ namespace Cryptie.Client.Tests.Features.Authentication.ViewModels
             var viewModel = CreateViewModel();
             viewModel.Model.Username = "";
             // Wymuszenie walidacji
-            var canExecute = viewModel.RegisterCommand.CanExecute.FirstAsync().Wait();
+            viewModel.RegisterCommand.CanExecute.FirstAsync().Wait();
             // Sprawdzamy tylko, że komenda nie może się wykonać
             Assert.False(viewModel.RegisterCommand.CanExecute.FirstAsync().Wait());
         }

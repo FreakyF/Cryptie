@@ -157,11 +157,4 @@ public class AuthenticationServiceTests
         dbSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
         return dbSet.Object;
     }
-
-    
-    private class EntityEntryStub<T> where T : class
-    {
-        public T Entity { get; }
-        public EntityEntryStub(T entity) => Entity = entity;
-    }
 }

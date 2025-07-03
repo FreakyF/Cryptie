@@ -98,7 +98,7 @@ public class IKeychainManagerServiceTests : IClassFixture<KeychainManagerService
     public void TryGetPrivateKeyReturnsFalseWhenNotSet()
     {
         _service.TryClearPrivateKey(out var _);
-        var result = _service.TryGetPrivateKey(out var _, out var error);
+        var result = _service.TryGetPrivateKey(out var _, out _);
         Assert.False(result);
     }
 

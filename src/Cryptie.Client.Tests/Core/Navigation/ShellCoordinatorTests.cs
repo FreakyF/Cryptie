@@ -1,22 +1,16 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Cryptie.Client.Core.Dependencies;
 using Cryptie.Client.Core.Factories;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Authentication.Services;
 using Cryptie.Client.Features.Authentication.State;
-using Cryptie.Client.Features.Authentication.ViewModels;
-using Cryptie.Client.Features.Dashboard.ViewModels;
 using Cryptie.Client.Features.Groups.State;
 using Cryptie.Client.Features.Menu.State;
-using Cryptie.Client.Features.PinCode.ViewModels;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Moq;
-using ReactiveUI;
-using Xunit;
+
+namespace Cryptie.Client.Tests.Core.Navigation;
 
 public class ShellCoordinatorTests
 {
@@ -59,7 +53,7 @@ public class ShellCoordinatorTests
     {
         var guid = Guid.NewGuid();
         _userDetails.Setup(x => x.GetUserGuidFromTokenAsync(It.IsAny<UserGuidFromTokenRequestDto>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(new UserGuidFromTokenResponseDto { Guid = guid });
+            .ReturnsAsync(new UserGuidFromTokenResponseDto { Guid = guid });
         var result = await InvokeGetUserGuidAsync(guid);
         Assert.Equal(guid, result);
     }
@@ -68,7 +62,7 @@ public class ShellCoordinatorTests
     public async Task GetUserGuidAsync_ReturnsEmptyOnNull()
     {
         _userDetails.Setup(x => x.GetUserGuidFromTokenAsync(It.IsAny<UserGuidFromTokenRequestDto>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync((UserGuidFromTokenResponseDto)null!);
+            .ReturnsAsync((UserGuidFromTokenResponseDto)null!);
         var result = await InvokeGetUserGuidAsync(Guid.NewGuid());
         Assert.Equal(Guid.Empty, result);
     }
@@ -79,13 +73,6 @@ public class ShellCoordinatorTests
         _keychain.Setup(x => x.TryGetPrivateKey(out It.Ref<string>.IsAny, out It.Ref<string>.IsAny)).Returns(false);
         var result = InvokeTryInitializeUser(Guid.NewGuid());
         Assert.False(result);
-    }
-    
-
-    [Fact]
-    public void ClearUserState_ResetsAll()
-    {
-        InvokeClearUserState();
     }
 
     [Theory]
