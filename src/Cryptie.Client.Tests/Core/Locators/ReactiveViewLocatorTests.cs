@@ -1,7 +1,5 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using ReactiveUI;
-using Xunit;
 using Cryptie.Client.Core.Locators;
 
 namespace Cryptie.Client.Tests.Core.Locators
@@ -43,15 +41,13 @@ namespace Cryptie.Client.Tests.Core.Locators
         [Fact]
         public void FindViewType_NullFullName_ReturnsNull()
         {
-            // Use reflection to invoke private FindViewType
             var method = typeof(ReactiveViewLocator)
                 .GetMethod("FindViewType", BindingFlags.NonPublic | BindingFlags.Static);
             var fakeType = new FakeType();
             var result = method.Invoke(null, new object[] { fakeType });
             Assert.Null(result);
         }
-
-        // Dummy types for tests
+        
         public class DummyViewModel { }
         public class DummyView : IViewFor<DummyViewModel>
         {

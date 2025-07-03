@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using Cryptie.Client.Features.Authentication.Models;
-using Xunit;
+﻿using Cryptie.Client.Features.Authentication.Models;
 
 namespace Cryptie.Client.Tests.Features.Authentication.Models;
 

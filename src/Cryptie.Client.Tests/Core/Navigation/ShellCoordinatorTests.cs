@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Cryptie.Client.Core.Dependencies;
+﻿using Cryptie.Client.Core.Dependencies;
 using Cryptie.Client.Core.Factories;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Reactive;
-using System.Threading;
-using System.Threading.Tasks;
-using Cryptie.Client.Core.Navigation;
+﻿using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Features.Authentication.Dependencies;
 using Cryptie.Client.Features.Authentication.Models;
@@ -18,7 +14,6 @@ using Cryptie.Client.Core.Mapping;
 using System.Reactive.Threading.Tasks;
 using Moq;
 using ReactiveUI;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.Authentication.ViewModels;
 

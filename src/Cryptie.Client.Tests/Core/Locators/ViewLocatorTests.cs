@@ -1,15 +1,12 @@
-﻿using System;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Cryptie.Client.Core.Base;
 using Cryptie.Client.Core.Locators;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Core.Locators;
 
 public class ViewLocatorTests
 {
     private class DummyViewModel : ViewModelBase { }
-    // DummyView przeniesiony do produkcji jako publiczny typ
     private class NotAViewModel { }
 
     [Fact]

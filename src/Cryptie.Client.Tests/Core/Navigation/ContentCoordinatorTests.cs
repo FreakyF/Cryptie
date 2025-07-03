@@ -25,7 +25,6 @@ using Cryptie.Common.Features.UserManagement.DTOs;
 using Microsoft.Extensions.Options;
 using Moq;
 using ReactiveUI;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Core.Navigation;
 

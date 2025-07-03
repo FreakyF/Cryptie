@@ -1,14 +1,8 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Cryptie.Client.Features.AddFriend.Services;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Moq;
 using Moq.Protected;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.AddFriend.Services
 {

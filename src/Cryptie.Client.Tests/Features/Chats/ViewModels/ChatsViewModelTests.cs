@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
 using Cryptie.Client.Features.Chats.Dependencies;
 using Cryptie.Client.Features.Chats.ViewModels;
 using Cryptie.Client.Features.Groups.ViewModels;
@@ -17,7 +15,6 @@ using Cryptie.Client.Features.Menu.State;
 using Microsoft.Extensions.Options;
 using Moq;
 using ReactiveUI;
-using Xunit;
 using Cryptie.Client.Features.Groups.Dependencies;
 
 namespace Cryptie.Client.Tests.Features.Chats.ViewModels
@@ -46,11 +43,9 @@ namespace Cryptie.Client.Tests.Features.Chats.ViewModels
             _validatorMock = new();
             _userDetailsServiceMock = new();
             
-            // Konfiguracja mock'a dla IOptions<ClientOptions>
             var clientOptions = new ClientOptions { BaseUri = "https://test.com", FontUri = "avares://Cryptie/Assets/Fonts" };
             _optionsMock.Setup(x => x.Value).Returns(clientOptions);
             
-            // Konfiguracja mock'a dla ConnectionMonitor
             _connectionMonitorMock.Setup(x => x.ConnectionStatusChanged).Returns(Observable.Never<bool>());
             
             _addFriendDependencies = new AddFriendDependencies(

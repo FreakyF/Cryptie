@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reactive;
-using System.Reactive.Threading.Tasks;
-using System.Threading.Tasks;
+﻿using System.Reactive.Threading.Tasks;
 using Cryptie.Client.Core.Navigation;
 using Cryptie.Client.Core.Services;
 using Cryptie.Client.Encryption;
@@ -11,7 +8,6 @@ using Cryptie.Client.Features.PinCode.ViewModels;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Moq;
 using ReactiveUI;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.PinCode;
 

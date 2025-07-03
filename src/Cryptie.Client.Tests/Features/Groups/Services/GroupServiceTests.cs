@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Net.Http.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using Cryptie.Client.Features.Groups.Services;
 using Cryptie.Common.Features.GroupManagement;
 using Cryptie.Common.Features.GroupManagement.DTOs;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Moq;
 using Moq.Protected;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.Groups.Services;
 

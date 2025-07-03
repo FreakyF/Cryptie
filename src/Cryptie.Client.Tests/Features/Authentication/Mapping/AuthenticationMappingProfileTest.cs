@@ -2,7 +2,6 @@
 using Cryptie.Client.Features.Authentication.Models;
 using Cryptie.Common.Features.Authentication.DTOs;
 using Mapster;
-using MapsterMapper;
 
 namespace Cryptie.Client.Tests.Features.Authentication.Mapping;
 

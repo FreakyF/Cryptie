@@ -1,12 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Cryptie.Client.Core.Filters;
-using Moq;
-using Xunit;
+
 
 namespace Cryptie.Client.Tests.Core.Filters;
 
@@ -52,8 +47,7 @@ public class DigitOnlyInputFilterTests
         Assert.Equal(4, tb.SelectionStart);
         Assert.Equal(4, tb.SelectionEnd);
     }
-
-    // --- Helpers for reflection ---
+    
     private static void InvokePrivateStaticMethod(string methodName, params object[] parameters)
     {
         var method = typeof(DigitOnlyInputFilter).GetMethod(methodName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);

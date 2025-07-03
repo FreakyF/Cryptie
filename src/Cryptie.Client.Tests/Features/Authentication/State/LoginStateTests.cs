@@ -1,6 +1,5 @@
 ﻿using Cryptie.Client.Features.Authentication.State;
 using Cryptie.Common.Features.Authentication.DTOs;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.Authentication.State
 {

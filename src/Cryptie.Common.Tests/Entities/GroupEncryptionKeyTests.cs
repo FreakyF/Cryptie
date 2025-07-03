@@ -1,6 +1,5 @@
-﻿using System;
-using Cryptie.Common.Entities;
-using Xunit;
+﻿using Cryptie.Common.Entities;
+
 
 namespace Cryptie.Common.Tests.Entities
 {
@@ -13,8 +12,8 @@ namespace Cryptie.Common.Tests.Entities
             Assert.Equal(Guid.Empty, key.Id);
             Assert.Equal(Guid.Empty, key.GroupId);
             Assert.Equal(Guid.Empty, key.UserId);
-            Assert.Null(key.AesKey); // null! pozwala na null, dopóki nie zostanie przypisane
-            Assert.Null(key.Group);  // null! pozwala na null, dopóki nie zostanie przypisane
+            Assert.Null(key.AesKey);
+            Assert.Null(key.Group);
         }
 
         [Fact]

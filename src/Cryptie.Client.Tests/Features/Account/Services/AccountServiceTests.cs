@@ -1,13 +1,9 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using Cryptie.Client.Features.Account.services;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using Moq;
 using Moq.Protected;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.Account.Services
 {
@@ -72,8 +68,7 @@ namespace Cryptie.Client.Tests.Features.Account.Services
             };
             var service = new AccountService(httpClient);
             var dto = new UserDisplayNameRequestDto { Name = "TestName", Token = Guid.NewGuid() };
-
-            // Act & Assert
+            
             await Assert.ThrowsAsync<HttpRequestException>(() => service.ChangeUserDisplayNameAsync(dto));
         }
     }

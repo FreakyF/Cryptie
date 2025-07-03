@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Cryptie.Common.Entities;
-using Xunit;
+﻿using Cryptie.Common.Entities;
 
 namespace Cryptie.Common.Tests.Entities;
 

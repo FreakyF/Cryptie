@@ -1,5 +1,4 @@
 ﻿using Cryptie.Client.Features.Chats.ViewModels;
-using Xunit;
 
 namespace Cryptie.Client.Tests.Features.Chats.ViewModels;
 
@@ -24,8 +23,8 @@ public class ChatMessageViewModelTests
 
     [Theory]
     [InlineData("msg1", false, "G1")]
-    [InlineData("", true, "")] // test pustych wartości
-    [InlineData(null, false, null)] // test nulli
+    [InlineData("", true, "")]
+    [InlineData(null, false, null)]
     public void Properties_AreSetCorrectly(string? message, bool isOwn, string? groupName)
     {
         var vm = new ChatMessageViewModel(message, isOwn, groupName);
