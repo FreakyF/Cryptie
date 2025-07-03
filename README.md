@@ -1,6 +1,6 @@
 # Cryptie
 
-Cryptie is a secure text messenger application featuring end-to-end encryption, digital signatures, and a robust three-layer architecture.
+Cryptie is a secure text messenger application featuring end-to-end encryption, a beautiful Avalonia-based GUI, and system keystore–backed key pair management for user identity verification..
 
 ## Prerequisites
 
