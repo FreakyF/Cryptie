@@ -22,11 +22,11 @@ public class User
     [Required, Column("password_id")] public Guid PasswordId { get; set; }
 
     [Required, Column("totp_id")] public Guid TotpId { get; set; }
-    [Required, Column("control_login")] public string ControlValue { get; set; }
+    [Required, Column("control_login")] public string ControlValue { get; set; } = string.Empty;
 
-    [ForeignKey(nameof(PasswordId))] public Password Password { get; set; } = default!;
+    [ForeignKey(nameof(PasswordId))] public Password Password { get; set; } = null!;
 
-    [ForeignKey(nameof(TotpId))] public Totp Totp { get; set; } = default!;
+    [ForeignKey(nameof(TotpId))] public Totp Totp { get; set; } = null!;
 
 
     [InverseProperty(nameof(FriendsOf))] public ICollection<User> Friends { get; set; } = new HashSet<User>();

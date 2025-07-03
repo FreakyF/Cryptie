@@ -14,7 +14,7 @@ public class GroupMessage
 
     [Required, Column("group_id")] public Guid GroupId { get; set; }
 
-    [ForeignKey(nameof(GroupId))] public Group Group { get; set; }
+    [ForeignKey(nameof(GroupId))] public Group Group { get; set; } = new Group();
 
     [Required, Column("sender_id")] public Guid SenderId { get; set; }
 
