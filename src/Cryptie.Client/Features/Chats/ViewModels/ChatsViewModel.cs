@@ -197,7 +197,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
             }
             catch
             {
-                // Swallow exception
+                // Swallow exception: do nothing
             }
         }, canSend);
     }
@@ -218,34 +218,32 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
     private void WatchGroupSelection()
     {
         _deps.GroupState
-            .WhenAnyValue(gs => gs.SelectedGroupId)
+            .WhenAnyValue(
+                gs => gs.SelectedGroupId,
+                gs => gs.SelectedGroupName,
+                (gid, _) => gid)
             .Where(gid => gid != Guid.Empty)
             .StartWith(_deps.GroupState.SelectedGroupId)
-            .SelectMany(gid =>
-                Observable.FromAsync(async () =>
+            .SelectMany(gid => Observable.FromAsync(async () => 
+            {
+                try
                 {
-                    try
-                    {
-                        await GroupsPanel.KeysLoaded;
+                    await GroupsPanel.KeysLoaded;
+                    await _deps.MessagesService.ConnectAsync(_sessionToken, [gid]);
+                    _lastMessageTimestamp = DateTime.MinValue;
 
-                        await _deps.MessagesService.ConnectAsync(_sessionToken, [gid]);
-                        _lastMessageTimestamp = DateTime.MinValue;
-                        var all = await _deps.MessagesService.GetGroupMessagesAsync(_sessionToken, gid);
+                    var all = await _deps.MessagesService.GetGroupMessagesAsync(_sessionToken, gid);
+                    if (all.Any())
+                        _lastMessageTimestamp = all.Max(m => m.DateTime);
 
-                        if (all.Any())
-                        {
-                            _lastMessageTimestamp = all.Max(m => m.DateTime);
-                        }
-
-                        DecryptMessages(all, gid);
-
-                        return all;
-                    }
-                    catch
-                    {
-                        return new List<GetGroupMessagesResponseDto.MessageDto>();
-                    }
-                }))
+                    DecryptMessages(all, gid);
+                    return all;
+                }
+                catch
+                {
+                    return new List<GetGroupMessagesResponseDto.MessageDto>();
+                }
+            }))
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(history =>
             {
