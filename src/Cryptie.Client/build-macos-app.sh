@@ -2,11 +2,11 @@
 set -e
 
 PROJECT_PATH="$(dirname "$0")"
-PUBLISH_DIR="$PROJECT_PATH/bin/Release/net9.0/osx-x64/publish"
+PUBLISH_DIR="$PROJECT_PATH/bin/Release/net9.0/osx-arm64/publish"
 APP_NAME="Cryptie"
 APP_BUNDLE="$PROJECT_PATH/${APP_NAME}.app"
 
-dotnet publish -c Release -r osx-x64
+dotnet publish -c Release -r osx-arm64
 
 rm -rf "$APP_BUNDLE"
 
