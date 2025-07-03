@@ -88,6 +88,10 @@ public class AddFriendViewModel : RoutableViewModelBase
 
     public ReactiveCommand<Unit, Unit> SendFriendRequest { get; }
 
+    /// <summary>
+    ///     Executes the workflow of adding a new friend based on the current input.
+    /// </summary>
+    /// <param name="ct">Cancellation token to abort the operation.</param>
     private async Task AddFriendAsync(CancellationToken ct)
     {
         ErrorMessage = string.Empty;
@@ -173,22 +177,34 @@ public class AddFriendViewModel : RoutableViewModelBase
     }
 
 
+    /// <summary>
+    ///     Validates that the provided session token string can be parsed into a <see cref="Guid" />.
+    /// </summary>
     private static bool IsSessionTokenValid(string? token, out Guid sessionToken)
     {
         sessionToken = Guid.Empty;
         return !string.IsNullOrWhiteSpace(token) && Guid.TryParse(token, out sessionToken);
     }
 
+    /// <summary>
+    ///     Determines whether the user is attempting to add themselves as a friend.
+    /// </summary>
     private static bool IsAddingSelf(string user, string friend)
     {
         return string.Equals(user, friend, StringComparison.OrdinalIgnoreCase);
     }
 
+    /// <summary>
+    ///     Validates the <see cref="AddFriendRequestDto" /> using the injected validator.
+    /// </summary>
     private async Task<bool> IsValidFriendRequest(AddFriendRequestDto dto, CancellationToken ct)
     {
         return (await _validator.ValidateAsync(dto, ct)).IsValid;
     }
 
+    /// <summary>
+    ///     Retrieves the GUID of a user by their login name.
+    /// </summary>
     private async Task<Guid?> GetUserGuidByName(string friendName, CancellationToken ct)
     {
         try
@@ -207,6 +223,9 @@ public class AddFriendViewModel : RoutableViewModelBase
         }
     }
 
+    /// <summary>
+    ///     Retrieves the GUID of the currently logged in user using the session token.
+    /// </summary>
     private async Task<Guid?> GetMyGuidFromSession(Guid sessionToken, CancellationToken ct)
     {
         try
@@ -221,6 +240,9 @@ public class AddFriendViewModel : RoutableViewModelBase
         }
     }
 
+    /// <summary>
+    ///     Downloads the certificate associated with the specified user.
+    /// </summary>
     private async Task<X509Certificate2?> GetUserCertificate(Guid userGuid, CancellationToken ct)
     {
         try
@@ -239,6 +261,9 @@ public class AddFriendViewModel : RoutableViewModelBase
         return null;
     }
 
+    /// <summary>
+    ///     Generates a new random AES key.
+    /// </summary>
     private static byte[] GenerateAesKey()
     {
         using var aes = Aes.Create();
@@ -246,6 +271,9 @@ public class AddFriendViewModel : RoutableViewModelBase
         return aes.Key;
     }
 
+    /// <summary>
+    ///     Sends the friend request to the backend and handles common errors.
+    /// </summary>
     private async Task<bool> TryAddFriend(AddFriendRequestDto dto, CancellationToken ct)
     {
         try
@@ -265,6 +293,9 @@ public class AddFriendViewModel : RoutableViewModelBase
         return false;
     }
 
+    /// <summary>
+    ///     Sets a generic error message for the view.
+    /// </summary>
     private void SetGenericError()
     {
         ErrorMessage = "An error occurred. Please try again.";

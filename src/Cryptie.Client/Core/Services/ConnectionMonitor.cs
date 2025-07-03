@@ -23,11 +23,19 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
 
     public IObservable<bool> ConnectionStatusChanged => _subject;
 
+    /// <summary>
+    ///     Performs a single check against the backend service.
+    /// </summary>
+    /// <returns><c>true</c> when the backend responds successfully.</returns>
     public async Task<bool> IsBackendAliveAsync()
     {
         return await CheckServerAsync(CancellationToken.None);
     }
 
+    /// <summary>
+    ///     Starts monitoring the backend availability and publishes changes via <see cref="ConnectionStatusChanged"/>.
+    /// </summary>
+    /// <param name="token">Optional cancellation token to stop monitoring.</param>
     public void Start(CancellationToken token = default)
     {
         ThrowIfDisposed();
@@ -57,6 +65,7 @@ public sealed class ConnectionMonitor(IServerStatus serverStatus, TimeSpan? inte
         }, _cts.Token);
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (_disposed)

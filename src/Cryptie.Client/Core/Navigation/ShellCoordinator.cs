@@ -25,6 +25,9 @@ public class ShellCoordinator(
 {
     public RoutingState Router { get; } = new();
 
+    /// <summary>
+    ///     Initializes the application routing based on the persisted session.
+    /// </summary>
     public async Task StartAsync()
     {
         if (!TryInitializeSession(out var sessionToken))
@@ -63,11 +66,17 @@ public class ShellCoordinator(
         }
     }
 
+    /// <summary>
+    ///     Navigates to the login view.
+    /// </summary>
     public void ShowLogin()
     {
         NavigateTo<LoginViewModel>();
     }
 
+    /// <summary>
+    ///     Clears the navigation stack and shows the login screen.
+    /// </summary>
     public void ResetAndShowLogin()
     {
         var vm = factory.Create<LoginViewModel>(this);
@@ -78,31 +87,51 @@ public class ShellCoordinator(
             .Subscribe();
     }
 
+    /// <summary>
+    ///     Navigates to the registration view.
+    /// </summary>
     public void ShowRegister()
     {
         NavigateTo<RegisterViewModel>();
     }
 
+    /// <summary>
+    ///     Navigates to the TOTP QR setup view.
+    /// </summary>
     public void ShowQrSetup()
     {
         NavigateTo<TotpQrSetupViewModel>();
     }
 
+    /// <summary>
+    ///     Navigates to the TOTP code view.
+    /// </summary>
     public void ShowTotpCode()
     {
         NavigateTo<TotpCodeViewModel>();
     }
 
+    /// <summary>
+    ///     Navigates to the dashboard view.
+    /// </summary>
     public void ShowDashboard()
     {
         NavigateTo<DashboardViewModel>();
     }
 
+    /// <summary>
+    ///     Navigates to the pin code setup view.
+    /// </summary>
     public void ShowPinSetup()
     {
         NavigateTo<PinCodeViewModel>();
     }
 
+    /// <summary>
+    ///     Attempts to read the persisted session token from the keychain.
+    /// </summary>
+    /// <param name="sessionToken">Outputs the parsed session token when successful.</param>
+    /// <returns><c>true</c> if a valid token was retrieved.</returns>
     private bool TryInitializeSession(out Guid sessionToken)
     {
         sessionToken = Guid.Empty;
@@ -117,6 +146,11 @@ public class ShellCoordinator(
         return true;
     }
 
+    /// <summary>
+    ///     Gets the user's GUID associated with the provided session token.
+    /// </summary>
+    /// <param name="sessionToken">Valid session token.</param>
+    /// <returns>User GUID or <see cref="Guid.Empty"/> when not found.</returns>
     private async Task<Guid> GetUserGuidAsync(Guid sessionToken)
     {
         var dto = new UserGuidFromTokenRequestDto { SessionToken = sessionToken };
@@ -124,6 +158,11 @@ public class ShellCoordinator(
         return result?.Guid ?? Guid.Empty;
     }
 
+    /// <summary>
+    ///     Loads the current user's private key from the keychain and populates user state.
+    /// </summary>
+    /// <param name="userGuid">Identifier of the authenticated user.</param>
+    /// <returns><c>true</c> when the key was successfully loaded.</returns>
     private bool TryInitializeUser(Guid userGuid)
     {
         stateDeps.UserState.UserId = userGuid;
@@ -137,6 +176,9 @@ public class ShellCoordinator(
         return true;
     }
 
+    /// <summary>
+    ///     Clears any cached authentication information from state and keychain.
+    /// </summary>
     private void ClearUserState()
     {
         keychain.TryClearSessionToken(out _);
@@ -156,6 +198,9 @@ public class ShellCoordinator(
         stateDeps.RegistrationState.LastResponse = null;
     }
 
+    /// <summary>
+    ///     Determines whether the HTTP exception represents an authentication failure.
+    /// </summary>
     private static bool IsAuthError(HttpRequestException ex)
     {
         return ex.StatusCode is HttpStatusCode.Unauthorized
@@ -163,6 +208,9 @@ public class ShellCoordinator(
             or HttpStatusCode.BadRequest;
     }
 
+    /// <summary>
+    ///     Helper method to create and navigate to a view model instance.
+    /// </summary>
     private void NavigateTo<TViewModel>() where TViewModel : RoutableViewModelBase
     {
         var vm = factory.Create<TViewModel>(this);

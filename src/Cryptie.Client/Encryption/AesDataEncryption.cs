@@ -6,6 +6,12 @@ namespace Cryptie.Client.Encryption;
 
 public static class AesDataEncryption
 {
+    /// <summary>
+    ///     Encrypts the provided string with the given AES key.
+    /// </summary>
+    /// <param name="data">Plain text to encrypt.</param>
+    /// <param name="key">Base64 encoded AES key.</param>
+    /// <returns>Base64 encoded cipher text containing the IV and encrypted payload.</returns>
     public static string Encrypt(string data, string key)
     {
         using var aes = Aes.Create();
@@ -26,6 +32,12 @@ public static class AesDataEncryption
         return Convert.ToBase64String(ms.ToArray());
     }
 
+    /// <summary>
+    ///     Decrypts the given cipher text using the supplied AES key.
+    /// </summary>
+    /// <param name="encryptedData">Base64 encoded cipher that contains IV and encrypted data.</param>
+    /// <param name="key">Base64 encoded AES key.</param>
+    /// <returns>The decrypted plain text.</returns>
     public static string Decrypt(string encryptedData, string key)
     {
         var fullCipher = Convert.FromBase64String(encryptedData);
