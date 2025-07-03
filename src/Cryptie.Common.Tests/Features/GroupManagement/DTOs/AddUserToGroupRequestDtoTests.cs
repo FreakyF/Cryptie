@@ -49,7 +49,6 @@ public class AddUserToGroupRequestDtoTests
         Assert.Equal(Guid.Empty, dto.SessionToken);
         Assert.Equal(Guid.Empty, dto.GroupGuid);
         Assert.Equal(Guid.Empty, dto.UserToAdd);
-        Assert.Null(dto.EncryptionKey);
+        Assert.Equal(string.Empty, dto.EncryptionKey);
     }
 }
-
