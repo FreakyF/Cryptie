@@ -5,6 +5,10 @@ namespace Cryptie.Common.Features.Authentication.Validators;
 
 public class TotpRequestValidator : AbstractValidator<TotpRequestDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TotpRequestValidator"/> class
+    /// and establishes validation rules for two-factor authentication requests.
+    /// </summary>
     public TotpRequestValidator()
     {
         RuleFor(x => x.TotpToken)

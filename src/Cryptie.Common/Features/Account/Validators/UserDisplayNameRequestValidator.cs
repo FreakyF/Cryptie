@@ -5,6 +5,10 @@ namespace Cryptie.Common.Features.Account.Validators;
 
 public class UserDisplayNameRequestValidator : AbstractValidator<UserDisplayNameRequestDto>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserDisplayNameRequestValidator"/> class
+    /// and defines validation rules for user display name changes.
+    /// </summary>
     public UserDisplayNameRequestValidator()
     {
         RuleFor(x => x.Name)
