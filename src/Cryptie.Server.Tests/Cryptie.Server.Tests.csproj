@@ -11,6 +11,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="FluentAssertions" Version="8.2.0"/>
         <PackageReference Include="JetBrains.Annotations" Version="2025.1.0-eap1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.4"/>
