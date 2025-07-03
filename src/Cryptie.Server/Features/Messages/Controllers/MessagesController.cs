@@ -15,12 +15,6 @@ public class MessagesController(IMessagesService messagesService)
         return messagesService.SendMessage(sendMessageRequest);
     }
 
-    [HttpGet("get", Name = "GetMessage")]
-    public IActionResult GetMessage([FromBody] GetMessageRequestDto getMessageRequest)
-    {
-        return messagesService.GetMessage(getMessageRequest);
-    }
-
     [HttpGet("get-all", Name = "GetGroupMessages")]
     public IActionResult GetGroupMessages([FromBody] GetGroupMessagesRequestDto groupMessagesRequest)
     {

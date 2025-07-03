@@ -9,39 +9,6 @@ public class GroupManagementService(
     IDatabaseService databaseService
 ) : ControllerBase, IGroupManagementService
 {
-    public IActionResult changeGroupName(ChangeGroupNameRequestDto changeGroupNameRequest)
-    {
-        var user = databaseService.GetUserFromToken(changeGroupNameRequest.SessionToken);
-        if (user == null) return BadRequest();
-        if (user.Groups.All(g => g.Id != changeGroupNameRequest.GroupGuid)) return BadRequest();
-
-        var group = databaseService.FindGroupById(changeGroupNameRequest.GroupGuid);
-        if (group == null) return NotFound();
-
-        databaseService.ChangeGroupName(changeGroupNameRequest.GroupGuid, changeGroupNameRequest.NewName);
-
-        return Ok();
-    }
-
-    public IActionResult addUserToGroup(AddUserToGroupRequestDto addUserToGroupRequest)
-    {
-        var user = databaseService.GetUserFromToken(addUserToGroupRequest.SessionToken);
-        if (user == null) return BadRequest();
-
-        var userToAdd = databaseService.FindUserById(addUserToGroupRequest.UserToAdd);
-        if (userToAdd == null) return NotFound();
-
-        var group = databaseService.FindGroupById(addUserToGroupRequest.GroupGuid);
-        if (group == null) return NotFound();
-
-        if (user.Groups.All(g => g.Id != addUserToGroupRequest.GroupGuid)) return BadRequest();
-
-        databaseService.AddUserToGroup(addUserToGroupRequest.UserToAdd, addUserToGroupRequest.GroupGuid);
-        databaseService.AddGroupEncryptionKey(userToAdd.Id, group.Id, addUserToGroupRequest.EncryptionKey);
-
-        return Ok();
-    }
-
     public IActionResult IsGroupsPrivate(IsGroupsPrivateRequestDto isGroupsPrivateRequest)
     {
         var result = new Dictionary<Guid, bool>();
@@ -94,49 +61,6 @@ public class GroupManagementService(
         return Ok(new GetGroupsNamesResponseDto
         {
             GroupsNames = result
-        });
-    }
-
-    public IActionResult CreateGroupFromPrivateChat(
-        CreateGroupFromPrivateChatRequestDto createGroupFromPrivateChatRequest)
-    {
-        var user = databaseService.GetUserFromToken(createGroupFromPrivateChatRequest.SessionToken);
-        if (user == null) return Unauthorized();
-
-        var privateChat = databaseService.FindGroupById(createGroupFromPrivateChatRequest.PrivateChatId);
-        if (privateChat is not { IsPrivate: true })
-            return BadRequest();
-
-        if (privateChat.Members.All(m => m.Id != user.Id))
-            return Unauthorized();
-
-        var newMember = databaseService.FindUserByLogin(createGroupFromPrivateChatRequest.NewMember);
-        if (newMember == null)
-            return NotFound();
-
-        if (privateChat.Members.All(m => m.Id != newMember.Id))
-            return BadRequest();
-
-        var newGroupMembers = privateChat.Members.Select(m => m.Id).ToList();
-        newGroupMembers.Add(newMember.Id);
-
-        if (createGroupFromPrivateChatRequest.EncryptionKeys.Any(keyValuePair =>
-                !newGroupMembers.Contains(keyValuePair.Key)))
-            return BadRequest();
-
-        var newGroup = databaseService.CreateNewGroup(user, privateChat.Name + "_" + newMember.DisplayName);
-        if (newGroup == null) return BadRequest();
-
-        foreach (var memberId in newGroupMembers)
-        {
-            databaseService.AddUserToGroup(memberId, newGroup.Id);
-            databaseService.AddGroupEncryptionKey(memberId, newGroup.Id,
-                createGroupFromPrivateChatRequest.EncryptionKeys[memberId]);
-        }
-
-        return Ok(new CreateGroupFromPrivateChatResponseDto
-        {
-            GroupId = newGroup.Id
         });
     }
 }

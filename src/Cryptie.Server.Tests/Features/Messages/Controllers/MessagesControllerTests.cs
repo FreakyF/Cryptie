@@ -29,17 +29,6 @@ public class MessagesControllerTests
     }
 
     [Fact]
-    public void GetMessage_DelegatesToServiceAndReturnsResult()
-    {
-        var dto = new GetMessageRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.GetMessage(dto)).Returns(expected);
-        var result = _controller.GetMessage(dto);
-        Assert.Same(expected, result);
-        _serviceMock.Verify(s => s.GetMessage(dto), Times.Once);
-    }
-
-    [Fact]
     public void GetGroupMessages_DelegatesToServiceAndReturnsResult()
     {
         var dto = new GetGroupMessagesRequestDto();

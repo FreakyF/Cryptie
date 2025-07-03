@@ -129,28 +129,6 @@ public class AuthenticationServiceTests
     }
 
     [Fact]
-    public void LogoutHandler_TokenNotFound_ReturnsBadRequest()
-    {
-        var logoutRequest = new LogoutRequestDto { Token = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.UserTokens).Returns(MockDbSet(new List<UserToken>()));
-
-        var result = _service.LogoutHandler(logoutRequest);
-        Assert.IsType<BadRequestResult>(result);
-    }
-
-    [Fact]
-    public void LogoutHandler_Success_ReturnsOk()
-    {
-        var token = new UserToken { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.UserTokens).Returns(MockDbSet(new List<UserToken> { token }));
-        _dbContextMock.Setup(x => x.SaveChanges()).Verifiable();
-
-        var logoutRequest = new LogoutRequestDto { Token = token.Id };
-        var result = _service.LogoutHandler(logoutRequest);
-        Assert.IsType<OkResult>(result);
-    }
-
-    [Fact]
     public void RegisterHandler_UserExists_ReturnsBadRequest()
     {
         var registerRequest = new RegisterRequestDto {

@@ -15,22 +15,10 @@ public class UserManagementController(IUserManagementService userManagementServi
         return userManagementService.UserGuidFromToken(userGuidFromTokenRequest);
     }
 
-    [HttpGet("login", Name = "GetUserLoginFromToken")]
-    public IActionResult UserLoginFromToken([FromBody] UserLoginFromTokenRequestDto userLoginFromTokenRequest)
-    {
-        return userManagementService.UserLoginFromToken(userLoginFromTokenRequest);
-    }
-
     [HttpPost("addfriend", Name = "PostAddFriend")]
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
     {
         return userManagementService.AddFriend(addFriendRequest);
-    }
-
-    [HttpGet("friendlist", Name = "GetFriendList")]
-    public IActionResult FriendList([FromBody] FriendListRequestDto friendListRequest)
-    {
-        return userManagementService.FriendList(friendListRequest);
     }
 
     [HttpGet("namefromguid", Name = "GetNameFromGuid")]

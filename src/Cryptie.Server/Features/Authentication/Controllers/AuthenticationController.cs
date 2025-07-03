@@ -24,12 +24,6 @@ public class AuthenticationController(
         return await delayService.FakeDelay(() => authenticationService.TotpHandler(totpRequest));
     }
 
-    [HttpPost("logout", Name = "PostLogout")]
-    public async Task<IActionResult> Logout([FromBody] LogoutRequestDto logoutRequest)
-    {
-        return await delayService.FakeDelay(() => authenticationService.LogoutHandler(logoutRequest));
-    }
-
     [HttpPost("register", Name = "PostRegister")]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequest)
     {

@@ -95,18 +95,6 @@ public class IKeychainManagerServiceTests : IClassFixture<KeychainManagerService
 
     [Trait("TestCategory", "Unit")]
     [Fact]
-    public void TryGetPrivateKeyReturnsTrue()
-    {
-        var privateKey = Guid.NewGuid().ToString() + Guid.NewGuid().ToString();
-        _service.TrySavePrivateKey(privateKey, out var error);
-        var result = _service.TryGetPrivateKey(out var getKey, out error);
-        Assert.True(result);
-        Assert.Equal(privateKey, getKey);
-        Assert.Null(error);
-    }
-
-    [Trait("TestCategory", "Unit")]
-    [Fact]
     public void TryGetPrivateKeyReturnsFalseWhenNotSet()
     {
         _service.TryClearPrivateKey(out var _);

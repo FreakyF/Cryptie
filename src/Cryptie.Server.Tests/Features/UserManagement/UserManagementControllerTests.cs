@@ -29,17 +29,7 @@ public class UserManagementControllerTests
         var result = _controller.UserGuidFromToken(dto);
         Assert.Equal(expected, result);
     }
-
-    [Fact]
-    public void UserLoginFromToken_CallsServiceAndReturnsResult()
-    {
-        var dto = new UserLoginFromTokenRequestDto();
-        var expected = new OkObjectResult("test");
-        _serviceMock.Setup(s => s.UserLoginFromToken(dto)).Returns(expected);
-        var result = _controller.UserLoginFromToken(dto);
-        Assert.Equal(expected, result);
-    }
-
+    
     [Fact]
     public void AddFriend_CallsServiceAndReturnsResult()
     {
@@ -47,16 +37,6 @@ public class UserManagementControllerTests
         var expected = new OkObjectResult("test");
         _serviceMock.Setup(s => s.AddFriend(dto)).Returns(expected);
         var result = _controller.AddFriend(dto);
-        Assert.Equal(expected, result);
-    }
-
-    [Fact]
-    public void FriendList_CallsServiceAndReturnsResult()
-    {
-        var dto = new FriendListRequestDto();
-        var expected = new OkObjectResult("test");
-        _serviceMock.Setup(s => s.FriendList(dto)).Returns(expected);
-        var result = _controller.FriendList(dto);
         Assert.Equal(expected, result);
     }
 

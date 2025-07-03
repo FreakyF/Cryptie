@@ -21,28 +21,6 @@ public class GroupManagementControllerTests
     }
 
     [Fact]
-    public void ChangeGroupName_CallsServiceAndReturnsResult()
-    {
-        var dto = new ChangeGroupNameRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.changeGroupName(dto)).Returns(expected);
-        var result = _controller.changeGroupName(dto);
-        Assert.Equal(expected, result);
-        _serviceMock.Verify(s => s.changeGroupName(dto), Times.Once);
-    }
-
-    [Fact]
-    public void AddUserToGroup_CallsServiceAndReturnsResult()
-    {
-        var dto = new AddUserToGroupRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.addUserToGroup(dto)).Returns(expected);
-        var result = _controller.addUserToGroup(dto);
-        Assert.Equal(expected, result);
-        _serviceMock.Verify(s => s.addUserToGroup(dto), Times.Once);
-    }
-
-    [Fact]
     public void IsGroupsPrivate_CallsServiceAndReturnsResult()
     {
         var dto = new IsGroupsPrivateRequestDto();
@@ -62,17 +40,6 @@ public class GroupManagementControllerTests
         var result = _controller.IsGroupsPrivate(dto);
         Assert.Equal(expected, result);
         _serviceMock.Verify(s => s.GetGroupsNames(dto), Times.Once);
-    }
-
-    [Fact]
-    public void CreateGroupFromPrivateChat_CallsServiceAndReturnsResult()
-    {
-        var dto = new CreateGroupFromPrivateChatRequestDto();
-        var expected = new OkResult();
-        _serviceMock.Setup(s => s.CreateGroupFromPrivateChat(dto)).Returns(expected);
-        var result = _controller.CreateGroupFromPrivateChat(dto);
-        Assert.Equal(expected, result);
-        _serviceMock.Verify(s => s.CreateGroupFromPrivateChat(dto), Times.Once);
     }
 }
 

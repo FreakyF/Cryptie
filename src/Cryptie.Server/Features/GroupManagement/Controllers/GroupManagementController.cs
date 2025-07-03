@@ -11,18 +11,6 @@ public class GroupManagementController(
     IGroupManagementService groupManagementService
 ) : ControllerBase
 {
-    [HttpPost("changeGroupName", Name = "ChangeGroupName")]
-    public IActionResult changeGroupName([FromBody] ChangeGroupNameRequestDto changeGroupNameRequest)
-    {
-        return groupManagementService.changeGroupName(changeGroupNameRequest);
-    }
-
-    [HttpPost("add", Name = "AddUserToGroup")]
-    public IActionResult addUserToGroup([FromBody] AddUserToGroupRequestDto addUserToGroupRequest)
-    {
-        return groupManagementService.addUserToGroup(addUserToGroupRequest);
-    }
-
     [HttpPost("isGroupsPrivate", Name = "IsGroupsPrivate")]
     public IActionResult IsGroupsPrivate([FromBody] IsGroupsPrivateRequestDto isGroupsPrivateRequest)
     {
@@ -33,12 +21,5 @@ public class GroupManagementController(
     public IActionResult IsGroupsPrivate([FromBody] GetGroupsNamesRequestDto getGroupsNamesRequest)
     {
         return groupManagementService.GetGroupsNames(getGroupsNamesRequest);
-    }
-
-    [HttpPost("createGroupFromPrivateChat", Name = "CreateGroupFromPrivateChat")]
-    public IActionResult CreateGroupFromPrivateChat(
-        [FromBody] CreateGroupFromPrivateChatRequestDto createGroupFromPrivateChatRequest)
-    {
-        return groupManagementService.CreateGroupFromPrivateChat(createGroupFromPrivateChatRequest);
     }
 }
