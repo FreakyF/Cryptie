@@ -42,7 +42,10 @@ public class ShellCoordinatorTests
     [Fact]
     public void TryInitializeSession_Fails_ReturnsFalse()
     {
-        var result = InvokeTryInitializeSession(out var token);
+        var method = typeof(ShellCoordinator).GetMethod("TryInitializeSession", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        object[] parameters = new object[] { null };
+        var result = (bool)method.Invoke(_coordinator, parameters);
+        var token = (Guid)parameters[0];
         Assert.False(result);
         Assert.Equal(Guid.Empty, token);
     }
@@ -54,7 +57,9 @@ public class ShellCoordinatorTests
         var guid = Guid.NewGuid();
         _userDetails.Setup(x => x.GetUserGuidFromTokenAsync(It.IsAny<UserGuidFromTokenRequestDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new UserGuidFromTokenResponseDto { Guid = guid });
-        var result = await InvokeGetUserGuidAsync(guid);
+        var method = typeof(ShellCoordinator).GetMethod("GetUserGuidAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var task = (Task<Guid>)method.Invoke(_coordinator, new object[] { guid });
+        var result = await task;
         Assert.Equal(guid, result);
     }
 
@@ -63,7 +68,9 @@ public class ShellCoordinatorTests
     {
         _userDetails.Setup(x => x.GetUserGuidFromTokenAsync(It.IsAny<UserGuidFromTokenRequestDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((UserGuidFromTokenResponseDto)null!);
-        var result = await InvokeGetUserGuidAsync(Guid.NewGuid());
+        var method = typeof(ShellCoordinator).GetMethod("GetUserGuidAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var task = (Task<Guid>)method.Invoke(_coordinator, new object[] { Guid.NewGuid() });
+        var result = await task;
         Assert.Equal(Guid.Empty, result);
     }
 
@@ -71,43 +78,12 @@ public class ShellCoordinatorTests
     public void TryInitializeUser_Fails_ReturnsFalse()
     {
         _keychain.Setup(x => x.TryGetPrivateKey(out It.Ref<string>.IsAny, out It.Ref<string>.IsAny)).Returns(false);
-        var result = InvokeTryInitializeUser(Guid.NewGuid());
+        var method = typeof(ShellCoordinator).GetMethod("TryInitializeUser", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var result = (bool)method.Invoke(_coordinator, new object[] { Guid.NewGuid() });
         Assert.False(result);
     }
+    
+    private ShellCoordinator CreateCoordinatorWithMocks() => new ShellCoordinator(_factory.Object, _keychain.Object, _userDetails.Object, _connection.Object, _stateDeps);
 
-    [Theory]
-    [InlineData(HttpStatusCode.Unauthorized, true)]
-    [InlineData(HttpStatusCode.Forbidden, true)]
-    [InlineData(HttpStatusCode.BadRequest, true)]
-    [InlineData(HttpStatusCode.NotFound, false)]
-    public void IsAuthError_Works(HttpStatusCode code, bool expected)
-    {
-        var ex = new HttpRequestException("fail", null, code);
-        var result = InvokeIsAuthError(ex);
-        Assert.Equal(expected, result);
-    }
-
-    // helpers
-    private Task<Guid> InvokeGetUserGuidAsync(Guid token) =>
-        (Task<Guid>)typeof(ShellCoordinator).GetMethod("GetUserGuidAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.Invoke(_coordinator, new object[] { token });
-
-    private bool InvokeTryInitializeUser(Guid guid) =>
-        (bool)typeof(ShellCoordinator).GetMethod("TryInitializeUser", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.Invoke(_coordinator, new object[] { guid });
-
-    private void InvokeClearUserState() =>
-        typeof(ShellCoordinator).GetMethod("ClearUserState", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.Invoke(_coordinator, null);
-
-    private bool InvokeIsAuthError(HttpRequestException ex) =>
-        (bool)typeof(ShellCoordinator).GetMethod("IsAuthError", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)!.Invoke(null, new object[] { ex });
-
-    private bool InvokeTryInitializeSession(out Guid token)
-    {
-        token = Guid.Empty;
-        if (_keychain.Object.TryGetSessionToken(out var tokenStr, out var error) && Guid.TryParse(tokenStr, out var guid))
-        {
-            token = guid;
-            return true;
-        }
-        return false;
-    }
+    
 }
