@@ -3,64 +3,43 @@ name: SonarQube Analysis
 on:
   workflow_call:
     secrets:
-      sonar_token:
+      SONAR_TOKEN:
         required: true
 
 jobs:
   analyze:
-    name: Analyze with SonarQube
-    runs-on: windows-latest
+    name: Analyze with SonarCloud
+    runs-on: ubuntu-latest
+
     steps:
+      # 1) Java – potrzebne do działania Sonara
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: '17'
           distribution: 'zulu'
 
+      # 2) Checkout kodu
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # 3) .NET SDK
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.0.x'
 
-      - name: Install ReportGenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Run tests with coverage
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $testProjects = Get-ChildItem -Recurse -Filter *.csproj | Where-Object { $_.FullName -match 'Tests' }
-          foreach ($proj in $testProjects) {
-            dotnet test $proj.FullName --no-restore --collect:"XPlat Code Coverage" --results-directory ./TestResults --logger trx
-          }
-
-      - name: Merge coverage reports
-        run: |
-          $coverageFiles = Get-ChildItem -Recurse -Filter 'coverage.cobertura.xml' | ForEach-Object { $_.FullName } | Select-Object -Unique
-          $coverageFilesString = $coverageFiles -join ';'
-          reportgenerator -reports:$coverageFilesString -targetdir:CoverageReport -reporttypes:Html
-
-      - name: Upload coverage report artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: CoverageReport
-
-      - name: Cache SonarQube Cloud packages
+      # 4) Cache pakietów SonarCloud
+      - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
 
-      - name: Cache SonarQube Cloud scanner
+      # 5) Cache SonarCloud scanner
+      - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v4
         with:
@@ -68,21 +47,42 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner-${{ hashFiles('**/sonar-project.properties') }}
           restore-keys: ${{ runner.os }}-sonar-scanner-
 
-      - name: Install SonarQube Cloud scanner
+      # 6) Instalacja SonarCloud scanner (jeśli nie ma w cache)
+      - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: pwsh
         run: |
-          mkdir .sonar\scanner -Force
-          dotnet tool update dotnet-sonarscanner --tool-path .sonar\scanner
+          mkdir -p ./.sonar/scanner
+          dotnet tool install dotnet-sonarscanner --version 5.* --tool-path ./.sonar/scanner
 
+      # 7) Begin SonarCloud analysis (bez komentarzy wewnątrz run)
       - name: Begin SonarCloud analysis
         env:
-          SONAR_TOKEN: ${{ secrets.sonar_token }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          .sonar\scanner\dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" /d:sonar.login=${{ secrets.sonar_token }} /d:sonar.cs.opencover.reportsPaths=**/coverage.cobertura.xml
+          ./.sonar/scanner/dotnet-sonarscanner begin \
+            /k:"FreakyF_Cryptie" \
+            /o:"freakyf" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.login="${SONAR_TOKEN}" \
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
+            /d:sonar.verbose=true
 
-      - name: End SonarCloud analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.sonar_token }}
+      # 8+9) Build + test z XPlat Code Coverage w jednym kroku
+      - name: Build and test with coverage
+        continue-on-error: true
         run: |
-          .sonar\scanner\dotnet-sonarscanner end /d:sonar.login=${{ secrets.sonar_token }}
+          dotnet build src/Cryptie.sln --no-incremental
+          dotnet test src/Cryptie.sln \
+            -r linux-x64 \
+            --collect:"XPlat Code Coverage" \
+            --results-directory TestResults \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+      # 10) End SonarCloud analysis – zawsze się odpali
+      - name: End SonarCloud analysis
+        if: always()
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          ./.sonar/scanner/dotnet-sonarscanner end \
+            /d:sonar.login="${SONAR_TOKEN}"
