@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Java potrzebne do działania Sonara
+      # 1) Java – potrzebne do działania Sonara
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -47,14 +47,14 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner-${{ hashFiles('**/sonar-project.properties') }}
           restore-keys: ${{ runner.os }}-sonar-scanner-
 
-      # 6) Instalacja skanera, jeśli nie ma w cache
+      # 6) Instalacja SonarCloud scanner (jeśli nie ma w cache)
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: |
           mkdir -p ./.sonar/scanner
           dotnet tool install dotnet-sonarscanner --version 5.* --tool-path ./.sonar/scanner
 
-      # 7) Begin SonarCloud analysis
+      # 7) Begin SonarCloud analysis (bez komentarzy wewnątrz run)
       - name: Begin SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -63,32 +63,27 @@ jobs:
             /k:"FreakyF_Cryptie" \
             /o:"freakyf" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-            # wildcard łapie coverage.opencover.xml w każdym podfolderze TestResults
+            /d:sonar.login="${SONAR_TOKEN}" \
             /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" \
             /d:sonar.verbose=true
 
-      # 8) Build dla Roslyn analyzers
-      - name: Build project
-        run: dotnet build src/Cryptie.sln --no-incremental
-
-      # 9) Run tests with XPlat Code Coverage
-      #    – jednorazowe, poprawne wywołanie dotnet test
-      #    – continue-on-error, żeby nawet przy regresji dotrzeć do Sonara
-      - name: Run tests with coverage
+      # 8+9) Build + test z XPlat Code Coverage w jednym kroku
+      - name: Build and test with coverage
         continue-on-error: true
         run: |
+          dotnet build src/Cryptie.sln --no-incremental
           dotnet test src/Cryptie.sln \
+            --no-build \
             -r linux-x64 \
             --collect:"XPlat Code Coverage" \
             --results-directory TestResults \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
-      # 10) End SonarCloud analysis – odpali się zawsze
+      # 10) End SonarCloud analysis – zawsze się odpali
       - name: End SonarCloud analysis
         if: always()
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           ./.sonar/scanner/dotnet-sonarscanner end \
-            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+            /d:sonar.login="${SONAR_TOKEN}"
