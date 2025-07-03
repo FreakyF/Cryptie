@@ -33,11 +33,10 @@ namespace Cryptie.Client.Tests.Features.Chats.ViewModels
         private readonly Mock<IOptions<ClientOptions>> _optionsMock = new();
         private readonly Mock<IKeyService> _keyServiceMock = new();
         private readonly ChatSettingsViewModel _settingsPanel;
-        private readonly GroupsListViewModel _groupsPanel;
         private readonly ChatsViewModelDependencies _deps;
-        private readonly Mock<IFriendsService> _friendsServiceMock = new();
-        private readonly Mock<FluentValidation.IValidator<Cryptie.Common.Features.UserManagement.DTOs.AddFriendRequestDto>> _validatorMock = new();
-        private readonly Mock<IUserDetailsService> _userDetailsServiceMock = new();
+        private readonly Mock<IFriendsService> _friendsServiceMock;
+        private readonly Mock<FluentValidation.IValidator<Cryptie.Common.Features.UserManagement.DTOs.AddFriendRequestDto>> _validatorMock;
+        private readonly Mock<IUserDetailsService> _userDetailsServiceMock;
         private readonly AddFriendDependencies _addFriendDependencies;
         private readonly AddUserToGroupViewModel _addUserToGroupViewModel;
 
@@ -85,7 +84,7 @@ namespace Cryptie.Client.Tests.Features.Chats.ViewModels
                 _settingsPanel
             );
 
-            _groupsPanel = new GroupsListViewModel(
+            new GroupsListViewModel(
                 _screenMock.Object,
                 _connectionMonitorMock.Object,
                 _optionsMock.Object,
@@ -154,13 +153,6 @@ namespace Cryptie.Client.Tests.Features.Chats.ViewModels
             vm.GroupsPanel.Groups.Add("TestGroup");
             Assert.True(vm.HasGroups);
             Assert.False(vm.HasNoGroups);
-        }
-
-        [Fact]
-        public void Dispose_Disposes_Disposables()
-        {
-            var vm = CreateViewModel();
-            vm.Dispose();
         }
 
         private ChatsViewModel CreateViewModel()

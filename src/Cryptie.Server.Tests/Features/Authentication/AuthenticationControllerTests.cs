@@ -73,29 +73,6 @@ public class AuthenticationControllerTests
     }
 
     [Fact]
-    public async Task Logout_ShouldCallAuthenticationService_AndReturnItsResult()
-    {
-        
-        var request = new LogoutRequestDto
-        {
-            Token = Guid.NewGuid()
-        };
-        var expectedResult = new OkResult();
-        
-        _authenticationServiceMock
-            .Setup(x => x.LogoutHandler(request))
-            .Returns(expectedResult);
-
-        
-        var result = await _controller.Logout(request);
-
-        
-        result.Should().BeSameAs(expectedResult);
-        _authenticationServiceMock.Verify(x => x.LogoutHandler(request), Times.Once);
-        _delayServiceMock.Verify(x => x.FakeDelay(It.IsAny<Func<IActionResult>>()), Times.Once);
-    }
-
-    [Fact]
     public async Task Register_ShouldCallAuthenticationService_AndReturnItsResult()
     {
         

@@ -24,28 +24,6 @@ public class MessagesService(IDatabaseService databaseService, IMessageHubServic
         return Ok();
     }
 
-    public IActionResult GetMessage([FromBody] GetMessageRequestDto getMessageRequest)
-    {
-        var user = databaseService.GetUserFromToken(getMessageRequest.UserToken);
-        if (user == null) return Unauthorized();
-
-        var group = databaseService.FindGroupById(getMessageRequest.GroupId);
-        if (group == null) return NotFound();
-
-        if (!group.Members.Any(m => m.Id == user.Id)) return BadRequest();
-
-        var message = databaseService.GetGroupMessage(getMessageRequest.MessageId, group.Id);
-
-        return Ok(new GetMessageResponseDto
-        {
-            MessageId = message.Id,
-            GroupId = message.GroupId,
-            SenderId = message.SenderId,
-            Message = message.Message,
-            DateTime = message.DateTime
-        });
-    }
-
     public IActionResult GetGroupMessages([FromBody] GetGroupMessagesRequestDto request)
     {
         var user = databaseService.GetUserFromToken(request.UserToken);

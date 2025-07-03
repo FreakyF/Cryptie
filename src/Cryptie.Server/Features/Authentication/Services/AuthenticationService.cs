@@ -72,18 +72,6 @@ public class AuthenticationService(
         });
     }
 
-    public IActionResult LogoutHandler(LogoutRequestDto logoutRequest)
-    {
-        var userToken = appDbContext.UserTokens.SingleOrDefault(t => t.Id == logoutRequest.Token);
-
-        if (userToken == null) return BadRequest();
-
-        appDbContext.UserTokens.Remove(userToken);
-        appDbContext.SaveChanges();
-
-        return Ok();
-    }
-
     public IActionResult RegisterHandler(RegisterRequestDto registerRequest)
     {
         if (databaseService.FindUserByLogin(registerRequest.Login) != null) return BadRequest();

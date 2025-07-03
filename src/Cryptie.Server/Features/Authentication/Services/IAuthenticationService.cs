@@ -9,7 +9,5 @@ public interface IAuthenticationService
 
     IActionResult TotpHandler(TotpRequestDto totpRequest);
 
-    IActionResult LogoutHandler(LogoutRequestDto logoutRequest);
-
     IActionResult RegisterHandler(RegisterRequestDto registerRequest);
 }

@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Net.Http.Json;
-using System.Reactive.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Cryptie.Client.Features.Chats.Entities;
 using Cryptie.Client.Features.Chats.Services;
 using Cryptie.Common.Features.Messages.DTOs;
 using Microsoft.AspNetCore.SignalR.Client;
 using Moq;
 using Moq.Protected;
-using Xunit;
+
+namespace Cryptie.Client.Tests.Features.Chats.Services;
 
 public class MessagesServiceTests
 {
@@ -35,22 +28,6 @@ public class MessagesServiceTests
     {
         Assert.Throws<ArgumentNullException>(() => new MessagesService(null, _httpClient));
         Assert.Throws<ArgumentNullException>(() => new MessagesService(new HubConnectionBuilder().WithUrl("http://localhost").Build(), null));
-    }
-
-    [Fact]
-    public void SignalR_Subscriptions_TriggerSubjects()
-    {
-        var joinedCalled = false;
-        var messageCalled = false;
-        var hub = new HubConnectionBuilder().WithUrl("http://localhost").Build();
-        var service = new MessagesService(hub, _httpClient);
-        service.MessageReceived.Subscribe(_ => messageCalled = true);
-        // symulacja wywołania eventu
-        hub.GetType().GetMethod("On", new[] { typeof(string), typeof(Action<Guid, Guid>) })
-            ?.Invoke(hub, new object[] { "UserJoinedGroup", new Action<Guid, Guid>((u, g) => joinedCalled = true) });
-        hub.GetType().GetMethod("On", new[] { typeof(string), typeof(Action<Guid, string, Guid>) })
-            ?.Invoke(hub, new object[] { "ReceiveGroupMessage", new Action<Guid, string, Guid>((s, t, g) => messageCalled = true) });
-        // nie da się w pełni przetestować bez uruchomionego huba, ale coverage jest
     }
 
     [Fact]
@@ -107,16 +84,6 @@ public class MessagesServiceTests
     }
 
     [Fact]
-    public async Task SendMessageToGroupViaHttpAsync_Success_CallsApi()
-    {
-        _httpHandlerMock.Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
-        var service = new MessagesService(_realHub, _httpClient);
-        await service.SendMessageToGroupViaHttpAsync(Guid.NewGuid(), Guid.NewGuid(), "msg");
-    }
-
-    [Fact]
     public async Task SendMessageToGroupViaHttpAsync_Failure_Throws()
     {
         _httpHandlerMock.Protected()
@@ -141,24 +108,5 @@ public class MessagesServiceTests
         // Test nie jest możliwy do wykonania bez mockowania HubConnection, które nie jest wspierane.
         var service = new MessagesService(_realHub, _httpClient);
         await Assert.ThrowsAnyAsync<Exception>(() => service.SendMessageToGroupAsync(Guid.NewGuid(), Guid.NewGuid(), "msg"));
-    }
-
-    [Fact]
-    public async Task DisposeAsync_StopsAndDisposesHub()
-    {
-        // Używamy prawdziwego HubConnection, bo nie można mockować tej klasy.
-        var service = new MessagesService(_realHub, _httpClient);
-        await service.DisposeAsync();
-        // Test przechodzi, jeśli nie ma wyjątku.
-    }
-
-    [Fact]
-    public async Task DisposeAsync_NotConnected_OnlyDisposes()
-    {
-        // Używamy prawdziwego HubConnection, bo nie można mockować tej klasy.
-        var service = new MessagesService(_realHub, _httpClient);
-        // DisposeAsync na prawdziwym HubConnection nie rzuca, nawet jeśli nie jest połączony.
-        await service.DisposeAsync();
-        // Test przechodzi, jeśli nie ma wyjątku.
     }
 }

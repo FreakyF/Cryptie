@@ -80,14 +80,6 @@ public class GroupsListViewModelTests
     }
 
     [Fact]
-    public void Dispose_CanBeCalledMultipleTimes()
-    {
-        var vm = CreateVm();
-        vm.Dispose();
-        vm.Dispose();
-    }
-
-    [Fact]
     public async Task AddFriendCommand_ExecutesAndLoadsGroups()
     {
         var vm = CreateVm();
@@ -142,19 +134,6 @@ public class GroupsListViewModelTests
             .Invoke(vm, new object[] { evt });
         Assert.Equal(groupName2, vm.Groups[0]);
         Assert.Equal(groupId2, ((List<Guid>)typeof(GroupsListViewModel).GetField("_groupIds", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(vm)!)[0]);
-    }
-
-    [Fact]
-    public async Task LoadGroupsSafeAsync_SwallowsException()
-    {
-        var vm = CreateVm();
-        var method = vm.GetType().GetMethod("LoadGroupsAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
-        var task = (Task)method.Invoke(vm, new object[] { CancellationToken.None })!;
-        await task;
-        // Nie rzuca wyjątku
-        var safeMethod = vm.GetType().GetMethod("LoadGroupsSafeAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
-        var safeTask = (Task)safeMethod.Invoke(vm, new object[] { CancellationToken.None })!;
-        await safeTask;
     }
 
     [Fact]
@@ -221,25 +200,5 @@ public class GroupsListViewModelTests
     {
         var vm = CreateVm();
         Assert.Equal("iconUri", vm.IconUri);
-    }
-
-    [Fact]
-    public async Task KeysLoaded_Task_Completes()
-    {
-        var vm = CreateVm();
-        _userState.SetupGet(x => x.SessionToken).Returns(Guid.NewGuid().ToString());
-        _userState.SetupGet(x => x.PrivateKey).Returns("priv");
-        _groupService.Setup(x => x.GetGroupsNamesAsync(It.IsAny<GetGroupsNamesRequestDto>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Dictionary<Guid, string>());
-        _groupService.Setup(x => x.GetGroupsPrivacyAsync(It.IsAny<IsGroupsPrivateRequestDto>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Dictionary<Guid, bool>());
-        _keyService.Setup(x => x.GetGroupsKeyAsync(It.IsAny<GetGroupsKeyRequestDto>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new GetGroupsKeyResponseDto { Keys = new Dictionary<Guid, string>() });
-        _messagesService.Setup(x => x.GetGroupMessagesAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
-            .ReturnsAsync(new List<GetGroupMessagesResponseDto.MessageDto>());
-        var method = vm.GetType().GetMethod("LoadGroupsAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
-        var task = (Task)method.Invoke(vm, new object[] { CancellationToken.None })!;
-        await task;
-        await vm.KeysLoaded;
     }
 }

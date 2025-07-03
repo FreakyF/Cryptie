@@ -78,54 +78,6 @@ public class MessagesServiceTests
         Assert.IsType<OkResult>(result);
     }
 
-    // GetMessage tests
-    [Fact]
-    public void GetMessage_Unauthorized()
-    {
-        var req = new GetMessageRequestDto { UserToken = Guid.NewGuid() };
-        _dbMock.Setup(x => x.GetUserFromToken(req.UserToken)).Returns((User)null!);
-        var result = _service.GetMessage(req);
-        Assert.IsType<UnauthorizedResult>(result);
-    }
-
-    [Fact]
-    public void GetMessage_GroupNotFound()
-    {
-        var req = new GetMessageRequestDto { UserToken = Guid.NewGuid(), GroupId = Guid.NewGuid() };
-        var user = new User { Id = Guid.NewGuid() };
-        _dbMock.Setup(x => x.GetUserFromToken(req.UserToken)).Returns(user);
-        _dbMock.Setup(x => x.FindGroupById(req.GroupId)).Returns((Group)null!);
-        var result = _service.GetMessage(req);
-        Assert.IsType<NotFoundResult>(result);
-    }
-
-    [Fact]
-    public void GetMessage_UserNotMember()
-    {
-        var req = new GetMessageRequestDto { UserToken = Guid.NewGuid(), GroupId = Guid.NewGuid() };
-        var user = new User { Id = Guid.NewGuid() };
-        var group = new Group { Id = req.GroupId, Members = new List<User>() };
-        _dbMock.Setup(x => x.GetUserFromToken(req.UserToken)).Returns(user);
-        _dbMock.Setup(x => x.FindGroupById(req.GroupId)).Returns(group);
-        var result = _service.GetMessage(req);
-        Assert.IsType<BadRequestResult>(result);
-    }
-
-    [Fact]
-    public void GetMessage_Success()
-    {
-        var req = new GetMessageRequestDto { UserToken = Guid.NewGuid(), GroupId = Guid.NewGuid(), MessageId = Guid.NewGuid() };
-        var user = new User { Id = Guid.NewGuid() };
-        var group = new Group { Id = req.GroupId, Members = new List<User> { user } };
-        var msg = new GroupMessage { Id = req.MessageId, GroupId = group.Id, SenderId = user.Id, Message = "msg", DateTime = DateTime.UtcNow };
-        _dbMock.Setup(x => x.GetUserFromToken(req.UserToken)).Returns(user);
-        _dbMock.Setup(x => x.FindGroupById(req.GroupId)).Returns(group);
-        _dbMock.Setup(x => x.GetGroupMessage(req.MessageId, group.Id)).Returns(msg);
-        var result = _service.GetMessage(req) as OkObjectResult;
-        Assert.NotNull(result);
-    }
-
-    // GetGroupMessages tests
     [Fact]
     public void GetGroupMessages_Unauthorized()
     {

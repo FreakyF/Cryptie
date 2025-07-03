@@ -129,28 +129,6 @@ public class AuthenticationServiceTests
     }
 
     [Fact]
-    public void LogoutHandler_TokenNotFound_ReturnsBadRequest()
-    {
-        var logoutRequest = new LogoutRequestDto { Token = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.UserTokens).Returns(MockDbSet(new List<UserToken>()));
-
-        var result = _service.LogoutHandler(logoutRequest);
-        Assert.IsType<BadRequestResult>(result);
-    }
-
-    [Fact]
-    public void LogoutHandler_Success_ReturnsOk()
-    {
-        var token = new UserToken { Id = Guid.NewGuid() };
-        _dbContextMock.Setup(x => x.UserTokens).Returns(MockDbSet(new List<UserToken> { token }));
-        _dbContextMock.Setup(x => x.SaveChanges()).Verifiable();
-
-        var logoutRequest = new LogoutRequestDto { Token = token.Id };
-        var result = _service.LogoutHandler(logoutRequest);
-        Assert.IsType<OkResult>(result);
-    }
-
-    [Fact]
     public void RegisterHandler_UserExists_ReturnsBadRequest()
     {
         var registerRequest = new RegisterRequestDto {
@@ -178,12 +156,5 @@ public class AuthenticationServiceTests
         dbSet.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
         dbSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
         return dbSet.Object;
-    }
-
-    
-    private class EntityEntryStub<T> where T : class
-    {
-        public T Entity { get; }
-        public EntityEntryStub(T entity) => Entity = entity;
     }
 }

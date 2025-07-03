@@ -46,29 +46,6 @@ public class UserManagementServiceTests
     }
 
     [Fact]
-    public void UserLoginFromToken_ReturnsOk_WhenUserExists()
-    {
-        var user = new User { Login = "login" };
-        var token = Guid.NewGuid();
-        var dto = new UserLoginFromTokenRequestDto { SessionToken = token };
-        _dbMock.Setup(d => d.GetUserFromToken(token)).Returns(user);
-        var result = _service.UserLoginFromToken(dto) as OkObjectResult;
-        Assert.NotNull(result);
-        var response = Assert.IsType<UserLoginFromTokenResponseDto>(result.Value);
-        Assert.Equal(user.Login, response.Login);
-    }
-
-    [Fact]
-    public void UserLoginFromToken_ReturnsBadRequest_WhenUserNull()
-    {
-        var token = Guid.NewGuid();
-        var dto = new UserLoginFromTokenRequestDto { SessionToken = token };
-        _dbMock.Setup(d => d.GetUserFromToken(token)).Returns((User)null);
-        var result = _service.UserLoginFromToken(dto);
-        Assert.IsType<BadRequestResult>(result);
-    }
-
-    [Fact]
     public void AddFriend_ReturnsNotFound_WhenFriendNull()
     {
         var token = Guid.NewGuid();
@@ -137,32 +114,6 @@ public class UserManagementServiceTests
         _dbMock.Verify(d => d.AddUserToGroup(friend.Id, group.Id), Times.Once);
         _dbMock.Verify(d => d.AddGroupEncryptionKey(user.Id, group.Id, "key1"), Times.Once);
         _dbMock.Verify(d => d.AddGroupEncryptionKey(friend.Id, group.Id, "key2"), Times.Once);
-    }
-
-    [Fact]
-    public void FriendList_ReturnsBadRequest_WhenUserNull()
-    {
-        var token = Guid.NewGuid();
-        var dto = new FriendListRequestDto { SessionToken = token };
-        _dbMock.Setup(d => d.GetUserFromToken(token)).Returns((User)null);
-        var result = _service.FriendList(dto);
-        Assert.IsType<BadRequestResult>(result);
-    }
-
-    [Fact]
-    public void FriendList_ReturnsOk_WithFriends()
-    {
-        var friend1 = new User { Id = Guid.NewGuid() };
-        var friend2 = new User { Id = Guid.NewGuid() };
-        var token = Guid.NewGuid();
-        var user = new User { Friends = new List<User> { friend1, friend2 } };
-        var dto = new FriendListRequestDto { SessionToken = token };
-        _dbMock.Setup(d => d.GetUserFromToken(token)).Returns(user);
-        var result = _service.FriendList(dto) as OkObjectResult;
-        Assert.NotNull(result);
-        var response = Assert.IsType<GetFriendListResponseDto>(result.Value);
-        Assert.Contains(friend1.Id, response.Friends);
-        Assert.Contains(friend2.Id, response.Friends);
     }
 
     [Fact]

@@ -17,17 +17,6 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         });
     }
 
-    public IActionResult UserLoginFromToken([FromBody] UserLoginFromTokenRequestDto userLoginFromTokenRequest)
-    {
-        var user = databaseService.GetUserFromToken(userLoginFromTokenRequest.SessionToken);
-        if (user == null) return BadRequest();
-
-        return Ok(new UserLoginFromTokenResponseDto
-        {
-            Login = user.Login
-        });
-    }
-
     public IActionResult AddFriend([FromBody] AddFriendRequestDto addFriendRequest)
     {
         var friend = databaseService.FindUserByLogin(addFriendRequest.Friend);
@@ -53,19 +42,6 @@ public class UserManagementService(IDatabaseService databaseService) : Controlle
         }
 
         return Ok();
-    }
-
-    public IActionResult FriendList([FromBody] FriendListRequestDto friendListRequest)
-    {
-        var user = databaseService.GetUserFromToken(friendListRequest.SessionToken);
-        if (user == null) return BadRequest();
-
-        var friends = user.Friends.Select(f => f.Id).ToList();
-
-        return Ok(new GetFriendListResponseDto
-        {
-            Friends = friends
-        });
     }
 
     public IActionResult NameFromGuid([FromBody] NameFromGuidRequestDto nameFromGuidRequest)
