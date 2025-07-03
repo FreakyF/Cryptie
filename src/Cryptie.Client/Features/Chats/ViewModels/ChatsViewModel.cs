@@ -197,7 +197,7 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
             }
             catch
             {
-                // Swallow exception: do nothing
+                // Swallow exception: do nothing 
             }
         }, canSend);
     }
