@@ -2,5 +2,5 @@ namespace Cryptie.Common.Features.UserManagement.DTOs;
 
 public class UserLoginFromTokenResponseDto
 {
-    public string Login { get; set; }
+    public string Login { get; set; } = string.Empty;
 }
