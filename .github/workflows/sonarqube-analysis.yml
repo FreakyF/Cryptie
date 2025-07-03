@@ -3,18 +3,19 @@ name: SonarQube Analysis
 on:
   workflow_call:
     secrets:
-      sonar_token:
+      SONAR_TOKEN:
         required: true
 
 jobs:
   analyze:
-    name: Analyze with SonarQube
+    name: Analyze with SonarCloud
     runs-on: ubuntu-latest
+
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: '17'
           distribution: 'zulu'
 
       - name: Checkout code
@@ -27,14 +28,14 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Cache SonarQube Cloud packages
+      - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Cache SonarQube Cloud scanner
+      - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v4
         with:
@@ -42,9 +43,8 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner-${{ hashFiles('**/sonar-project.properties') }}
           restore-keys: ${{ runner.os }}-sonar-scanner-
 
-      - name: Install SonarQube Cloud scanner
+      - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: bash
         run: |
           mkdir -p ./.sonar/scanner
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
@@ -53,16 +53,28 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"FreakyF_Cryptie" /o:"freakyf" \
-          /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
-          /d:sonar.host.url="https://sonarcloud.io" \
-          /d:sonar.cobertura.reportPath=".coverage/coverage.cobertura.xml" \
-          /d:sonar.verbose=true
+          ./.sonar/scanner/dotnet-sonarscanner begin \
+            /k:"FreakyF_Cryptie" \
+            /o:"freakyf" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.cs.opencover.reportsPaths="TestResults/coverage.opencover.xml" \
+            /d:sonar.verbose=true
 
-      - name: Build project (for SonarQube Roslyn analyzers)
+      - name: Build project
         run: dotnet build src/Cryptie.sln --no-incremental
+
+      - name: Run tests with coverage
+        run: |
+          dotnet test src/Cryptie.sln \
+            --no-build \
+            /p:CollectCoverage=true \
+            /p:CoverletOutput=TestResults/coverage.opencover.xml \
+            /p:CoverletOutputFormat=opencover
 
       - name: End SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        run: |
+          ./.sonar/scanner/dotnet-sonarscanner end \
+            /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
