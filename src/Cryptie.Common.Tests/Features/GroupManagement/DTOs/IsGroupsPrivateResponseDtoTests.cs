@@ -36,7 +36,7 @@ public class IsGroupsPrivateResponseDtoTests
         // Arrange & Act
         var dto = new IsGroupsPrivateResponseDto();
         // Assert
-        Assert.Null(dto.GroupStatuses);
+        Assert.NotNull(dto.GroupStatuses);
     }
 }
 
