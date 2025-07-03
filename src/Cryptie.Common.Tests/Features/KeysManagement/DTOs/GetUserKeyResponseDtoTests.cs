@@ -23,7 +23,7 @@ public class GetUserKeyResponseDtoTests
         // Act
         var dto = new GetUserKeyResponseDto();
         // Assert
-        Assert.Null(dto.PublicKey);
+        Assert.NotNull(dto.PublicKey);
     }
 }
 
