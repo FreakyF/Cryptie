@@ -162,5 +162,46 @@ namespace Cryptie.Client.Tests.Features.Chats.ViewModels
                 _userStateMock.Object
             );
         }
+
+
+        [Fact]
+        public void DecryptMessages_DoesNothing_WhenKeyDoesNotExist()
+        {
+            // Arrange
+            var groupId = Guid.NewGuid();
+            var plainText = "original";
+            var encrypted = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(plainText));
+            var messages = new List<Cryptie.Common.Features.Messages.DTOs.GetGroupMessagesResponseDto.MessageDto>
+            {
+                new() { Message = encrypted }
+            };
+            var vm = CreateViewModel();
+
+            // Act
+            vm.GetType().GetMethod("DecryptMessages", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.Invoke(vm, new object[] { messages, groupId });
+
+            // Assert
+            Assert.Equal(encrypted, messages[0].Message);
+        }
+
+        [Fact]
+        public void DecryptMessages_HandlesEmptyMessages()
+        {
+            // Arrange
+            var groupId = Guid.NewGuid();
+            var vm = CreateViewModel();
+            var groupKeyCacheField = vm.GroupsPanel.GetType().GetField("_groupKeyCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var dict = groupKeyCacheField?.GetValue(vm.GroupsPanel) as Dictionary<Guid, string>;
+            dict![groupId] = "key";
+            var messages = new List<Cryptie.Common.Features.Messages.DTOs.GetGroupMessagesResponseDto.MessageDto>();
+
+            // Act
+            vm.GetType().GetMethod("DecryptMessages", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.Invoke(vm, new object[] { messages, groupId });
+
+            // Assert
+            Assert.Empty(messages);
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Cryptie.Common.Features.Account.Validators;
 using Cryptie.Common.Features.UserManagement.DTOs;
 using FluentValidation.TestHelper;
-using Xunit;
 
 namespace Cryptie.Common.Tests.Features.Account.Validators;
 
