@@ -77,7 +77,6 @@ jobs:
         continue-on-error: true
         run: |
           dotnet test src/Cryptie.sln \
-            --no-build \
             -r linux-x64 \
             --collect:"XPlat Code Coverage" \
             --results-directory TestResults \
