@@ -218,13 +218,11 @@ public sealed class ChatsViewModel : RoutableViewModelBase, IActivatableViewMode
     private void WatchGroupSelection()
     {
         _deps.GroupState
-            .WhenAnyValue(
-                gs => gs.SelectedGroupId,
-                gs => gs.SelectedGroupName,
-                (gid, _) => gid)
-            .Where(gid => gid != Guid.Empty)
+            .WhenAnyValue(gs => gs.SelectedGroupId)
             .StartWith(_deps.GroupState.SelectedGroupId)
-            .SelectMany(gid => Observable.FromAsync(async () => 
+            .DistinctUntilChanged()
+            .Where(gid => gid != Guid.Empty)
+            .SelectMany(gid => Observable.FromAsync(async () =>
             {
                 try
                 {
