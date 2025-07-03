@@ -12,6 +12,11 @@ public class DatabaseUpdater
         _serviceProvider = serviceProvider;
     }
 
+    /// <summary>
+    /// Applies any pending Entity Framework migrations to ensure the database
+    /// schema is up to date.
+    /// </summary>
+    /// <returns>A task that completes when the migration process finishes.</returns>
     public async Task PerformDatabaseUpdate()
     {
         using var scope = _serviceProvider.CreateScope();
