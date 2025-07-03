@@ -60,8 +60,7 @@ jobs:
           /d:sonar.verbose=true
 
       - name: Build project (for SonarQube Roslyn analyzers)
-        run: dotnet build --no-incremental
-        working-directory: src/
+        run: dotnet build src/Cryptie.sln --no-incremental
 
       - name: End SonarCloud analysis
         env:
