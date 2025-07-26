@@ -17,7 +17,6 @@
         <PublishSingleFile>true</PublishSingleFile>
         <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
         <PublishTrimmed>false</PublishTrimmed>
-        <MacOSEnvironmentVariables></MacOSEnvironmentVariables>
     </PropertyGroup>
 
     <ItemGroup>
@@ -38,6 +37,7 @@
         </PackageReference>
         <PackageReference Include="Avalonia.Skia" Version="11.3.0"/>
         <PackageReference Include="Avalonia.Svg.Skia" Version="11.3.0"/>
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.113.0" />
         <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0"/>
         <PackageReference Include="JetBrains.Annotations" Version="2024.3.0"/>
         <PackageReference Include="KeySharp" Version="1.0.5"/>
