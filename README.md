@@ -1,69 +1,52 @@
-# Cryptie
+# 🔐 Cryptie
 
-Cryptie is a secure text messenger application featuring end-to-end encryption, a beautiful Avalonia-based GUI, and system keystore–backed key pair management for user identity verification..
+Privacy‑first, open‑source text messenger with end‑to‑end encryption and built‑in two‑factor authentication. Cryptie ensures that every message you send is protected with modern cryptographic standards, requiring both a secure password and a one‑time 2FA code for login, plus an optional PIN to further harden the application against unauthorized access. Built on .NET and Avalonia, Cryptie delivers a consistent, native experience on Windows, Linux and macOS without compromising on security or performance.
 
-## Prerequisites
+## 📌 Features
 
-- [.NET 9 SDK (or later)](https://dotnet.microsoft.com/download)
-- macOS (for the client build step, at least for now)
-- Bash shell (for running the macOS build script, at least for now)
+- 🔐 End-to-end encrypted messaging
 
-## Build and Run
+- 🔑 Secure login with password
 
-### 1. Server & Shared Libraries
+- 🔒 PIN-based protection
 
-From the root of the repository, navigate to the release folder and build the Cryptie server and shared libraries:
+- 🔁 Two-factor authentication
 
-```bash
-cd path/to/repository
-dotnet build --configuration Release ./src
-```
+- 🎨 Beautiful and modern user interface
 
-This will compile the server and shared DTO/model libraries in Release mode.
+- 🖥️ Cross-platform: Windows, Linux, macOS
 
-### 2. Client (macOS)
+## 👀 Demo
 
-To build the Avalonia-based macOS client, do the following:
+👀 _Coming soon_
 
-```bash
-cd path/to/repository/src/Cryptie.Client
-chmod +x build-macos-app.sh
-./build-macos-app.sh
-```
+## 🚀 How to Run
 
-After the script completes, you will find `Cryptie.app` in the same folder. This `.app` bundle is ready to run on macOS:
+### Prerequisites
 
-```bash
-open Cryptie.app
-```
+🚀 _Coming soon_
 
-## Usage
+### 🔢 Steps
 
-- **Server**: Once the server build completes, launch it with:
-  
-  ```bash
-  dotnet ./src/Cryptie.Server/bin/Release/net6.0/Cryptie.Server.dll
-  ```
-  
-- **Client (macOS)**: Double-click `Cryptie.app` in Finder or use:
+🔢 _Coming soon_
 
-  ```bash
-  open Cryptie.app
-  ```
+## 🙋‍♂️ Authors
 
-## Project Structure
+**Kamil Fudala**
 
-```
-src/
-├── Cryptie.ServerTests/      # Server-side unit and integration tests
-├── Cryptie.Server/           # Server-side application (API, key management, SignalR hubs)
-├── Cryptie.Common.Tests/     # Shared library tests
-├── Cryptie.Common/           # DTOs and models shared by server and client
-├── Cryptie.Client.Tests/     # Client-side tests
-└── Cryptie.Client/           # Avalonia UI client
-    ├── build-macos-app.sh    # macOS client build script
-```
+- [GitHub](https://github.com/FreakyF)
+- [LinkedIn](https://www.linkedin.com/in/kamil-fudala/)
 
-## License
+**Jan Chojnacki**
 
-This project is released under the MIT License.
+- [GitHub](https://github.com/Jan-Chojnacki)
+- [LinkedIn](https://www.linkedin.com/in/jan-chojnacki-772b0530a/)
+
+**Jakub Babiarski**
+
+- [GitHub](https://github.com/JakubKross)
+- [LinkedIn](https://www.linkedin.com/in/jakub-babiarski-751611304/)
+
+## ⚖️ License
+
+This project is licensed under the [MIT License](LICENSE).
