@@ -14,7 +14,7 @@ Privacy‑first, open‑source text messenger with end‑to‑end encryption and
 
 - 🎨 Beautiful and modern user interface
 
-- 🌓 Light/dark theme toggle, with an option to follow your system appearance.
+- 🌓 Light/dark theme toggle, with an option to follow your system appearance
 
 - 🖥️ Cross-platform: Windows, Linux, macOS
 
