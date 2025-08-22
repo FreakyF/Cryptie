@@ -20,17 +20,16 @@ Privacy‑first, open‑source text messenger with end‑to‑end encryption and
 
 ## 👀 Demo
 
-👀 _Coming soon_
-
-## 🚀 How to Run
-
-### Prerequisites
-
-🚀 _Coming soon_
-
-### 🔢 Steps
-
-🔢 _Coming soon_
+![Home Screen - No Friends](/docs/screenshots/Home%20Screen%20-%20No%20Friends.png)
+![Home Screen - Dark Mode](/docs/screenshots/Home%20Screen%20-%20Dark%20Mode.png)
+![Register](/docs/screenshots/Register.png)
+![Qr Code](/docs/screenshots/Qr%20Code.png)
+![One Time Password](/docs/screenshots/One%20Time%20Password.png)
+![Pin Code](/docs/screenshots/Pin%20Code.png)
+![Login](/docs/screenshots/Login.png)
+![Loading](/docs/screenshots/Loading.png)
+![Account](/docs/screenshots/Account.png)
+![Settings](/docs/screenshots/Settings.png)
 
 ## 🙋‍♂️ Authors
 
